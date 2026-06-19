@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta name="theme-color" content="#0d0c0a">
+<title>FORGE — Onboarding</title>
+<style>
+  :root{
+    --bg-grad: radial-gradient(125% 80% at 50% 16%, #16140f, #0d0c0a);
+    --surface:#1a1814; --raised:#1f1c16; --hair-1:#201d17; --hair-2:#2c281f;
+    --ink:#efeae0; --sub:#a59d8d; --faint:#6f6859;
+    --amber:#e3a857; --amber-bright:#f3c378; --green:#4fd17e; --blue:#6fb0d8; --red:#e0664a;
+    --mono: ui-monospace,"SF Mono","Courier New",monospace;
+    --ui: -apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{font-family:var(--ui);background:#070605;color:var(--ink);min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:28px 0}
+  .phone{position:relative;width:430px;height:904px;background:var(--bg-grad);border-radius:46px;overflow:hidden;
+    box-shadow:0 0 0 1px rgba(255,255,255,.03),0 0 0 10px #131210,0 0 0 11px #2a2620,0 40px 90px -20px rgba(0,0,0,.9)}
+  @media (max-width:480px){ body{padding:0} .phone{width:100vw;height:100vh;border-radius:0;box-shadow:none} }
+  .phone::before{content:"";position:absolute;top:-120px;left:50%;transform:translateX(-50%);width:520px;height:360px;
+    background:radial-gradient(50% 50% at 50% 50%, rgba(227,168,87,.16), rgba(227,168,87,0) 70%);pointer-events:none;z-index:0}
+  .screen{position:absolute;inset:0;z-index:1;display:none;flex-direction:column;padding:58px 22px 0}
+  .screen.active{display:flex}
+  .body{flex:1;overflow-y:auto;margin:0 -22px;padding:2px 22px 12px;scrollbar-width:none}
+  .body::-webkit-scrollbar{display:none}
+
+  /* header */
+  .eyebrow-row{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--amber);text-transform:uppercase;font-weight:600}
+  .dots{display:flex;gap:7px;align-items:center}
+  .dot{width:7px;height:7px;border-radius:50%;background:#332e24;transition:all .3s}
+  .dot.on{background:var(--amber);box-shadow:0 0 9px rgba(227,168,87,.7)}
+  h1.title{font-size:30px;line-height:1.08;letter-spacing:-.02em;font-weight:700;margin:0 0 10px}
+  p.sub{font-size:14.5px;line-height:1.5;color:var(--sub);margin:0 0 22px;max-width:380px}
+  .backrow{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;min-height:24px}
+  .back{font-size:25px;color:var(--sub);cursor:pointer;line-height:1;width:28px}
+  .topmono{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--faint);text-transform:uppercase}
+
+  /* footer + buttons */
+  .footer{padding:14px 22px 26px;margin:0 -22px;background:linear-gradient(180deg, rgba(13,12,10,0) 0%, #0d0c0a 38%);position:sticky;bottom:0}
+  .btn{width:100%;border-radius:16px;padding:16px;font-family:var(--ui);font-size:16px;font-weight:600;cursor:pointer;border:1px solid transparent;
+    display:flex;align-items:center;justify-content:center;gap:10px}
+  .btn:active{transform:translateY(1px) scale(.992)}
+  .btn-primary{font-weight:700;color:#231603;border:none;background:linear-gradient(180deg,var(--amber-bright),var(--amber));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -2px 4px rgba(120,70,10,.3),0 8px 24px -6px rgba(227,168,87,.45),0 2px 6px rgba(0,0,0,.4)}
+  .btn-dark{background:#000;color:#fff;border-color:#2a2620}
+  .btn-light{background:#fff;color:#161616}
+  .btn-ghost{background:var(--surface);color:var(--ink);border:1px solid var(--hair-2)}
+  .skip{display:block;text-align:center;margin-top:14px;font-size:13.5px;color:var(--faint);text-decoration:none;font-weight:500}
+
+  /* ---- login ---- */
+  #screen-login{justify-content:center;padding:42px 26px}
+  .brand{display:flex;flex-direction:column;align-items:center;text-align:center;flex:1;justify-content:center}
+  .word{font-weight:800;font-size:30px;letter-spacing:.16em;margin-top:20px;padding-left:.16em}
+  .tag{color:var(--sub);font-size:15px;line-height:1.5;margin-top:13px;max-width:280px}
+  .stack > * + *{margin-top:12px}
+  .legal{font-size:11px;color:var(--faint);text-align:center;margin-top:16px;line-height:1.5;font-family:var(--mono);letter-spacing:.02em}
+
+  /* ---- inputs ---- */
+  .field{margin-bottom:14px}
+  .field label{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:0 0 8px 2px}
+  .input{width:100%;height:52px;border-radius:14px;background:var(--surface);border:1px solid var(--hair-2);color:var(--ink);font-size:16px;padding:0 16px;outline:none;font-family:var(--ui);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+  .input:focus{border-color:var(--amber);box-shadow:0 0 0 3px rgba(227,168,87,.12)}
+  .input::placeholder{color:#5f594d}
+  .two{display:flex;gap:12px}
+  .two .field{flex:1}
+
+  /* ---- source card (from direction B) ---- */
+  .card{display:flex;align-items:center;gap:14px;background:linear-gradient(180deg,var(--raised),var(--surface));border:1px solid var(--hair-2);border-radius:18px;padding:13px 14px;margin-bottom:11px;position:relative;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 1px 2px rgba(0,0,0,.5),0 8px 20px -12px rgba(0,0,0,.7)}
+  .tile{width:52px;height:52px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.25),inset 0 -2px 4px rgba(0,0,0,.25),0 4px 10px -3px rgba(0,0,0,.6)}
+  .meta{flex:1;min-width:0}
+  .name-row{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+  .name{font-size:15.5px;font-weight:600;letter-spacing:-.01em;line-height:1.1}
+  .desc{font-size:12.5px;color:var(--sub);line-height:1.35}
+  .pill{font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber-bright);
+    background:rgba(227,168,87,.12);border:1px solid rgba(227,168,87,.32);padding:2.5px 6px;border-radius:6px;font-weight:600;white-space:nowrap}
+  .connect-btn{flex-shrink:0;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--amber-bright);
+    background:rgba(227,168,87,.07);border:1px solid rgba(227,168,87,.34);border-radius:10px;padding:9px 14px;cursor:pointer;transition:all .22s;display:flex;align-items:center;gap:6px;white-space:nowrap}
+  .connect-btn:active{transform:scale(.96)}
+  .connect-btn .check{width:13px;height:13px;display:none}
+  .connect-btn.connected{color:#0c1f12;background:linear-gradient(180deg,#63e092,var(--green));border-color:rgba(79,209,126,.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 14px rgba(79,209,126,.35)}
+  .connect-btn.connected .check{display:block}
+  .connect-btn.connected .label-connect{display:none}
+  .card.connected{border-color:rgba(79,209,126,.28)}
+
+  /* ---- habits grid (from direction B) ---- */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .habit{background:linear-gradient(180deg,var(--raised),var(--surface));border:1px solid var(--hair-2);border-radius:18px;padding:16px 14px 15px;cursor:pointer;position:relative;min-height:104px;display:flex;flex-direction:column;transition:all .2s;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 6px 16px -10px rgba(0,0,0,.7)}
+  .habit:active{transform:scale(.985)}
+  .h-icon{width:40px;height:40px;border-radius:12px;background:#241f18;border:1px solid var(--hair-2);display:flex;align-items:center;justify-content:center;margin-bottom:12px;transition:all .2s;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+  .h-icon svg{stroke:var(--sub);transition:stroke .2s}
+  .h-name{font-size:14.5px;font-weight:600;letter-spacing:-.01em;line-height:1.2}
+  .h-tick{position:absolute;top:13px;right:13px;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--hair-2);background:#1a1712;display:flex;align-items:center;justify-content:center;transition:all .2s}
+  .h-tick svg{opacity:0;transition:opacity .2s}
+  .habit.sel{border-color:rgba(227,168,87,.55);background:radial-gradient(120% 90% at 50% 0%, rgba(227,168,87,.14), rgba(227,168,87,0) 60%),linear-gradient(180deg,#221d14,#1b1812);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 0 0 1px rgba(227,168,87,.18),0 8px 22px -10px rgba(227,168,87,.35)}
+  .habit.sel .h-icon{background:linear-gradient(180deg, rgba(243,195,120,.22), rgba(227,168,87,.1));border-color:rgba(227,168,87,.5)}
+  .habit.sel .h-icon svg{stroke:var(--amber-bright)}
+  .habit.sel .h-tick{background:linear-gradient(180deg,var(--amber-bright),var(--amber));border-color:var(--amber);box-shadow:0 0 12px rgba(227,168,87,.5)}
+  .habit.sel .h-tick svg{opacity:1}
+  .add-custom{grid-column:1 / -1;display:flex;align-items:center;justify-content:center;gap:9px;background:transparent;border:1.5px dashed var(--hair-2);border-radius:18px;padding:16px;color:var(--sub);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+  .add-custom:active{transform:scale(.99)}
+  .add-custom svg{stroke:var(--amber)}
+
+  /* ---- plan choice cards ---- */
+  .choice{background:linear-gradient(180deg,var(--raised),var(--surface));border:1px solid var(--hair-2);border-radius:18px;padding:15px 16px;margin-bottom:11px;cursor:pointer;transition:all .2s;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 6px 16px -10px rgba(0,0,0,.7)}
+  .choice:active{transform:scale(.99)}
+  .choice .crow{display:flex;align-items:center;gap:13px}
+  .radio{width:22px;height:22px;border-radius:50%;border:2px solid var(--hair-2);flex:0 0 22px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+  .choice .ctitle{font-size:16px;font-weight:600;letter-spacing:-.01em}
+  .choice .cdesc{font-size:12.5px;color:var(--sub);line-height:1.45;margin-top:8px;padding-left:35px}
+  .choice.sel{border-color:rgba(227,168,87,.55);background:radial-gradient(120% 90% at 50% 0%, rgba(227,168,87,.12), rgba(227,168,87,0) 60%),linear-gradient(180deg,#211c14,#1a1712);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 0 0 1px rgba(227,168,87,.18),0 8px 22px -10px rgba(227,168,87,.3)}
+  .choice.sel .radio{border-color:var(--amber);background:radial-gradient(circle at 50% 50%, var(--amber-bright) 0 6px, transparent 7px);box-shadow:0 0 12px rgba(227,168,87,.5)}
+
+  /* ---- first sync ---- */
+  #screen-sync{align-items:center;justify-content:center;text-align:center;padding:0 26px}
+  .synccore{position:relative;width:172px;height:172px;display:flex;align-items:center;justify-content:center;margin-top:8px}
+  .ring{position:absolute;inset:0;border-radius:50%;border:2px solid #241f17}
+  .ring.pulse{animation:pulse 2.6s ease-out infinite}
+  .ring.r2{animation-delay:.9s}.ring.r3{animation-delay:1.8s}
+  @keyframes pulse{0%{transform:scale(.55);opacity:.85}100%{transform:scale(1.28);opacity:0}}
+  .needle-spin{animation:rev 5s cubic-bezier(.33,.85,.4,1) forwards}
+  @keyframes rev{0%{transform:rotate(-128deg)}16%{transform:rotate(-96deg)}40%{transform:rotate(-48deg)}68%{transform:rotate(6deg)}82%{transform:rotate(-7deg)}92%{transform:rotate(3deg)}100%{transform:rotate(0)}}
+  .synctitle{font-size:26px;font-weight:700;letter-spacing:-.02em;margin-top:34px}
+  .syncsub{color:var(--sub);font-size:14px;margin-top:9px;min-height:20px;transition:opacity .3s}
+  .srcfeed{width:100%;max-width:320px;margin-top:26px}
+  .feedrow{display:flex;align-items:center;gap:13px;padding:13px 2px;border-bottom:1px solid var(--hair-1);opacity:0;transform:translateY(8px);transition:opacity .45s,transform .45s}
+  .feedrow.in{opacity:1;transform:none}
+  .feedrow .fi{width:36px;height:36px;border-radius:10px;flex:0 0 36px;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+  .feedrow .ft{flex:1;min-width:0;text-align:left}
+  .feedrow .fl{font-size:14.5px;font-weight:600;line-height:1.2}
+  .feedrow .fd{font-family:var(--mono);font-size:11.5px;color:var(--sub);margin-top:3px}
+  .feedrow .stat{flex:0 0 20px;width:20px;height:20px;display:flex;align-items:center;justify-content:center}
+  .feedrow .fc{color:var(--green);font-size:18px;opacity:0;transition:opacity .3s;position:absolute}
+  .feedrow.done .fc{opacity:1}
+  .feedrow .spin{width:17px;height:17px;border-radius:50%;border:2px solid #33291a;border-top-color:var(--amber);animation:sp .7s linear infinite}
+  .feedrow.done .spin{display:none}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .pbar{width:100%;max-width:336px;height:6px;border-radius:3px;background:#221e16;margin-top:26px;overflow:hidden}
+  .pfill{height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,var(--amber),var(--amber-bright));transition:width .3s;box-shadow:0 0 12px rgba(227,168,87,.5)}
+  .pct{font-family:var(--mono);font-size:12px;color:var(--faint);margin-top:11px;letter-spacing:.12em}
+
+  /* ---- today ---- */
+  .thead{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:4px}
+  .tdate{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--faint);margin-bottom:7px}
+  .twh{font-family:var(--mono);font-weight:700;font-size:14px;letter-spacing:.22em}
+  .gear{width:40px;height:40px;border-radius:12px;border:1px solid var(--hair-2);background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .wstrip{display:flex;align-items:center;gap:13px;background:linear-gradient(180deg,var(--raised),var(--surface));border:1px solid var(--hair-2);border-radius:16px;padding:14px;margin-bottom:11px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 8px 20px -12px rgba(0,0,0,.7)}
+  .wi{width:36px;height:36px;border-radius:11px;background:#241a16;border:1px solid #33291a;display:flex;align-items:center;justify-content:center;flex:0 0 36px}
+  .duo{display:flex;gap:11px;margin-bottom:18px}
+  .rec{flex:0 0 176px;background:linear-gradient(180deg,var(--raised),var(--surface));border:1px solid var(--hair-2);border-radius:18px;padding:15px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 8px 20px -12px rgba(0,0,0,.7)}
+  .micro{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+  .recstat{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;margin-top:8px}
+  .rcol{flex:1;display:flex;flex-direction:column;gap:11px}
+  .mini{background:linear-gradient(180deg,var(--raised),var(--surface));border:1px solid var(--hair-2);border-radius:18px;padding:14px;flex:1;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 8px 20px -12px rgba(0,0,0,.7)}
+  .mnum{font-family:var(--mono);font-size:24px;margin-top:7px}.mnum span{font-size:11px;color:var(--sub)}
+  .bar{height:6px;border-radius:3px;background:#201d17;margin-top:10px;overflow:hidden}.bar i{display:block;height:100%;border-radius:3px}
+  .tgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:11px}
+  .tcell{background:linear-gradient(180deg,var(--raised),var(--surface));border:1px solid var(--hair-2);border-radius:14px;padding:14px;display:flex;align-items:center;justify-content:space-between;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+  .tcell .tn{font-size:14.5px;font-weight:600}
+  .tbox{width:22px;height:22px;border-radius:7px;border:1.5px solid #33291a}
+  .tbox.on{background:linear-gradient(180deg,#63e092,var(--green));border-color:var(--green);display:flex;align-items:center;justify-content:center;color:#0c1f12;font-size:13px}
+
+  /* ---- settings ---- */
+  .sect{margin-top:22px}
+  .sectlabel{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-left:2px}
+  .listcard{background:linear-gradient(180deg,var(--raised),var(--surface));border:1px solid var(--hair-2);border-radius:18px;margin-top:11px;overflow:hidden;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+  .lrow{display:flex;align-items:center;gap:12px;padding:15px 16px;border-bottom:1px solid var(--hair-1)}
+  .lrow:last-child{border-bottom:none}
+  .lk{font-size:15px}.lv{margin-left:auto;color:var(--sub);font-size:14px;font-family:var(--mono)}.chev{color:var(--faint);font-size:18px;margin-left:8px}
+  .dotg{width:9px;height:9px;border-radius:50%;background:var(--green);flex:0 0 9px;box-shadow:0 0 8px rgba(79,209,126,.5)}
+  .signout{color:var(--red);text-align:center;padding:18px;font-weight:600;cursor:pointer;margin-top:12px}
+
+  /* review jumper */
+  .jump{position:fixed;bottom:18px;right:18px;z-index:60;font-family:var(--mono)}
+  @media(min-width:481px){.jump{right:calc(50% - 215px + 8px)}}
+  .jump .tog{width:48px;height:48px;border-radius:50%;background:linear-gradient(180deg,#2a2114,#1c1710);border:1px solid var(--amber);color:var(--amber-bright);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;box-shadow:0 10px 30px -8px rgba(0,0,0,.8)}
+  .jump .menu{position:absolute;right:0;bottom:58px;background:rgba(20,18,14,.95);backdrop-filter:blur(14px);border:1px solid var(--hair-2);border-radius:14px;padding:7px;width:212px;display:none}
+  .jump.open .menu{display:block}
+  .jump .menu a{display:block;padding:9px 11px;color:var(--sub);font-size:12px;border-radius:9px;cursor:pointer;letter-spacing:.04em}
+  .jump .menu a:active,.jump .menu a:hover{background:#241c12;color:var(--amber-bright)}
+  .jump .ver{padding:8px 11px 4px;color:var(--faint);font-size:9.5px;letter-spacing:.1em;border-top:1px solid var(--hair-1);margin-top:4px}
+  .note{font-family:var(--mono);font-size:10.5px;color:var(--faint);text-align:center;margin-top:12px;letter-spacing:.04em}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+  <g id="tachsym">
+    <path d="M18.9,71.8 A38,38 0 1 1 81.1,71.8" fill="none" stroke="#2a2620" stroke-width="7" stroke-linecap="round"/>
+    <path d="M18.9,71.8 A38,38 0 1 1 86.7,40.2" fill="none" stroke="#e3a857" stroke-width="7" stroke-linecap="round"/>
+    <path d="M88,48.7 A38,38 0 0 1 81.1,71.8" fill="none" stroke="#e0664a" stroke-width="7" stroke-linecap="round"/>
+  </g>
+</defs></svg>
+
+<div class="phone">
+
+  <!-- ===== LOGIN ===== -->
+  <section class="screen active" id="screen-login">
+    <div class="brand">
+      <svg width="98" height="98" viewBox="0 0 100 100" style="filter:drop-shadow(0 8px 22px rgba(227,168,87,.3))">
+        <use href="#tachsym"/>
+        <line x1="50" y1="50" x2="81.9" y2="41.5" stroke="#f3c378" stroke-width="4.5" stroke-linecap="round"/>
+        <circle cx="50" cy="50" r="5.5" fill="#f3c378"/><circle cx="50" cy="50" r="2" fill="#1a1206"/>
+      </svg>
+      <div class="word">FORGE</div>
+      <div class="tag">One place to track all of your habits &amp; performance.</div>
+    </div>
+    <div class="stack" style="padding-bottom:12px">
+      <button class="btn btn-dark" onclick="go('connect')">
+        <svg width="16" height="19" viewBox="0 0 17 20" fill="#fff"><path d="M14.6 15.6c-.3.7-.5 1-.9 1.6-.6.9-1.4 2-2.5 2-.9 0-1.2-.6-2.4-.6-1.3 0-1.6.6-2.5.6-1 0-1.8-1-2.4-1.9-1.7-2.4-1.9-5.3-.8-6.8.7-1.1 1.9-1.7 3-1.7 1.1 0 1.8.6 2.7.6.9 0 1.4-.6 2.7-.6 1 0 2 .5 2.7 1.4-2.4 1.3-2 4.7.1 5.8zM11 4.2c.5-.6.9-1.5.7-2.4-.8 0-1.7.6-2.3 1.2-.5.6-.9 1.5-.8 2.3.9.1 1.8-.5 2.4-1.1z"/></svg>
+        Continue with Apple
+      </button>
+      <button class="btn btn-light" onclick="go('connect')">
+        <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.6 9.2c0-.6-.1-1.2-.2-1.8H9v3.5h4.8a4.1 4.1 0 0 1-1.8 2.7v2.2h2.9c1.7-1.6 2.7-3.9 2.7-6.6z"/><path fill="#34A853" d="M9 18c2.4 0 4.5-.8 6-2.2l-2.9-2.2c-.8.5-1.8.9-3.1.9-2.4 0-4.4-1.6-5.1-3.8H.9v2.3A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.9 10.7a5.4 5.4 0 0 1 0-3.4V5H.9a9 9 0 0 0 0 8z"/><path fill="#EA4335" d="M9 3.6c1.3 0 2.5.5 3.4 1.3l2.6-2.6A9 9 0 0 0 .9 5l3 2.3C4.6 5.2 6.6 3.6 9 3.6z"/></svg>
+        Continue with Google
+      </button>
+      <button class="btn btn-ghost" onclick="go('signup')">Sign up with email</button>
+      <div class="legal">By continuing you agree to our Terms and Privacy Policy</div>
+    </div>
+  </section>
+
+  <!-- ===== EMAIL SIGNUP ===== -->
+  <section class="screen" id="screen-signup">
+    <div class="backrow"><span class="back" onclick="go('login')">‹</span><span class="topmono">Create account</span><span style="width:28px"></span></div>
+    <h1 class="title">Create your account</h1>
+    <p class="sub">With Apple or Google we pull your name automatically. With email we just need a few details.</p>
+    <div class="body">
+      <div class="two">
+        <div class="field"><label>First name</label><input class="input" placeholder="First"></div>
+        <div class="field"><label>Last name</label><input class="input" placeholder="Last"></div>
+      </div>
+      <div class="field"><label>Email</label><input class="input" type="email" placeholder="you@email.com"></div>
+      <div class="field"><label>Password</label><input class="input" type="password" placeholder="At least 8 characters"></div>
+    </div>
+    <div class="footer"><button class="btn btn-primary" onclick="go('connect')">Create account</button></div>
+  </section>
+
+  <!-- ===== CONNECT ===== -->
+  <section class="screen" id="screen-connect">
+    <div class="backrow"><span class="back" onclick="go('login')">‹</span>
+      <span class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></span><span style="width:28px"></span></div>
+    <div class="eyebrow-row"><span class="eyebrow">Step 1 of 3</span></div>
+    <h1 class="title">Connect your data</h1>
+    <p class="sub">The more data sources you connect, the better your experience will be.</p>
+    <div class="body" id="srcList"></div>
+    <div class="footer"><button class="btn btn-primary" onclick="go('habits')">Continue</button><a class="skip" onclick="go('habits')">Skip for now</a></div>
+  </section>
+
+  <!-- ===== HABITS ===== -->
+  <section class="screen" id="screen-habits">
+    <div class="backrow"><span class="back" onclick="go('connect')">‹</span>
+      <span class="dots"><span class="dot"></span><span class="dot on"></span><span class="dot"></span></span><span style="width:28px"></span></div>
+    <div class="eyebrow-row"><span class="eyebrow">Step 2 of 3</span></div>
+    <h1 class="title">Pick your habits</h1>
+    <p class="sub">Forge helps you track compliance to habits that are important to you. Pick the ones you want to track. You can always change these later.</p>
+    <div class="body"><div class="grid" id="habitGrid"></div></div>
+    <div class="footer"><button class="btn btn-primary" onclick="go('plan')">Continue</button></div>
+  </section>
+
+  <!-- ===== PLAN ===== -->
+  <section class="screen" id="screen-plan">
+    <div class="backrow"><span class="back" onclick="go('habits')">‹</span>
+      <span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot on"></span></span><span style="width:28px"></span></div>
+    <div class="eyebrow-row"><span class="eyebrow">Step 3 of 3</span></div>
+    <h1 class="title">Choose your plan</h1>
+    <p class="sub">Pick a pre-built plan or upload your own later.</p>
+    <div class="body" id="planList"></div>
+    <div class="footer"><button class="btn btn-primary" onclick="startSync()">Continue</button></div>
+  </section>
+
+  <!-- ===== FIRST SYNC ===== -->
+  <section class="screen" id="screen-sync">
+    <div class="synccore">
+      <div class="ring pulse"></div><div class="ring pulse r2"></div><div class="ring pulse r3"></div>
+      <svg width="150" height="150" viewBox="0 0 100 100">
+        <use href="#tachsym"/>
+        <g id="syncNeedle" style="transform-origin:50px 50px">
+          <line x1="50" y1="50" x2="81.9" y2="41.5" stroke="#f3c378" stroke-width="4.5" stroke-linecap="round"/>
+          <circle cx="50" cy="50" r="5.5" fill="#f3c378"/><circle cx="50" cy="50" r="2" fill="#1a1206"/>
+        </g>
+      </svg>
+    </div>
+    <div class="synctitle">Forging your baseline</div>
+    <div class="syncsub" id="syncSub">Pulling in your history so day one is complete.</div>
+    <div class="srcfeed" id="srcfeed"></div>
+    <div class="pbar"><div class="pfill" id="pfill"></div></div>
+    <div class="pct" id="pct">0%</div>
+  </section>
+
+  <!-- ===== TODAY ===== -->
+  <section class="screen" id="screen-today">
+    <div class="thead">
+      <div><div class="tdate">WEDNESDAY · JUN 18</div><div class="twh">FORGE</div></div>
+      <div class="gear" onclick="go('settings')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.2" stroke="#a59d8d" stroke-width="2"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2M6 6l1.5 1.5M16.5 16.5L18 18M18 6l-1.5 1.5M7.5 16.5L6 18" stroke="#a59d8d" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="body" style="padding-top:14px">
+      <div class="wstrip">
+        <div class="wi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M13 5l-2 6h4l-2 8" stroke="#e3a857" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div style="flex:1"><div style="font-size:16px;font-weight:600">Run + Strength</div><div style="font-family:var(--mono);font-size:10px;color:var(--sub);margin-top:3px;letter-spacing:.06em">4 MI RUN · SHOULDERS &amp; PULL</div></div>
+        <div style="font-size:11px;font-weight:700;color:var(--amber);font-family:var(--mono)">START ›</div>
+      </div>
+      <div class="duo">
+        <div class="rec">
+          <div class="micro">WHOOP</div>
+          <div style="display:flex;justify-content:center;margin:8px 0 2px"><svg width="92" height="92" viewBox="0 0 92 92"><circle cx="46" cy="46" r="38" fill="none" stroke="#201d17" stroke-width="6"/><circle cx="46" cy="46" r="38" fill="none" stroke="#4fd17e" stroke-width="6" stroke-linecap="round" stroke-dasharray="239" stroke-dashoffset="69" transform="rotate(-90 46 46)"/><text x="46" y="54" text-anchor="middle" font-family="var(--mono)" font-size="30" font-weight="300" fill="#4fd17e">71</text></svg></div>
+          <div class="recstat"><span style="color:var(--faint)">HRV</span><span>42</span></div>
+          <div class="recstat"><span style="color:var(--faint)">RHR</span><span>54</span></div>
+          <div class="recstat"><span style="color:var(--faint)">SLEEP</span><span>7h12m</span></div>
+        </div>
+        <div class="rcol">
+          <div class="mini"><div class="micro">STEPS</div><div class="mnum">8,240<span> / 10k</span></div><div class="bar"><i style="width:82%;background:#e3a857"></i></div></div>
+          <div class="mini"><div class="micro">WATER</div><div class="mnum">2.4<span> / 6 L</span></div><div class="bar"><i style="width:40%;background:#6fb0d8"></i></div></div>
+        </div>
+      </div>
+      <div class="micro" style="margin-left:2px">HABITS</div>
+      <div class="tgrid">
+        <div class="tcell"><span class="tn">AM vitamins</span><span class="tbox on">✓</span></div>
+        <div class="tcell"><span class="tn">Mobility</span><span class="tbox"></span></div>
+        <div class="tcell"><span class="tn">Protein</span><span style="font-family:var(--mono);font-size:13px;color:var(--amber)">3/4</span></div>
+        <div class="tcell"><span class="tn">Workout</span><span class="tbox on">✓</span></div>
+      </div>
+      <div class="note">First login lands here, already populated. No empty states.</div>
+    </div>
+  </section>
+
+  <!-- ===== SETTINGS ===== -->
+  <section class="screen" id="screen-settings">
+    <div class="backrow"><span class="back" onclick="go('today')">‹</span><span class="topmono">Settings</span><span style="width:28px"></span></div>
+    <h1 class="title">Profile</h1>
+    <div class="body">
+      <div class="sect"><span class="sectlabel">Account</span><div class="listcard">
+        <div class="lrow"><span class="lk">Name</span><span class="lv">Brad Loeffler</span><span class="chev">›</span></div>
+        <div class="lrow"><span class="lk">Email</span><span class="lv">brad@12thbean.com</span></div>
+        <div class="lrow"><span class="lk">Units</span><span class="lv">lb</span><span class="chev">›</span></div>
+        <div class="lrow"><span class="lk">Time zone</span><span class="lv">Denver</span><span class="chev">›</span></div>
+      </div></div>
+      <div class="sect"><span class="sectlabel">Connected sources</span><div class="listcard">
+        <div class="lrow"><span class="dotg"></span><span class="lk">Apple Health</span><span class="lv">6:12a</span><span class="chev">›</span></div>
+        <div class="lrow"><span class="dotg"></span><span class="lk">WHOOP</span><span class="lv">recovery 71</span><span class="chev">›</span></div>
+        <div class="lrow"><span class="dotg"></span><span class="lk">Strava</span><span class="lv">42 runs</span><span class="chev">›</span></div>
+        <div class="lrow"><span class="dotg"></span><span class="lk">Oura</span><span class="lv">readiness 84</span><span class="chev">›</span></div>
+        <div class="lrow"><span class="lk" style="color:var(--sub)">+ Add a source</span><span class="chev" style="margin-left:auto">›</span></div>
+      </div></div>
+      <div class="sect"><span class="sectlabel">Tracking</span><div class="listcard">
+        <div class="lrow"><span class="lk">Habits</span><span class="lv">6 active</span><span class="chev">›</span></div>
+        <div class="lrow"><span class="lk">Plan</span><span class="lv">Hybrid</span><span class="chev">›</span></div>
+        <div class="lrow"><span class="lk">Water goal</span><span class="lv">6 L</span><span class="chev">›</span></div>
+        <div class="lrow"><span class="lk">Step goal</span><span class="lv">10,000</span><span class="chev">›</span></div>
+      </div></div>
+      <div class="signout" onclick="go('login')">Sign out</div>
+    </div>
+  </section>
+
+</div>
+
+<div class="jump" id="jump">
+  <div class="menu">
+    <a onclick="go('login')">1 · Login</a>
+    <a onclick="go('signup')">2 · Email sign-up</a>
+    <a onclick="go('connect')">3 · Connect sources</a>
+    <a onclick="go('habits')">4 · Pick habits</a>
+    <a onclick="go('plan')">5 · Choose plan</a>
+    <a onclick="startSync()">6 · First sync</a>
+    <a onclick="go('today')">7 · Today (landed)</a>
+    <a onclick="go('settings')">8 · Settings</a>
+    <div class="ver">BUILD v5 · FORGE</div>
+  </div>
+  <div class="tog" onclick="document.getElementById('jump').classList.toggle('open')">☰</div>
+</div>
+
+<script>
+  function go(name){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    var el=document.getElementById('screen-'+name); el.classList.add('active');
+    var b=el.querySelector('.body'); if(b)b.scrollTop=0;
+    document.getElementById('jump').classList.remove('open');
+  }
+
+  /* ---- connect sources ---- */
+  var SOURCES=[
+    {n:'Apple Health',d:'Steps, weight, sleep, workouts',tag:'Recommended',bg:'linear-gradient(180deg,#fff,#f1f1f3)',svg:'<svg width="26" height="26" viewBox="0 0 24 24" fill="#ff3b30"><path d="M12 21s-7.5-4.9-9.6-9.3C1.1 8.5 2.6 5.2 5.8 5.2c1.9 0 3.3 1.1 4.2 2.4.9-1.3 2.3-2.4 4.2-2.4 3.2 0 4.7 3.3 3.4 6.5C19.5 16.1 12 21 12 21z"/></svg>'},
+    {n:'WHOOP',d:'Recovery, HRV, resting HR, sleep',bg:'linear-gradient(180deg,#1c1c1c,#000)',svg:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.2"/></svg>'},
+    {n:'Oura',d:'Sleep, readiness, HRV, temperature',bg:'linear-gradient(180deg,#15151a,#0a0a0d)',svg:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6"><circle cx="12" cy="12" r="8"/></svg>'},
+    {n:'Strava',d:'Runs and rides, pace and heart rate',bg:'linear-gradient(180deg,#ff6128,#fc4c02)',svg:'<svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M9.8 3 4 14.5h3.4L9.8 9.9l2.4 4.6h3.3L9.8 3zM14 14.5l-1.7 3.3-1.7-3.3H7.3L12.3 24l5-9.5H14z"/></svg>'},
+    {n:'Garmin',d:'Runs, training load, HR, sleep',bg:'linear-gradient(180deg,#1593d8,#007cc3)',svg:'<svg width="25" height="25" viewBox="0 0 24 24" fill="#fff"><path d="M12 2 3 13l4.1 1.6L12 8.6l4.9 6L21 13 12 2zm0 11.5L8.6 17l3.4 5 3.4-5-3.4-3.5z"/></svg>'},
+    {n:'Fitbit',d:'Steps, sleep, heart rate',bg:'linear-gradient(180deg,#15c8d1,#00b0b9)',svg:'<svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2.4"/><circle cx="12" cy="19" r="2"/><circle cx="6" cy="9" r="1.8"/><circle cx="6" cy="15" r="1.8"/><circle cx="18" cy="9" r="1.8"/><circle cx="18" cy="15" r="1.8"/></svg>'},
+    {n:'Withings',d:'Smart scale weight and body data',bg:'linear-gradient(180deg,#1d4b63,#16374a)',svg:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3.5" y="5.5" width="17" height="13" rx="2.5"/><path d="M12 9v3.2l2 1.4" stroke-linecap="round"/></svg>'}
+  ];
+  var checkSvg='<svg class="check" viewBox="0 0 24 24" fill="none" stroke="#0c1f12" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+  var srcList=document.getElementById('srcList');
+  SOURCES.forEach(function(s){
+    var c=document.createElement('div'); c.className='card';
+    c.innerHTML='<div class="tile" style="background:'+s.bg+'">'+s.svg+'</div>'+
+      '<div class="meta"><div class="name-row"><span class="name">'+s.n+'</span>'+(s.tag?'<span class="pill">'+s.tag+'</span>':'')+'</div><div class="desc">'+s.d+'</div></div>'+
+      '<button class="connect-btn" onclick="toggleConnect(this)"><span class="label-connect">Connect</span>'+checkSvg+'<span class="label-done" style="display:none">Connected</span></button>';
+    srcList.appendChild(c);
+  });
+  function toggleConnect(btn){ var card=btn.closest('.card'); var on=btn.classList.toggle('connected'); card.classList.toggle('connected',on); btn.querySelector('.label-done').style.display=on?'inline':'none'; }
+
+  /* ---- habits ---- */
+  var ic={
+    sun:'<path d="M12 4v2M12 18v2M4 12H2m20 0h-2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/><circle cx="12" cy="12" r="4"/>',
+    moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4 6.4 6.4 0 0 0 20 14.5z"/>',
+    water:'<path d="M12 3.5s6 6.2 6 10.5a6 6 0 0 1-12 0c0-4.3 6-10.5 6-10.5z"/>',
+    steps:'<path d="M7 4h3v8a3 3 0 0 1-6 0V9h3zM14 8h3v8a3 3 0 0 1-6 0v-3h3z"/>',
+    mobility:'<circle cx="12" cy="5" r="2"/><path d="M12 8v6m0 0-3 5m3-5 3 5M7 11h10"/>',
+    workout:'<path d="M4 9v6M20 9v6M7 7v10M17 7v10M7 12h10"/>',
+    protein:'<rect x="8" y="2.5" width="8" height="3" rx="1"/><path d="M8.4 5.5h7.2l-.7 13a2 2 0 0 1-2 1.9h-1.8a2 2 0 0 1-2-1.9l-.7-13z"/><path d="M8.7 11h6.6"/>',
+    stretch:'<circle cx="12" cy="4" r="1.9"/><path d="M12 6v6m0 0-3 6m3-6 3 6M12 6 8 3.2M12 6l4-2.8"/>'
+  };
+  var HABITS=[['AM vitamins','sun',1],['PM vitamins','moon',1],['Water','water',1],['Steps','steps',1],['Mobility','mobility',0],['Workout','workout',0],['Protein','protein',0],['Stretch','stretch',0]];
+  var grid=document.getElementById('habitGrid');
+  HABITS.forEach(function(h){
+    var el=document.createElement('div'); el.className='habit'+(h[2]?' sel':'');
+    el.innerHTML='<div class="h-tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#231603" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>'+
+      '<div class="h-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+ic[h[1]]+'</svg></div><div class="h-name">'+h[0]+'</div>';
+    el.onclick=function(){ el.classList.toggle('sel'); };
+    grid.appendChild(el);
+  });
+  var add=document.createElement('div'); add.className='add-custom';
+  add.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg> Add custom habit';
+  grid.appendChild(add);
+
+  /* ---- plan ---- */
+  var PLANS=[
+    ['Just track','No prescribed workouts. Your Today screen shows recovery, habits, water, and steps only.',1],
+    ['Atomic Athlete','The Atomic Athlete strength program. Each day shows that day\'s lifts and accessory work to complete.',0],
+    ['Running plan','A marathon or half marathon build. Each day shows your prescribed run and target mileage.',0],
+    ['Hybrid','Atomic Athlete strength and a running plan combined across the week. Run days pair a session with a lift. This is the setup Brad runs today.',0],
+    ['Upload my own','Take photos of any program and Forge reads it into a weekly plan you follow in the app.',0]
+  ];
+  var planList=document.getElementById('planList');
+  PLANS.forEach(function(p){
+    var el=document.createElement('div'); el.className='choice'+(p[2]?' sel':'');
+    el.innerHTML='<div class="crow"><span class="radio"></span><span class="ctitle">'+p[0]+'</span></div><div class="cdesc">'+p[1]+'</div>';
+    el.onclick=function(){ planList.querySelectorAll('.choice').forEach(function(c){c.classList.remove('sel')}); el.classList.add('sel'); };
+    planList.appendChild(el);
+  });
+
+  /* ---- first sync ---- */
+  var FEED=[
+    {l:'WHOOP',d:'90 days of recovery',bg:'linear-gradient(180deg,#1c1c1c,#000)',svg:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.6"/></svg>'},
+    {l:'Apple Health',d:'steps, sleep, weight',bg:'linear-gradient(180deg,#fff,#f1f1f3)',svg:'<svg width="16" height="16" viewBox="0 0 24 24" fill="#ff3b30"><path d="M12 21s-7.5-4.9-9.6-9.3C1.1 8.5 2.6 5.2 5.8 5.2c1.9 0 3.3 1.1 4.2 2.4.9-1.3 2.3-2.4 4.2-2.4 3.2 0 4.7 3.3 3.4 6.5C19.5 16.1 12 21 12 21z"/></svg>'},
+    {l:'Strava',d:'42 activities',bg:'linear-gradient(180deg,#ff6128,#fc4c02)',svg:'<svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M9.8 3 4 14.5h3.4L9.8 9.9l2.4 4.6h3.3L9.8 3z"/></svg>'},
+    {l:'Oura',d:'sleep and readiness',bg:'linear-gradient(180deg,#15151a,#0a0a0d)',svg:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6"><circle cx="12" cy="12" r="8"/></svg>'}
+  ];
+  var subLines=["Pulling in your history so day one is complete.","Importing 90 days of recovery.","Reading your sleep and readiness.","Mapping every run and workout.","Building your daily baseline.","Lining up your habits and targets.","Finding patterns in your training.","Almost there."];
+  var feedBuilt=false, subTimer=null;
+  function buildFeed(){
+    var f=document.getElementById('srcfeed'); f.innerHTML='';
+    FEED.forEach(function(s){
+      var r=document.createElement('div'); r.className='feedrow';
+      r.innerHTML='<span class="fi" style="background:'+s.bg+'">'+s.svg+'</span><div class="ft"><div class="fl">'+s.l+'</div><div class="fd">'+s.d+'</div></div><span class="stat"><span class="spin"></span><span class="fc">✓</span></span>';
+      f.appendChild(r);
+    });
+    feedBuilt=true;
+  }
+  function startSync(){
+    if(!feedBuilt)buildFeed();
+    go('sync');
+    var n=document.getElementById('syncNeedle'); n.classList.remove('needle-spin'); void n.offsetWidth; n.classList.add('needle-spin');
+    var rows=[].slice.call(document.querySelectorAll('#srcfeed .feedrow'));
+    rows.forEach(function(r){r.classList.remove('in','done')});
+    var pfill=document.getElementById('pfill'), pct=document.getElementById('pct'), sub=document.getElementById('syncSub');
+    pfill.style.width='0%'; pct.textContent='0%'; sub.textContent=subLines[0];
+    var i=0,p=0,s=0;
+    if(subTimer)clearInterval(subTimer);
+    subTimer=setInterval(function(){ s++; if(s<subLines.length) sub.textContent=subLines[s]; },950);
+    var t=setInterval(function(){ if(i<rows.length){ rows[i].classList.add('in'); (function(row){ setTimeout(function(){row.classList.add('done')},820);})(rows[i]); i++; } },1100);
+    var pi=setInterval(function(){ p+=Math.random()*3.4+1.6; if(p>=100){p=100;clearInterval(pi);} pfill.style.width=p+'%'; pct.textContent=Math.round(p)+'%'; },230);
+    setTimeout(function(){ clearInterval(t); clearInterval(subTimer); rows.forEach(function(r){r.classList.add('in','done')}); pfill.style.width='100%'; pct.textContent='100%'; sub.textContent='Ready.'; },6600);
+    setTimeout(function(){ if(document.getElementById('screen-sync').classList.contains('active')) go('today'); },8100);
+  }
+</script>
+</body>
+</html>
