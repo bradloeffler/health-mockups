@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<title>FORGE Home — fresh perspectives</title>
+<style>
+  :root{--bg:#0d0c0a;--surface:#1a1814;--hair:#2c281f;--ink:#efeae0;--sub:#a59d8d;--faint:#6f6859;--amber:#e3a857;--amberbr:#f3c378;
+    --mono:ui-monospace,"SF Mono","Courier New",monospace;--ui:-apple-system,"Helvetica Neue",Arial,sans-serif}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;font-family:var(--ui);background:radial-gradient(125% 80% at 50% 14%,#16140f,#0d0c0a);color:var(--ink);min-height:100vh;padding:30px 18px 80px}
+  h1{font:300 30px var(--ui);letter-spacing:-.5px;margin:0 0 6px}
+  .kicker{font:600 11px var(--mono);letter-spacing:1.6px;text-transform:uppercase;color:var(--amber)}
+  .sub{color:var(--sub);font-size:14.5px;line-height:1.5;max-width:560px;margin:10px 0 26px}
+  .grid{display:grid;gap:14px;grid-template-columns:1fr;max-width:600px;margin:0 auto}
+  @media(min-width:680px){.grid{grid-template-columns:1fr 1fr}}
+  a.card{display:block;text-decoration:none;color:inherit;background:linear-gradient(180deg,#1f1c16,var(--surface));border:1px solid var(--hair);border-radius:18px;padding:18px;
+    transition:transform .15s ease,border-color .15s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 6px 18px -10px rgba(0,0,0,.6)}
+  a.card:active{transform:scale(.99)}
+  a.card:hover{border-color:rgba(227,168,87,.5)}
+  .tag{font:600 9.5px var(--mono);letter-spacing:1.4px;color:var(--amber);padding:2px 7px;border-radius:6px;background:rgba(227,168,87,.1);border:1px solid rgba(227,168,87,.32)}
+  .ttl{font-size:18px;font-weight:700;margin-top:9px;letter-spacing:-.2px}
+  .desc{color:var(--sub);font-size:13px;line-height:1.5;margin-top:6px}
+  .bold{color:var(--ink);font-size:12.5px;margin-top:9px;line-height:1.45}
+  .bold b{color:var(--amber);font-weight:600}
+  .note{font:600 11px var(--mono);color:var(--faint);text-align:center;margin-top:30px;letter-spacing:.4px}
+  .heading{max-width:600px;margin:0 auto 14px}
+</style>
+</head>
+<body>
+<div class="heading">
+  <span class="kicker">Home redesign · fresh perspectives</span>
+  <h1>5 directions</h1>
+  <p class="sub">Each is a wildly different take on the same data. Tap any one to feel it on your phone (the Connected ↔ Fresh toggle is on every mock).</p>
+</div>
+
+<div class="grid">
+
+  <a class="card" href="./a-minimal.html">
+    <span class="tag">A · Editorial calm</span>
+    <div class="ttl">Extreme minimal</div>
+    <div class="desc">No card borders anywhere. Long-form rhythm with hairline dividers and a quiet typographic hierarchy.</div>
+    <div class="bold"><b>Boldest move:</b> killed every card container. Spacing does the work that borders used to.</div>
+  </a>
+
+  <a class="card" href="./b-dense.html">
+    <span class="tag">B · Instrument panel</span>
+    <div class="ttl">Bloomberg / WHOOP Pro</div>
+    <div class="desc">A precision dashboard. Sparklines, micro-bars, terminal-tight numbers. Density on purpose.</div>
+    <div class="bold"><b>Boldest move:</b> every biometric shares one matrix. No six-tile grid.</div>
+  </a>
+
+  <a class="card" href="./c-stacked.html">
+    <span class="tag">C · Story panels</span>
+    <div class="ttl">Stacked chapters</div>
+    <div class="desc">Each section is a full-width chapter that opens with a giant number or ring beside a sentence. No 2-col grids up top.</div>
+    <div class="bold"><b>Boldest move:</b> 200px recovery ring carries the page like a magazine opener.</div>
+  </a>
+
+  <a class="card" href="./d-rails.html">
+    <span class="tag">D · Editorial rails</span>
+    <div class="ttl">Hero + horizontal rails</div>
+    <div class="desc">One huge hero, then 2-3 snap-scrolling rails of tiles. Spotify / Arc / Robinhood vibe.</div>
+    <div class="bold"><b>Boldest move:</b> reading the day as a one-line verdict ("Primed to push.") instead of a dashboard.</div>
+  </a>
+
+  <a class="card" href="./e-noscroll.html">
+    <span class="tag">E · Cockpit</span>
+    <div class="ttl">Single-screen, no scroll</div>
+    <div class="desc">The whole Home fits one viewport. Numbers, rings, and tight pills like a watch face for your day.</div>
+    <div class="bold"><b>Boldest move:</b> recovery + strain fused into a single nested ring system.</div>
+  </a>
+
+</div>
+
+<div class="note">Pick one, tell me what to nudge, then I build it.</div>
+</body>
+</html>

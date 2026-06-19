@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FORGE — Today</title>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<style>
+  :root{
+    --bg-1:#16140f; --bg-2:#0d0c0a;
+    --surface:#1a1814; --raised:#1f1c16; --hair2:#2c281f;
+    --ink:#efeae0; --sub:#a59d8d; --faint:#6f6859;
+    --amber:#e3a857; --bright:#f3c378;
+    --green:#4fd17e; --blue:#6fb0d8;
+    --mono: ui-monospace,"SF Mono","Courier New",monospace;
+    --ui: -apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
+  html,body{background:#0a0908; font-family:var(--ui); color:var(--ink);}
+  body{display:flex; align-items:flex-start; justify-content:center; min-height:100vh; padding:24px 16px;}
+
+  .phone{
+    width:430px; min-height:900px;
+    background: radial-gradient(125% 80% at 50% 14%, var(--bg-1), var(--bg-2));
+    border-radius:44px;
+    overflow:hidden; position:relative;
+    box-shadow: 0 40px 120px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.04);
+  }
+
+  /* ---- top bar ---- */
+  .statusbar{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:16px 28px 4px; font-family:var(--mono); font-size:13px; color:var(--ink); font-weight:600;
+  }
+  .statusbar .icns{display:flex; gap:6px; font-size:14px;}
+
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 24px 8px;
+  }
+  .brand{
+    font-family:var(--mono); font-size:11px; letter-spacing:.32em;
+    color:var(--amber); font-weight:600;
+  }
+  .topbar .icns{display:flex; gap:6px;}
+  .ibtn{
+    width:38px; height:38px; border-radius:50%;
+    border:1px solid var(--hair2); background:rgba(255,255,255,.02);
+    color:var(--sub); display:flex; align-items:center; justify-content:center;
+    font-size:18px; cursor:pointer;
+  }
+  .ibtn:hover{color:var(--ink); border-color:#3a3528;}
+
+  /* ---- date strip ---- */
+  .datestrip{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:6px 24px 22px;
+  }
+  .date-nav{display:flex; align-items:center; gap:14px;}
+  .date-nav .arrow{
+    color:var(--faint); font-size:18px; cursor:pointer; padding:6px;
+  }
+  .date-nav .arrow:hover{color:var(--ink);}
+  .date-label{
+    text-align:center; line-height:1.1;
+  }
+  .date-label .dow{
+    font-family:var(--mono); font-size:10px; letter-spacing:.3em;
+    color:var(--sub); text-transform:uppercase;
+  }
+  .date-label .num{
+    font-family:var(--mono); font-size:22px; color:var(--ink); margin-top:4px; font-weight:500;
+  }
+  .today-btn{
+    font-family:var(--mono); font-size:10px; letter-spacing:.25em;
+    color:var(--amber); border:1px solid var(--hair2); border-radius:999px;
+    padding:8px 12px; background:transparent; cursor:pointer; text-transform:uppercase;
+  }
+
+  /* ---- demo toggle (top-right floating) ---- */
+  .mode-toggle{
+    position:absolute; top:16px; right:16px; z-index:20;
+    display:flex; background:rgba(20,18,15,.85); backdrop-filter:blur(10px);
+    border:1px solid var(--hair2); border-radius:999px; padding:3px;
+    font-family:var(--mono); font-size:9px; letter-spacing:.18em;
+  }
+  .mode-toggle button{
+    background:none; border:none; color:var(--faint); padding:5px 10px;
+    border-radius:999px; cursor:pointer; text-transform:uppercase; font-family:var(--mono); font-weight:600;
+  }
+  .mode-toggle button.on{background:var(--amber); color:#1a1408;}
+
+  /* ---- chapter scaffold ---- */
+  .scroll{ padding-bottom:140px; }
+  .chapter{
+    padding: 36px 28px 12px;
+    position:relative;
+  }
+  .chapter + .chapter{
+    border-top:1px solid rgba(255,255,255,.035);
+  }
+  .ch-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    margin-bottom:22px;
+  }
+  .ch-eyebrow{
+    font-family:var(--mono); font-size:10px; letter-spacing:.32em;
+    color:var(--faint); text-transform:uppercase;
+  }
+  .ch-source{
+    font-family:var(--mono); font-size:9px; letter-spacing:.2em;
+    color:var(--faint); text-transform:uppercase;
+  }
+  .ch-source .dot{display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--green); margin-right:6px; vertical-align:middle;}
+
+  /* ---- READINESS HERO (giant ring + side text) ---- */
+  .readiness{
+    display:flex; align-items:center; gap:26px;
+    margin-bottom:8px;
+  }
+  .ring-wrap{ position:relative; width:200px; height:200px; flex-shrink:0;}
+  .ring-wrap svg{ transform:rotate(-90deg); }
+  .ring-wrap .center{
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center;
+  }
+  .ring-num{
+    font-family:var(--mono); font-size:54px; color:var(--ink); font-weight:300;
+    line-height:1; letter-spacing:-.02em;
+  }
+  .ring-num .pct{font-size:18px; color:var(--sub); margin-left:2px;}
+  .ring-cap{
+    font-family:var(--mono); font-size:10px; letter-spacing:.28em;
+    color:var(--green); text-transform:uppercase; margin-top:6px;
+  }
+  .ready-side{ flex:1; }
+  .ready-headline{
+    font-size:22px; line-height:1.25; color:var(--ink);
+    font-weight:400; letter-spacing:-.01em;
+  }
+  .ready-sub{
+    color:var(--sub); font-size:13px; line-height:1.5; margin-top:10px;
+  }
+
+  /* ---- supporting metric row (under readiness) ---- */
+  .metric-row{
+    display:flex; gap:0; margin-top:28px;
+    border-top:1px solid var(--hair2);
+    border-bottom:1px solid var(--hair2);
+    padding:18px 0;
+  }
+  .metric{
+    flex:1; text-align:center; position:relative;
+  }
+  .metric + .metric::before{
+    content:''; position:absolute; left:0; top:8px; bottom:8px;
+    width:1px; background:var(--hair2);
+  }
+  .m-label{
+    font-family:var(--mono); font-size:9px; letter-spacing:.22em;
+    color:var(--faint); text-transform:uppercase;
+  }
+  .m-val{
+    font-family:var(--mono); font-size:22px; color:var(--ink); margin-top:6px; font-weight:400;
+  }
+  .m-val .u{font-size:10px; color:var(--faint); margin-left:2px;}
+
+  /* ---- STRAIN small chapter (ring + line) ---- */
+  .strain-row{
+    display:flex; align-items:center; gap:22px;
+  }
+  .strain-ring{ position:relative; width:96px; height:96px; flex-shrink:0;}
+  .strain-ring svg{transform:rotate(-90deg);}
+  .strain-ring .center{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:24px; color:var(--bright); font-weight:400;
+  }
+  .strain-text{flex:1;}
+  .strain-head{font-size:17px; color:var(--ink); line-height:1.3;}
+  .strain-sub{color:var(--sub); font-size:12.5px; margin-top:6px; line-height:1.5;}
+  .strain-bar{
+    margin-top:14px; height:4px; background:var(--hair2); border-radius:2px; position:relative; overflow:hidden;
+  }
+  .strain-bar .fill{
+    position:absolute; left:0; top:0; bottom:0; width:60%;
+    background:linear-gradient(90deg, #f3c378, #e3a857);
+    border-radius:2px;
+  }
+  .strain-bar .marks{
+    position:absolute; inset:0; display:flex; justify-content:space-between;
+  }
+  .strain-bar .marks span{ width:1px; background:rgba(0,0,0,.5);}
+
+  /* ---- WORKOUT chapter ---- */
+  .workout-card{
+    background:linear-gradient(180deg, rgba(227,168,87,.07), rgba(227,168,87,.02));
+    border:1px solid rgba(227,168,87,.18);
+    border-radius:24px;
+    padding:22px;
+    position:relative; overflow:hidden;
+  }
+  .workout-card::after{
+    content:''; position:absolute; right:-40px; top:-40px;
+    width:160px; height:160px; border-radius:50%;
+    background:radial-gradient(circle, rgba(227,168,87,.12), transparent 70%);
+    pointer-events:none;
+  }
+  .wk-tag{
+    display:inline-block; font-family:var(--mono); font-size:9px; letter-spacing:.25em;
+    color:var(--amber); text-transform:uppercase;
+    border:1px solid rgba(227,168,87,.4); padding:3px 8px; border-radius:999px;
+  }
+  .wk-title{
+    font-size:24px; color:var(--ink); margin-top:14px; line-height:1.2; letter-spacing:-.01em; font-weight:500;
+  }
+  .wk-meta{
+    display:flex; gap:14px; margin-top:10px;
+    font-family:var(--mono); font-size:11px; color:var(--sub); letter-spacing:.05em;
+  }
+  .wk-meta i{font-size:13px; color:var(--faint); margin-right:4px; vertical-align:-1px;}
+  .wk-actions{
+    display:flex; gap:10px; margin-top:20px; align-items:center;
+  }
+  .btn-primary{
+    flex:1; background:var(--amber); color:#1a1408; border:none;
+    padding:15px 18px; border-radius:14px;
+    font-family:var(--mono); font-size:11px; letter-spacing:.25em; font-weight:700;
+    text-transform:uppercase; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+  .btn-primary:hover{background:var(--bright);}
+  .btn-ghost{
+    background:transparent; border:1px solid var(--hair2); color:var(--sub);
+    width:48px; height:48px; border-radius:14px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px; cursor:pointer;
+  }
+
+  /* ---- FUEL chapter ---- */
+  .fuel-hero{
+    text-align:left;
+  }
+  .fuel-num{
+    font-family:var(--mono); font-weight:300;
+    font-size:64px; color:var(--ink); line-height:1; letter-spacing:-.03em;
+  }
+  .fuel-num .of{ color:var(--faint); font-size:22px; margin-left:6px;}
+  .fuel-cap{
+    color:var(--sub); font-size:13px; margin-top:8px;
+  }
+  .macro-bar{
+    margin-top:24px; display:flex; gap:6px;
+  }
+  .macro-bar .seg{
+    flex:1; height:6px; border-radius:3px; background:var(--hair2); position:relative; overflow:hidden;
+  }
+  .macro-bar .seg .fill{
+    position:absolute; left:0; top:0; bottom:0; border-radius:3px;
+  }
+  .macros{
+    display:flex; justify-content:space-between; margin-top:14px;
+  }
+  .macro{
+    flex:1;
+  }
+  .macro .lbl{
+    font-family:var(--mono); font-size:9px; letter-spacing:.25em;
+    color:var(--faint); text-transform:uppercase;
+  }
+  .macro .val{
+    font-family:var(--mono); font-size:15px; color:var(--ink); margin-top:4px;
+  }
+  .macro .val .t{color:var(--faint);}
+
+  /* ---- MOVEMENT chapter (Steps + Water hero) ---- */
+  .hero-split{
+    display:flex; gap:18px;
+  }
+  .hero-card{
+    flex:1; background:var(--surface); border:1px solid var(--hair2);
+    border-radius:22px; padding:20px;
+    display:flex; flex-direction:column;
+    min-height:200px;
+  }
+  .hero-card .hicon{
+    width:36px; height:36px; border-radius:10px;
+    background:rgba(255,255,255,.04); display:flex; align-items:center; justify-content:center;
+    color:var(--amber); font-size:18px;
+  }
+  .hero-card .hlabel{
+    font-family:var(--mono); font-size:9px; letter-spacing:.28em;
+    color:var(--faint); text-transform:uppercase; margin-top:14px;
+  }
+  .hero-card .hbig{
+    font-family:var(--mono); font-size:32px; color:var(--ink); font-weight:400;
+    margin-top:4px; letter-spacing:-.02em;
+  }
+  .hero-card .hbig .of{color:var(--faint); font-size:14px;}
+  .hero-card .hbar{
+    margin-top:auto; height:4px; background:var(--hair2); border-radius:2px; overflow:hidden;
+  }
+  .hero-card .hbar .fl{
+    height:100%; background:var(--amber); border-radius:2px; transition:width .3s;
+  }
+  .hero-card.water .hicon{color:var(--blue);}
+  .hero-card.water .hbar .fl{background:var(--blue);}
+
+  /* water controls */
+  .water-controls{
+    display:flex; gap:6px; margin-top:14px; align-items:center; justify-content:space-between;
+  }
+  .wc-btn{
+    width:34px; height:34px; border-radius:10px;
+    background:rgba(111,176,216,.1); border:1px solid rgba(111,176,216,.2);
+    color:var(--blue); display:flex; align-items:center; justify-content:center;
+    font-size:16px; cursor:pointer; font-family:var(--mono); font-weight:600;
+  }
+  .wc-btn:hover{background:rgba(111,176,216,.18);}
+  .bottle-chip{
+    flex:1; background:transparent; border:1px solid var(--hair2);
+    color:var(--sub); font-family:var(--mono); font-size:10px;
+    padding:8px; border-radius:10px; cursor:pointer;
+    letter-spacing:.1em;
+  }
+  .bottle-chip:hover{color:var(--ink); border-color:#3a3528;}
+
+  /* ---- HABITS chapter ---- */
+  .habits-list{
+    display:flex; flex-direction:column;
+  }
+  .habit{
+    display:flex; align-items:center; gap:14px;
+    padding:16px 0;
+    border-bottom:1px solid rgba(255,255,255,.04);
+    cursor:pointer;
+  }
+  .habit:last-child{border-bottom:none;}
+  .habit-check{
+    width:26px; height:26px; border-radius:8px;
+    border:1.5px solid var(--hair2);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+    transition:all .15s;
+  }
+  .habit.done .habit-check{
+    background:var(--amber); border-color:var(--amber); color:#1a1408;
+  }
+  .habit-check i{font-size:14px; opacity:0;}
+  .habit.done .habit-check i{opacity:1;}
+  .habit-name{flex:1; font-size:15px; color:var(--ink);}
+  .habit.done .habit-name{color:var(--faint); text-decoration:line-through;}
+  .habit-meta{
+    font-family:var(--mono); font-size:11px; color:var(--sub);
+  }
+  .habit.done .habit-meta{color:var(--faint);}
+  .habit-progress{
+    height:3px; background:var(--hair2); border-radius:2px; width:60px; overflow:hidden; margin-left:10px;
+  }
+  .habit-progress .fl{height:100%; background:var(--amber);}
+
+  /* ---- FRESH (empty) state styling ---- */
+  .fresh .chapter{ opacity:1; }
+  .fresh .ready-side .ready-headline{ color:var(--sub); }
+  .fresh .ring-num, .fresh .strain-ring .center, .fresh .m-val, .fresh .fuel-num,
+  .fresh .hero-card .hbig{ color:var(--faint); }
+  .fresh .ring-cap{color:var(--faint);}
+  .fresh .ch-source .dot{background:var(--faint);}
+
+  .empty-ring-stroke{ stroke:#2c281f; }
+  .empty-text{ color:var(--faint); }
+
+  .connect-btn{
+    margin-top:14px;
+    background:transparent; border:1px solid var(--amber); color:var(--amber);
+    padding:10px 18px; border-radius:999px;
+    font-family:var(--mono); font-size:10px; letter-spacing:.25em;
+    text-transform:uppercase; font-weight:600; cursor:pointer;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .connect-btn:hover{background:rgba(227,168,87,.08);}
+
+  .inline-connect{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-top:18px; padding-top:14px;
+    border-top:1px dashed var(--hair2);
+  }
+  .inline-connect .tip{
+    font-family:var(--mono); font-size:10px; color:var(--faint); letter-spacing:.1em;
+  }
+
+  /* ---- floating glass bottom nav ---- */
+  .bottom-nav{
+    position:absolute; left:18px; right:18px; bottom:18px;
+    background:rgba(20,18,15,.72);
+    backdrop-filter: blur(24px) saturate(1.2);
+    -webkit-backdrop-filter: blur(24px) saturate(1.2);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:28px;
+    padding:12px 8px;
+    display:flex; justify-content:space-around;
+    box-shadow: 0 18px 50px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04);
+    z-index:10;
+  }
+  .nav-item{
+    flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;
+    padding:6px 0; cursor:pointer;
+    color:var(--faint);
+  }
+  .nav-item i{font-size:20px;}
+  .nav-item span{
+    font-family:var(--mono); font-size:8px; letter-spacing:.22em; text-transform:uppercase;
+  }
+  .nav-item.active{color:var(--amber);}
+
+  /* utility */
+  .hidden{display:none !important;}
+
+  /* page rhythm — extra breathing between chapters */
+  .chapter.tight{padding-top:30px;}
+  .chapter.airy{padding-top:46px;}
+
+  /* small helpers */
+  .row-spread{display:flex; align-items:center; justify-content:space-between;}
+</style>
+</head>
+<body>
+
+<div class="phone" id="phone">
+
+  <!-- demo mode toggle -->
+  <div class="mode-toggle">
+    <button id="m-connected" class="on" onclick="setMode('connected')">Connected</button>
+    <button id="m-fresh" onclick="setMode('fresh')">Fresh</button>
+  </div>
+
+  <!-- status -->
+  <div class="statusbar">
+    <span>9:41</span>
+    <span class="icns"><i class="ph-bold ph-signal-high"></i><i class="ph-bold ph-wifi-high"></i><i class="ph-bold ph-battery-full"></i></span>
+  </div>
+
+  <!-- topbar -->
+  <div class="topbar">
+    <div class="brand">FORGE</div>
+    <div class="icns">
+      <button class="ibtn"><i class="ph ph-bell"></i></button>
+      <button class="ibtn"><i class="ph ph-user-circle"></i></button>
+    </div>
+  </div>
+
+  <!-- date strip -->
+  <div class="datestrip">
+    <div class="date-nav">
+      <i class="ph ph-caret-left arrow" onclick="shiftDay(-1)"></i>
+      <div class="date-label">
+        <div class="dow" id="dow">Friday</div>
+        <div class="num" id="num">Jun 19</div>
+      </div>
+      <i class="ph ph-caret-right arrow" onclick="shiftDay(1)"></i>
+    </div>
+    <button class="today-btn" onclick="goToday()">Today</button>
+  </div>
+
+  <div class="scroll">
+
+    <!-- ============================================ -->
+    <!-- CHAPTER 1: READINESS — hero giant ring -->
+    <!-- ============================================ -->
+    <section class="chapter">
+      <div class="ch-head">
+        <div class="ch-eyebrow">Recovery</div>
+        <div class="ch-source connected-only"><span class="dot"></span>WHOOP</div>
+        <div class="ch-source fresh-only hidden">Not connected</div>
+      </div>
+
+      <div class="readiness">
+        <div class="ring-wrap">
+          <svg width="200" height="200" viewBox="0 0 200 200">
+            <circle cx="100" cy="100" r="86" fill="none" stroke="#2c281f" stroke-width="10"/>
+            <circle id="recoveryRing" cx="100" cy="100" r="86" fill="none" stroke="#4fd17e" stroke-width="10"
+              stroke-linecap="round"
+              stroke-dasharray="540"
+              stroke-dashoffset="100"/>
+          </svg>
+          <div class="center">
+            <div class="ring-num connected-only"><span id="recoveryVal">82</span><span class="pct">%</span></div>
+            <div class="ring-num fresh-only hidden" style="color:var(--faint);">—</div>
+            <div class="ring-cap connected-only">Primed</div>
+            <div class="ring-cap fresh-only hidden" style="color:var(--faint);">No data</div>
+          </div>
+        </div>
+        <div class="ready-side">
+          <div class="ready-headline connected-only">You're well-recovered. A good day to push.</div>
+          <div class="ready-headline fresh-only hidden">Connect a wearable to see your recovery.</div>
+          <div class="ready-sub connected-only">HRV is trending up week-over-week. Your body is ready for moderate to high strain.</div>
+          <div class="ready-sub fresh-only hidden">Sync with WHOOP, Oura, Garmin, or Apple Health to begin.</div>
+          <button class="connect-btn fresh-only hidden" onclick="setMode('connected')"><i class="ph-bold ph-plug"></i>Connect source</button>
+        </div>
+      </div>
+
+      <!-- supporting metrics row -->
+      <div class="metric-row">
+        <div class="metric">
+          <div class="m-label">HRV</div>
+          <div class="m-val connected-only">62<span class="u">ms</span></div>
+          <div class="m-val fresh-only hidden" style="color:var(--faint);">—</div>
+        </div>
+        <div class="metric">
+          <div class="m-label">RHR</div>
+          <div class="m-val connected-only">54<span class="u">bpm</span></div>
+          <div class="m-val fresh-only hidden" style="color:var(--faint);">—</div>
+        </div>
+        <div class="metric">
+          <div class="m-label">Rest</div>
+          <div class="m-val connected-only">7.8<span class="u">h</span></div>
+          <div class="m-val fresh-only hidden" style="color:var(--faint);">—</div>
+        </div>
+        <div class="metric">
+          <div class="m-label">Sleep</div>
+          <div class="m-val connected-only">88<span class="u">%</span></div>
+          <div class="m-val fresh-only hidden" style="color:var(--faint);">—</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- CHAPTER 2: STRAIN — small ring + spectrum -->
+    <!-- ============================================ -->
+    <section class="chapter tight">
+      <div class="ch-head">
+        <div class="ch-eyebrow">Strain</div>
+        <div class="ch-source connected-only"><span class="dot"></span>WHOOP</div>
+        <div class="ch-source fresh-only hidden">Not connected</div>
+      </div>
+
+      <div class="strain-row">
+        <div class="strain-ring">
+          <svg width="96" height="96" viewBox="0 0 96 96">
+            <circle cx="48" cy="48" r="40" fill="none" stroke="#2c281f" stroke-width="6"/>
+            <circle cx="48" cy="48" r="40" fill="none" stroke="#e3a857" stroke-width="6"
+              stroke-linecap="round"
+              stroke-dasharray="251"
+              stroke-dashoffset="100"
+              class="connected-only"/>
+          </svg>
+          <div class="center connected-only">12.6</div>
+          <div class="center fresh-only hidden" style="color:var(--faint); font-size:18px;">—</div>
+        </div>
+        <div class="strain-text">
+          <div class="strain-head connected-only">Moderate strain so far.</div>
+          <div class="strain-head fresh-only hidden" style="color:var(--sub);">Strain unavailable</div>
+          <div class="strain-sub connected-only">Room to push another 4-6 points before you exceed today's recovery budget.</div>
+          <div class="strain-sub fresh-only hidden">Strain scales 0-21. Connect a wearable to start tracking.</div>
+          <div class="strain-bar connected-only">
+            <div class="fill"></div>
+            <div class="marks"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- CHAPTER 3: WORKOUT — hero amber card -->
+    <!-- ============================================ -->
+    <section class="chapter airy">
+      <div class="ch-head">
+        <div class="ch-eyebrow">Today's Session</div>
+        <div class="ch-source connected-only"><span class="dot" style="background:var(--amber);"></span>Push A</div>
+        <div class="ch-source fresh-only hidden">No plan</div>
+      </div>
+
+      <!-- Connected workout -->
+      <div class="workout-card connected-only">
+        <span class="wk-tag">Week 3 · Day 2</span>
+        <div class="wk-title">Push Day A</div>
+        <div class="wk-meta">
+          <span><i class="ph ph-barbell"></i>6 lifts</span>
+          <span><i class="ph ph-clock"></i>52 min</span>
+          <span><i class="ph ph-flame"></i>~410 kcal</span>
+        </div>
+        <div class="wk-actions">
+          <button class="btn-primary"><i class="ph-bold ph-play-circle"></i>Start</button>
+          <button class="btn-ghost"><i class="ph ph-list-bullets"></i></button>
+          <button class="btn-ghost"><i class="ph ph-pencil-simple"></i></button>
+        </div>
+      </div>
+
+      <!-- Fresh workout -->
+      <div class="workout-card fresh-only hidden" style="background:var(--surface); border-color:var(--hair2);">
+        <span class="wk-tag" style="border-color:var(--hair2); color:var(--faint);">No active plan</span>
+        <div class="wk-title" style="color:var(--sub);">Choose a plan to start</div>
+        <div class="wk-meta" style="color:var(--faint);">
+          <span>Browse beginner to advanced programs</span>
+        </div>
+        <div class="wk-actions">
+          <button class="btn-primary" onclick="setMode('connected')"><i class="ph-bold ph-magnifying-glass"></i>Choose a plan</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- CHAPTER 4: FUEL — Connected only -->
+    <!-- ============================================ -->
+    <section class="chapter airy connected-only" id="fuelChapter">
+      <div class="ch-head">
+        <div class="ch-eyebrow">Fuel</div>
+        <div class="ch-source"><span class="dot"></span>MyFitnessPal</div>
+      </div>
+
+      <div class="fuel-hero">
+        <div class="fuel-num">1,840<span class="of">/ 2,520</span></div>
+        <div class="fuel-cap">680 kcal left · on pace</div>
+      </div>
+
+      <div class="macro-bar">
+        <div class="seg"><div class="fill" style="width:91%; background:#e3a857;"></div></div>
+        <div class="seg"><div class="fill" style="width:79%; background:#f3c378;"></div></div>
+        <div class="seg"><div class="fill" style="width:77%; background:#6fb0d8;"></div></div>
+      </div>
+
+      <div class="macros">
+        <div class="macro">
+          <div class="lbl" style="color:#e3a857;">Protein</div>
+          <div class="val">165<span class="t"> / 180g</span></div>
+        </div>
+        <div class="macro" style="text-align:center;">
+          <div class="lbl" style="color:#f3c378;">Carbs</div>
+          <div class="val">198<span class="t"> / 250g</span></div>
+        </div>
+        <div class="macro" style="text-align:right;">
+          <div class="lbl" style="color:#6fb0d8;">Fat</div>
+          <div class="val">62<span class="t"> / 80g</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- CHAPTER 5: MOVEMENT — Steps + Water hero -->
+    <!-- ============================================ -->
+    <section class="chapter airy">
+      <div class="ch-head">
+        <div class="ch-eyebrow">Movement &amp; Hydration</div>
+        <div class="ch-source connected-only"><span class="dot"></span>Apple Health</div>
+        <div class="ch-source fresh-only hidden">Tracked manually</div>
+      </div>
+
+      <div class="hero-split">
+        <!-- STEPS -->
+        <div class="hero-card">
+          <div class="hicon"><i class="ph-bold ph-sneaker"></i></div>
+          <div class="hlabel">Steps</div>
+          <div class="hbig connected-only">8,240<span class="of"> / 10k</span></div>
+          <div class="hbig fresh-only hidden" style="color:var(--faint);">— <span class="of">/ 10k</span></div>
+          <div style="font-size:11px; color:var(--sub); font-family:var(--mono); margin-top:8px;" class="connected-only">1,760 to go</div>
+          <div style="font-size:11px; color:var(--faint); font-family:var(--mono); margin-top:8px;" class="fresh-only hidden">No source</div>
+          <div class="hbar" style="margin-top:18px;">
+            <div class="fl connected-only" style="width:82%;"></div>
+            <div class="fl fresh-only hidden" style="width:0%;"></div>
+          </div>
+          <button class="connect-btn fresh-only hidden" style="align-self:flex-start; margin-top:12px;" onclick="setMode('connected')">Connect</button>
+        </div>
+
+        <!-- WATER -->
+        <div class="hero-card water">
+          <div class="hicon"><i class="ph-bold ph-drop"></i></div>
+          <div class="hlabel">Water</div>
+          <div class="hbig"><span id="waterVal">2.4</span><span class="of"> / 6 L</span></div>
+          <div class="water-controls">
+            <button class="wc-btn" onclick="adjustWater(-1)">−</button>
+            <button class="bottle-chip" id="bottleChip" onclick="cycleBottle()">500 ML</button>
+            <button class="wc-btn" onclick="adjustWater(1)">+</button>
+          </div>
+          <div class="hbar" style="margin-top:14px;">
+            <div class="fl" id="waterBar" style="width:40%;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- CHAPTER 6: HABITS -->
+    <!-- ============================================ -->
+    <section class="chapter airy">
+      <div class="ch-head">
+        <div class="ch-eyebrow">Habits</div>
+        <div class="ch-source connected-only" id="habitsCount"><span class="dot"></span>2 of 4 done</div>
+        <div class="ch-source fresh-only hidden">No habits yet</div>
+      </div>
+
+      <!-- connected -->
+      <div class="habits-list connected-only" id="habitsList">
+        <div class="habit done" onclick="toggleHabit(this)">
+          <div class="habit-check"><i class="ph-bold ph-check"></i></div>
+          <div class="habit-name">AM vitamins</div>
+          <div class="habit-meta">7:12 am</div>
+        </div>
+        <div class="habit done" onclick="toggleHabit(this)">
+          <div class="habit-check"><i class="ph-bold ph-check"></i></div>
+          <div class="habit-name">Workout</div>
+          <div class="habit-meta">Logged</div>
+        </div>
+        <div class="habit" onclick="toggleHabit(this)">
+          <div class="habit-check"><i class="ph-bold ph-check"></i></div>
+          <div class="habit-name">Mobility</div>
+          <div class="habit-meta">10 min</div>
+        </div>
+        <div class="habit" onclick="toggleHabit(this)">
+          <div class="habit-check"><i class="ph-bold ph-check"></i></div>
+          <div class="habit-name">Protein</div>
+          <div class="habit-meta">3 / 4
+            <span class="habit-progress" style="display:inline-block; vertical-align:middle;"><span class="fl" style="display:block; width:75%;"></span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- fresh -->
+      <div class="fresh-only hidden" style="padding:30px 0; text-align:center;">
+        <i class="ph ph-list-checks" style="font-size:34px; color:var(--faint);"></i>
+        <div style="color:var(--sub); margin-top:14px; font-size:14px;">Build your daily ritual.</div>
+        <div style="color:var(--faint); margin-top:6px; font-size:12px;">Track vitamins, mobility, protein and more.</div>
+        <button class="connect-btn" style="margin-top:18px;" onclick="setMode('connected')"><i class="ph-bold ph-plus"></i>Add habits</button>
+      </div>
+    </section>
+
+    <div style="height:40px;"></div>
+  </div>
+
+  <!-- Bottom nav -->
+  <nav class="bottom-nav">
+    <div class="nav-item active">
+      <i class="ph-bold ph-house"></i><span>Home</span>
+    </div>
+    <div class="nav-item">
+      <i class="ph ph-barbell"></i><span>Plan</span>
+    </div>
+    <div class="nav-item">
+      <i class="ph ph-list-checks"></i><span>Habits</span>
+    </div>
+    <div class="nav-item">
+      <i class="ph ph-gear-six"></i><span>Settings</span>
+    </div>
+  </nav>
+
+</div>
+
+<script>
+  // ----- mode toggle -----
+  function setMode(mode){
+    const phone = document.getElementById('phone');
+    document.getElementById('m-connected').classList.toggle('on', mode==='connected');
+    document.getElementById('m-fresh').classList.toggle('on', mode==='fresh');
+    phone.classList.toggle('fresh', mode==='fresh');
+
+    const isFresh = mode==='fresh';
+    document.querySelectorAll('.connected-only').forEach(el=>{
+      el.classList.toggle('hidden', isFresh);
+    });
+    document.querySelectorAll('.fresh-only').forEach(el=>{
+      el.classList.toggle('hidden', !isFresh);
+    });
+  }
+
+  // ----- date nav -----
+  const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const dows = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  let viewDate = new Date(2026, 5, 19); // Jun 19, 2026
+  function renderDate(){
+    document.getElementById('dow').textContent = dows[viewDate.getDay()];
+    document.getElementById('num').textContent = months[viewDate.getMonth()] + " " + viewDate.getDate();
+  }
+  function shiftDay(d){ viewDate.setDate(viewDate.getDate()+d); renderDate(); }
+  function goToday(){ viewDate = new Date(2026,5,19); renderDate(); }
+  renderDate();
+
+  // ----- water -----
+  const bottles = [{l:"250 ML", v:0.25},{l:"500 ML", v:0.5},{l:"750 ML", v:0.75},{l:"1 L", v:1.0}];
+  let bottleIdx = 1;
+  let water = 2.4;
+  const waterGoal = 6;
+
+  function renderWater(){
+    document.getElementById('waterVal').textContent = water.toFixed(1);
+    document.getElementById('waterBar').style.width = Math.min(100, (water/waterGoal)*100) + '%';
+    document.getElementById('bottleChip').textContent = bottles[bottleIdx].l;
+  }
+  function adjustWater(dir){
+    water = Math.max(0, Math.min(waterGoal+2, water + dir*bottles[bottleIdx].v));
+    water = Math.round(water*10)/10;
+    renderWater();
+  }
+  function cycleBottle(){
+    bottleIdx = (bottleIdx+1) % bottles.length;
+    renderWater();
+  }
+  renderWater();
+
+  // ----- habits -----
+  function toggleHabit(el){
+    el.classList.toggle('done');
+    updateHabitsCount();
+  }
+  function updateHabitsCount(){
+    const all = document.querySelectorAll('#habitsList .habit');
+    const done = document.querySelectorAll('#habitsList .habit.done').length;
+    document.querySelector('#habitsCount').innerHTML = '<span class="dot"></span>' + done + ' of ' + all.length + ' done';
+  }
+</script>
+</body>
+</html>

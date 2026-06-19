@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FORGE — Rails</title>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+  :root{
+    --bg-a:#16140f; --bg-b:#0d0c0a;
+    --surface:#1a1814; --raised:#1f1c16; --hair:#2c281f; --hair2:#3a3528;
+    --ink:#efeae0; --sub:#a59d8d; --faint:#6f6859;
+    --amber:#e3a857; --bright:#f3c378; --green:#4fd17e; --blue:#6fb0d8; --red:#e07a5f;
+    --mono: ui-monospace,"SF Mono","Courier New",monospace;
+    --ui: -apple-system, "Helvetica Neue", Arial, sans-serif;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#000;
+    font-family:var(--ui);
+    color:var(--ink);
+    min-height:100vh;
+    display:flex; align-items:flex-start; justify-content:center;
+    padding:24px 0;
+  }
+  .phone{
+    width:430px;
+    min-height:920px;
+    background: radial-gradient(125% 80% at 50% 14%, var(--bg-a), var(--bg-b));
+    border-radius:44px;
+    overflow:hidden;
+    position:relative;
+    box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 0 1px #0a0908;
+    display:flex; flex-direction:column;
+  }
+
+  /* status bar */
+  .status{
+    height:54px; padding: 18px 30px 0;
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:var(--mono); font-size:14px; color:var(--ink);
+    letter-spacing:.02em;
+  }
+  .status .right{display:flex; gap:6px; align-items:center; color:var(--sub);}
+  .status .right i{font-size:14px;}
+
+  /* dev toggle pill */
+  .devbar{
+    position:absolute; top:14px; left:50%; transform:translateX(-50%);
+    display:flex; gap:0; background:rgba(20,18,14,.7); border:1px solid var(--hair);
+    border-radius:999px; padding:3px; font-size:10px; backdrop-filter: blur(10px); z-index:50;
+  }
+  .devbar button{
+    background:transparent; border:0; color:var(--sub); font-family:var(--mono);
+    padding:4px 10px; border-radius:999px; cursor:pointer; letter-spacing:.08em;
+  }
+  .devbar button.on{background:var(--ink); color:#16140f;}
+
+  /* top bar */
+  .topbar{
+    padding: 10px 22px 8px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .brand{
+    font-family:var(--mono); font-size:11px; letter-spacing:.32em; color:var(--sub);
+  }
+  .brand b{color:var(--ink); font-weight:600;}
+  .avatar{
+    width:30px; height:30px; border-radius:50%;
+    background: linear-gradient(135deg, #2b2620, #14110d);
+    border:1px solid var(--hair2);
+    display:grid; place-items:center; color:var(--sub); font-size:13px;
+  }
+
+  /* date rail */
+  .daterail{
+    padding: 4px 22px 12px;
+    display:flex; align-items:center; gap:14px;
+    overflow-x:auto; scrollbar-width:none;
+    scroll-snap-type:x mandatory;
+  }
+  .daterail::-webkit-scrollbar{display:none;}
+  .day{
+    flex:0 0 auto;
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+    padding:8px 10px; border-radius:14px;
+    color:var(--faint);
+    scroll-snap-align:center;
+  }
+  .day .dow{font-family:var(--mono); font-size:9px; letter-spacing:.16em;}
+  .day .num{font-family:var(--mono); font-size:18px; color:var(--sub); font-weight:500;}
+  .day.today{color:var(--ink); background:rgba(227,168,87,.08); border:1px solid rgba(227,168,87,.18);}
+  .day.today .num{color:var(--bright);}
+  .day.today .dow{color:var(--bright);}
+  .day.past .num{color:var(--sub);}
+
+  /* HERO */
+  .hero{
+    margin: 6px 22px 24px;
+    padding: 28px 26px 26px;
+    border-radius:30px;
+    background:
+      radial-gradient(80% 100% at 100% 0%, rgba(227,168,87,.18), transparent 60%),
+      radial-gradient(70% 90% at 0% 100%, rgba(111,176,216,.08), transparent 60%),
+      linear-gradient(180deg, #211d16, #181510);
+    border:1px solid var(--hair2);
+    position:relative; overflow:hidden;
+  }
+  .hero .eyebrow{
+    font-family:var(--mono); font-size:10px; letter-spacing:.28em; color:var(--sub);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .hero .eyebrow .src{color:var(--faint);}
+  .hero .recline{
+    margin-top:22px;
+    display:flex; align-items:flex-end; gap:18px;
+  }
+  .recring{
+    width:148px; height:148px; flex:0 0 148px;
+    position:relative;
+  }
+  .recring svg{transform:rotate(-90deg);}
+  .recring .pct{
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+  }
+  .recring .pct .n{
+    font-family:var(--mono); font-size:54px; font-weight:300; color:var(--ink); letter-spacing:-.04em; line-height:1;
+  }
+  .recring .pct .l{
+    font-family:var(--mono); font-size:9px; letter-spacing:.24em; color:var(--sub); margin-top:6px;
+  }
+  .hero .verdict{
+    flex:1; padding-bottom:8px;
+  }
+  .hero .verdict .word{
+    font-family:var(--ui); font-size:28px; font-weight:300; color:var(--ink);
+    letter-spacing:-.02em; line-height:1.05;
+  }
+  .hero .verdict .word em{font-style:normal; color:var(--green); font-weight:400;}
+  .hero .verdict .word.warn em{color:var(--amber);}
+  .hero .verdict .blurb{
+    margin-top:8px; font-size:12.5px; color:var(--sub); line-height:1.45;
+  }
+
+  /* hero footer metrics */
+  .herostats{
+    margin-top:24px;
+    padding-top:20px;
+    border-top:1px solid var(--hair);
+    display:grid; grid-template-columns: repeat(4, 1fr);
+    gap:6px;
+  }
+  .hs{display:flex; flex-direction:column; gap:4px;}
+  .hs .lbl{
+    font-family:var(--mono); font-size:9px; letter-spacing:.16em; color:var(--faint);
+  }
+  .hs .val{
+    font-family:var(--mono); font-size:20px; font-weight:400; color:var(--ink); letter-spacing:-.02em;
+  }
+  .hs .val small{font-size:10px; color:var(--sub); letter-spacing:.1em; margin-left:2px; font-weight:400;}
+  .hs.warn .val{color:var(--amber);}
+
+  /* fresh hero variant */
+  .fresh .hero{
+    background:
+      radial-gradient(70% 90% at 50% 0%, rgba(255,255,255,.03), transparent 60%),
+      linear-gradient(180deg, #1a1813, #14120e);
+    border-color:var(--hair);
+  }
+  .fresh .recring .pct .n{color:var(--faint);}
+  .fresh .hero .verdict .word{color:var(--sub);}
+  .fresh .hs .val{color:var(--faint);}
+  .connect-cta{
+    margin-top:14px;
+    display:inline-flex; align-items:center; gap:8px;
+    padding:10px 16px; border-radius:999px;
+    background:var(--ink); color:#16140f;
+    font-family:var(--mono); font-size:11px; letter-spacing:.16em; font-weight:600;
+    border:0; cursor:pointer;
+  }
+  .connect-cta i{font-size:12px;}
+
+  /* RAIL */
+  .rail{
+    margin-top: 6px;
+  }
+  .rail-head{
+    padding: 0 22px 12px;
+    display:flex; justify-content:space-between; align-items:baseline;
+  }
+  .rail-head .t{
+    font-family:var(--mono); font-size:10px; letter-spacing:.28em; color:var(--sub); text-transform:uppercase;
+  }
+  .rail-head .t b{color:var(--ink); font-weight:600;}
+  .rail-head .more{
+    font-family:var(--mono); font-size:10px; letter-spacing:.18em; color:var(--faint); text-decoration:none;
+  }
+  .rail-track{
+    display:flex; gap:14px; overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    padding: 2px 22px 22px;
+    scrollbar-width:none;
+  }
+  .rail-track::-webkit-scrollbar{display:none;}
+  .rail-track > *{scroll-snap-align:start;}
+
+  /* TILE base */
+  .tile{
+    flex:0 0 auto;
+    width:268px; min-height:178px;
+    border-radius:24px;
+    padding:20px;
+    background: linear-gradient(180deg, var(--raised), #181510);
+    border:1px solid var(--hair);
+    display:flex; flex-direction:column; justify-content:space-between;
+    position:relative; overflow:hidden;
+  }
+  .tile .top{
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .tile .kind{
+    font-family:var(--mono); font-size:9px; letter-spacing:.22em; color:var(--faint);
+  }
+  .tile .icon{
+    width:28px; height:28px; border-radius:8px;
+    background:rgba(255,255,255,.04); display:grid; place-items:center;
+    color:var(--sub); font-size:14px;
+  }
+
+  /* HERO tile (Steps + Water) */
+  .tile.steps-water{
+    width:330px; min-height:198px;
+    background:
+      radial-gradient(80% 100% at 100% 0%, rgba(111,176,216,.10), transparent 60%),
+      linear-gradient(180deg, #1f1c16, #15120e);
+    border-color:var(--hair2);
+  }
+  .stepwater-grid{
+    display:grid; grid-template-columns: 1fr 1fr; gap:14px; height:100%;
+  }
+  .sw-block{
+    display:flex; flex-direction:column; justify-content:flex-end; gap:6px;
+  }
+  .sw-block .label{
+    font-family:var(--mono); font-size:9px; letter-spacing:.18em; color:var(--faint); display:flex; align-items:center; gap:6px;
+  }
+  .sw-block .val{
+    font-family:var(--mono); font-size:30px; font-weight:300; color:var(--ink); letter-spacing:-.02em; line-height:1;
+  }
+  .sw-block .val small{font-size:12px; color:var(--sub); margin-left:2px; letter-spacing:.04em;}
+  .bar{height:3px; border-radius:2px; background:rgba(255,255,255,.06); overflow:hidden; margin-top:6px;}
+  .bar > span{display:block; height:100%; background:var(--ink); border-radius:2px;}
+  .bar.blue > span{background:var(--blue);}
+  .bar.amber > span{background:var(--amber);}
+  .bar.green > span{background:var(--green);}
+
+  .water-controls{
+    display:flex; align-items:center; gap:6px; margin-top:8px;
+  }
+  .stepbtn{
+    width:30px; height:30px; border-radius:50%; border:1px solid var(--hair2);
+    background:rgba(255,255,255,.02); color:var(--ink); font-size:14px;
+    display:grid; place-items:center; cursor:pointer;
+  }
+  .stepbtn:active{background:rgba(255,255,255,.06);}
+  .bottle-chip{
+    flex:1; height:30px; border-radius:999px;
+    background:rgba(111,176,216,.08); border:1px solid rgba(111,176,216,.18);
+    color:var(--blue); font-family:var(--mono); font-size:10px; letter-spacing:.12em;
+    display:flex; align-items:center; justify-content:center; gap:6px; cursor:pointer;
+  }
+  .bottle-chip i{font-size:12px;}
+
+  /* Workout tile */
+  .tile.workout{
+    background:
+      linear-gradient(155deg, rgba(227,168,87,.16), transparent 50%),
+      linear-gradient(180deg, var(--raised), #15120e);
+    border-color: rgba(227,168,87,.22);
+  }
+  .tile .session-name{
+    font-family:var(--ui); font-size:20px; font-weight:400; color:var(--ink); letter-spacing:-.01em;
+    margin-top:8px; line-height:1.15;
+  }
+  .tile .session-meta{
+    font-family:var(--mono); font-size:10px; color:var(--sub); letter-spacing:.08em; margin-top:6px;
+  }
+  .startbtn{
+    margin-top:14px;
+    width:100%; height:42px; border-radius:14px;
+    background:var(--ink); color:#16140f;
+    border:0; font-family:var(--mono); font-size:11px; letter-spacing:.22em; font-weight:700;
+    display:flex; align-items:center; justify-content:center; gap:8px; cursor:pointer;
+  }
+  .startbtn i{font-size:14px;}
+
+  /* Fuel tile */
+  .tile.fuel{
+    background:
+      linear-gradient(155deg, rgba(79,209,126,.10), transparent 50%),
+      linear-gradient(180deg, var(--raised), #15120e);
+    border-color: rgba(79,209,126,.18);
+  }
+  .fuel-num{
+    font-family:var(--mono); font-size:32px; font-weight:300; color:var(--ink); letter-spacing:-.02em; margin-top:6px; line-height:1;
+  }
+  .fuel-num small{font-size:12px; color:var(--sub); letter-spacing:.06em; margin-left:4px;}
+  .macros{
+    margin-top:10px; display:flex; flex-direction:column; gap:6px;
+  }
+  .macro{
+    display:grid; grid-template-columns: 14px 1fr 60px; align-items:center; gap:8px;
+  }
+  .macro .ml{font-family:var(--mono); font-size:9px; letter-spacing:.16em; color:var(--sub);}
+  .macro .mv{font-family:var(--mono); font-size:10px; color:var(--ink); letter-spacing:.06em; text-align:right;}
+  .mbar{height:2px; background:rgba(255,255,255,.06); border-radius:2px; overflow:hidden;}
+  .mbar > span{display:block; height:100%; border-radius:2px;}
+  .mbar.p > span{background:var(--bright);}
+  .mbar.c > span{background:var(--blue);}
+  .mbar.f > span{background:var(--green);}
+
+  /* habits rail tiles */
+  .tile.habit{
+    width:170px; min-height:178px;
+    padding:18px;
+    background: linear-gradient(180deg, var(--raised), #181510);
+    border:1px solid var(--hair);
+    display:flex; flex-direction:column; justify-content:space-between;
+  }
+  .tile.habit .icon{font-size:18px; color:var(--bright); background:rgba(243,195,120,.08);}
+  .tile.habit.done .icon{color:var(--green); background:rgba(79,209,126,.10);}
+  .tile.habit .hbottom{display:flex; flex-direction:column; gap:6px;}
+  .tile.habit .hname{
+    font-family:var(--ui); font-size:15px; color:var(--ink); font-weight:400; letter-spacing:-.005em;
+  }
+  .tile.habit .hsub{
+    font-family:var(--mono); font-size:10px; color:var(--sub); letter-spacing:.1em;
+  }
+  .tile.habit.done .hname{color:var(--faint); text-decoration:line-through; text-decoration-color:rgba(166,157,141,.4);}
+  .tile.habit.done .hsub{color:var(--faint);}
+  .checkpill{
+    width:24px; height:24px; border-radius:50%;
+    border:1.4px solid var(--hair2); display:grid; place-items:center;
+    color:transparent; cursor:pointer;
+  }
+  .tile.habit.done .checkpill{background:var(--green); border-color:var(--green); color:#0d0c0a;}
+  .tile.habit.done .checkpill i{font-size:13px; font-weight:bold;}
+  .habit-progress{
+    height:3px; border-radius:2px; background:rgba(255,255,255,.06); overflow:hidden;
+  }
+  .habit-progress span{display:block; height:100%; background:var(--bright);}
+
+  /* Fresh state styling for tiles */
+  .fresh .tile:not(.steps-water):not(.tile-connect){
+    opacity:.72;
+  }
+  .tile-connect{
+    border-style:dashed !important;
+    background: rgba(255,255,255,.02) !important;
+    border-color: var(--hair2) !important;
+  }
+  .tile-connect .cta-mini{
+    margin-top:auto;
+    display:inline-flex; align-items:center; gap:6px;
+    padding:8px 14px; border-radius:999px;
+    background:rgba(255,255,255,.06);
+    color:var(--ink);
+    font-family:var(--mono); font-size:10px; letter-spacing:.18em; font-weight:600;
+    border:0; cursor:pointer; align-self:flex-start;
+  }
+  .tile-connect .cta-mini i{font-size:12px;}
+  .fresh-title{
+    font-family:var(--ui); font-size:18px; font-weight:300; color:var(--ink); letter-spacing:-.01em;
+    margin-top:8px;
+  }
+  .fresh-sub{
+    font-family:var(--mono); font-size:10px; color:var(--sub); letter-spacing:.1em; margin-top:6px;
+  }
+
+  /* bottom nav */
+  .navwrap{
+    position:sticky; bottom:0;
+    padding: 18px 18px 26px;
+    margin-top:auto;
+    pointer-events:none;
+  }
+  .nav{
+    pointer-events:auto;
+    display:flex; justify-content:space-around; align-items:center;
+    height:62px;
+    border-radius:30px;
+    background: rgba(20,18,14,.55);
+    backdrop-filter: blur(22px) saturate(140%);
+    -webkit-backdrop-filter: blur(22px) saturate(140%);
+    border:1px solid rgba(255,255,255,.06);
+    box-shadow: 0 12px 40px rgba(0,0,0,.4);
+  }
+  .nav .item{
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+    color:var(--faint); cursor:pointer;
+    font-family:var(--mono); font-size:9px; letter-spacing:.18em;
+  }
+  .nav .item i{font-size:18px;}
+  .nav .item.active{color:var(--ink);}
+  .nav .item.active i{color:var(--bright);}
+
+  /* spacing */
+  .scroll{
+    flex:1; overflow-y:auto;
+    padding-bottom:120px;
+    scrollbar-width:none;
+  }
+  .scroll::-webkit-scrollbar{display:none;}
+
+  /* hidden */
+  .hidden{display:none !important;}
+</style>
+</head>
+<body>
+
+<div class="phone" id="phone">
+
+  <div class="devbar">
+    <button id="btnConnected" class="on">CONNECTED</button>
+    <button id="btnFresh">FRESH</button>
+  </div>
+
+  <div class="status">
+    <span>9:41</span>
+    <span class="right">
+      <i class="ph ph-cell-signal-high"></i>
+      <i class="ph ph-wifi-high"></i>
+      <i class="ph ph-battery-full"></i>
+    </span>
+  </div>
+
+  <div class="scroll">
+
+    <div class="topbar">
+      <div class="brand"><b>FORGE</b> &nbsp;·&nbsp; HOME</div>
+      <div class="avatar">B</div>
+    </div>
+
+    <!-- date rail -->
+    <div class="daterail" id="dateRail">
+      <div class="day past"><span class="dow">SUN</span><span class="num">14</span></div>
+      <div class="day past"><span class="dow">MON</span><span class="num">15</span></div>
+      <div class="day past"><span class="dow">TUE</span><span class="num">16</span></div>
+      <div class="day past"><span class="dow">WED</span><span class="num">17</span></div>
+      <div class="day past"><span class="dow">THU</span><span class="num">18</span></div>
+      <div class="day today"><span class="dow">FRI</span><span class="num">19</span></div>
+      <div class="day"><span class="dow">SAT</span><span class="num">20</span></div>
+      <div class="day"><span class="dow">SUN</span><span class="num">21</span></div>
+    </div>
+
+    <!-- HERO: Recovery -->
+    <div class="hero" id="hero">
+      <div class="eyebrow">
+        <span>RECOVERY · TODAY</span>
+        <span class="src" id="heroSrc">VIA WHOOP</span>
+      </div>
+
+      <div class="recline">
+        <div class="recring">
+          <svg width="148" height="148" viewBox="0 0 148 148">
+            <circle cx="74" cy="74" r="64" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="7"/>
+            <circle id="recArc" cx="74" cy="74" r="64" fill="none"
+              stroke="var(--green)" stroke-width="7" stroke-linecap="round"
+              stroke-dasharray="402" stroke-dashoffset="80"/>
+          </svg>
+          <div class="pct">
+            <span class="n" id="recNum">78</span>
+            <span class="l">PERCENT</span>
+          </div>
+        </div>
+        <div class="verdict">
+          <div class="word" id="verdictWord">Primed to <em>push</em>.</div>
+          <div class="blurb" id="verdictBlurb">HRV trending up. Sleep efficiency 94%. Cleared for high strain today.</div>
+        </div>
+      </div>
+
+      <div class="herostats" id="heroStats">
+        <div class="hs">
+          <span class="lbl">STRAIN</span>
+          <span class="val">12.4</span>
+        </div>
+        <div class="hs">
+          <span class="lbl">HRV</span>
+          <span class="val">58<small>ms</small></span>
+        </div>
+        <div class="hs">
+          <span class="lbl">RHR</span>
+          <span class="val">52<small>bpm</small></span>
+        </div>
+        <div class="hs">
+          <span class="lbl">SLEEP</span>
+          <span class="val">7:42</span>
+        </div>
+      </div>
+
+      <!-- Fresh hero CTA (hidden by default) -->
+      <button class="connect-cta hidden" id="connectHero">
+        <i class="ph-bold ph-link"></i> CONNECT WEARABLE
+      </button>
+    </div>
+
+    <!-- RAIL 1: Today -->
+    <div class="rail">
+      <div class="rail-head">
+        <div class="t"><b>Today</b></div>
+        <a class="more" href="#">SEE ALL ›</a>
+      </div>
+      <div class="rail-track" id="railToday">
+
+        <!-- Steps + Water HERO TILE -->
+        <div class="tile steps-water">
+          <div class="top">
+            <span class="kind">MOVE + HYDRATE</span>
+          </div>
+          <div class="stepwater-grid">
+            <div class="sw-block">
+              <span class="label"><i class="ph ph-footprints"></i> STEPS</span>
+              <span class="val" id="stepsVal">8,240</span>
+              <span style="font-family:var(--mono); font-size:10px; color:var(--faint); letter-spacing:.08em;">of 10,000</span>
+              <div class="bar amber"><span style="width:82%"></span></div>
+            </div>
+            <div class="sw-block">
+              <span class="label"><i class="ph ph-drop"></i> WATER</span>
+              <span class="val"><span id="waterVal">2.4</span><small>/ 6 L</small></span>
+              <div class="bar blue"><span id="waterBar" style="width:40%"></span></div>
+              <div class="water-controls">
+                <button class="stepbtn" id="waterMinus"><i class="ph-bold ph-minus"></i></button>
+                <div class="bottle-chip" id="bottleChip">
+                  <i class="ph ph-bottle"></i> <span id="bottleLabel">500 ml</span>
+                </div>
+                <button class="stepbtn" id="waterPlus"><i class="ph-bold ph-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Workout tile -->
+        <div class="tile workout" id="workoutTile">
+          <div class="top">
+            <span class="kind">WORKOUT · 47 MIN</span>
+            <div class="icon" style="color:var(--bright); background:rgba(243,195,120,.10);"><i class="ph-fill ph-barbell"></i></div>
+          </div>
+          <div>
+            <div class="session-name" id="workoutName">Push · Chest & Shoulders</div>
+            <div class="session-meta">6 EXERCISES &nbsp;·&nbsp; ~18,500 LB</div>
+          </div>
+          <button class="startbtn"><i class="ph-bold ph-play"></i> START SESSION</button>
+        </div>
+
+        <!-- Fuel tile (hidden in Fresh) -->
+        <div class="tile fuel" id="fuelTile">
+          <div class="top">
+            <span class="kind">FUEL · TODAY</span>
+            <div class="icon" style="color:var(--green); background:rgba(79,209,126,.10);"><i class="ph-fill ph-fire"></i></div>
+          </div>
+          <div>
+            <div class="fuel-num">1,840<small>/ 2,520 kcal</small></div>
+            <div class="macros">
+              <div class="macro">
+                <span class="ml">P</span>
+                <div class="mbar p"><span style="width:92%"></span></div>
+                <span class="mv">165/180g</span>
+              </div>
+              <div class="macro">
+                <span class="ml">C</span>
+                <div class="mbar c"><span style="width:79%"></span></div>
+                <span class="mv">198/250g</span>
+              </div>
+              <div class="macro">
+                <span class="ml">F</span>
+                <div class="mbar f"><span style="width:78%"></span></div>
+                <span class="mv">62/80g</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RAIL 2: Habits -->
+    <div class="rail">
+      <div class="rail-head">
+        <div class="t"><b>Rituals</b> &nbsp;·&nbsp; 2 OF 4</div>
+        <a class="more" href="#">EDIT ›</a>
+      </div>
+      <div class="rail-track" id="railHabits">
+
+        <div class="tile habit done" data-habit="vits">
+          <div class="top">
+            <div class="icon"><i class="ph-fill ph-pill"></i></div>
+            <div class="checkpill"><i class="ph-bold ph-check"></i></div>
+          </div>
+          <div class="hbottom">
+            <span class="hname">AM Vitamins</span>
+            <span class="hsub">DAILY</span>
+          </div>
+        </div>
+
+        <div class="tile habit done" data-habit="workout">
+          <div class="top">
+            <div class="icon"><i class="ph-fill ph-barbell"></i></div>
+            <div class="checkpill"><i class="ph-bold ph-check"></i></div>
+          </div>
+          <div class="hbottom">
+            <span class="hname">Workout</span>
+            <span class="hsub">5x / WEEK</span>
+          </div>
+        </div>
+
+        <div class="tile habit" data-habit="mobility">
+          <div class="top">
+            <div class="icon"><i class="ph-fill ph-person-simple-tai-chi"></i></div>
+            <div class="checkpill"><i class="ph-bold ph-check"></i></div>
+          </div>
+          <div class="hbottom">
+            <span class="hname">Mobility</span>
+            <span class="hsub">10 MIN</span>
+          </div>
+        </div>
+
+        <div class="tile habit" data-habit="protein">
+          <div class="top">
+            <div class="icon"><i class="ph-fill ph-egg"></i></div>
+            <div class="checkpill"><i class="ph-bold ph-check"></i></div>
+          </div>
+          <div class="hbottom">
+            <span class="hname">Protein Hits</span>
+            <span class="hsub">3 OF 4</span>
+            <div class="habit-progress"><span style="width:75%"></span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- floating nav -->
+  <div class="navwrap">
+    <div class="nav">
+      <div class="item active"><i class="ph-fill ph-house"></i><span>HOME</span></div>
+      <div class="item"><i class="ph ph-calendar-blank"></i><span>PLAN</span></div>
+      <div class="item"><i class="ph ph-check-square"></i><span>HABITS</span></div>
+      <div class="item"><i class="ph ph-gear-six"></i><span>SETTINGS</span></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ---- state toggle ----
+  const phone = document.getElementById('phone');
+  const btnConnected = document.getElementById('btnConnected');
+  const btnFresh = document.getElementById('btnFresh');
+
+  const recNum = document.getElementById('recNum');
+  const recArc = document.getElementById('recArc');
+  const verdictWord = document.getElementById('verdictWord');
+  const verdictBlurb = document.getElementById('verdictBlurb');
+  const heroSrc = document.getElementById('heroSrc');
+  const heroStats = document.getElementById('heroStats');
+  const connectHero = document.getElementById('connectHero');
+  const fuelTile = document.getElementById('fuelTile');
+  const workoutTile = document.getElementById('workoutTile');
+  const railHabits = document.getElementById('railHabits');
+  const railToday = document.getElementById('railToday');
+
+  const connectedHeroStats = heroStats.innerHTML;
+  const freshHeroStats = `
+    <div class="hs"><span class="lbl">STRAIN</span><span class="val">—</span></div>
+    <div class="hs"><span class="lbl">HRV</span><span class="val">—</span></div>
+    <div class="hs"><span class="lbl">RHR</span><span class="val">—</span></div>
+    <div class="hs"><span class="lbl">SLEEP</span><span class="val">—</span></div>
+  `;
+
+  const connectedWorkout = workoutTile.innerHTML;
+  const freshWorkout = `
+    <div class="top">
+      <span class="kind">WORKOUT</span>
+      <div class="icon"><i class="ph ph-barbell"></i></div>
+    </div>
+    <div>
+      <div class="fresh-title">No plan yet</div>
+      <div class="fresh-sub">PICK A PROGRAM TO BEGIN</div>
+    </div>
+    <button class="cta-mini"><i class="ph-bold ph-list-magnifying-glass"></i> CHOOSE A PLAN</button>
+  `;
+
+  function setState(s){
+    if(s==='fresh'){
+      phone.classList.add('fresh');
+      btnFresh.classList.add('on'); btnConnected.classList.remove('on');
+
+      // Hero
+      recNum.textContent = '—';
+      recArc.setAttribute('stroke-dashoffset', '402');
+      recArc.setAttribute('stroke', 'rgba(255,255,255,.10)');
+      verdictWord.innerHTML = 'Connect to <em style="color:var(--bright)">unlock</em>.';
+      verdictBlurb.textContent = 'Link Whoop, Oura, or Apple Health to see recovery, strain, HRV and sleep.';
+      heroSrc.textContent = 'NO SOURCE';
+      heroStats.innerHTML = freshHeroStats;
+      connectHero.classList.remove('hidden');
+
+      // Workout becomes Choose a plan
+      workoutTile.classList.add('tile-connect');
+      workoutTile.innerHTML = freshWorkout;
+      bindWorkoutCTA();
+
+      // Fuel hides entirely
+      fuelTile.classList.add('hidden');
+
+      // Habits: greyed with "Add Habit" CTA replacing the last tile? Per spec, every card greyed with CTA
+      document.querySelectorAll('#railHabits .tile.habit').forEach(t=>{
+        t.style.opacity = .55;
+      });
+
+    } else {
+      phone.classList.remove('fresh');
+      btnConnected.classList.add('on'); btnFresh.classList.remove('on');
+
+      recNum.textContent = '78';
+      recArc.setAttribute('stroke-dashoffset', '88');
+      recArc.setAttribute('stroke', 'var(--green)');
+      verdictWord.innerHTML = 'Primed to <em>push</em>.';
+      verdictBlurb.textContent = 'HRV trending up. Sleep efficiency 94%. Cleared for high strain today.';
+      heroSrc.textContent = 'VIA WHOOP';
+      heroStats.innerHTML = connectedHeroStats;
+      connectHero.classList.add('hidden');
+
+      workoutTile.classList.remove('tile-connect');
+      workoutTile.innerHTML = connectedWorkout;
+
+      fuelTile.classList.remove('hidden');
+
+      document.querySelectorAll('#railHabits .tile.habit').forEach(t=>{
+        t.style.opacity = '';
+      });
+    }
+  }
+
+  btnConnected.addEventListener('click', ()=>setState('connected'));
+  btnFresh.addEventListener('click', ()=>setState('fresh'));
+
+  // Hero connect toggles to connected
+  connectHero.addEventListener('click', ()=>setState('connected'));
+
+  function bindWorkoutCTA(){
+    const cta = workoutTile.querySelector('.cta-mini');
+    if(cta) cta.addEventListener('click', ()=>setState('connected'));
+  }
+
+  // ---- Water controls ----
+  let waterL = 2.4;
+  const bottleSizes = [250, 500, 750, 1000];
+  let bottleIdx = 1;
+  const waterValEl = document.getElementById('waterVal');
+  const waterBarEl = document.getElementById('waterBar');
+  const bottleLabel = document.getElementById('bottleLabel');
+  const bottleChip = document.getElementById('bottleChip');
+
+  function renderWater(){
+    waterValEl.textContent = waterL.toFixed(1);
+    waterBarEl.style.width = Math.min(100, (waterL/6)*100) + '%';
+    bottleLabel.textContent = bottleSizes[bottleIdx] + ' ml';
+  }
+  document.getElementById('waterPlus').addEventListener('click', ()=>{
+    waterL = Math.min(10, waterL + bottleSizes[bottleIdx]/1000);
+    waterL = Math.round(waterL*10)/10;
+    renderWater();
+  });
+  document.getElementById('waterMinus').addEventListener('click', ()=>{
+    waterL = Math.max(0, waterL - bottleSizes[bottleIdx]/1000);
+    waterL = Math.round(waterL*10)/10;
+    renderWater();
+  });
+  bottleChip.addEventListener('click', ()=>{
+    bottleIdx = (bottleIdx+1) % bottleSizes.length;
+    renderWater();
+  });
+
+  // habit toggling
+  document.querySelectorAll('.tile.habit').forEach(t=>{
+    t.addEventListener('click', ()=>{
+      if(phone.classList.contains('fresh')) return;
+      t.classList.toggle('done');
+    });
+  });
+
+  // center today in date rail
+  setTimeout(()=>{
+    const today = document.querySelector('.day.today');
+    if(today) today.scrollIntoView({inline:'center', block:'nearest'});
+  }, 50);
+</script>
+</body>
+</html>

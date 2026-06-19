@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FORGE — Terminal</title>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+  :root{
+    --bg-1:#16140f; --bg-2:#0d0c0a;
+    --surface:#1a1814; --raised:#1f1c16;
+    --hair:#241f17; --hair2:#2c281f;
+    --ink:#efeae0; --sub:#a59d8d; --faint:#6f6859;
+    --amber:#e3a857; --bright:#f3c378;
+    --green:#4fd17e; --blue:#6fb0d8; --red:#e16b6b;
+    --mono: ui-monospace,"SF Mono","Menlo","Courier New",monospace;
+    --ui: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; padding:0;}
+  body{
+    background:#0a0907;
+    font-family:var(--ui);
+    color:var(--ink);
+    min-height:100vh;
+    display:flex; justify-content:center; align-items:flex-start;
+    padding:24px 0;
+  }
+
+  /* ---------- Phone frame ---------- */
+  .phone{
+    width:430px;
+    min-height:900px;
+    background: radial-gradient(125% 80% at 50% 14%, var(--bg-1), var(--bg-2));
+    border-radius:46px;
+    overflow:hidden;
+    position:relative;
+    box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 0 1px #25201a inset;
+    padding-bottom:110px;
+  }
+
+  /* ---------- Status bar / chrome ---------- */
+  .status{
+    height:48px;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 14px 28px 0;
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--ink);
+    letter-spacing:.5px;
+  }
+  .status .right{display:flex; gap:6px; align-items:center; color:var(--sub);}
+  .status .right i{font-size:14px;}
+
+  /* ---------- Terminal header ---------- */
+  .term-hdr{
+    padding: 6px 18px 0;
+    display:flex; align-items:center; justify-content:space-between;
+    font-family:var(--mono);
+    font-size:10.5px;
+    color:var(--faint);
+    letter-spacing:1px;
+    text-transform:uppercase;
+  }
+  .term-hdr .brand{
+    color:var(--amber);
+    font-weight:700;
+    letter-spacing:2px;
+  }
+  .term-hdr .brand .dot{
+    display:inline-block; width:6px; height:6px; border-radius:50%;
+    background:var(--green); margin-right:6px; vertical-align:middle;
+    box-shadow:0 0 8px var(--green);
+    animation:pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse{50%{opacity:.4;}}
+  .term-hdr .meta{display:flex; gap:10px;}
+
+  /* ---------- Date strip ---------- */
+  .datebar{
+    margin:14px 16px 10px;
+    display:grid;
+    grid-template-columns: 28px repeat(5,1fr) 28px;
+    align-items:center;
+    gap:4px;
+    font-family:var(--mono);
+    font-size:11px;
+  }
+  .datebar .nav{
+    color:var(--sub); text-align:center; padding:6px 0; cursor:pointer;
+    border-radius:6px;
+  }
+  .datebar .nav:hover{background:var(--surface);}
+  .datebar .nav.dis{opacity:.25; cursor:not-allowed;}
+  .dchip{
+    text-align:center; padding:6px 0 4px;
+    color:var(--faint);
+    border-bottom:1px solid transparent;
+    cursor:pointer;
+    line-height:1;
+  }
+  .dchip .d{font-size:10px; letter-spacing:1px;}
+  .dchip .n{font-size:14px; font-weight:600; color:var(--sub); margin-top:3px; font-family:var(--ui);}
+  .dchip.active{color:var(--bright); border-bottom-color:var(--amber);}
+  .dchip.active .n{color:var(--ink);}
+  .dchip.fut{opacity:.18; cursor:not-allowed;}
+
+  /* ---------- Grid layout ---------- */
+  .grid{
+    padding: 0 16px;
+    display:grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap:8px;
+  }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--hair);
+    border-radius:14px;
+    padding:12px;
+    position:relative;
+  }
+  .card.raised{background:var(--raised);}
+  .card.row-pad{padding:10px 12px;}
+
+  .label{
+    font-family:var(--mono);
+    font-size:9.5px;
+    letter-spacing:1.4px;
+    color:var(--faint);
+    text-transform:uppercase;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .label .src{
+    color:var(--amber);
+    font-weight:600;
+  }
+  .label .src.off{color:var(--faint);}
+  .num{
+    font-family:var(--mono);
+    color:var(--ink);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings:"tnum";
+  }
+
+  /* ---------- Biometric block ---------- */
+  .bio-main{
+    grid-column: span 12;
+    display:grid;
+    grid-template-columns: 130px 1fr;
+    gap:10px;
+    padding:14px;
+  }
+  .ringwrap{
+    position:relative;
+    width:118px; height:118px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .ringwrap svg{position:absolute; inset:0;}
+  .ringwrap .center{
+    text-align:center; z-index:2;
+    line-height:1;
+  }
+  .ringwrap .center .v{
+    font-family:var(--mono);
+    font-size:38px; font-weight:600;
+    color:var(--green);
+    letter-spacing:-1px;
+  }
+  .ringwrap .center .pct{
+    font-family:var(--mono);
+    font-size:13px; color:var(--sub); margin-left:1px;
+  }
+  .ringwrap .center .lbl{
+    font-family:var(--mono);
+    font-size:9px; letter-spacing:2px;
+    color:var(--faint); text-transform:uppercase;
+    margin-top:6px;
+  }
+
+  .bio-stats{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:6px 12px;
+    align-content:start;
+  }
+  .stat{
+    display:flex; flex-direction:column;
+    border-bottom:1px solid var(--hair);
+    padding:4px 0 6px;
+  }
+  .stat:last-child, .stat:nth-last-child(2){border-bottom:none;}
+  .stat .k{
+    font-family:var(--mono);
+    font-size:9.5px; letter-spacing:1.4px;
+    color:var(--faint); text-transform:uppercase;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .stat .v{
+    font-family:var(--mono);
+    font-size:18px; color:var(--ink);
+    font-weight:500;
+    margin-top:2px;
+    display:flex; align-items:baseline; gap:4px;
+  }
+  .stat .v .u{font-size:10px; color:var(--faint); letter-spacing:1px;}
+  .stat .delta{
+    font-family:var(--mono);
+    font-size:9.5px;
+    margin-left:auto;
+  }
+  .delta.up{color:var(--green);}
+  .delta.dn{color:var(--red);}
+  .delta.flat{color:var(--faint);}
+
+  .spark{display:block; height:14px; width:100%; margin-top:2px;}
+
+  /* Strain mini-ring */
+  .strain-wrap{
+    display:flex; align-items:center; gap:8px;
+    margin-top:8px; padding-top:8px;
+    border-top:1px solid var(--hair);
+  }
+  .strain-ring{
+    position:relative; width:48px; height:48px;
+    flex:0 0 48px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .strain-ring svg{position:absolute; inset:0;}
+  .strain-ring .sv{
+    font-family:var(--mono);
+    font-size:15px; color:var(--blue);
+    font-weight:600;
+  }
+  .strain-meta{flex:1;}
+  .strain-meta .top{
+    display:flex; justify-content:space-between;
+    font-family:var(--mono); font-size:10px;
+    color:var(--faint); letter-spacing:1.4px; text-transform:uppercase;
+  }
+  .strain-meta .bot{
+    font-family:var(--mono); font-size:11px;
+    color:var(--sub); margin-top:4px;
+  }
+  .strain-bar{
+    height:3px; background:var(--hair2); border-radius:2px;
+    margin-top:6px; overflow:hidden;
+  }
+  .strain-bar .f{
+    height:100%; background:linear-gradient(90deg, var(--blue), #8fc7e8);
+    width:60%;
+  }
+
+  /* ---------- Workout card ---------- */
+  .wo{
+    grid-column: span 12;
+    padding:12px 12px 10px;
+  }
+  .wo .top{
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .wo .ttl{
+    font-family:var(--ui);
+    font-size:16px; font-weight:600; color:var(--ink);
+    margin-top:4px;
+  }
+  .wo .meta{
+    font-family:var(--mono);
+    font-size:11px; color:var(--sub);
+    margin-top:4px;
+    display:flex; gap:8px;
+  }
+  .wo .meta span{display:inline-flex; align-items:center; gap:3px;}
+  .wo .meta i{font-size:12px; color:var(--faint);}
+  .wo .row{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-top:10px;
+    gap:10px;
+  }
+  .wo .preview{
+    flex:1;
+    font-family:var(--mono); font-size:10.5px;
+    color:var(--faint); letter-spacing:.4px;
+    line-height:1.5;
+    overflow:hidden;
+  }
+  .wo .preview b{color:var(--sub); font-weight:500;}
+  .start-btn{
+    flex:0 0 auto;
+    background:var(--amber);
+    color:#1a1308;
+    border:none;
+    border-radius:10px;
+    padding:11px 16px;
+    font-family:var(--mono);
+    font-size:12px; font-weight:700; letter-spacing:1.4px;
+    cursor:pointer;
+    display:flex; align-items:center; gap:6px;
+    box-shadow: 0 1px 0 #f8d090 inset, 0 4px 14px rgba(227,168,87,.25);
+  }
+  .start-btn:hover{background:var(--bright);}
+  .start-btn i{font-size:14px;}
+
+  /* ---------- Fuel ---------- */
+  .fuel{ grid-column: span 12; padding:11px 12px;}
+  .fuel .head{display:flex; justify-content:space-between; align-items:baseline;}
+  .fuel .big{
+    font-family:var(--mono); font-size:22px;
+    margin-top:2px; color:var(--ink);
+    letter-spacing:-.3px;
+  }
+  .fuel .big .of{color:var(--faint); font-size:13px; margin-left:4px;}
+  .fuel .pct{
+    font-family:var(--mono); font-size:11px; color:var(--amber);
+  }
+  .macros{
+    margin-top:8px;
+    display:grid; grid-template-columns: repeat(3,1fr); gap:8px;
+  }
+  .macro{
+    border:1px solid var(--hair);
+    border-radius:8px;
+    padding:6px 8px 7px;
+  }
+  .macro .mk{
+    font-family:var(--mono); font-size:9.5px;
+    color:var(--faint); letter-spacing:1.4px;
+    display:flex; justify-content:space-between;
+  }
+  .macro .mv{
+    font-family:var(--mono); font-size:14px;
+    color:var(--ink); margin-top:2px;
+    display:flex; align-items:baseline; justify-content:space-between;
+  }
+  .macro .mv .of{color:var(--faint); font-size:10.5px;}
+  .macro .bar{
+    height:2px; background:var(--hair2); border-radius:2px;
+    margin-top:5px; overflow:hidden;
+  }
+  .macro .bar .f{height:100%;}
+  .macro.p .bar .f{background:var(--green); width:91%;}
+  .macro.c .bar .f{background:var(--amber); width:79%;}
+  .macro.f .bar .f{background:var(--blue); width:77%;}
+
+  /* ---------- Hero: Steps + Water ---------- */
+  .hero{
+    grid-column: span 12;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:8px;
+  }
+  .hero .card{padding:12px;}
+  .hero .lbl{
+    font-family:var(--mono); font-size:9.5px;
+    letter-spacing:1.4px; color:var(--faint); text-transform:uppercase;
+    display:flex; justify-content:space-between;
+  }
+  .hero .big{
+    font-family:var(--mono);
+    font-size:26px; color:var(--ink);
+    margin-top:6px;
+    letter-spacing:-.5px;
+    font-weight:500;
+    line-height:1;
+  }
+  .hero .of{color:var(--faint); font-size:13px; margin-left:3px;}
+
+  .step-bars{
+    display:flex; gap:2px; height:22px;
+    margin-top:8px; align-items:flex-end;
+  }
+  .step-bars .b{
+    flex:1;
+    background:var(--hair2);
+    border-radius:1px;
+  }
+  .step-bars .b.on{background:var(--amber);}
+  .step-bars .b.now{background:var(--bright); box-shadow:0 0 6px var(--amber);}
+
+  .step-meta{
+    margin-top:6px;
+    font-family:var(--mono); font-size:10px;
+    color:var(--sub);
+    display:flex; justify-content:space-between;
+  }
+
+  /* Water visual */
+  .water-row{
+    display:flex; gap:3px; height:24px;
+    margin-top:8px; align-items:stretch;
+  }
+  .water-row .b{
+    flex:1; border:1px solid var(--hair2);
+    border-radius:2px;
+    position:relative;
+    overflow:hidden;
+  }
+  .water-row .b.full{background:linear-gradient(180deg, #8fc7e8, var(--blue)); border-color:var(--blue);}
+  .water-row .b.part{background:linear-gradient(180deg, transparent 40%, #6fb0d8 40%); border-color:var(--blue);}
+
+  .water-ctrl{
+    margin-top:8px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:6px;
+  }
+  .stepper{
+    display:inline-flex; align-items:center;
+    border:1px solid var(--hair2);
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .stepper button{
+    background:transparent; border:none;
+    color:var(--sub);
+    width:26px; height:26px;
+    font-family:var(--mono); font-size:14px;
+    cursor:pointer;
+  }
+  .stepper button:hover{background:var(--hair); color:var(--ink);}
+  .stepper .gap{
+    width:1px; background:var(--hair2); height:18px;
+  }
+  .bottle-chip{
+    font-family:var(--mono); font-size:10px;
+    color:var(--bright);
+    background:var(--hair);
+    border:1px solid var(--hair2);
+    padding:5px 8px;
+    border-radius:6px;
+    cursor:pointer;
+    letter-spacing:.5px;
+  }
+  .bottle-chip:hover{background:var(--raised); color:var(--ink);}
+
+  /* ---------- Habits ---------- */
+  .habits{ grid-column: span 12; padding:10px 12px 12px;}
+  .habits .head{display:flex; justify-content:space-between; align-items:baseline;}
+  .habits .prog{
+    font-family:var(--mono); font-size:11px; color:var(--bright);
+  }
+  .habit-list{margin-top:8px;}
+  .habit{
+    display:grid;
+    grid-template-columns: 18px 1fr auto;
+    align-items:center;
+    gap:10px;
+    padding:7px 0;
+    border-top:1px solid var(--hair);
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .habit:first-child{border-top:none;}
+  .habit .box{
+    width:14px; height:14px;
+    border:1px solid var(--hair2);
+    border-radius:3px;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--bg-2); font-size:12px;
+  }
+  .habit.done .box{background:var(--amber); border-color:var(--amber); color:#1a1308;}
+  .habit.done .box::before{content:"✓"; font-weight:700; font-family:var(--ui);}
+  .habit.done .name{color:var(--faint); text-decoration:line-through; text-decoration-color:var(--faint);}
+  .habit.partial .box{background:linear-gradient(90deg, var(--amber) 75%, transparent 75%); border-color:var(--amber);}
+  .habit .tag{
+    font-family:var(--mono); font-size:10px;
+    color:var(--faint); letter-spacing:.5px;
+  }
+  .habit.done .tag{color:var(--faint);}
+
+  /* ---------- Connect / fresh state overlays ---------- */
+  .empty-cta{
+    display:inline-flex; align-items:center; gap:4px;
+    font-family:var(--mono); font-size:10.5px;
+    color:var(--bg-2);
+    background:var(--amber);
+    padding:4px 9px;
+    border-radius:6px;
+    cursor:pointer;
+    letter-spacing:.5px;
+    font-weight:700;
+    border:none;
+  }
+  .empty-cta:hover{background:var(--bright);}
+  .empty-cta.ghost{
+    background:transparent;
+    color:var(--bright);
+    border:1px solid var(--amber);
+    font-weight:600;
+  }
+  .empty-cta.ghost:hover{background:rgba(227,168,87,.1);}
+
+  /* When fresh, dim nums */
+  body.fresh .dimmable .num,
+  body.fresh .dimmable .v,
+  body.fresh .dimmable .big,
+  body.fresh .dimmable .center .v,
+  body.fresh .dimmable .center .pct,
+  body.fresh .dimmable .center .lbl,
+  body.fresh .dimmable .sv,
+  body.fresh .dimmable .pct,
+  body.fresh .dimmable .of,
+  body.fresh .dimmable .delta,
+  body.fresh .dimmable .spark,
+  body.fresh .dimmable .strain-bar,
+  body.fresh .dimmable .ringwrap circle.fg,
+  body.fresh .dimmable .strain-ring circle.fg,
+  body.fresh .dimmable .step-bars,
+  body.fresh .dimmable .step-meta,
+  body.fresh .dimmable .preview,
+  body.fresh .dimmable .ttl,
+  body.fresh .dimmable .meta{
+    color:var(--faint) !important;
+    opacity:.5;
+  }
+  body.fresh .dimmable .ringwrap .center .v{color:var(--faint) !important;}
+  body.fresh .dimmable .ringwrap circle.fg{stroke:var(--faint) !important;}
+  body.fresh .dimmable .strain-ring circle.fg{stroke:var(--faint) !important;}
+  body.fresh .dimmable .start-btn{display:none;}
+  body.fresh #fuel-card{display:none;}
+  body.fresh .empty-show{display:inline-flex !important;}
+  body:not(.fresh) .empty-show{display:none !important;}
+  body.fresh .label .src.src-on{display:none;}
+  body:not(.fresh) .label .src.src-off{display:none;}
+
+  /* connect button overlay */
+  .connect-overlay{
+    position:absolute;
+    inset:auto 10px 10px auto;
+  }
+
+  /* ---------- Bottom nav ---------- */
+  .nav{
+    position:absolute;
+    left:50%; bottom:18px;
+    transform:translateX(-50%);
+    display:flex;
+    gap:4px;
+    background:rgba(31,28,22,.65);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:30px;
+    padding:8px 10px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.5), 0 0 0 1px rgba(0,0,0,.4);
+  }
+  .nav .item{
+    display:flex; flex-direction:column; align-items:center;
+    gap:2px;
+    padding:6px 14px;
+    border-radius:22px;
+    cursor:pointer;
+    color:var(--sub);
+    font-family:var(--mono);
+    font-size:9px;
+    letter-spacing:1.5px;
+  }
+  .nav .item i{font-size:18px;}
+  .nav .item.active{
+    background:rgba(227,168,87,.14);
+    color:var(--bright);
+  }
+
+  /* Toggle */
+  .mode-toggle{
+    position:fixed; bottom:20px; right:20px;
+    z-index:99;
+    display:flex; align-items:center; gap:8px;
+    background:#1a1814;
+    border:1px solid var(--hair2);
+    border-radius:24px;
+    padding:6px 8px 6px 14px;
+    font-family:var(--mono); font-size:11px;
+    color:var(--sub); letter-spacing:1px;
+    box-shadow:0 8px 20px rgba(0,0,0,.5);
+  }
+  .mode-toggle button{
+    background:var(--amber); color:#1a1308;
+    border:none; padding:5px 10px;
+    border-radius:16px;
+    font-family:var(--mono); font-size:10.5px; font-weight:700;
+    letter-spacing:1px;
+    cursor:pointer;
+  }
+
+  /* small text utility */
+  .ticker{
+    grid-column: span 12;
+    font-family:var(--mono);
+    font-size:10px;
+    color:var(--faint);
+    padding: 2px 4px;
+    display:flex; justify-content:space-between;
+    letter-spacing:.8px;
+  }
+  .ticker .item{display:flex; gap:4px;}
+  .ticker .item b{color:var(--sub); font-weight:500;}
+  .ticker .item .g{color:var(--green);}
+  .ticker .item .r{color:var(--red);}
+
+  body.fresh .ticker .item b,
+  body.fresh .ticker .item .g,
+  body.fresh .ticker .item .r{
+    color:var(--faint) !important; opacity:.5;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="mode-toggle">
+  <span id="mode-label">CONNECTED</span>
+  <button id="mode-btn" onclick="toggleMode()">SWITCH</button>
+</div>
+
+<div class="phone">
+
+  <!-- Status -->
+  <div class="status">
+    <span>09:42</span>
+    <span class="right">
+      <i class="ph-bold ph-cell-signal-high"></i>
+      <i class="ph-bold ph-wifi-high"></i>
+      <i class="ph-fill ph-battery-high"></i>
+    </span>
+  </div>
+
+  <!-- Terminal header -->
+  <div class="term-hdr">
+    <div class="brand"><span class="dot"></span>FORGE / HOME</div>
+    <div class="meta">
+      <span id="src-tag">WHOOP·LIVE</span>
+      <span>v4.2</span>
+    </div>
+  </div>
+
+  <!-- Date bar -->
+  <div class="datebar">
+    <div class="nav" title="Earlier"><i class="ph-bold ph-caret-left"></i></div>
+    <div class="dchip"><div class="d">FRI</div><div class="n">13</div></div>
+    <div class="dchip"><div class="d">SAT</div><div class="n">14</div></div>
+    <div class="dchip"><div class="d">SUN</div><div class="n">15</div></div>
+    <div class="dchip"><div class="d">MON</div><div class="n">16</div></div>
+    <div class="dchip"><div class="d">YEST</div><div class="n">18</div></div>
+    <div class="dchip active"><div class="d">TODAY</div><div class="n">19</div></div>
+    <div class="nav dis" title="Can't go forward"><i class="ph-bold ph-caret-right"></i></div>
+  </div>
+
+  <!-- Live ticker / context strip -->
+  <div class="grid">
+    <div class="ticker">
+      <div class="item"><b>WK</b><span id="t-wk">+2.4%</span></div>
+      <div class="item"><b>SLP</b><span class="g" id="t-slp">+18m</span></div>
+      <div class="item"><b>HRV</b><span class="g" id="t-hrv">+3</span></div>
+      <div class="item"><b>STRK</b><span id="t-str">14d</span></div>
+      <div class="item"><b>NXT</b><span>UPPER 17:30</span></div>
+    </div>
+
+    <!-- Biometric block -->
+    <div class="card bio-main dimmable">
+      <!-- Recovery ring -->
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <div class="ringwrap">
+          <svg viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="52" fill="none" stroke="var(--hair2)" stroke-width="6"/>
+            <circle class="fg" cx="60" cy="60" r="52" fill="none" stroke="var(--green)"
+              stroke-width="6" stroke-linecap="round"
+              stroke-dasharray="326.7" stroke-dashoffset="78.4"
+              transform="rotate(-90 60 60)"/>
+          </svg>
+          <div class="center">
+            <div><span class="v" id="rec-val">76</span><span class="pct">%</span></div>
+            <div class="lbl">RECOVERY</div>
+          </div>
+        </div>
+        <!-- Strain ring -->
+        <div style="display:flex; align-items:center; gap:8px; margin-top:10px;">
+          <div class="strain-ring">
+            <svg viewBox="0 0 48 48">
+              <circle cx="24" cy="24" r="20" fill="none" stroke="var(--hair2)" stroke-width="3.5"/>
+              <circle class="fg" cx="24" cy="24" r="20" fill="none" stroke="var(--blue)"
+                stroke-width="3.5" stroke-linecap="round"
+                stroke-dasharray="125.6" stroke-dashoffset="50.2"
+                transform="rotate(-90 24 24)"/>
+            </svg>
+            <div class="sv">12.6</div>
+          </div>
+          <div style="font-family:var(--mono); font-size:10px; color:var(--faint); letter-spacing:1.4px; text-transform:uppercase; line-height:1.4;">
+            STRAIN<br><span style="color:var(--sub); font-size:9.5px;">0 / 21</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats matrix -->
+      <div class="bio-stats">
+        <div class="label" style="grid-column: span 2; margin-bottom:2px;">
+          <span>BIOMETRICS</span>
+          <span class="src src-on" id="src-on-1">WHOOP</span>
+          <span class="src src-off">— —</span>
+        </div>
+
+        <div class="stat">
+          <div class="k">HRV <span class="delta up">+3</span></div>
+          <div class="v">62<span class="u">MS</span></div>
+          <svg class="spark" viewBox="0 0 100 20" preserveAspectRatio="none">
+            <polyline fill="none" stroke="var(--green)" stroke-width="1.4"
+              points="0,14 10,12 20,15 30,10 40,11 50,8 60,9 70,6 80,8 90,5 100,4"/>
+          </svg>
+        </div>
+
+        <div class="stat">
+          <div class="k">RHR <span class="delta dn">-1</span></div>
+          <div class="v">54<span class="u">BPM</span></div>
+          <svg class="spark" viewBox="0 0 100 20" preserveAspectRatio="none">
+            <polyline fill="none" stroke="var(--amber)" stroke-width="1.4"
+              points="0,8 10,10 20,9 30,11 40,9 50,12 60,10 70,13 80,11 90,14 100,12"/>
+          </svg>
+        </div>
+
+        <div class="stat">
+          <div class="k">REST <span class="delta flat">·</span></div>
+          <div class="v">7.4<span class="u">H</span></div>
+          <svg class="spark" viewBox="0 0 100 20" preserveAspectRatio="none">
+            <polyline fill="none" stroke="var(--blue)" stroke-width="1.4"
+              points="0,12 14,10 28,14 42,8 56,11 70,7 84,9 100,6"/>
+          </svg>
+        </div>
+
+        <div class="stat">
+          <div class="k">SLEEP <span class="delta up">+18m</span></div>
+          <div class="v">88<span class="u">%</span></div>
+          <svg class="spark" viewBox="0 0 100 20" preserveAspectRatio="none">
+            <polyline fill="none" stroke="var(--bright)" stroke-width="1.4"
+              points="0,10 12,9 24,13 36,7 48,9 60,5 72,6 84,4 100,3"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="connect-overlay empty-show" style="display:none;">
+        <button class="empty-cta" onclick="event.stopPropagation(); toggleMode()">
+          <i class="ph-bold ph-link"></i> CONNECT WHOOP
+        </button>
+      </div>
+    </div>
+
+    <!-- Workout -->
+    <div class="card wo dimmable" id="wo-card">
+      <div class="top">
+        <div class="label">
+          <span>SESSION · 03 / 06</span>
+        </div>
+        <div class="label" style="color:var(--green);">
+          <i class="ph-bold ph-circle-notch"></i>&nbsp;READY
+        </div>
+      </div>
+      <div class="ttl" id="wo-title">UPPER · PUSH / PULL</div>
+      <div class="meta">
+        <span><i class="ph ph-clock"></i> 52 MIN</span>
+        <span><i class="ph ph-stack"></i> 6 EXERCISES</span>
+        <span><i class="ph ph-fire"></i> ~420 KCAL</span>
+        <span><i class="ph ph-trend-up"></i> RPE 7</span>
+      </div>
+      <div class="row">
+        <div class="preview">
+          <b>A1</b> BENCH 4×6 @ 82.5kg &nbsp;·&nbsp; <b>A2</b> ROW 4×8 &nbsp;·&nbsp; <b>B</b> OHP 3×8 &nbsp;·&nbsp; <b>C</b> PULL-UP 3×AMRAP <span class="empty-show" style="display:none;">— no plan selected</span>
+        </div>
+        <button class="start-btn" id="start-btn">
+          <i class="ph-bold ph-play"></i> START
+        </button>
+        <button class="empty-cta empty-show" style="display:none;" onclick="toggleMode()">
+          <i class="ph-bold ph-list-checks"></i> CHOOSE PLAN
+        </button>
+      </div>
+    </div>
+
+    <!-- Fuel -->
+    <div class="card fuel" id="fuel-card">
+      <div class="head">
+        <div class="label"><span>FUEL · KCAL</span></div>
+        <div class="pct">73%</div>
+      </div>
+      <div class="big"><span class="num">1,840</span><span class="of">/ 2,520</span></div>
+      <div class="macros">
+        <div class="macro p">
+          <div class="mk"><span>PROT</span><span style="color:var(--green);">91%</span></div>
+          <div class="mv"><span>165</span><span class="of">/180g</span></div>
+          <div class="bar"><div class="f"></div></div>
+        </div>
+        <div class="macro c">
+          <div class="mk"><span>CARB</span><span style="color:var(--amber);">79%</span></div>
+          <div class="mv"><span>198</span><span class="of">/250g</span></div>
+          <div class="bar"><div class="f"></div></div>
+        </div>
+        <div class="macro f">
+          <div class="mk"><span>FAT</span><span style="color:var(--blue);">77%</span></div>
+          <div class="mv"><span>62</span><span class="of">/80g</span></div>
+          <div class="bar"><div class="f"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero: Steps + Water -->
+    <div class="hero">
+
+      <div class="card">
+        <div class="lbl"><span>STEPS</span><span style="color:var(--amber);">82%</span></div>
+        <div class="big"><span class="num">8,240</span><span class="of">/ 10k</span></div>
+        <div class="step-bars" id="step-bars"></div>
+        <div class="step-meta">
+          <span>4.2 KM</span>
+          <span>+312/HR</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="lbl"><span>WATER · L</span><span id="bottle-label" style="color:var(--bright); cursor:pointer;" onclick="cycleBottle()">0.75L ▾</span></div>
+        <div class="big"><span class="num" id="water-val">2.4</span><span class="of">/ 6.0</span></div>
+        <div class="water-row" id="water-bars"></div>
+        <div class="water-ctrl">
+          <div class="stepper">
+            <button onclick="adjustWater(-1)">−</button>
+            <div class="gap"></div>
+            <button onclick="adjustWater(1)">+</button>
+          </div>
+          <button class="bottle-chip" onclick="cycleBottle()" id="bottle-chip">+ 0.75 L</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Habits -->
+    <div class="card habits">
+      <div class="head">
+        <div class="label"><span>HABITS · DAILY</span></div>
+        <div class="prog" id="habit-prog">2 / 4 · 50%</div>
+      </div>
+      <div class="habit-list">
+        <div class="habit done" onclick="toggleHabit(this)">
+          <div class="box"></div>
+          <div class="name">AM VITAMINS</div>
+          <div class="tag">07:14</div>
+        </div>
+        <div class="habit done" onclick="toggleHabit(this)">
+          <div class="box"></div>
+          <div class="name">WORKOUT</div>
+          <div class="tag">06:42 · 48m</div>
+        </div>
+        <div class="habit" onclick="toggleHabit(this)">
+          <div class="box"></div>
+          <div class="name">MOBILITY · 10 MIN</div>
+          <div class="tag">PENDING</div>
+        </div>
+        <div class="habit partial" onclick="toggleHabit(this)">
+          <div class="box"></div>
+          <div class="name">PROTEIN TARGET</div>
+          <div class="tag">3 / 4</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom nav -->
+  <div class="nav">
+    <div class="item active">
+      <i class="ph-fill ph-house-simple"></i>
+      <span>HOME</span>
+    </div>
+    <div class="item">
+      <i class="ph ph-barbell"></i>
+      <span>PLAN</span>
+    </div>
+    <div class="item">
+      <i class="ph ph-check-square"></i>
+      <span>HABITS</span>
+    </div>
+    <div class="item">
+      <i class="ph ph-gear-six"></i>
+      <span>SETTINGS</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ---------- State ----------
+  let fresh = false;
+  let bottleSizes = [0.5, 0.75, 1.0, 1.25];
+  let bottleIdx = 1;
+  let water = 2.4;
+  const waterGoal = 6.0;
+
+  // ---------- Toggle Connected/Fresh ----------
+  function toggleMode(){
+    fresh = !fresh;
+    document.body.classList.toggle('fresh', fresh);
+    document.getElementById('mode-label').textContent = fresh ? 'FRESH' : 'CONNECTED';
+    document.getElementById('src-tag').textContent = fresh ? 'NO SOURCE' : 'WHOOP·LIVE';
+    document.getElementById('wo-title').textContent = fresh ? 'NO PLAN SELECTED' : 'UPPER · PUSH / PULL';
+  }
+
+  // ---------- Water ----------
+  function renderWater(){
+    document.getElementById('water-val').textContent = water.toFixed(1);
+    const bars = document.getElementById('water-bars');
+    bars.innerHTML='';
+    const totalSegs = 8;
+    const filledSegs = Math.min(totalSegs, water / waterGoal * totalSegs);
+    for(let i=0;i<totalSegs;i++){
+      const b = document.createElement('div');
+      b.className='b';
+      if(i < Math.floor(filledSegs)) b.classList.add('full');
+      else if(i < filledSegs) b.classList.add('part');
+      bars.appendChild(b);
+    }
+  }
+  function adjustWater(dir){
+    const size = bottleSizes[bottleIdx];
+    water = Math.max(0, Math.min(waterGoal + 2, water + dir*size));
+    water = Math.round(water*100)/100;
+    renderWater();
+  }
+  function cycleBottle(){
+    bottleIdx = (bottleIdx+1) % bottleSizes.length;
+    const s = bottleSizes[bottleIdx];
+    document.getElementById('bottle-label').textContent = s + 'L ▾';
+    document.getElementById('bottle-chip').textContent = '+ ' + s + ' L';
+  }
+
+  // ---------- Steps ----------
+  function renderSteps(){
+    const wrap = document.getElementById('step-bars');
+    wrap.innerHTML='';
+    const segs = 24;
+    const nowSeg = 14; // current hour bucket
+    const filled = Math.floor(segs * 0.82);
+    for(let i=0;i<segs;i++){
+      const b = document.createElement('div');
+      b.className='b';
+      b.style.height = (4 + Math.random()*18) + 'px';
+      if(i < filled) b.classList.add('on');
+      if(i === nowSeg) b.classList.add('now');
+      wrap.appendChild(b);
+    }
+  }
+
+  // ---------- Habits ----------
+  function toggleHabit(el){
+    el.classList.toggle('done');
+    el.classList.remove('partial');
+    updateHabitProg();
+  }
+  function updateHabitProg(){
+    const all = document.querySelectorAll('.habit');
+    const done = document.querySelectorAll('.habit.done').length;
+    const pct = Math.round(done/all.length*100);
+    document.getElementById('habit-prog').textContent = done+' / '+all.length+' · '+pct+'%';
+  }
+
+  // ---------- Date bar nav ----------
+  document.querySelectorAll('.dchip').forEach(c=>{
+    if(c.classList.contains('fut')) return;
+    c.addEventListener('click', ()=>{
+      document.querySelectorAll('.dchip').forEach(x=>x.classList.remove('active'));
+      c.classList.add('active');
+    });
+  });
+
+  renderWater();
+  renderSteps();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,987 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>FORGE · Home (A · Minimal)</title>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<style>
+  :root{
+    --bg-grad: radial-gradient(125% 80% at 50% 14%, #16140f, #0d0c0a);
+    --surface:#1a1814;
+    --raised:#1f1c16;
+    --hair2:#2c281f;
+    --ink:#efeae0;
+    --sub:#a59d8d;
+    --faint:#6f6859;
+    --amber:#e3a857;
+    --bright:#f3c378;
+    --green:#4fd17e;
+    --blue:#6fb0d8;
+    --red:#e36b6b;
+    --mono: ui-monospace,"SF Mono","Courier New",monospace;
+    --ui: -apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0;background:#0a0907;color:var(--ink);font-family:var(--ui);}
+  body{
+    min-height:100vh;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:40px 0;
+    background:#0a0907;
+  }
+  @media (max-width:520px){
+    body{padding:0}
+  }
+
+  /* PHONE */
+  .phone{
+    width:430px;
+    height:932px;
+    background:var(--bg-grad);
+    color:var(--ink);
+    position:relative;
+    border-radius:44px;
+    overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.04);
+  }
+  @media (max-width:520px){
+    .phone{width:100vw;height:100vh;border-radius:0;box-shadow:none}
+  }
+
+  .scroll{
+    height:100%;
+    padding: 60px 28px 140px 28px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    scrollbar-width:none;
+  }
+  .scroll::-webkit-scrollbar{display:none}
+
+  /* ============ HEADER ============ */
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:36px;
+  }
+  .wordmark{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.32em;
+    color:var(--faint);
+    text-transform:uppercase;
+  }
+  .wordmark b{color:var(--ink);font-weight:600;letter-spacing:.32em}
+
+  .datebar{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    color:var(--sub);
+  }
+  .datebar .chev{
+    width:30px;height:30px;
+    display:grid;place-items:center;
+    color:var(--sub);
+    cursor:pointer;
+    transition:color .15s;
+  }
+  .datebar .chev:hover{color:var(--ink)}
+  .datebar .chev.disabled{color:#3a352b;cursor:not-allowed}
+  .datebar .label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.24em;
+    text-transform:uppercase;
+    color:var(--sub);
+  }
+
+  /* ============ HERO: DATE + GREETING ============ */
+  .greet{
+    margin-top:8px;
+    margin-bottom:40px;
+  }
+  .greet .day{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.32em;
+    color:var(--faint);
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  .greet h1{
+    margin:0;
+    font-size:42px;
+    line-height:1.05;
+    font-weight:300;
+    letter-spacing:-.02em;
+    color:var(--ink);
+  }
+  .greet h1 .accent{
+    color:var(--bright);
+    font-weight:400;
+  }
+  .greet .sub{
+    margin-top:14px;
+    font-size:14px;
+    color:var(--sub);
+    line-height:1.5;
+    max-width:330px;
+  }
+
+  /* ============ SECTION HEAD ============ */
+  .section-head{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.34em;
+    color:var(--faint);
+    text-transform:uppercase;
+    margin: 44px 0 18px 0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .section-head .src{
+    color:var(--sub);
+  }
+
+  /* ============ RECOVERY HERO ============ */
+  .recovery-hero{
+    display:flex;
+    align-items:center;
+    gap:24px;
+    margin-bottom:6px;
+  }
+  .ring-wrap{
+    width:120px;height:120px;flex:0 0 120px;
+    position:relative;
+    display:grid;place-items:center;
+  }
+  .ring-wrap svg{transform:rotate(-90deg)}
+  .ring-track{stroke:#241f17;}
+  .ring-bar{
+    stroke:var(--green);
+    stroke-linecap:round;
+    transition: stroke-dashoffset .6s ease, stroke .3s;
+  }
+  .ring-num{
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    flex-direction:column;
+    line-height:1;
+  }
+  .ring-num .n{
+    font-family:var(--mono);
+    font-size:34px;
+    font-weight:300;
+    color:var(--ink);
+    letter-spacing:-.02em;
+  }
+  .ring-num .pct{
+    font-family:var(--mono);
+    font-size:10px;
+    color:var(--faint);
+    letter-spacing:.2em;
+    margin-top:6px;
+  }
+  .recovery-meta{
+    flex:1;
+    min-width:0;
+  }
+  .recovery-meta .lbl{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.3em;
+    color:var(--faint);
+    text-transform:uppercase;
+    margin-bottom:6px;
+  }
+  .recovery-meta .verdict{
+    font-size:24px;
+    font-weight:300;
+    color:var(--ink);
+    line-height:1.15;
+    letter-spacing:-.01em;
+    margin-bottom:8px;
+  }
+  .recovery-meta .verdict .strong{color:var(--green);font-weight:400}
+  .recovery-meta .note{
+    font-size:12.5px;
+    color:var(--sub);
+    line-height:1.45;
+  }
+
+  /* biometric inline strip */
+  .biostrip{
+    display:grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap:0;
+    margin-top:28px;
+    padding:18px 0;
+    border-top:1px solid var(--hair2);
+    border-bottom:1px solid var(--hair2);
+  }
+  .biostrip .cell{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:4px;
+  }
+  .biostrip .v{
+    font-family:var(--mono);
+    font-size:17px;
+    color:var(--ink);
+    font-weight:400;
+    letter-spacing:-.01em;
+  }
+  .biostrip .v small{
+    font-size:10px;color:var(--faint);
+    margin-left:2px;
+  }
+  .biostrip .k{
+    font-family:var(--mono);
+    font-size:9px;
+    color:var(--faint);
+    letter-spacing:.22em;
+    text-transform:uppercase;
+  }
+  .biostrip .cell.strain .v{color:var(--amber)}
+
+  /* ============ ONE THING (workout) ============ */
+  .one-thing{
+    margin-top:8px;
+  }
+  .one-thing .eyebrow{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.3em;
+    color:var(--faint);
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  .one-thing h2{
+    margin:0;
+    font-size:32px;
+    font-weight:300;
+    letter-spacing:-.02em;
+    color:var(--ink);
+    line-height:1.1;
+  }
+  .one-thing .meta{
+    margin-top:10px;
+    font-size:13px;
+    color:var(--sub);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .one-thing .meta .dot{
+    width:3px;height:3px;border-radius:50%;background:var(--faint);
+  }
+  .start-btn{
+    margin-top:22px;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:var(--bright);
+    color:#1a1408;
+    padding:14px 22px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.04em;
+    border:none;
+    cursor:pointer;
+    transition: transform .12s, background .15s;
+  }
+  .start-btn:hover{background:#f7d28f;transform:translateY(-1px)}
+  .start-btn i{font-size:14px}
+
+  /* ============ HERO HABITS (steps + water) ============ */
+  .heros{
+    margin-top:4px;
+    display:flex;
+    flex-direction:column;
+    gap:36px;
+  }
+  .hero-habit .line1{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:10px;
+  }
+  .hero-habit .name{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:var(--ink);
+    font-size:15px;
+    font-weight:500;
+    letter-spacing:.01em;
+  }
+  .hero-habit .name i{color:var(--sub);font-size:16px}
+  .hero-habit .val{
+    font-family:var(--mono);
+    font-size:22px;
+    font-weight:400;
+    color:var(--ink);
+    letter-spacing:-.01em;
+  }
+  .hero-habit .val .of{color:var(--faint);font-size:13px;margin-left:2px}
+
+  .bar{
+    height:2px;
+    background:#241f17;
+    border-radius:2px;
+    overflow:hidden;
+    position:relative;
+  }
+  .bar > i{
+    display:block;
+    height:100%;
+    background:var(--bright);
+    border-radius:2px;
+    transition:width .4s ease;
+  }
+  .bar.steps > i{background:var(--blue)}
+
+  .water-controls{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:14px;
+    gap:10px;
+  }
+  .water-controls .sizechip{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.18em;
+    color:var(--sub);
+    background:transparent;
+    border:1px solid var(--hair2);
+    padding:8px 12px;
+    border-radius:999px;
+    cursor:pointer;
+    text-transform:uppercase;
+    transition: border-color .15s, color .15s;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .water-controls .sizechip:hover{color:var(--ink);border-color:#3d372c}
+  .water-controls .sizechip i{font-size:13px;color:var(--blue)}
+  .stepper{
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .stepper button{
+    width:36px;height:36px;
+    border-radius:50%;
+    border:1px solid var(--hair2);
+    background:transparent;
+    color:var(--ink);
+    cursor:pointer;
+    display:grid;place-items:center;
+    transition: border-color .15s, background .15s;
+  }
+  .stepper button:hover{background:#1f1c16;border-color:#3d372c}
+  .stepper i{font-size:14px}
+
+  /* ============ FUEL (single-line, opinionated) ============ */
+  .fuel{
+    margin-top:4px;
+  }
+  .fuel .top{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:14px;
+  }
+  .fuel .kcal{
+    font-family:var(--mono);
+    font-size:28px;
+    color:var(--ink);
+    font-weight:300;
+    letter-spacing:-.01em;
+  }
+  .fuel .kcal .of{color:var(--faint);font-size:14px}
+  .fuel .remain{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--sub);
+    letter-spacing:.18em;
+    text-transform:uppercase;
+  }
+  .macros{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap:18px;
+  }
+  .macros .m .k{
+    font-family:var(--mono);
+    font-size:10px;
+    color:var(--faint);
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    margin-bottom:6px;
+  }
+  .macros .m .v{
+    font-family:var(--mono);
+    font-size:14px;
+    color:var(--ink);
+    margin-bottom:8px;
+  }
+  .macros .m .v .of{color:var(--faint);font-size:11px;margin-left:2px}
+  .macros .m .bar{height:2px;background:#241f17}
+  .macros .m .bar > i{background:var(--amber)}
+  .macros .m.c .bar > i{background:var(--blue)}
+  .macros .m.f .bar > i{background:#c39b6c}
+
+  /* ============ HABITS CHECKLIST ============ */
+  .habits-list{
+    margin-top:2px;
+    display:flex;
+    flex-direction:column;
+  }
+  .habit-row{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:14px 0;
+    border-bottom:1px solid var(--hair2);
+    cursor:pointer;
+    transition: opacity .15s;
+  }
+  .habit-row:last-child{border-bottom:none}
+  .habit-row .check{
+    width:22px;height:22px;
+    border-radius:50%;
+    border:1.5px solid #3d372c;
+    display:grid;place-items:center;
+    flex:0 0 22px;
+    transition:all .15s;
+  }
+  .habit-row .check i{font-size:12px;color:#0a0907;opacity:0}
+  .habit-row.done .check{background:var(--bright);border-color:var(--bright)}
+  .habit-row.done .check i{opacity:1}
+  .habit-row .label{
+    flex:1;
+    font-size:15px;
+    color:var(--ink);
+    letter-spacing:-.005em;
+  }
+  .habit-row .meta{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--sub);
+    letter-spacing:.1em;
+  }
+  .habit-row.done .label{
+    color:var(--faint);
+    text-decoration:line-through;
+    text-decoration-color:#3d372c;
+  }
+  .habit-row.done .meta{color:var(--faint)}
+
+  /* ============ CONNECT CTA (greyed-out state) ============ */
+  .connect-cta{
+    margin-top:10px;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:transparent;
+    border:1px solid #3d372c;
+    color:var(--sub);
+    padding:11px 18px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:500;
+    letter-spacing:.06em;
+    cursor:pointer;
+    transition: all .15s;
+    text-transform:uppercase;
+    font-family:var(--mono);
+  }
+  .connect-cta:hover{color:var(--ink);border-color:#5a5240}
+  .connect-cta i{font-size:13px}
+
+  /* greyed-out (fresh) variants */
+  .fresh .recovery-meta .verdict,
+  .fresh .recovery-meta .note{color:var(--faint)}
+  .fresh .ring-bar{stroke:#2c281f}
+  .fresh .ring-num .n,
+  .fresh .ring-num .pct{color:var(--faint)}
+  .fresh .biostrip .v{color:var(--faint)}
+  .fresh .biostrip .v small{color:#3d372c}
+  .fresh .one-thing h2{color:var(--faint)}
+  .fresh .hero-habit .val,
+  .fresh .hero-habit .name{color:var(--faint)}
+  .fresh .hero-habit .name i{color:#3d372c}
+  .fresh .bar > i{background:#3d372c}
+  .fresh .habit-row .label{color:var(--faint)}
+  .fresh .habit-row .meta{color:#3d372c}
+
+  /* hide fuel on fresh */
+  .fresh .fuel-section{display:none}
+
+  /* ============ BOTTOM NAV ============ */
+  .navwrap{
+    position:absolute;
+    left:0;right:0;bottom:18px;
+    display:flex;
+    justify-content:center;
+    pointer-events:none;
+    z-index:5;
+  }
+  .nav{
+    pointer-events:auto;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:8px;
+    background:rgba(26,24,20,.7);
+    backdrop-filter: blur(22px) saturate(140%);
+    -webkit-backdrop-filter: blur(22px) saturate(140%);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:999px;
+    box-shadow:0 16px 40px rgba(0,0,0,.5);
+  }
+  .nav .item{
+    width:54px;height:46px;
+    border-radius:999px;
+    display:grid;place-items:center;
+    color:var(--sub);
+    cursor:pointer;
+    transition: color .15s, background .15s;
+  }
+  .nav .item i{font-size:20px}
+  .nav .item:hover{color:var(--ink)}
+  .nav .item.active{
+    background:rgba(243,195,120,.12);
+    color:var(--bright);
+  }
+
+  /* ============ STATE TOGGLE ============ */
+  .state-toggle{
+    position:fixed;
+    right:22px;bottom:22px;
+    z-index:50;
+    background:rgba(20,18,14,.85);
+    backdrop-filter: blur(16px);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:999px;
+    padding:5px;
+    display:flex;
+    gap:2px;
+    box-shadow:0 12px 30px rgba(0,0,0,.55);
+  }
+  .state-toggle button{
+    background:transparent;
+    border:none;
+    color:var(--sub);
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.2em;
+    padding:8px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    text-transform:uppercase;
+  }
+  .state-toggle button.on{
+    background:var(--bright);color:#1a1408;
+  }
+
+  /* small responsive nudge */
+  @media (max-width:520px){
+    .state-toggle{right:14px;bottom:88px}
+  }
+</style>
+</head>
+<body>
+
+<div class="phone" id="phone">
+  <div class="scroll">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <div class="wordmark"><b>FORGE</b></div>
+      <div class="datebar">
+        <div class="chev" id="dateBack"><i class="ph ph-caret-left"></i></div>
+        <div class="label" id="dateLabel">TODAY</div>
+        <div class="chev disabled"><i class="ph ph-caret-right"></i></div>
+      </div>
+    </div>
+
+    <!-- GREETING -->
+    <div class="greet">
+      <div class="day">FRIDAY · JUNE 19</div>
+      <h1>Good morning,<br><span class="accent">Brad.</span></h1>
+      <div class="sub" id="greetSub">You're primed. One workout, two habits to close.</div>
+    </div>
+
+    <!-- ============ RECOVERY ============ -->
+    <div class="section-head">
+      <span>RECOVERY</span>
+      <span class="src" id="bioSrc">WHOOP</span>
+    </div>
+
+    <div class="recovery-hero">
+      <div class="ring-wrap">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle class="ring-track" cx="60" cy="60" r="52" fill="none" stroke-width="6"/>
+          <circle class="ring-bar" id="recRing" cx="60" cy="60" r="52" fill="none" stroke-width="6"
+            stroke-dasharray="326.7" stroke-dashoffset="65.34"/>
+        </svg>
+        <div class="ring-num">
+          <div class="n" id="recNum">82</div>
+          <div class="pct">RECOVERY</div>
+        </div>
+      </div>
+      <div class="recovery-meta">
+        <div class="lbl">READY TO TRAIN</div>
+        <div class="verdict" id="recVerdict"><span class="strong">Green.</span> Push it.</div>
+        <div class="note" id="recNote">HRV trending up. Sleep efficiency 92%. Strain target today: 14.0.</div>
+      </div>
+    </div>
+
+    <div class="biostrip" id="bioStrip">
+      <div class="cell strain"><span class="v">8.4</span><span class="k">STRAIN</span></div>
+      <div class="cell"><span class="v">68<small>ms</small></span><span class="k">HRV</span></div>
+      <div class="cell"><span class="v">54<small>bpm</small></span><span class="k">RHR</span></div>
+      <div class="cell"><span class="v">96<small>%</small></span><span class="k">REST</span></div>
+      <div class="cell"><span class="v">7:42</span><span class="k">SLEEP</span></div>
+    </div>
+
+    <!-- ============ ONE THING (workout) ============ -->
+    <div class="section-head">
+      <span>TODAY'S SESSION</span>
+    </div>
+
+    <div class="one-thing" id="workoutBlock">
+      <h2 id="workoutTitle">Push Day A.<br>Heavy chest, shoulders.</h2>
+      <div class="meta" id="workoutMeta">
+        <span>6 exercises</span><span class="dot"></span>
+        <span>~58 min</span><span class="dot"></span>
+        <span>RPE 8</span>
+      </div>
+      <button class="start-btn" id="workoutBtn">
+        <i class="ph-bold ph-play"></i> START WORKOUT
+      </button>
+    </div>
+
+    <!-- ============ HABITS (steps + water) ============ -->
+    <div class="section-head">
+      <span>HABITS</span>
+    </div>
+
+    <div class="heros">
+
+      <!-- STEPS -->
+      <div class="hero-habit" id="stepsBlock">
+        <div class="line1">
+          <div class="name"><i class="ph ph-footprints"></i> Steps</div>
+          <div class="val" id="stepsVal">8,240<span class="of"> / 10,000</span></div>
+        </div>
+        <div class="bar steps"><i id="stepsBar" style="width:82%"></i></div>
+      </div>
+
+      <!-- WATER -->
+      <div class="hero-habit" id="waterBlock">
+        <div class="line1">
+          <div class="name"><i class="ph ph-drop"></i> Water</div>
+          <div class="val" id="waterVal">2.4<span class="of"> / 6 L</span></div>
+        </div>
+        <div class="bar"><i id="waterBar" style="width:40%;background:var(--blue)"></i></div>
+        <div class="water-controls">
+          <button class="sizechip" id="sizeChip">
+            <i class="ph ph-drop"></i> <span id="sizeLabel">0.5 L</span>
+          </button>
+          <div class="stepper">
+            <button id="waterMinus" aria-label="minus"><i class="ph-bold ph-minus"></i></button>
+            <button id="waterPlus" aria-label="plus"><i class="ph-bold ph-plus"></i></button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ============ FUEL ============ -->
+    <div class="fuel-section">
+      <div class="section-head">
+        <span>FUEL</span>
+        <span class="src">680 KCAL LEFT</span>
+      </div>
+
+      <div class="fuel">
+        <div class="top">
+          <div class="kcal">1,840<span class="of"> / 2,520</span></div>
+          <div class="remain">73%</div>
+        </div>
+        <div class="macros">
+          <div class="m p">
+            <div class="k">PROTEIN</div>
+            <div class="v">165<span class="of"> / 180g</span></div>
+            <div class="bar"><i style="width:92%"></i></div>
+          </div>
+          <div class="m c">
+            <div class="k">CARBS</div>
+            <div class="v">198<span class="of"> / 250g</span></div>
+            <div class="bar"><i style="width:79%"></i></div>
+          </div>
+          <div class="m f">
+            <div class="k">FAT</div>
+            <div class="v">62<span class="of"> / 80g</span></div>
+            <div class="bar"><i style="width:78%"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ CHECKLIST ============ -->
+    <div class="section-head">
+      <span>CHECKLIST</span>
+      <span class="src" id="checkProg">2 / 4</span>
+    </div>
+
+    <div class="habits-list" id="checklist">
+      <div class="habit-row done" data-h="vits">
+        <div class="check"><i class="ph-bold ph-check"></i></div>
+        <div class="label">AM vitamins</div>
+        <div class="meta">07:14</div>
+      </div>
+      <div class="habit-row done" data-h="wk">
+        <div class="check"><i class="ph-bold ph-check"></i></div>
+        <div class="label">Workout</div>
+        <div class="meta">DONE</div>
+      </div>
+      <div class="habit-row" data-h="mob">
+        <div class="check"><i class="ph-bold ph-check"></i></div>
+        <div class="label">Mobility</div>
+        <div class="meta">10 MIN</div>
+      </div>
+      <div class="habit-row" data-h="pro">
+        <div class="check"><i class="ph-bold ph-check"></i></div>
+        <div class="label">Protein meals</div>
+        <div class="meta">3 / 4</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="navwrap">
+    <div class="nav">
+      <div class="item active" title="Home"><i class="ph-bold ph-house"></i></div>
+      <div class="item" title="Plan"><i class="ph ph-calendar-blank"></i></div>
+      <div class="item" title="Habits"><i class="ph ph-squares-four"></i></div>
+      <div class="item" title="Settings"><i class="ph ph-gear-six"></i></div>
+    </div>
+  </div>
+</div>
+
+<!-- STATE TOGGLE -->
+<div class="state-toggle">
+  <button id="btnConnected" class="on">CONNECTED</button>
+  <button id="btnFresh">FRESH</button>
+</div>
+
+<script>
+(function(){
+  const phone = document.getElementById('phone');
+  const btnC = document.getElementById('btnConnected');
+  const btnF = document.getElementById('btnFresh');
+
+  // ---- STATE MODELS ----
+  const connected = {
+    bioSrc: 'WHOOP',
+    rec: 82, recVerdict:'<span class="strong">Green.</span> Push it.',
+    recNote:'HRV trending up. Sleep efficiency 92%. Strain target today: 14.0.',
+    bio:[
+      {v:'8.4',k:'STRAIN',c:'strain'},
+      {v:'68<small>ms</small>',k:'HRV'},
+      {v:'54<small>bpm</small>',k:'RHR'},
+      {v:'96<small>%</small>',k:'REST'},
+      {v:'7:42',k:'SLEEP'},
+    ],
+    workoutTitle:'Push Day A.<br>Heavy chest, shoulders.',
+    workoutMeta:'<span>6 exercises</span><span class="dot"></span><span>~58 min</span><span class="dot"></span><span>RPE 8</span>',
+    workoutCTA:'<i class="ph-bold ph-play"></i> START WORKOUT',
+    greetSub:"You're primed. One workout, two habits to close.",
+  };
+  const fresh = {
+    bioSrc: 'NOT CONNECTED',
+    rec: 0, recVerdict:'No data yet.',
+    recNote:'Connect WHOOP or Oura to see your recovery, strain, HRV and sleep.',
+    bio:[
+      {v:'·',k:'STRAIN',c:'strain'},
+      {v:'·',k:'HRV'},
+      {v:'·',k:'RHR'},
+      {v:'·',k:'REST'},
+      {v:'·',k:'SLEEP'},
+    ],
+    workoutTitle:'No plan yet.',
+    workoutMeta:'<span>Choose a training plan to get your first session.</span>',
+    workoutCTA:'<i class="ph ph-squares-four"></i> CHOOSE A PLAN',
+    greetSub:"Let's set you up. Connect your tracker, pick a plan, log your first sip.",
+  };
+
+  // ---- WATER STATE ----
+  const sizes = [0.5, 0.75, 1, 1.25];
+  let sizeIdx = 0;
+  let waterL = 2.4;
+  const waterGoal = 6;
+
+  function renderWater(){
+    const el = document.getElementById('waterVal');
+    const bar = document.getElementById('waterBar');
+    const v = Math.max(0, Math.round(waterL*10)/10);
+    el.innerHTML = v.toFixed(1).replace(/\.0$/,'') + '<span class="of"> / '+waterGoal+' L</span>';
+    bar.style.width = Math.min(100, (v/waterGoal)*100) + '%';
+  }
+  function renderSize(){
+    document.getElementById('sizeLabel').textContent = sizes[sizeIdx] + ' L';
+  }
+  document.getElementById('sizeChip').addEventListener('click', ()=>{
+    sizeIdx = (sizeIdx+1) % sizes.length;
+    renderSize();
+  });
+  document.getElementById('waterPlus').addEventListener('click', ()=>{
+    if (phone.classList.contains('fresh')) return setConnected();
+    waterL = Math.min(waterGoal+5, Math.round((waterL+sizes[sizeIdx])*100)/100);
+    renderWater();
+  });
+  document.getElementById('waterMinus').addEventListener('click', ()=>{
+    if (phone.classList.contains('fresh')) return;
+    waterL = Math.max(0, Math.round((waterL-sizes[sizeIdx])*100)/100);
+    renderWater();
+  });
+
+  // ---- CHECKLIST ----
+  function updateProg(){
+    const rows = document.querySelectorAll('#checklist .habit-row');
+    const total = rows.length;
+    const done = document.querySelectorAll('#checklist .habit-row.done').length;
+    document.getElementById('checkProg').textContent = done+' / '+total;
+  }
+  document.querySelectorAll('#checklist .habit-row').forEach(r=>{
+    r.addEventListener('click', ()=>{
+      if (phone.classList.contains('fresh')) return;
+      r.classList.toggle('done');
+      updateProg();
+    });
+  });
+
+  // ---- DATE NAV ----
+  const labels = ['TODAY','YESTERDAY','WEDNESDAY','TUESDAY','MONDAY'];
+  let dateIdx = 0;
+  document.getElementById('dateBack').addEventListener('click', ()=>{
+    if (dateIdx < labels.length-1) dateIdx++;
+    document.getElementById('dateLabel').textContent = labels[dateIdx];
+  });
+
+  // ---- WORKOUT BUTTON (acts as Connect on fresh) ----
+  document.getElementById('workoutBtn').addEventListener('click', ()=>{
+    if (phone.classList.contains('fresh')) setConnected();
+  });
+
+  // ---- STATE APPLY ----
+  function applyState(model, isFresh){
+    document.getElementById('bioSrc').textContent = model.bioSrc;
+    document.getElementById('recNum').textContent = isFresh ? '·' : model.rec;
+    document.getElementById('recVerdict').innerHTML = model.recVerdict;
+    document.getElementById('recNote').innerHTML = model.recNote;
+    document.getElementById('greetSub').innerHTML = model.greetSub;
+
+    // ring
+    const circ = 2 * Math.PI * 52;
+    const off = isFresh ? circ : circ - (circ * (model.rec/100));
+    document.getElementById('recRing').setAttribute('stroke-dashoffset', off.toFixed(2));
+    const ringBar = document.getElementById('recRing');
+    ringBar.style.stroke = isFresh ? '' : (model.rec >= 67 ? 'var(--green)' : model.rec >= 34 ? 'var(--amber)' : 'var(--red)');
+
+    // bio strip
+    const strip = document.getElementById('bioStrip');
+    strip.innerHTML = model.bio.map(b=>`<div class="cell ${b.c||''}"><span class="v">${b.v}</span><span class="k">${b.k}</span></div>`).join('');
+
+    // workout
+    document.getElementById('workoutTitle').innerHTML = model.workoutTitle;
+    document.getElementById('workoutMeta').innerHTML = model.workoutMeta;
+    document.getElementById('workoutBtn').innerHTML = model.workoutCTA;
+
+    // connect chips (under bio strip when fresh)
+    addConnectChips(isFresh);
+  }
+
+  // inject connect CTAs near greyed sections (fresh only)
+  function addConnectChips(isFresh){
+    // remove existing
+    document.querySelectorAll('.connect-cta').forEach(n=>n.remove());
+    if (!isFresh) return;
+    // Recovery connect chip
+    const rec = document.querySelector('.recovery-meta');
+    const chip = document.createElement('button');
+    chip.className = 'connect-cta';
+    chip.innerHTML = '<i class="ph ph-link"></i> CONNECT WHOOP';
+    chip.addEventListener('click', setConnected);
+    rec.appendChild(chip);
+
+    // Steps connect chip
+    const sb = document.getElementById('stepsBlock');
+    const c2 = document.createElement('button');
+    c2.className = 'connect-cta';
+    c2.style.marginTop = '12px';
+    c2.innerHTML = '<i class="ph ph-link"></i> CONNECT HEALTH';
+    c2.addEventListener('click', setConnected);
+    sb.appendChild(c2);
+
+    // Water add chip (acts on +)
+    // (water already has +/- buttons; they trigger setConnected on fresh)
+  }
+
+  function setFresh(){
+    phone.classList.add('fresh');
+    btnF.classList.add('on'); btnC.classList.remove('on');
+    waterL = 0;
+    renderWater();
+    // reset checklist to all undone
+    document.querySelectorAll('#checklist .habit-row').forEach(r=>r.classList.remove('done'));
+    updateProg();
+    applyState(fresh, true);
+  }
+  function setConnected(){
+    phone.classList.remove('fresh');
+    btnC.classList.add('on'); btnF.classList.remove('on');
+    waterL = 2.4;
+    renderWater();
+    // restore default checklist (first two done)
+    const rows = document.querySelectorAll('#checklist .habit-row');
+    rows.forEach((r,i)=> i<2 ? r.classList.add('done') : r.classList.remove('done'));
+    updateProg();
+    applyState(connected, false);
+  }
+
+  btnC.addEventListener('click', setConnected);
+  btnF.addEventListener('click', setFresh);
+
+  // ---- bottom nav ----
+  document.querySelectorAll('.nav .item').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      document.querySelectorAll('.nav .item').forEach(n=>n.classList.remove('active'));
+      el.classList.add('active');
+    });
+  });
+
+  // init
+  renderSize();
+  renderWater();
+  updateProg();
+  applyState(connected, false);
+})();
+</script>
+
+</body>
+</html>

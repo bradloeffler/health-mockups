@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>FORGE Home — No-Scroll Cockpit</title>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+<style>
+  :root{
+    --bg-a:#16140f; --bg-b:#0d0c0a;
+    --surface:#1a1814; --raised:#1f1c16; --hair2:#2c281f;
+    --ink:#efeae0; --sub:#a59d8d; --faint:#6f6859;
+    --amber:#e3a857; --bright:#f3c378; --green:#4fd17e; --blue:#6fb0d8;
+    --red:#e26a6a;
+    --mono: ui-monospace,"SF Mono","Courier New",monospace;
+    --ui: -apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0;background:#000;color:var(--ink);font-family:var(--ui);}
+  body{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:24px 0;}
+  @media (min-width: 500px){ body{align-items:center;padding:32px 0;} }
+
+  .phone{
+    width:430px;height:900px;position:relative;overflow:hidden;
+    background: radial-gradient(125% 80% at 50% 14%, var(--bg-a), var(--bg-b));
+    color:var(--ink);
+    border-radius:48px;
+    box-shadow: 0 0 0 1px #000, 0 30px 80px rgba(0,0,0,.6);
+  }
+  @media (max-width: 480px){ .phone{border-radius:0;box-shadow:none;height:100vh;width:100vw;} }
+
+  /* status bar */
+  .status{
+    height:44px;display:flex;align-items:flex-end;justify-content:space-between;
+    padding:0 28px 6px;font-family:var(--mono);font-size:13px;color:var(--ink);font-weight:600;
+  }
+  .status .right{display:flex;align-items:center;gap:6px;font-size:14px;}
+
+  /* header */
+  .header{
+    padding:6px 20px 8px;display:flex;align-items:center;justify-content:space-between;
+  }
+  .brand{
+    font-family:var(--mono);font-size:11px;letter-spacing:.28em;color:var(--amber);font-weight:700;
+  }
+  .brand .dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--amber);box-shadow:0 0 8px var(--amber);margin-right:8px;vertical-align:middle;}
+  .mode-toggle{
+    display:flex;background:rgba(255,255,255,.04);border:1px solid var(--hair2);border-radius:999px;
+    padding:3px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+  }
+  .mode-toggle button{
+    background:transparent;border:0;color:var(--faint);padding:5px 10px;border-radius:999px;
+    font-family:inherit;font-size:inherit;letter-spacing:inherit;font-weight:600;cursor:pointer;
+  }
+  .mode-toggle button.on{background:var(--amber);color:#1a1208;}
+
+  /* date strip */
+  .datebar{
+    margin:2px 20px 6px;display:flex;align-items:center;justify-content:space-between;
+    padding:6px 4px 8px;border-bottom:1px solid var(--hair2);
+  }
+  .datebar .chev{color:var(--sub);background:none;border:0;padding:4px 6px;cursor:pointer;font-size:18px;}
+  .datebar .date{display:flex;flex-direction:column;align-items:center;line-height:1;}
+  .datebar .day{font-family:var(--mono);font-size:10px;letter-spacing:.32em;color:var(--sub);}
+  .datebar .num{font-family:var(--mono);font-size:18px;color:var(--ink);font-weight:600;margin-top:3px;letter-spacing:.04em;}
+  .datebar .today{
+    font-family:var(--mono);font-size:9px;letter-spacing:.24em;color:var(--amber);
+    border:1px solid rgba(227,168,87,.35);border-radius:4px;padding:3px 7px;
+  }
+
+  /* main grid container */
+  .stage{padding:0 14px;}
+
+  /* CLUSTER — recovery + strain dual ring */
+  .cluster{
+    position:relative;background:var(--surface);border:1px solid var(--hair2);border-radius:22px;
+    padding:14px 14px 12px;margin-bottom:8px;
+    overflow:hidden;
+  }
+  .cluster::before{
+    content:"";position:absolute;inset:0;background:
+      radial-gradient(60% 50% at 50% 0%, rgba(227,168,87,.06), transparent 70%);
+    pointer-events:none;
+  }
+  .cluster-top{display:flex;align-items:flex-start;justify-content:space-between;font-family:var(--mono);font-size:9px;letter-spacing:.28em;color:var(--sub);}
+  .src{display:flex;align-items:center;gap:6px;}
+  .src .pulse{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);}
+  .fresh-mode .src .pulse{background:var(--faint);box-shadow:none;}
+  .fresh-mode .src{color:var(--faint);}
+
+  .cluster-body{display:flex;align-items:center;gap:14px;margin-top:6px;}
+  .rings{position:relative;width:172px;height:172px;flex:0 0 172px;}
+  .rings svg{position:absolute;inset:0;width:100%;height:100%;}
+  .rings .center{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;line-height:1;
+  }
+  .rec-label{font-family:var(--mono);font-size:9px;letter-spacing:.3em;color:var(--sub);margin-bottom:6px;}
+  .rec-num{font-family:var(--mono);font-size:48px;font-weight:600;color:var(--green);letter-spacing:-.02em;line-height:.9;}
+  .rec-num .pct{font-size:18px;color:var(--green);opacity:.7;margin-left:1px;}
+  .rec-state{font-family:var(--mono);font-size:9px;letter-spacing:.26em;color:var(--green);margin-top:6px;}
+
+  /* metrics column to the right of rings */
+  .metcol{flex:1;display:flex;flex-direction:column;gap:6px;min-width:0;}
+  .met{
+    display:flex;align-items:baseline;justify-content:space-between;
+    padding:7px 10px;background:var(--raised);border:1px solid var(--hair2);border-radius:11px;
+  }
+  .met .k{font-family:var(--mono);font-size:9px;letter-spacing:.26em;color:var(--sub);}
+  .met .v{font-family:var(--mono);font-size:17px;color:var(--ink);font-weight:600;letter-spacing:-.01em;}
+  .met .u{font-family:var(--mono);font-size:9px;color:var(--faint);margin-left:2px;letter-spacing:.1em;}
+  .met.strain{background:linear-gradient(135deg,rgba(111,176,216,.10),var(--raised));border-color:rgba(111,176,216,.22);}
+  .met.strain .v{color:var(--blue);}
+
+  /* fresh state overrides */
+  .fresh-mode .rec-num{color:var(--faint);}
+  .fresh-mode .rec-num .pct{color:var(--faint);}
+  .fresh-mode .rec-state{color:var(--faint);}
+  .fresh-mode .met .v{color:var(--faint);}
+  .fresh-mode .met.strain{background:var(--raised);border-color:var(--hair2);}
+  .fresh-mode .met.strain .v{color:var(--faint);}
+
+  .connect-overlay{
+    position:absolute;left:14px;right:14px;bottom:10px;display:none;justify-content:center;
+  }
+  .fresh-mode .connect-overlay{display:flex;}
+  .connect-btn{
+    background:var(--amber);color:#1a1208;border:0;border-radius:10px;
+    padding:8px 14px;font-family:var(--mono);font-size:10px;letter-spacing:.24em;font-weight:700;cursor:pointer;
+    display:flex;align-items:center;gap:6px;
+  }
+  .connect-btn.connected{background:var(--raised);color:var(--green);border:1px solid rgba(79,209,126,.3);}
+
+  /* ROW: workout + fuel (fuel hides on fresh) */
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+  .fresh-mode .row2{grid-template-columns:1fr;}
+  .fresh-mode .fuel{display:none;}
+
+  .card{
+    background:var(--surface);border:1px solid var(--hair2);border-radius:18px;
+    padding:10px 12px;position:relative;min-height:96px;display:flex;flex-direction:column;justify-content:space-between;
+  }
+  .card .lbl{font-family:var(--mono);font-size:9px;letter-spacing:.26em;color:var(--sub);display:flex;align-items:center;gap:6px;}
+  .card .lbl i{font-size:11px;color:var(--amber);}
+  .workout .title{font-family:var(--ui);font-size:14px;color:var(--ink);font-weight:600;margin-top:4px;line-height:1.15;}
+  .workout .meta{font-family:var(--mono);font-size:10px;color:var(--sub);margin-top:2px;letter-spacing:.08em;}
+  .start{
+    background:var(--amber);color:#1a1208;border:0;border-radius:9px;padding:7px 0;
+    font-family:var(--mono);font-size:10px;letter-spacing:.24em;font-weight:700;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;
+  }
+  .start i{font-size:11px;}
+  .fresh-mode .workout .title{color:var(--faint);}
+  .fresh-mode .workout .meta{color:var(--faint);}
+  .fresh-mode .start{background:var(--raised);color:var(--amber);border:1px solid rgba(227,168,87,.3);}
+
+  .fuel .bignum{font-family:var(--mono);font-size:22px;color:var(--ink);font-weight:600;margin-top:3px;letter-spacing:-.01em;line-height:1;}
+  .fuel .bignum .of{color:var(--faint);font-size:12px;font-weight:500;}
+  .fuel .bignum .u{font-family:var(--mono);font-size:9px;color:var(--faint);letter-spacing:.16em;margin-left:3px;}
+  .macros{display:flex;gap:3px;margin-top:6px;}
+  .mac{flex:1;display:flex;flex-direction:column;gap:3px;}
+  .mac .mk{font-family:var(--mono);font-size:8px;letter-spacing:.16em;color:var(--sub);}
+  .mac .mv{font-family:var(--mono);font-size:10px;color:var(--ink);font-weight:600;}
+  .mac .bar{height:3px;background:var(--hair2);border-radius:2px;overflow:hidden;}
+  .mac .bar > span{display:block;height:100%;background:var(--amber);}
+  .mac.p .bar>span{background:var(--green);}
+  .mac.c .bar>span{background:var(--bright);}
+  .mac.f .bar>span{background:var(--blue);}
+
+  /* HERO: steps + water (full width, prominent) */
+  .hero{
+    display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;
+  }
+  .hero .card{padding:10px 12px;min-height:auto;}
+  .hero .head{display:flex;align-items:center;justify-content:space-between;}
+  .hero .lbl i{color:var(--bright);}
+  .hero.water .lbl i{color:var(--blue);}
+
+  .steps-body{display:flex;align-items:center;gap:10px;margin-top:4px;}
+  .step-ring{position:relative;width:54px;height:54px;flex:0 0 54px;}
+  .step-ring svg{position:absolute;inset:0;width:100%;height:100%;}
+  .step-ring .ic{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--bright);}
+  .step-info{flex:1;min-width:0;}
+  .step-info .big{font-family:var(--mono);font-size:20px;color:var(--ink);font-weight:600;letter-spacing:-.01em;line-height:1;}
+  .step-info .big .of{color:var(--faint);font-size:11px;font-weight:500;}
+  .step-info .sub{font-family:var(--mono);font-size:9px;color:var(--sub);letter-spacing:.16em;margin-top:3px;}
+
+  .water-body{display:flex;flex-direction:column;gap:5px;margin-top:4px;}
+  .water-top{display:flex;align-items:baseline;justify-content:space-between;}
+  .water-big{font-family:var(--mono);font-size:20px;color:var(--ink);font-weight:600;letter-spacing:-.01em;line-height:1;}
+  .water-big .of{color:var(--faint);font-size:11px;font-weight:500;}
+  .water-big .u{font-family:var(--mono);font-size:9px;color:var(--faint);letter-spacing:.16em;margin-left:2px;}
+  .water-bar{height:5px;background:var(--hair2);border-radius:3px;overflow:hidden;}
+  .water-bar > span{display:block;height:100%;background:linear-gradient(90deg,var(--blue),#9dd1ee);transition:width .3s;}
+  .water-ctrls{display:flex;align-items:center;gap:4px;margin-top:2px;}
+  .stepper{
+    background:var(--raised);border:1px solid var(--hair2);color:var(--ink);
+    width:26px;height:26px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;font-family:var(--ui);
+  }
+  .bottle-chip{
+    flex:1;background:var(--raised);border:1px solid var(--hair2);color:var(--ink);
+    border-radius:7px;height:26px;font-family:var(--mono);font-size:9px;letter-spacing:.18em;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;font-weight:600;
+  }
+  .bottle-chip i{font-size:11px;color:var(--blue);}
+
+  .fresh-mode .step-info .big,
+  .fresh-mode .water-big{color:var(--faint);}
+  .fresh-mode .step-ring .ic{color:var(--faint);}
+  .fresh-mode .hero .lbl i{color:var(--faint);}
+
+  /* HABITS strip */
+  .habits{
+    background:var(--surface);border:1px solid var(--hair2);border-radius:18px;
+    padding:9px 12px;margin-bottom:80px;
+  }
+  .habits-head{display:flex;align-items:center;justify-content:space-between;}
+  .habits-head .lbl{font-family:var(--mono);font-size:9px;letter-spacing:.26em;color:var(--sub);display:flex;align-items:center;gap:6px;}
+  .habits-head .lbl i{color:var(--amber);font-size:11px;}
+  .habits-head .count{font-family:var(--mono);font-size:9px;color:var(--green);letter-spacing:.16em;}
+  .habits-list{display:flex;gap:5px;margin-top:6px;}
+  .habit{
+    flex:1;background:var(--raised);border:1px solid var(--hair2);border-radius:9px;
+    padding:6px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;
+    min-width:0;
+  }
+  .habit .box{width:14px;height:14px;border-radius:4px;border:1px solid var(--faint);display:flex;align-items:center;justify-content:center;background:transparent;}
+  .habit .box i{font-size:10px;color:transparent;}
+  .habit.done .box{background:var(--green);border-color:var(--green);}
+  .habit.done .box i{color:#0d2614;}
+  .habit .name{font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;text-align:center;}
+  .habit.done .name{color:var(--faint);text-decoration:line-through;}
+  .habit .frac{font-family:var(--mono);font-size:8px;color:var(--sub);letter-spacing:.08em;}
+
+  .fresh-mode .habits-head .count{color:var(--faint);}
+  .fresh-mode .habit{opacity:.55;}
+  .fresh-mode .habit .add{font-family:var(--mono);font-size:9px;color:var(--amber);}
+
+  /* bottom nav */
+  .nav{
+    position:absolute;left:18px;right:18px;bottom:18px;
+    background:rgba(26,24,20,.72);
+    backdrop-filter:blur(20px) saturate(140%); -webkit-backdrop-filter:blur(20px) saturate(140%);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:22px;
+    padding:10px 6px;
+    display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+    box-shadow: 0 12px 28px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.04);
+  }
+  .nav button{
+    background:none;border:0;color:var(--faint);
+    display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;
+    font-family:var(--mono);font-size:9px;letter-spacing:.22em;padding:2px;font-weight:600;
+  }
+  .nav button i{font-size:18px;}
+  .nav button.active{color:var(--amber);}
+  .nav button.active i{filter:drop-shadow(0 0 6px rgba(227,168,87,.5));}
+
+  /* tap feedback */
+  button:active{transform:scale(.97);transition:transform .08s;}
+</style>
+</head>
+<body>
+<div class="phone" id="phone">
+
+  <!-- Status bar -->
+  <div class="status">
+    <span>9:41</span>
+    <span class="right">
+      <i class="ph-bold ph-cell-signal-high"></i>
+      <i class="ph-bold ph-wifi-high"></i>
+      <i class="ph-fill ph-battery-full"></i>
+    </span>
+  </div>
+
+  <!-- Header: brand + mode toggle -->
+  <div class="header">
+    <div class="brand"><span class="dot"></span>FORGE</div>
+    <div class="mode-toggle">
+      <button id="bConnected" class="on" onclick="setMode('connected')">CONNECTED</button>
+      <button id="bFresh" onclick="setMode('fresh')">FRESH</button>
+    </div>
+  </div>
+
+  <!-- Date nav -->
+  <div class="datebar">
+    <button class="chev" onclick="shiftDay(-1)"><i class="ph-bold ph-caret-left"></i></button>
+    <div class="date">
+      <span class="day" id="dDay">FRIDAY</span>
+      <span class="num" id="dNum">JUN 19</span>
+    </div>
+    <button class="chev" onclick="shiftDay(1)"><i class="ph-bold ph-caret-right"></i></button>
+  </div>
+
+  <div class="stage">
+
+    <!-- CLUSTER: rings + biometric grid -->
+    <div class="cluster" id="cluster">
+      <div class="cluster-top">
+        <span>BIOMETRICS</span>
+        <span class="src"><span class="pulse"></span><span id="srcLabel">WHOOP · LIVE</span></span>
+      </div>
+
+      <div class="cluster-body">
+        <!-- Dual concentric rings: outer=recovery, inner=strain -->
+        <div class="rings">
+          <svg viewBox="0 0 200 200">
+            <!-- outer ring track -->
+            <circle cx="100" cy="100" r="86" fill="none" stroke="#2c281f" stroke-width="10"/>
+            <!-- outer ring (recovery) -->
+            <circle id="recArc" cx="100" cy="100" r="86" fill="none"
+              stroke="var(--green)" stroke-width="10" stroke-linecap="round"
+              stroke-dasharray="540.35" stroke-dashoffset="118.88"
+              transform="rotate(-90 100 100)"
+              style="filter: drop-shadow(0 0 6px rgba(79,209,126,.35));"/>
+            <!-- inner ring track -->
+            <circle cx="100" cy="100" r="68" fill="none" stroke="#2c281f" stroke-width="7"/>
+            <!-- inner ring (strain 0-21) -->
+            <circle id="strainArc" cx="100" cy="100" r="68" fill="none"
+              stroke="var(--blue)" stroke-width="7" stroke-linecap="round"
+              stroke-dasharray="427.26" stroke-dashoffset="170.90"
+              transform="rotate(-90 100 100)"
+              style="filter: drop-shadow(0 0 4px rgba(111,176,216,.3));"/>
+            <!-- tick marks for strain ring -->
+            <g id="ticks"></g>
+          </svg>
+          <div class="center">
+            <div class="rec-label">RECOVERY</div>
+            <div class="rec-num" id="recNum">78<span class="pct">%</span></div>
+            <div class="rec-state" id="recState">PRIMED</div>
+          </div>
+        </div>
+
+        <div class="metcol">
+          <div class="met strain">
+            <span class="k">STRAIN</span>
+            <span><span class="v" id="strainV">12.4</span><span class="u">/21</span></span>
+          </div>
+          <div class="met">
+            <span class="k">HRV</span>
+            <span><span class="v" id="hrvV">62</span><span class="u">ms</span></span>
+          </div>
+          <div class="met">
+            <span class="k">RHR</span>
+            <span><span class="v" id="rhrV">54</span><span class="u">bpm</span></span>
+          </div>
+          <div class="met">
+            <span class="k">REST</span>
+            <span><span class="v" id="restV">94</span><span class="u">%</span></span>
+          </div>
+          <div class="met">
+            <span class="k">SLEEP</span>
+            <span><span class="v" id="sleepV">7:42</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="connect-overlay">
+        <button class="connect-btn" id="connectBio" onclick="toggleConnect('bio', this)">
+          <i class="ph-bold ph-plugs"></i> CONNECT WHOOP
+        </button>
+      </div>
+    </div>
+
+    <!-- Row 2: workout + fuel -->
+    <div class="row2">
+      <div class="card workout">
+        <div>
+          <div class="lbl"><i class="ph-fill ph-barbell"></i> WORKOUT</div>
+          <div class="title" id="wTitle">Push Day · Chest+Tri</div>
+          <div class="meta" id="wMeta">8 EX · ~48 MIN</div>
+        </div>
+        <button class="start" id="startBtn"><i class="ph-bold ph-play"></i> <span id="startTxt">START</span></button>
+      </div>
+
+      <div class="card fuel">
+        <div>
+          <div class="lbl"><i class="ph-fill ph-flame"></i> FUEL</div>
+          <div class="bignum">1,840<span class="of"> / 2,520</span><span class="u">kcal</span></div>
+        </div>
+        <div class="macros">
+          <div class="mac p">
+            <div class="mk">P</div>
+            <div class="mv">165/180</div>
+            <div class="bar"><span style="width:92%"></span></div>
+          </div>
+          <div class="mac c">
+            <div class="mk">C</div>
+            <div class="mv">198/250</div>
+            <div class="bar"><span style="width:79%"></span></div>
+          </div>
+          <div class="mac f">
+            <div class="mk">F</div>
+            <div class="mv">62/80</div>
+            <div class="bar"><span style="width:77%"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HERO: steps + water -->
+    <div class="hero">
+      <div class="card hero-card">
+        <div class="lbl"><i class="ph-fill ph-sneaker"></i> STEPS</div>
+        <div class="steps-body">
+          <div class="step-ring">
+            <svg viewBox="0 0 60 60">
+              <circle cx="30" cy="30" r="25" fill="none" stroke="#2c281f" stroke-width="4"/>
+              <circle id="stepArc" cx="30" cy="30" r="25" fill="none"
+                stroke="var(--bright)" stroke-width="4" stroke-linecap="round"
+                stroke-dasharray="157.08" stroke-dashoffset="27.65"
+                transform="rotate(-90 30 30)"
+                style="filter: drop-shadow(0 0 4px rgba(243,195,120,.4));"/>
+            </svg>
+            <div class="ic"><i class="ph-fill ph-sneaker"></i></div>
+          </div>
+          <div class="step-info">
+            <div class="big" id="stepsV">8,240<span class="of"> / 10k</span></div>
+            <div class="sub">82% · 1,760 TO GO</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card hero water">
+        <div class="lbl"><i class="ph-fill ph-drop"></i> WATER</div>
+        <div class="water-body">
+          <div class="water-top">
+            <div class="water-big" id="waterV">2.4<span class="of"> / 6</span><span class="u">L</span></div>
+          </div>
+          <div class="water-bar"><span id="waterBar" style="width:40%"></span></div>
+          <div class="water-ctrls">
+            <button class="stepper" onclick="adjustWater(-1)">−</button>
+            <button class="bottle-chip" id="bottleChip" onclick="cycleBottle()">
+              <i class="ph-fill ph-drop"></i> <span id="bottleLbl">500ML</span>
+            </button>
+            <button class="stepper" onclick="adjustWater(1)">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HABITS -->
+    <div class="habits">
+      <div class="habits-head">
+        <div class="lbl"><i class="ph-fill ph-check-square"></i> HABITS</div>
+        <div class="count" id="habitCount">2 / 4 DONE</div>
+      </div>
+      <div class="habits-list">
+        <div class="habit done" onclick="toggleHabit(this)">
+          <div class="box"><i class="ph-bold ph-check"></i></div>
+          <div class="name">AM VITS</div>
+        </div>
+        <div class="habit done" onclick="toggleHabit(this)">
+          <div class="box"><i class="ph-bold ph-check"></i></div>
+          <div class="name">WORKOUT</div>
+        </div>
+        <div class="habit" onclick="toggleHabit(this)">
+          <div class="box"><i class="ph-bold ph-check"></i></div>
+          <div class="name">MOBILITY</div>
+        </div>
+        <div class="habit" onclick="toggleHabit(this)">
+          <div class="box"><i class="ph-bold ph-check"></i></div>
+          <div class="name">PROTEIN</div>
+          <div class="frac">3/4</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Floating glass bottom nav -->
+  <div class="nav">
+    <button class="active"><i class="ph-fill ph-house"></i>HOME</button>
+    <button><i class="ph-bold ph-calendar-blank"></i>PLAN</button>
+    <button><i class="ph-bold ph-check-square"></i>HABITS</button>
+    <button><i class="ph-bold ph-gear-six"></i>SETTINGS</button>
+  </div>
+</div>
+
+<script>
+  // ---- Date nav ----
+  const days=["SUNDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"];
+  const months=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+  let currentDate = new Date(2026,5,19);
+  function renderDate(){
+    document.getElementById('dDay').textContent = days[currentDate.getDay()];
+    document.getElementById('dNum').textContent = months[currentDate.getMonth()] + ' ' + currentDate.getDate();
+  }
+  function shiftDay(d){ currentDate.setDate(currentDate.getDate()+d); renderDate(); }
+  renderDate();
+
+  // ---- Mode toggle ----
+  function setMode(m){
+    const phone = document.getElementById('phone');
+    const bC = document.getElementById('bConnected');
+    const bF = document.getElementById('bFresh');
+    if(m==='fresh'){
+      phone.classList.add('fresh-mode');
+      bC.classList.remove('on'); bF.classList.add('on');
+      // greyed values
+      document.getElementById('recNum').innerHTML = '— —<span class="pct"></span>';
+      document.getElementById('recState').textContent = 'NO DATA';
+      document.getElementById('strainV').textContent = '—';
+      document.getElementById('hrvV').textContent = '—';
+      document.getElementById('rhrV').textContent = '—';
+      document.getElementById('restV').textContent = '—';
+      document.getElementById('sleepV').textContent = '—';
+      document.getElementById('srcLabel').textContent = 'NOT CONNECTED';
+      // grey out rings
+      document.getElementById('recArc').setAttribute('stroke','#3a342a');
+      document.getElementById('strainArc').setAttribute('stroke','#3a342a');
+      document.getElementById('recArc').style.filter='none';
+      document.getElementById('strainArc').style.filter='none';
+      // workout/steps/water fresh CTAs
+      document.getElementById('wTitle').textContent = 'Choose a workout';
+      document.getElementById('wMeta').textContent = 'NO PLAN SET';
+      document.getElementById('startTxt').textContent = 'CHOOSE';
+      document.getElementById('stepsV').innerHTML = '0<span class="of"> / 10k</span>';
+      document.getElementById('stepArc').setAttribute('stroke-dashoffset','157.08');
+      document.getElementById('stepArc').setAttribute('stroke','#3a342a');
+      document.getElementById('waterV').innerHTML = '0<span class="of"> / 6</span><span class="u">L</span>';
+      document.getElementById('waterBar').style.width='0%';
+    } else {
+      phone.classList.remove('fresh-mode');
+      bF.classList.remove('on'); bC.classList.add('on');
+      document.getElementById('recNum').innerHTML = '78<span class="pct">%</span>';
+      document.getElementById('recState').textContent = 'PRIMED';
+      document.getElementById('strainV').textContent = '12.4';
+      document.getElementById('hrvV').textContent = '62';
+      document.getElementById('rhrV').textContent = '54';
+      document.getElementById('restV').textContent = '94';
+      document.getElementById('sleepV').textContent = '7:42';
+      document.getElementById('srcLabel').textContent = 'WHOOP · LIVE';
+      document.getElementById('recArc').setAttribute('stroke','var(--green)');
+      document.getElementById('strainArc').setAttribute('stroke','var(--blue)');
+      document.getElementById('recArc').style.filter='drop-shadow(0 0 6px rgba(79,209,126,.35))';
+      document.getElementById('strainArc').style.filter='drop-shadow(0 0 4px rgba(111,176,216,.3))';
+      document.getElementById('wTitle').textContent = 'Push Day · Chest+Tri';
+      document.getElementById('wMeta').textContent = '8 EX · ~48 MIN';
+      document.getElementById('startTxt').textContent = 'START';
+      document.getElementById('stepsV').innerHTML = '8,240<span class="of"> / 10k</span>';
+      document.getElementById('stepArc').setAttribute('stroke-dashoffset','27.65');
+      document.getElementById('stepArc').setAttribute('stroke','var(--bright)');
+      document.getElementById('waterV').innerHTML = '2.4<span class="of"> / 6</span><span class="u">L</span>';
+      document.getElementById('waterBar').style.width='40%';
+      waterMl = 2400;
+    }
+  }
+
+  // ---- Connect button toggle ----
+  function toggleConnect(kind, btn){
+    if(btn.classList.contains('connected')){
+      btn.classList.remove('connected');
+      btn.innerHTML = '<i class="ph-bold ph-plugs"></i> CONNECT WHOOP';
+    } else {
+      btn.classList.add('connected');
+      btn.innerHTML = '<i class="ph-bold ph-check-circle"></i> CONNECTED';
+      setTimeout(()=>setMode('connected'), 500);
+    }
+  }
+
+  // ---- Water controls ----
+  let waterMl = 2400;
+  const goalMl = 6000;
+  const bottles = [250, 500, 750, 1000];
+  let bIdx = 1; // 500ml default
+  function renderWater(){
+    const L = (waterMl/1000).toFixed(1);
+    document.getElementById('waterV').innerHTML = L + '<span class="of"> / 6</span><span class="u">L</span>';
+    document.getElementById('waterBar').style.width = Math.min(100, (waterMl/goalMl)*100) + '%';
+  }
+  function adjustWater(dir){
+    if(document.getElementById('phone').classList.contains('fresh-mode')) return;
+    waterMl = Math.max(0, waterMl + dir*bottles[bIdx]);
+    renderWater();
+  }
+  function cycleBottle(){
+    bIdx = (bIdx+1) % bottles.length;
+    const ml = bottles[bIdx];
+    document.getElementById('bottleLbl').textContent = ml >= 1000 ? '1L' : ml+'ML';
+  }
+
+  // ---- Habits toggle ----
+  function toggleHabit(el){
+    el.classList.toggle('done');
+    const total = document.querySelectorAll('.habit').length;
+    const done = document.querySelectorAll('.habit.done').length;
+    document.getElementById('habitCount').textContent = done+' / '+total+' DONE';
+  }
+
+  // ---- Strain ring tick marks ----
+  (function(){
+    const g = document.getElementById('ticks');
+    const cx=100, cy=100, r1=58, r2=62;
+    for(let i=0;i<21;i++){
+      const a = (i/21)*2*Math.PI - Math.PI/2;
+      const x1 = cx + Math.cos(a)*r1;
+      const y1 = cy + Math.sin(a)*r1;
+      const x2 = cx + Math.cos(a)*r2;
+      const y2 = cy + Math.sin(a)*r2;
+      const ln = document.createElementNS('http://www.w3.org/2000/svg','line');
+      ln.setAttribute('x1',x1); ln.setAttribute('y1',y1);
+      ln.setAttribute('x2',x2); ln.setAttribute('y2',y2);
+      ln.setAttribute('stroke','#3a342a');
+      ln.setAttribute('stroke-width','1');
+      g.appendChild(ln);
+    }
+  })();
+</script>
+</body>
+</html>
