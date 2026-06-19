@@ -1,0 +1,959 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FORGE · H</title>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<style>
+  :root{
+    --bg-1:#16140f; --bg-2:#0d0c0a;
+    --surface:#1a1814; --raised:#1f1c16; --hair:#2c281f; --hair2:#3a3528;
+    --ink:#efeae0; --sub:#a59d8d; --faint:#6f6859; --dim:#4a4538;
+    --amber:#e3a857; --bright:#f3c378;
+    --green:#4fd17e; --blue:#6fb0d8; --yellow:#e6c14e; --red:#d86a5e;
+    --mono: ui-monospace,"SF Mono","Courier New",monospace;
+    --ui: -apple-system, "Helvetica Neue", Arial, sans-serif;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0;background:#000;color:var(--ink);font-family:var(--ui);}
+  body{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:24px 24px 120px}
+  @media (max-width:520px){ body{padding:0} }
+
+  .phone{
+    position:relative;
+    width:430px; max-width:100%;
+    min-height:900px;
+    background: radial-gradient(125% 80% at 50% 14%, var(--bg-1), var(--bg-2));
+    border-radius:44px;
+    overflow:hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,.55), inset 0 0 0 1px #221f18;
+  }
+  @media (max-width:520px){ .phone{border-radius:0; min-height:100vh} }
+
+  /* status bar */
+  .status{
+    height:48px; display:flex; align-items:center; justify-content:space-between;
+    padding:14px 28px 0; font-family:var(--mono); font-size:13px; color:var(--ink);
+    letter-spacing:.02em;
+  }
+  .status .right{display:flex; gap:6px; align-items:center; opacity:.85}
+  .status .right i{font-size:14px}
+
+  /* top bar: date nav + gear */
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 22px 6px;
+  }
+  .datenav{
+    display:flex; align-items:center; gap:14px;
+  }
+  .datenav .caret{
+    width:34px; height:34px; border-radius:50%;
+    display:grid; place-items:center;
+    background:rgba(255,255,255,.03);
+    border:1px solid var(--hair);
+    color:var(--sub);
+    cursor:pointer;
+    transition: all .15s ease;
+  }
+  .datenav .caret:hover{background:rgba(255,255,255,.06); color:var(--ink)}
+  .datenav .caret.disabled{opacity:.25; pointer-events:none}
+  .datenav .label{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.22em;
+    color:var(--sub);
+    text-transform:uppercase;
+    min-width:90px; text-align:center;
+  }
+  .datenav .label b{color:var(--ink); font-weight:600}
+  .gear{
+    width:38px; height:38px; border-radius:50%;
+    display:grid; place-items:center;
+    background:rgba(255,255,255,.03);
+    border:1px solid var(--hair);
+    color:var(--sub); cursor:pointer;
+  }
+  .gear i{font-size:18px}
+
+  /* content scroll area */
+  .scroll{
+    padding: 14px 22px 24px;
+    display:flex; flex-direction:column; gap:18px;
+  }
+
+  /* HERO biometric block */
+  .hero{
+    background: linear-gradient(180deg, #1d1a14 0%, #15130f 100%);
+    border:1px solid var(--hair);
+    border-radius:24px;
+    padding:24px 22px 22px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background: radial-gradient(70% 50% at 30% 10%, rgba(227,168,87,.10), transparent 60%);
+    pointer-events:none;
+  }
+  .hero-top{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:18px; position:relative;
+  }
+  .hero-source{
+    display:flex; align-items:center; gap:8px;
+    font-family:var(--mono); font-size:10px;
+    letter-spacing:.24em; color:var(--faint);
+    text-transform:uppercase;
+  }
+  .hero-source .dot{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 8px var(--green);
+  }
+  .hero-source.fresh .dot{background:var(--faint); box-shadow:none}
+  .hero-refresh{
+    color:var(--faint); font-size:14px; cursor:pointer;
+  }
+
+  /* ring + strain pair */
+  .hero-main{
+    display:flex; align-items:center; gap:22px;
+    position:relative;
+  }
+  .ring-wrap{
+    position:relative;
+    width:172px; height:172px;
+    flex-shrink:0;
+  }
+  .ring-wrap svg{width:100%; height:100%; transform:rotate(-90deg)}
+  .ring-track{fill:none; stroke:#241f16; stroke-width:10}
+  .ring-arc{fill:none; stroke:var(--green); stroke-width:10; stroke-linecap:round; transition:stroke-dashoffset .4s ease, stroke .3s ease}
+  .ring-center{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+  }
+  .ring-pct{
+    font-family:var(--mono);
+    font-size:54px; font-weight:300;
+    color:var(--ink);
+    letter-spacing:-.04em;
+    line-height:1;
+  }
+  .ring-pct sup{font-size:20px; vertical-align:top; margin-left:2px; color:var(--sub); font-weight:400}
+  .ring-label{
+    font-family:var(--mono); font-size:10px;
+    letter-spacing:.24em; color:var(--sub);
+    margin-top:6px;
+  }
+
+  .strain{
+    flex:1;
+    display:flex; flex-direction:column; align-items:flex-start; gap:2px;
+  }
+  .strain-num{
+    font-family:var(--mono);
+    font-size:54px; font-weight:300;
+    color:var(--bright);
+    letter-spacing:-.04em;
+    line-height:1;
+  }
+  .strain-num span{color:var(--faint); font-size:22px; margin-left:4px}
+  .strain-label{
+    font-family:var(--mono); font-size:10px;
+    letter-spacing:.24em; color:var(--sub);
+    margin-top:8px;
+  }
+  .strain-bar{
+    width:100%; height:3px; border-radius:2px;
+    background:#241f16; margin-top:10px; overflow:hidden;
+  }
+  .strain-bar-fill{height:100%; background:linear-gradient(90deg,var(--amber),var(--bright)); width:69%}
+
+  /* metrics row */
+  .hero-metrics{
+    display:grid; grid-template-columns:repeat(4, 1fr);
+    gap:0;
+    margin-top:22px;
+    padding-top:18px;
+    border-top:1px solid var(--hair);
+  }
+  .metric{
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+    position:relative;
+  }
+  .metric + .metric::before{
+    content:"";
+    position:absolute; left:0; top:8px; bottom:8px; width:1px;
+    background:var(--hair);
+  }
+  .metric-val{
+    font-family:var(--mono);
+    font-size:20px; color:var(--ink);
+    font-weight:400; letter-spacing:-.02em;
+    line-height:1;
+  }
+  .metric-val span{font-size:11px; color:var(--faint); margin-left:2px}
+  .metric-label{
+    font-family:var(--mono); font-size:9px;
+    letter-spacing:.22em; color:var(--sub);
+    margin-top:6px;
+  }
+
+  /* fresh state for hero */
+  .hero.fresh .ring-arc{stroke:#3a3528}
+  .hero.fresh .ring-pct{color:var(--dim)}
+  .hero.fresh .strain-num{color:var(--dim)}
+  .hero.fresh .strain-bar-fill{display:none}
+  .hero.fresh .metric-val{color:var(--dim)}
+  .hero.fresh .hero-source .dot{background:var(--faint); box-shadow:none}
+  .hero.fresh .ring-pct sup{color:var(--dim)}
+
+  .connect-cta{
+    margin-top:18px;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    padding:12px;
+    border-radius:14px;
+    border:1px dashed var(--hair2);
+    background:rgba(227,168,87,.04);
+    color:var(--amber);
+    font-family:var(--mono); font-size:11px;
+    letter-spacing:.2em; text-transform:uppercase;
+    cursor:pointer;
+  }
+  .connect-cta.connected{
+    border-style:solid; border-color:var(--hair);
+    background:transparent; color:var(--faint);
+    pointer-events:none;
+  }
+
+  /* WORKOUT module */
+  .workout{
+    background:var(--raised);
+    border:1px solid var(--hair);
+    border-radius:20px;
+    padding:18px 20px;
+    display:flex; align-items:center; justify-content:space-between; gap:14px;
+    position:relative; overflow:hidden;
+  }
+  .workout.scheduled{
+    background:linear-gradient(180deg,#241e14 0%, #1a1610 100%);
+    border-color:#3a2f1d;
+  }
+  .workout-icon{
+    width:46px; height:46px; border-radius:14px;
+    background:rgba(227,168,87,.10);
+    display:grid; place-items:center;
+    color:var(--bright); font-size:22px;
+    flex-shrink:0;
+  }
+  .workout-body{flex:1; min-width:0; display:flex; flex-direction:column; gap:4px}
+  .workout-title{
+    font-family:var(--ui); font-size:15px; font-weight:600;
+    color:var(--ink); letter-spacing:-.01em;
+  }
+  .workout-meta{
+    font-family:var(--mono); font-size:10px;
+    letter-spacing:.2em; color:var(--sub);
+    text-transform:uppercase;
+  }
+  .workout-cta{
+    height:42px; padding:0 18px;
+    border-radius:12px;
+    background:var(--bright); color:#1a1610;
+    font-family:var(--mono); font-size:11px;
+    letter-spacing:.22em; text-transform:uppercase; font-weight:700;
+    display:inline-flex; align-items:center; gap:6px;
+    cursor:pointer; border:none;
+  }
+  .workout-cta i{font-size:13px}
+  .workout-cta.resume{
+    background:transparent; color:var(--bright);
+    border:1px solid var(--bright);
+  }
+  .workout.inprogress{
+    background:linear-gradient(180deg,#1f1c16,#1a1814);
+    border-color:var(--hair);
+  }
+  .workout.inprogress .workout-icon{
+    background:rgba(243,195,120,.08);
+    position:relative;
+  }
+  .workout.inprogress .workout-icon::after{
+    content:""; position:absolute; inset:-3px;
+    border-radius:16px;
+    border:1px solid var(--bright);
+    animation:pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:.3}50%{opacity:.9}}
+
+  /* generic module */
+  .module{
+    background:var(--surface);
+    border:1px solid var(--hair);
+    border-radius:20px;
+    padding:18px 20px;
+  }
+  .mod-head{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:14px;
+  }
+  .mod-title{
+    display:flex; align-items:center; gap:10px;
+    font-family:var(--mono); font-size:10px;
+    letter-spacing:.24em; color:var(--sub);
+    text-transform:uppercase;
+  }
+  .mod-title i{font-size:14px; color:var(--faint)}
+  .mod-val{
+    font-family:var(--mono); font-size:13px;
+    color:var(--ink); letter-spacing:-.01em;
+  }
+  .mod-val span{color:var(--faint); font-size:11px}
+
+  /* fuel */
+  .fuel-main{
+    display:flex; align-items:baseline; gap:8px;
+    margin-bottom:14px;
+  }
+  .fuel-num{
+    font-family:var(--mono);
+    font-size:40px; font-weight:300;
+    color:var(--ink); letter-spacing:-.04em;
+    line-height:1;
+  }
+  .fuel-num span{color:var(--faint); font-size:18px; margin-left:6px}
+  .fuel-unit{
+    font-family:var(--mono); font-size:10px;
+    letter-spacing:.24em; color:var(--faint);
+    text-transform:uppercase; margin-left:auto;
+  }
+  .fuel-bar{
+    height:4px; background:#241f16; border-radius:2px;
+    overflow:hidden; margin-bottom:16px;
+  }
+  .fuel-bar-fill{height:100%; background:var(--amber); width:73%}
+  .macros{display:grid; grid-template-columns:repeat(3,1fr); gap:0}
+  .macro{
+    display:flex; flex-direction:column; align-items:flex-start; gap:6px;
+    position:relative;
+  }
+  .macro + .macro{padding-left:14px}
+  .macro + .macro::before{
+    content:""; position:absolute; left:0; top:4px; bottom:4px; width:1px;
+    background:var(--hair);
+  }
+  .macro-letter{
+    font-family:var(--mono); font-size:9px;
+    letter-spacing:.24em; color:var(--faint);
+  }
+  .macro-val{
+    font-family:var(--mono); font-size:15px;
+    color:var(--ink);
+  }
+  .macro-val span{color:var(--faint); font-size:11px}
+  .macro-bar{
+    width:100%; height:2px; background:#241f16; border-radius:1px; overflow:hidden;
+  }
+  .macro-bar-fill{height:100%; background:var(--amber)}
+  .macro:nth-child(1) .macro-bar-fill{width:92%; background:#d8a64a}
+  .macro:nth-child(2) .macro-bar-fill{width:79%; background:#b8884a}
+  .macro:nth-child(3) .macro-bar-fill{width:78%; background:#8a6b3a}
+
+  /* steps */
+  .steps-row{display:flex; align-items:baseline; gap:8px}
+  .steps-num{
+    font-family:var(--mono);
+    font-size:34px; font-weight:300;
+    color:var(--ink); letter-spacing:-.04em;
+    line-height:1;
+  }
+  .steps-num span{color:var(--faint); font-size:16px; margin-left:6px}
+  .steps-bar{
+    height:4px; background:#241f16; border-radius:2px;
+    overflow:hidden; margin-top:12px;
+  }
+  .steps-bar-fill{height:100%; background:var(--blue); width:82%}
+
+  /* water */
+  .water-row{display:flex; align-items:baseline; gap:8px; margin-bottom:14px}
+  .water-num{
+    font-family:var(--mono); font-size:34px; font-weight:300;
+    color:var(--ink); letter-spacing:-.04em; line-height:1;
+  }
+  .water-num span{color:var(--faint); font-size:16px; margin-left:6px}
+  .water-bar{
+    height:4px; background:#241f16; border-radius:2px;
+    overflow:hidden; margin-bottom:14px;
+  }
+  .water-bar-fill{height:100%; background:var(--blue); width:40%; transition:width .25s ease}
+  .water-controls{
+    display:flex; align-items:center; gap:10px;
+  }
+  .stepper{
+    width:44px; height:44px; border-radius:14px;
+    background:rgba(111,176,216,.08);
+    border:1px solid rgba(111,176,216,.18);
+    color:var(--blue);
+    display:grid; place-items:center;
+    cursor:pointer; font-size:18px;
+  }
+  .stepper:active{background:rgba(111,176,216,.15)}
+  .bottle{
+    flex:1; height:44px; border-radius:14px;
+    background:rgba(255,255,255,.03);
+    border:1px solid var(--hair);
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    color:var(--sub); cursor:pointer;
+    font-family:var(--mono); font-size:12px;
+    letter-spacing:.18em; text-transform:uppercase;
+  }
+  .bottle i{color:var(--blue); font-size:15px}
+  .bottle b{color:var(--ink); font-weight:600}
+
+  /* habits */
+  .habit-list{display:flex; flex-direction:column; gap:0}
+  .habit{
+    display:flex; align-items:center; gap:14px;
+    padding:14px 0;
+    border-bottom:1px solid var(--hair);
+    cursor:pointer;
+  }
+  .habit:last-child{border-bottom:none; padding-bottom:0}
+  .habit:first-child{padding-top:0}
+  .habit-check{
+    width:24px; height:24px; border-radius:8px;
+    border:1.5px solid var(--hair2);
+    display:grid; place-items:center;
+    flex-shrink:0;
+    transition:all .15s ease;
+  }
+  .habit-check i{font-size:14px; color:transparent}
+  .habit.done .habit-check{
+    background:var(--green); border-color:var(--green);
+  }
+  .habit.done .habit-check i{color:#0d0c0a}
+  .habit-icon{
+    width:32px; height:32px; border-radius:10px;
+    background:rgba(255,255,255,.03);
+    display:grid; place-items:center;
+    color:var(--sub); font-size:16px;
+    flex-shrink:0;
+  }
+  .habit-name{
+    flex:1;
+    font-family:var(--ui); font-size:14px;
+    color:var(--ink); font-weight:500;
+    letter-spacing:-.01em;
+  }
+  .habit-prog{
+    font-family:var(--mono); font-size:11px;
+    color:var(--faint); letter-spacing:.06em;
+  }
+  .habit.done .habit-name{
+    color:var(--faint);
+    text-decoration:line-through;
+    text-decoration-color:var(--dim);
+  }
+  .habit.done .habit-icon{color:var(--dim)}
+
+  /* fresh / empty state styling */
+  .module.empty .fuel-num,
+  .module.empty .steps-num,
+  .module.empty .water-num{color:var(--dim)}
+  .module.empty .fuel-bar-fill,
+  .module.empty .steps-bar-fill,
+  .module.empty .water-bar-fill,
+  .module.empty .macro-bar-fill{background:#2c281f}
+  .module.empty .macro-val, .module.empty .mod-val{color:var(--dim)}
+  .module.empty .macro-val span, .module.empty .mod-val span{color:var(--dim)}
+
+  /* bottom floating nav */
+  .nav{
+    position:absolute;
+    left:18px; right:18px; bottom:22px;
+    height:64px;
+    background:rgba(26,24,20,.72);
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:24px;
+    display:flex; align-items:center; justify-content:space-around;
+    box-shadow: 0 12px 40px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.04);
+    z-index:50;
+  }
+  .nav-btn{
+    width:56px; height:48px;
+    display:grid; place-items:center;
+    border-radius:14px;
+    color:var(--faint);
+    cursor:pointer;
+    transition:all .15s ease;
+    position:relative;
+  }
+  .nav-btn i{font-size:24px}
+  .nav-btn.active{color:var(--bright)}
+  .nav-btn.active::after{
+    content:""; position:absolute; bottom:-2px; left:50%;
+    width:4px; height:4px; border-radius:50%;
+    background:var(--bright);
+    transform:translateX(-50%);
+  }
+
+  /* dev toggles */
+  .devs{
+    position:fixed; right:14px; bottom:14px;
+    display:flex; flex-direction:column; gap:8px;
+    z-index:200;
+    font-family:var(--mono); font-size:10px;
+    letter-spacing:.1em;
+  }
+  .dev{
+    background:rgba(20,18,14,.92);
+    border:1px solid var(--hair2);
+    border-radius:12px;
+    padding:8px 10px;
+    color:var(--sub);
+    backdrop-filter: blur(10px);
+  }
+  .dev-label{
+    display:block; color:var(--faint);
+    font-size:9px; letter-spacing:.2em; text-transform:uppercase;
+    margin-bottom:6px;
+  }
+  .dev-row{display:flex; gap:4px}
+  .dev-row button{
+    background:transparent; border:1px solid var(--hair);
+    color:var(--sub); padding:5px 9px; border-radius:8px;
+    font-family:var(--mono); font-size:10px; cursor:pointer;
+    text-transform:uppercase; letter-spacing:.08em;
+  }
+  .dev-row button.on{background:var(--amber); color:#1a1610; border-color:var(--amber); font-weight:700}
+
+  .hidden{display:none !important}
+</style>
+</head>
+<body>
+<div class="phone" id="phone">
+  <!-- status bar -->
+  <div class="status">
+    <span>9:41</span>
+    <span class="right">
+      <i class="ph-bold ph-wifi-high"></i>
+      <i class="ph-bold ph-battery-full"></i>
+    </span>
+  </div>
+
+  <!-- top bar: date + gear -->
+  <div class="topbar">
+    <div class="datenav">
+      <div class="caret" id="dateBack"><i class="ph ph-caret-left"></i></div>
+      <div class="label"><b id="dateLabel">TODAY</b></div>
+      <div class="caret disabled" id="dateFwd"><i class="ph ph-caret-right"></i></div>
+    </div>
+    <div class="gear"><i class="ph ph-gear-six"></i></div>
+  </div>
+
+  <div class="scroll">
+
+    <!-- HERO biometric -->
+    <div class="hero" id="hero">
+      <div class="hero-top">
+        <div class="hero-source" id="heroSource">
+          <span class="dot"></span>
+          <span id="heroSourceLabel">WHOOP · OURA</span>
+        </div>
+        <i class="ph ph-arrow-clockwise hero-refresh"></i>
+      </div>
+
+      <div class="hero-main">
+        <div class="ring-wrap">
+          <svg viewBox="0 0 200 200">
+            <circle class="ring-track" cx="100" cy="100" r="86"/>
+            <circle class="ring-arc" id="ringArc" cx="100" cy="100" r="86"
+              stroke-dasharray="540.35" stroke-dashoffset="118.88"/>
+          </svg>
+          <div class="ring-center">
+            <div class="ring-pct"><span id="ringPct">78</span><sup>%</sup></div>
+            <div class="ring-label">RECOVERY</div>
+          </div>
+        </div>
+        <div class="strain">
+          <div class="strain-num" id="strainNum">14.2<span>/21</span></div>
+          <div class="strain-label">STRAIN</div>
+          <div class="strain-bar"><div class="strain-bar-fill" id="strainBar"></div></div>
+        </div>
+      </div>
+
+      <div class="hero-metrics">
+        <div class="metric">
+          <div class="metric-val" id="mHrv">62<span>ms</span></div>
+          <div class="metric-label">HRV</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val" id="mRhr">54<span>bpm</span></div>
+          <div class="metric-label">RHR</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val" id="mRest">7.8<span>h</span></div>
+          <div class="metric-label">REST</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val" id="mSleep">88<span>%</span></div>
+          <div class="metric-label">SLEEP</div>
+        </div>
+      </div>
+
+      <div class="connect-cta connected hidden" id="heroConnect">
+        <i class="ph ph-plug"></i> CONNECT WEARABLE
+      </div>
+    </div>
+
+    <!-- WORKOUT module (3 states) -->
+    <div class="workout scheduled" id="workout">
+      <div class="workout-icon"><i class="ph ph-barbell"></i></div>
+      <div class="workout-body">
+        <div class="workout-title" id="workoutTitle">Push · Chest & Shoulders</div>
+        <div class="workout-meta" id="workoutMeta">6 EXERCISES · 52 MIN</div>
+      </div>
+      <button class="workout-cta" id="workoutCta"><i class="ph-bold ph-play"></i> START</button>
+    </div>
+
+    <!-- FUEL module (hidden on fresh) -->
+    <div class="module" id="fuel">
+      <div class="mod-head">
+        <div class="mod-title"><i class="ph ph-egg"></i> FUEL</div>
+        <div class="mod-val">73<span>%</span></div>
+      </div>
+      <div class="fuel-main">
+        <div class="fuel-num">1,840<span>/ 2,520</span></div>
+        <div class="fuel-unit">KCAL</div>
+      </div>
+      <div class="fuel-bar"><div class="fuel-bar-fill"></div></div>
+      <div class="macros">
+        <div class="macro">
+          <div class="macro-letter">PROTEIN</div>
+          <div class="macro-val">165<span>/180</span></div>
+          <div class="macro-bar"><div class="macro-bar-fill"></div></div>
+        </div>
+        <div class="macro">
+          <div class="macro-letter">CARBS</div>
+          <div class="macro-val">198<span>/250</span></div>
+          <div class="macro-bar"><div class="macro-bar-fill"></div></div>
+        </div>
+        <div class="macro">
+          <div class="macro-letter">FAT</div>
+          <div class="macro-val">62<span>/80</span></div>
+          <div class="macro-bar"><div class="macro-bar-fill"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEPS module -->
+    <div class="module" id="steps">
+      <div class="mod-head">
+        <div class="mod-title"><i class="ph ph-footprints"></i> STEPS</div>
+        <div class="mod-val">82<span>%</span></div>
+      </div>
+      <div class="steps-row">
+        <div class="steps-num" id="stepsNum">8,240<span>/ 10,000</span></div>
+      </div>
+      <div class="steps-bar"><div class="steps-bar-fill" id="stepsBar"></div></div>
+    </div>
+
+    <!-- WATER module -->
+    <div class="module" id="water">
+      <div class="mod-head">
+        <div class="mod-title"><i class="ph ph-drop"></i> WATER</div>
+        <div class="mod-val" id="waterPct">40<span>%</span></div>
+      </div>
+      <div class="water-row">
+        <div class="water-num" id="waterNum">2.4<span>/ 6 L</span></div>
+      </div>
+      <div class="water-bar"><div class="water-bar-fill" id="waterBar"></div></div>
+      <div class="water-controls">
+        <div class="stepper" id="waterMinus"><i class="ph-bold ph-minus"></i></div>
+        <div class="bottle" id="bottle">
+          <i class="ph ph-drop"></i> <b id="bottleSize">0.5</b> L
+        </div>
+        <div class="stepper" id="waterPlus"><i class="ph-bold ph-plus"></i></div>
+      </div>
+    </div>
+
+    <!-- HABITS module -->
+    <div class="module" id="habits">
+      <div class="mod-head">
+        <div class="mod-title"><i class="ph ph-squares-four"></i> HABITS</div>
+        <div class="mod-val"><span id="habitsCount">2 / 4</span></div>
+      </div>
+      <div class="habit-list">
+        <div class="habit done" data-habit="vitamins">
+          <div class="habit-check"><i class="ph-bold ph-check"></i></div>
+          <div class="habit-icon"><i class="ph ph-pill"></i></div>
+          <div class="habit-name">AM Vitamins</div>
+        </div>
+        <div class="habit done" data-habit="workout">
+          <div class="habit-check"><i class="ph-bold ph-check"></i></div>
+          <div class="habit-icon"><i class="ph ph-barbell"></i></div>
+          <div class="habit-name">Workout</div>
+        </div>
+        <div class="habit" data-habit="mobility">
+          <div class="habit-check"><i class="ph-bold ph-check"></i></div>
+          <div class="habit-icon"><i class="ph ph-person-simple-walk"></i></div>
+          <div class="habit-name">Mobility</div>
+        </div>
+        <div class="habit" data-habit="protein">
+          <div class="habit-check"><i class="ph-bold ph-check"></i></div>
+          <div class="habit-icon"><i class="ph ph-egg"></i></div>
+          <div class="habit-name">Protein</div>
+          <div class="habit-prog">3 / 4</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="height:84px"></div>
+  </div>
+
+  <!-- floating bottom nav: 3 icon-only tabs -->
+  <div class="nav">
+    <div class="nav-btn active"><i class="ph-bold ph-house"></i></div>
+    <div class="nav-btn"><i class="ph ph-calendar-blank"></i></div>
+    <div class="nav-btn"><i class="ph ph-squares-four"></i></div>
+  </div>
+</div>
+
+<!-- dev toggles -->
+<div class="devs">
+  <div class="dev">
+    <span class="dev-label">DATA</span>
+    <div class="dev-row">
+      <button id="bConn" class="on">Connected</button>
+      <button id="bFresh">Fresh</button>
+    </div>
+  </div>
+  <div class="dev">
+    <span class="dev-label">WORKOUT</span>
+    <div class="dev-row">
+      <button id="bSched" class="on">Sched</button>
+      <button id="bProg">In Prog</button>
+      <button id="bDone">Done</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // === Data state toggles ===
+  const hero = document.getElementById('hero');
+  const heroSourceLabel = document.getElementById('heroSourceLabel');
+  const heroConnect = document.getElementById('heroConnect');
+  const fuelMod = document.getElementById('fuel');
+  const stepsMod = document.getElementById('steps');
+  const waterMod = document.getElementById('water');
+  const habitsMod = document.getElementById('habits');
+
+  const ringArc = document.getElementById('ringArc');
+  const ringPct = document.getElementById('ringPct');
+  const strainNum = document.getElementById('strainNum');
+  const mHrv = document.getElementById('mHrv');
+  const mRhr = document.getElementById('mRhr');
+  const mRest = document.getElementById('mRest');
+  const mSleep = document.getElementById('mSleep');
+
+  const stepsNum = document.getElementById('stepsNum');
+  const stepsBar = document.getElementById('stepsBar');
+  const habitsCount = document.getElementById('habitsCount');
+
+  const C = 2 * Math.PI * 86;
+
+  function setRing(pct){
+    const v = Math.max(0, Math.min(100, pct));
+    ringArc.setAttribute('stroke-dasharray', C);
+    ringArc.setAttribute('stroke-dashoffset', C * (1 - v/100));
+    let color = 'var(--green)';
+    if (v < 67 && v >= 34) color = 'var(--yellow)';
+    if (v < 34) color = 'var(--red)';
+    ringArc.style.stroke = color;
+  }
+  setRing(78);
+
+  function applyConnected(){
+    hero.classList.remove('fresh');
+    heroSourceLabel.textContent = 'WHOOP · OURA';
+    heroConnect.classList.add('hidden');
+    ringPct.textContent = '78';
+    setRing(78);
+    strainNum.innerHTML = '14.2<span>/21</span>';
+    mHrv.innerHTML = '62<span>ms</span>';
+    mRhr.innerHTML = '54<span>bpm</span>';
+    mRest.innerHTML = '7.8<span>h</span>';
+    mSleep.innerHTML = '88<span>%</span>';
+
+    fuelMod.classList.remove('hidden','empty');
+    stepsMod.classList.remove('empty');
+    waterMod.classList.remove('empty');
+    habitsMod.classList.remove('empty');
+
+    stepsNum.innerHTML = '8,240<span>/ 10,000</span>';
+    stepsBar.style.width = '82%';
+    habitsCount.textContent = '2 / 4';
+
+    // connect ctas back to default text
+    document.querySelectorAll('.module .connect-cta').forEach(el=>el.remove());
+  }
+
+  function applyFresh(){
+    hero.classList.add('fresh');
+    heroSourceLabel.textContent = 'NOT CONNECTED';
+    heroConnect.classList.remove('hidden');
+    heroConnect.classList.remove('connected');
+    heroConnect.innerHTML = '<i class="ph ph-plug"></i> CONNECT WEARABLE';
+    ringPct.textContent = '--';
+    ringArc.setAttribute('stroke-dashoffset', C);
+    strainNum.innerHTML = '--<span>/21</span>';
+    mHrv.innerHTML = '--<span>ms</span>';
+    mRhr.innerHTML = '--<span>bpm</span>';
+    mRest.innerHTML = '--<span>h</span>';
+    mSleep.innerHTML = '--<span>%</span>';
+
+    // Fuel hides entirely on fresh
+    fuelMod.classList.add('hidden');
+
+    // Steps, water, habits stay visible but greyed with CTA
+    [stepsMod, waterMod, habitsMod].forEach(m=>m.classList.add('empty'));
+    stepsNum.innerHTML = '--<span>/ 10,000</span>';
+    stepsBar.style.width = '0%';
+    habitsCount.textContent = '0 / 0';
+
+    // add inline CTAs
+    addCtaTo(stepsMod, 'CONNECT HEALTH');
+    addCtaTo(waterMod, 'ADD INTAKE');
+    addCtaTo(habitsMod, 'CHOOSE HABITS');
+  }
+
+  function addCtaTo(mod, text){
+    if (mod.querySelector('.connect-cta')) return;
+    const cta = document.createElement('div');
+    cta.className = 'connect-cta';
+    cta.style.marginTop = '14px';
+    cta.innerHTML = `<i class="ph ph-plus"></i> ${text}`;
+    cta.addEventListener('click', ()=>{
+      cta.classList.add('connected');
+      cta.innerHTML = `<i class="ph-bold ph-check"></i> ADDED`;
+    });
+    mod.appendChild(cta);
+  }
+
+  document.getElementById('bConn').addEventListener('click', ()=>{
+    document.getElementById('bConn').classList.add('on');
+    document.getElementById('bFresh').classList.remove('on');
+    applyConnected();
+  });
+  document.getElementById('bFresh').addEventListener('click', ()=>{
+    document.getElementById('bFresh').classList.add('on');
+    document.getElementById('bConn').classList.remove('on');
+    applyFresh();
+  });
+
+  // === Workout state ===
+  const workout = document.getElementById('workout');
+  const wTitle = document.getElementById('workoutTitle');
+  const wMeta = document.getElementById('workoutMeta');
+  const wCta = document.getElementById('workoutCta');
+  const bSched = document.getElementById('bSched');
+  const bProg = document.getElementById('bProg');
+  const bDone = document.getElementById('bDone');
+
+  function setWorkout(state){
+    workout.classList.remove('scheduled','inprogress','hidden');
+    [bSched,bProg,bDone].forEach(b=>b.classList.remove('on'));
+    if (state==='scheduled'){
+      workout.classList.add('scheduled');
+      wTitle.textContent = 'Push · Chest & Shoulders';
+      wMeta.innerHTML = '6 EXERCISES · 52 MIN';
+      wCta.className = 'workout-cta';
+      wCta.innerHTML = '<i class="ph-bold ph-play"></i> START';
+      bSched.classList.add('on');
+    } else if (state==='inprogress'){
+      workout.classList.add('inprogress');
+      wTitle.textContent = 'Push · Chest & Shoulders';
+      wMeta.innerHTML = 'IN PROGRESS · 18:42';
+      wCta.className = 'workout-cta resume';
+      wCta.innerHTML = '<i class="ph-bold ph-play"></i> RESUME';
+      bProg.classList.add('on');
+    } else {
+      workout.classList.add('hidden');
+      bDone.classList.add('on');
+    }
+  }
+  bSched.addEventListener('click', ()=>setWorkout('scheduled'));
+  bProg.addEventListener('click', ()=>setWorkout('inprogress'));
+  bDone.addEventListener('click', ()=>setWorkout('done'));
+
+  // === Water ===
+  const sizes = [0.5, 0.75, 1, 1.25];
+  let sizeIdx = 0;
+  let waterL = 2.4;
+  const waterNum = document.getElementById('waterNum');
+  const waterBar = document.getElementById('waterBar');
+  const waterPct = document.getElementById('waterPct');
+  const bottleSize = document.getElementById('bottleSize');
+
+  function renderWater(){
+    waterL = Math.max(0, Math.round(waterL*10)/10);
+    waterNum.innerHTML = `${waterL.toFixed(1)}<span>/ 6 L</span>`;
+    const p = Math.min(100, Math.round(waterL/6*100));
+    waterBar.style.width = p + '%';
+    waterPct.innerHTML = `${p}<span>%</span>`;
+  }
+  document.getElementById('waterPlus').addEventListener('click', ()=>{
+    if (waterMod.classList.contains('empty')) return;
+    waterL += sizes[sizeIdx]; renderWater();
+  });
+  document.getElementById('waterMinus').addEventListener('click', ()=>{
+    if (waterMod.classList.contains('empty')) return;
+    waterL -= sizes[sizeIdx]; if (waterL<0) waterL=0; renderWater();
+  });
+  document.getElementById('bottle').addEventListener('click', ()=>{
+    sizeIdx = (sizeIdx+1) % sizes.length;
+    bottleSize.textContent = sizes[sizeIdx];
+  });
+
+  // === Habits ===
+  document.querySelectorAll('.habit').forEach(h=>{
+    h.addEventListener('click', ()=>{
+      if (habitsMod.classList.contains('empty')) return;
+      h.classList.toggle('done');
+      const done = document.querySelectorAll('.habit.done').length;
+      const total = document.querySelectorAll('.habit').length;
+      habitsCount.textContent = `${done} / ${total}`;
+    });
+  });
+
+  // === Date nav ===
+  const labels = ['TODAY','YESTERDAY','MON','SUN','SAT','FRI'];
+  let dayIdx = 0;
+  const dateLabel = document.getElementById('dateLabel');
+  const dateBack = document.getElementById('dateBack');
+  const dateFwd = document.getElementById('dateFwd');
+  function renderDate(){
+    dateLabel.textContent = labels[dayIdx] || 'PAST';
+    if (dayIdx === 0) dateFwd.classList.add('disabled');
+    else dateFwd.classList.remove('disabled');
+  }
+  dateBack.addEventListener('click', ()=>{
+    if (dayIdx < labels.length-1){ dayIdx++; renderDate(); }
+  });
+  dateFwd.addEventListener('click', ()=>{
+    if (dayIdx > 0){ dayIdx--; renderDate(); }
+  });
+
+  // init
+  setWorkout('scheduled');
+  applyConnected();
+</script>
+</body>
+</html>

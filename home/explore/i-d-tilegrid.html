@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>FORGE — Home (I: Tile Grid)</title>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+  :root{
+    --bg-a:#16140f; --bg-b:#0d0c0a;
+    --surface:#1a1814; --raised:#1f1c16;
+    --hair:#221f19; --hair2:#2c281f;
+    --ink:#efeae0; --sub:#a59d8d; --faint:#6f6859;
+    --amber:#e3a857; --bright:#f3c378;
+    --green:#4fd17e; --blue:#6fb0d8; --yellow:#e6c14e; --red:#e07a5f;
+    --mono: ui-monospace,"SF Mono","Courier New",monospace;
+    --ui: -apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-font-smoothing:antialiased}
+  html,body{margin:0;padding:0;background:#000;color:var(--ink);font-family:var(--ui)}
+  body{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:24px;background:#070605}
+  .phone{
+    width:430px;min-height:920px;position:relative;
+    background:radial-gradient(125% 80% at 50% 14%, #16140f, #0d0c0a);
+    border-radius:44px;overflow:hidden;
+    box-shadow:0 30px 120px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.04) inset;
+  }
+
+  /* ── Status bar ─────────────────────────────────────────── */
+  .status{display:flex;justify-content:space-between;align-items:center;padding:14px 28px 6px;font-family:var(--mono);font-size:13px;color:var(--ink);letter-spacing:.02em}
+  .status .right{display:flex;gap:6px;align-items:center;color:var(--sub)}
+
+  /* ── Top bar: date nav + gear ───────────────────────────── */
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 22px 8px;}
+  .datenav{display:flex;align-items:center;gap:10px}
+  .datenav .arrow{
+    width:32px;height:32px;border-radius:50%;display:grid;place-items:center;
+    color:var(--sub);background:rgba(255,255,255,.025);border:1px solid var(--hair2);
+    cursor:pointer; transition:.15s;
+  }
+  .datenav .arrow.right{opacity:.35;cursor:not-allowed}
+  .datenav .arrow:hover:not(.right){color:var(--ink);background:rgba(227,168,87,.08);border-color:rgba(227,168,87,.3)}
+  .datelabel{font-family:var(--ui);font-size:15px;font-weight:600;letter-spacing:.04em;color:var(--ink);text-transform:uppercase}
+  .datelabel .sub{display:block;font-family:var(--mono);font-size:10px;color:var(--faint);font-weight:400;letter-spacing:.18em;margin-top:2px;text-align:center}
+  .gear{
+    width:36px;height:36px;border-radius:50%;display:grid;place-items:center;
+    color:var(--sub);background:rgba(255,255,255,.025);border:1px solid var(--hair2);
+    cursor:pointer;font-size:18px;transition:.15s;
+  }
+  .gear:hover{color:var(--amber);border-color:rgba(227,168,87,.3)}
+
+  /* ── Scrollable content ─────────────────────────────────── */
+  .scroll{padding:6px 18px 140px;overflow-y:auto;max-height:calc(920px - 60px);}
+  .scroll::-webkit-scrollbar{display:none}
+
+  /* ── HERO ───────────────────────────────────────────────── */
+  .hero{
+    background:linear-gradient(180deg, #1f1c16 0%, #1a1814 100%);
+    border:1px solid var(--hair2);
+    border-radius:24px;
+    padding:22px 22px 18px;
+    margin-bottom:14px;
+    position:relative;
+  }
+  .hero .src{
+    position:absolute;top:14px;right:16px;
+    font-family:var(--mono);font-size:9px;letter-spacing:.22em;color:var(--faint);text-transform:uppercase;
+    display:flex;align-items:center;gap:5px;
+  }
+  .hero .src .dot{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)}
+  .hero.fresh .src .dot{background:var(--faint);box-shadow:none}
+
+  .ring-wrap{display:flex;align-items:center;gap:20px;margin-top:6px}
+  .ring{position:relative;width:148px;height:148px;flex-shrink:0}
+  .ring svg{transform:rotate(-90deg);width:100%;height:100%}
+  .ring .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  .ring .num{font-family:var(--mono);font-size:52px;font-weight:300;color:var(--ink);line-height:1;letter-spacing:-.02em}
+  .ring .num .pct{font-size:22px;color:var(--sub);margin-left:2px;font-weight:300}
+  .ring .lbl{font-family:var(--mono);font-size:9px;letter-spacing:.28em;color:var(--faint);margin-top:8px;text-transform:uppercase}
+
+  .vitals{flex:1;display:flex;flex-direction:column;gap:14px}
+  .vital-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .vital{display:flex;flex-direction:column;gap:3px}
+  .vital .v{font-family:var(--mono);font-size:22px;color:var(--ink);font-weight:400;letter-spacing:-.01em;line-height:1}
+  .vital .v .u{font-size:11px;color:var(--faint);margin-left:3px;letter-spacing:.04em}
+  .vital .k{font-family:var(--mono);font-size:9px;letter-spacing:.24em;color:var(--faint);text-transform:uppercase;margin-top:2px}
+
+  .hero-foot{
+    margin-top:18px;padding-top:14px;border-top:1px solid var(--hair);
+    display:grid;grid-template-columns:1fr 1fr;gap:14px;
+  }
+  .hero-foot .vital .v{font-size:18px}
+
+  /* Fresh state */
+  .hero.fresh .ring .num,
+  .hero.fresh .vital .v{color:var(--faint)}
+  .hero.fresh .ring svg .prog{stroke:#3a3528 !important}
+  .hero.fresh .connect-cta{
+    margin-top:16px;display:flex;align-items:center;justify-content:center;gap:8px;
+    background:rgba(227,168,87,.08);border:1px solid rgba(227,168,87,.3);
+    color:var(--amber);font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+    padding:12px;border-radius:12px;cursor:pointer;
+  }
+  .hero .connect-cta{display:none}
+  .hero.fresh .connect-cta{display:flex}
+  .hero.fresh .hero-foot{display:none}
+
+  /* ── WORKOUT MODULE ─────────────────────────────────────── */
+  .workout{
+    border-radius:18px;padding:18px 18px;margin-bottom:14px;
+    display:flex;align-items:center;gap:14px;
+    background:linear-gradient(135deg, rgba(227,168,87,.12), rgba(227,168,87,.04));
+    border:1px solid rgba(227,168,87,.35);
+    position:relative;overflow:hidden;
+  }
+  .workout::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(60% 100% at 100% 50%, rgba(243,195,120,.08), transparent);
+    pointer-events:none;
+  }
+  .workout .icon{
+    width:48px;height:48px;border-radius:14px;display:grid;place-items:center;
+    background:rgba(227,168,87,.15);border:1px solid rgba(227,168,87,.3);
+    color:var(--bright);font-size:24px;flex-shrink:0;
+  }
+  .workout .meta{flex:1;min-width:0}
+  .workout .meta .t{font-family:var(--ui);font-size:15px;font-weight:600;color:var(--ink);letter-spacing:.01em}
+  .workout .meta .s{font-family:var(--mono);font-size:10px;color:var(--sub);letter-spacing:.2em;text-transform:uppercase;margin-top:3px}
+  .workout .btn{
+    background:var(--amber);color:#1a1408;border:none;
+    font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;
+    padding:11px 18px;border-radius:10px;cursor:pointer;flex-shrink:0;
+  }
+  .workout .btn:hover{background:var(--bright)}
+  .workout.inprogress{background:linear-gradient(135deg, rgba(79,209,126,.10), rgba(79,209,126,.03));border-color:rgba(79,209,126,.35)}
+  .workout.inprogress .icon{background:rgba(79,209,126,.15);border-color:rgba(79,209,126,.3);color:var(--green)}
+  .workout.inprogress .btn{background:var(--green);color:#0a1d11}
+  .workout.inprogress .pulse{
+    position:absolute;top:14px;right:14px;width:6px;height:6px;border-radius:50%;background:var(--green);
+    box-shadow:0 0 8px var(--green);animation:pulse 1.6s infinite;
+  }
+  @keyframes pulse{50%{opacity:.4}}
+
+  /* ── TILE GRID ──────────────────────────────────────────── */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+  .tile{
+    background:var(--surface);border:1px solid var(--hair2);border-radius:18px;
+    padding:16px;min-height:148px;position:relative;display:flex;flex-direction:column;
+  }
+  .tile .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:auto}
+  .tile .head .ico{
+    width:32px;height:32px;border-radius:10px;display:grid;place-items:center;
+    background:rgba(227,168,87,.08);border:1px solid rgba(227,168,87,.18);
+    color:var(--amber);font-size:16px;
+  }
+  .tile .head .k{font-family:var(--mono);font-size:9px;letter-spacing:.24em;color:var(--faint);text-transform:uppercase}
+  .tile .big{font-family:var(--mono);font-size:28px;color:var(--ink);font-weight:400;line-height:1;letter-spacing:-.01em;margin:14px 0 4px}
+  .tile .big .denom{color:var(--faint);font-size:14px;font-weight:300}
+  .tile .big .u{color:var(--faint);font-size:11px;margin-left:2px;letter-spacing:.04em}
+  .tile .bar{height:3px;background:#2a261d;border-radius:2px;overflow:hidden;margin-top:6px}
+  .tile .bar .fill{height:100%;background:var(--amber);border-radius:2px}
+  .tile.fuel .head .ico{background:rgba(243,195,120,.08);border-color:rgba(243,195,120,.18);color:var(--bright)}
+  .tile.fuel .bar .fill{background:var(--bright)}
+  .tile.water .head .ico{background:rgba(111,176,216,.08);border-color:rgba(111,176,216,.2);color:var(--blue)}
+  .tile.water .bar .fill{background:var(--blue)}
+  .tile.steps .bar .fill{background:var(--amber)}
+
+  .tile .macros{display:flex;justify-content:space-between;gap:6px;margin-top:10px}
+  .tile .macro{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+  .tile .macro .mk{font-family:var(--mono);font-size:9px;color:var(--faint);letter-spacing:.2em}
+  .tile .macro .mv{font-family:var(--mono);font-size:11px;color:var(--ink)}
+  .tile .macro .mbar{width:100%;height:2px;background:#2a261d;border-radius:1px;overflow:hidden;margin-top:2px}
+  .tile .macro .mbar .mfill{height:100%;background:var(--bright)}
+
+  /* Water controls */
+  .tile.water .controls{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:10px}
+  .tile.water .stepper{
+    width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
+    background:rgba(111,176,216,.08);border:1px solid rgba(111,176,216,.25);
+    color:var(--blue);font-size:14px;cursor:pointer;user-select:none;
+  }
+  .tile.water .stepper:hover{background:rgba(111,176,216,.16)}
+  .tile.water .bottle{
+    flex:1;display:flex;align-items:center;justify-content:center;gap:5px;
+    background:rgba(255,255,255,.02);border:1px solid var(--hair2);border-radius:8px;
+    padding:6px;cursor:pointer;font-family:var(--mono);font-size:10px;color:var(--sub);letter-spacing:.14em;
+  }
+  .tile.water .bottle:hover{color:var(--blue);border-color:rgba(111,176,216,.25)}
+  .tile.water .bottle i{font-size:13px;color:var(--blue)}
+
+  /* Fresh state for tiles */
+  .tile.fresh .big,.tile.fresh .macro .mv{color:var(--faint)}
+  .tile.fresh .bar .fill,.tile.fresh .mbar .mfill{background:#3a3528 !important}
+  .tile.fresh .head .ico{color:var(--faint);background:rgba(255,255,255,.03);border-color:var(--hair2)}
+  .tile.fresh .connect{
+    margin-top:10px;display:flex;align-items:center;justify-content:center;gap:5px;
+    background:rgba(227,168,87,.08);border:1px solid rgba(227,168,87,.25);
+    color:var(--amber);font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+    padding:8px;border-radius:8px;cursor:pointer;
+  }
+  .tile .connect{display:none}
+  .tile.fresh .connect{display:flex}
+  .tile.fresh .bar,.tile.fresh .macros,.tile.fresh .controls{display:none}
+
+  /* ── HABITS ─────────────────────────────────────────────── */
+  .habits{
+    background:var(--surface);border:1px solid var(--hair2);border-radius:18px;
+    padding:6px 14px;
+  }
+  .habits .h-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 4px 10px;border-bottom:1px solid var(--hair);
+  }
+  .habits .h-head .k{font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:var(--faint);text-transform:uppercase}
+  .habits .h-head .pr{font-family:var(--mono);font-size:11px;color:var(--ink)}
+  .habits .h-head .pr .sl{color:var(--faint)}
+  .habit{
+    display:flex;align-items:center;gap:12px;padding:14px 4px;border-bottom:1px solid var(--hair);
+    cursor:pointer;
+  }
+  .habit:last-child{border-bottom:none}
+  .habit .box{
+    width:22px;height:22px;border-radius:7px;border:1.5px solid var(--hair2);
+    display:grid;place-items:center;flex-shrink:0;transition:.15s;
+    background:rgba(255,255,255,.015);
+  }
+  .habit.done .box{background:var(--amber);border-color:var(--amber);color:#1a1408}
+  .habit.done .box i{font-size:14px}
+  .habit .name{flex:1;font-family:var(--ui);font-size:14px;color:var(--ink);font-weight:500}
+  .habit .count{font-family:var(--mono);font-size:11px;color:var(--sub);letter-spacing:.08em}
+  .habit.done .name{color:var(--faint);text-decoration:line-through;text-decoration-color:rgba(165,157,141,.4)}
+  .habit.done .count{color:var(--faint)}
+  .habit.partial .count{color:var(--amber)}
+
+  /* ── Floating bottom nav ────────────────────────────────── */
+  .nav{
+    position:absolute;left:24px;right:24px;bottom:22px;
+    height:62px;border-radius:32px;
+    background:rgba(20,18,14,.7);
+    backdrop-filter:blur(24px) saturate(1.4);
+    -webkit-backdrop-filter:blur(24px) saturate(1.4);
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 12px 40px rgba(0,0,0,.5), 0 0 0 1px rgba(0,0,0,.3);
+    display:flex;align-items:center;justify-content:space-around;
+    padding:0 18px;
+    z-index:20;
+  }
+  .nav .tab{
+    width:48px;height:48px;border-radius:50%;display:grid;place-items:center;
+    color:var(--sub);font-size:22px;cursor:pointer;transition:.18s;
+  }
+  .nav .tab:hover{color:var(--ink)}
+  .nav .tab.active{
+    color:var(--amber);
+    background:radial-gradient(60% 60% at 50% 50%, rgba(227,168,87,.16), transparent);
+  }
+  .nav .tab.active i{filter:drop-shadow(0 0 6px rgba(227,168,87,.5))}
+
+  /* ── Dev toggles ───────────────────────────────────────── */
+  .devs{
+    position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:8px;z-index:100;
+  }
+  .devs .grp{
+    background:rgba(26,24,20,.92);backdrop-filter:blur(10px);
+    border:1px solid var(--hair2);border-radius:10px;padding:8px;
+    display:flex;flex-direction:column;gap:6px;
+  }
+  .devs .lbl{font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--faint);text-transform:uppercase;padding:0 4px}
+  .devs .row{display:flex;gap:4px}
+  .devs button{
+    font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+    background:rgba(255,255,255,.04);color:var(--sub);border:1px solid var(--hair2);
+    padding:6px 10px;border-radius:6px;cursor:pointer;
+  }
+  .devs button.on{background:var(--amber);color:#1a1408;border-color:var(--amber);font-weight:700}
+
+  .hidden{display:none !important}
+</style>
+</head>
+<body>
+
+<div class="phone" id="phone">
+
+  <!-- Status bar -->
+  <div class="status">
+    <span>9:41</span>
+    <div class="right">
+      <i class="ph-fill ph-cell-signal-high" style="font-size:13px"></i>
+      <i class="ph-fill ph-wifi-high" style="font-size:13px"></i>
+      <i class="ph-fill ph-battery-high" style="font-size:14px"></i>
+    </div>
+  </div>
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="datenav">
+      <div class="arrow" id="dateBack" title="Yesterday"><i class="ph-bold ph-caret-left" style="font-size:14px"></i></div>
+      <div class="datelabel">
+        <span id="dateMain">TODAY</span>
+        <span class="sub" id="dateSub">WED · JUN 17</span>
+      </div>
+      <div class="arrow right"><i class="ph-bold ph-caret-right" style="font-size:14px"></i></div>
+    </div>
+    <div class="gear" title="Settings"><i class="ph ph-gear-six"></i></div>
+  </div>
+
+  <!-- Scrollable content -->
+  <div class="scroll">
+
+    <!-- HERO -->
+    <div class="hero" id="hero">
+      <div class="src"><span class="dot"></span><span id="srcLabel">WHOOP</span></div>
+
+      <div class="ring-wrap">
+        <div class="ring">
+          <svg viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="52" fill="none" stroke="#2a261d" stroke-width="6"/>
+            <circle class="prog" cx="60" cy="60" r="52" fill="none"
+              stroke="#4fd17e" stroke-width="6" stroke-linecap="round"
+              stroke-dasharray="326.7" stroke-dashoffset="78.4"/>
+          </svg>
+          <div class="center">
+            <div class="num">72<span class="pct">%</span></div>
+            <div class="lbl">Recovery</div>
+          </div>
+        </div>
+
+        <div class="vitals">
+          <div class="vital">
+            <div class="v">12.4</div>
+            <div class="k">Strain</div>
+          </div>
+          <div class="vital">
+            <div class="v">58<span class="u">ms</span></div>
+            <div class="k">HRV</div>
+          </div>
+          <div class="vital">
+            <div class="v">52<span class="u">bpm</span></div>
+            <div class="k">RHR</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-foot">
+        <div class="vital">
+          <div class="v">94<span class="u">%</span></div>
+          <div class="k">Rest</div>
+        </div>
+        <div class="vital">
+          <div class="v">7:42<span class="u">h</span></div>
+          <div class="k">Sleep</div>
+        </div>
+      </div>
+
+      <div class="connect-cta">
+        <i class="ph-bold ph-link" style="font-size:13px"></i>
+        <span>Connect a source</span>
+      </div>
+    </div>
+
+    <!-- WORKOUT MODULE (states: scheduled / in-progress / done-hidden) -->
+    <div class="workout" id="workout">
+      <div class="icon"><i class="ph ph-barbell"></i></div>
+      <div class="meta">
+        <div class="t" id="woTitle">Push · Chest + Triceps</div>
+        <div class="s" id="woSub">8 exercises · 52 min</div>
+      </div>
+      <button class="btn" id="woBtn">Start</button>
+      <div class="pulse hidden" id="woPulse"></div>
+    </div>
+
+    <!-- TILE GRID -->
+    <div class="grid">
+      <!-- Steps -->
+      <div class="tile steps" id="tileSteps">
+        <div class="head">
+          <div class="ico"><i class="ph ph-footprints"></i></div>
+          <div class="k">Steps</div>
+        </div>
+        <div class="big">8,240<span class="denom"> / 10K</span></div>
+        <div class="bar"><div class="fill" style="width:82.4%"></div></div>
+        <div class="connect">
+          <i class="ph-bold ph-link" style="font-size:11px"></i>
+          <span>Connect</span>
+        </div>
+      </div>
+
+      <!-- Water -->
+      <div class="tile water" id="tileWater">
+        <div class="head">
+          <div class="ico"><i class="ph ph-drop"></i></div>
+          <div class="k">Water</div>
+        </div>
+        <div class="big"><span id="waterVal">2.4</span><span class="denom"> / 6</span><span class="u">L</span></div>
+        <div class="bar"><div class="fill" id="waterFill" style="width:40%"></div></div>
+        <div class="controls">
+          <div class="stepper" id="waterMinus"><i class="ph-bold ph-minus"></i></div>
+          <div class="bottle" id="bottleCycle">
+            <i class="ph ph-flask"></i>
+            <span id="bottleSize">500ML</span>
+          </div>
+          <div class="stepper" id="waterPlus"><i class="ph-bold ph-plus"></i></div>
+        </div>
+        <div class="connect">
+          <i class="ph-bold ph-plus" style="font-size:11px"></i>
+          <span>Add</span>
+        </div>
+      </div>
+
+      <!-- Fuel (spans 2 cols) -->
+      <div class="tile fuel" id="tileFuel" style="grid-column:span 2;min-height:auto">
+        <div class="head">
+          <div class="ico"><i class="ph ph-fire"></i></div>
+          <div class="k">Fuel</div>
+        </div>
+        <div class="big">1,840<span class="denom"> / 2,520</span><span class="u">kcal</span></div>
+        <div class="bar"><div class="fill" style="width:73%"></div></div>
+        <div class="macros">
+          <div class="macro">
+            <div class="mk">P</div>
+            <div class="mv">165/180</div>
+            <div class="mbar"><div class="mfill" style="width:91%"></div></div>
+          </div>
+          <div class="macro">
+            <div class="mk">C</div>
+            <div class="mv">198/250</div>
+            <div class="mbar"><div class="mfill" style="width:79%"></div></div>
+          </div>
+          <div class="macro">
+            <div class="mk">F</div>
+            <div class="mv">62/80</div>
+            <div class="mbar"><div class="mfill" style="width:77%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HABITS -->
+    <div class="habits">
+      <div class="h-head">
+        <div class="k">Habits</div>
+        <div class="pr"><span id="habitDone">2</span><span class="sl"> / 4</span></div>
+      </div>
+      <div class="habit done" data-h="1">
+        <div class="box"><i class="ph-bold ph-check"></i></div>
+        <div class="name">AM vitamins</div>
+        <div class="count"></div>
+      </div>
+      <div class="habit done" data-h="2">
+        <div class="box"><i class="ph-bold ph-check"></i></div>
+        <div class="name">Workout</div>
+        <div class="count"></div>
+      </div>
+      <div class="habit" data-h="3">
+        <div class="box"></div>
+        <div class="name">Mobility</div>
+        <div class="count"></div>
+      </div>
+      <div class="habit partial" data-h="4">
+        <div class="box"></div>
+        <div class="name">Protein</div>
+        <div class="count">3 / 4</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Floating bottom nav -->
+  <nav class="nav">
+    <div class="tab active" title="Home"><i class="ph-fill ph-house"></i></div>
+    <div class="tab" title="Plan"><i class="ph ph-calendar-blank"></i></div>
+    <div class="tab" title="Habits"><i class="ph ph-check-square"></i></div>
+  </nav>
+
+</div>
+
+<!-- Dev toggles -->
+<div class="devs">
+  <div class="grp">
+    <div class="lbl">State</div>
+    <div class="row">
+      <button class="on" id="tConnected">Connected</button>
+      <button id="tFresh">Fresh</button>
+    </div>
+  </div>
+  <div class="grp">
+    <div class="lbl">Workout</div>
+    <div class="row">
+      <button class="on" id="wScheduled">Scheduled</button>
+      <button id="wProgress">In Prog</button>
+      <button id="wDone">Done</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── State toggles ─────────────────────────────────────
+  const hero = document.getElementById('hero');
+  const tiles = [document.getElementById('tileSteps'), document.getElementById('tileWater')];
+  const tileFuel = document.getElementById('tileFuel');
+  const srcLabel = document.getElementById('srcLabel');
+
+  function setState(s){
+    document.getElementById('tConnected').classList.toggle('on', s==='connected');
+    document.getElementById('tFresh').classList.toggle('on', s==='fresh');
+    if(s==='fresh'){
+      hero.classList.add('fresh');
+      tiles.forEach(t=>t.classList.add('fresh'));
+      tileFuel.classList.add('hidden');
+      srcLabel.textContent = 'NO SOURCE';
+    } else {
+      hero.classList.remove('fresh');
+      tiles.forEach(t=>t.classList.remove('fresh'));
+      tileFuel.classList.remove('hidden');
+      srcLabel.textContent = 'WHOOP';
+    }
+  }
+  document.getElementById('tConnected').onclick = ()=>setState('connected');
+  document.getElementById('tFresh').onclick = ()=>setState('fresh');
+
+  // ── Workout states ────────────────────────────────────
+  const wo = document.getElementById('workout');
+  const woTitle = document.getElementById('woTitle');
+  const woSub = document.getElementById('woSub');
+  const woBtn = document.getElementById('woBtn');
+  const woPulse = document.getElementById('woPulse');
+
+  function setWorkout(s){
+    document.getElementById('wScheduled').classList.toggle('on', s==='scheduled');
+    document.getElementById('wProgress').classList.toggle('on', s==='progress');
+    document.getElementById('wDone').classList.toggle('on', s==='done');
+
+    wo.classList.remove('hidden','inprogress');
+    woPulse.classList.add('hidden');
+
+    if(s==='scheduled'){
+      woTitle.textContent = 'Push · Chest + Triceps';
+      woSub.textContent = '8 exercises · 52 min';
+      woBtn.textContent = 'Start';
+    } else if(s==='progress'){
+      wo.classList.add('inprogress');
+      woTitle.textContent = 'Push · Chest + Triceps';
+      woSub.textContent = 'Ex 4 / 8 · 18:42';
+      woBtn.textContent = 'Resume';
+      woPulse.classList.remove('hidden');
+    } else {
+      wo.classList.add('hidden');
+    }
+  }
+  document.getElementById('wScheduled').onclick = ()=>setWorkout('scheduled');
+  document.getElementById('wProgress').onclick = ()=>setWorkout('progress');
+  document.getElementById('wDone').onclick = ()=>setWorkout('done');
+
+  // ── Water controls ────────────────────────────────────
+  let waterMl = 2400;
+  const goal = 6000;
+  const sizes = [{l:'250ML',v:250},{l:'500ML',v:500},{l:'750ML',v:750},{l:'1L',v:1000}];
+  let sizeIdx = 1;
+  const waterVal = document.getElementById('waterVal');
+  const waterFill = document.getElementById('waterFill');
+  const bottleSize = document.getElementById('bottleSize');
+
+  function renderWater(){
+    waterMl = Math.max(0, Math.min(goal*2, waterMl));
+    waterVal.textContent = (waterMl/1000).toFixed(1);
+    waterFill.style.width = Math.min(100, (waterMl/goal)*100) + '%';
+    bottleSize.textContent = sizes[sizeIdx].l;
+  }
+  document.getElementById('waterPlus').onclick = ()=>{ waterMl += sizes[sizeIdx].v; renderWater(); };
+  document.getElementById('waterMinus').onclick = ()=>{ waterMl -= sizes[sizeIdx].v; renderWater(); };
+  document.getElementById('bottleCycle').onclick = ()=>{ sizeIdx = (sizeIdx+1) % sizes.length; renderWater(); };
+
+  // ── Habits ────────────────────────────────────────────
+  document.querySelectorAll('.habit').forEach(h=>{
+    h.onclick = ()=>{
+      h.classList.toggle('done');
+      const box = h.querySelector('.box');
+      if(h.classList.contains('done')){
+        if(!box.querySelector('i')) box.innerHTML = '<i class="ph-bold ph-check"></i>';
+      } else {
+        box.innerHTML = '';
+      }
+      const done = document.querySelectorAll('.habit.done').length;
+      document.getElementById('habitDone').textContent = done;
+    };
+  });
+
+  // ── Date nav (swipe back to yesterday) ────────────────
+  let day = 0;
+  const dateMain = document.getElementById('dateMain');
+  const dateSub = document.getElementById('dateSub');
+  document.getElementById('dateBack').onclick = ()=>{
+    day = day===0 ? -1 : 0;
+    if(day===0){ dateMain.textContent='TODAY'; dateSub.textContent='WED · JUN 17'; }
+    else { dateMain.textContent='YESTERDAY'; dateSub.textContent='TUE · JUN 16'; }
+  };
+</script>
+
+</body>
+</html>
