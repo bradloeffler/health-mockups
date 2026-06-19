@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#11100e">
-<title>Health Native — Onboarding mockups</title>
+<title>FORGE — Onboarding</title>
 <style>
   :root{
-    --bg1:#16140f; --bg2:#0e0d0b; --card:#1a1814; --card2:#1f1c16;
+    --bg1:#16140f; --bg2:#0d0c0a; --card:#1a1814; --card2:#1f1c16;
     --line:#201d17; --line2:#2c281f; --ink:#efeae0; --sub:#a59d8d; --faint:#6f6859;
     --amber:#e3a857; --amber-br:#f3c378; --green:#4fd17e; --blue:#6fb0d8; --red:#e0664a;
     --sans:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
@@ -16,108 +16,92 @@
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;height:100%}
-  body{
-    font-family:var(--sans); color:var(--ink);
-    background:#0a0908;
-    display:flex; align-items:center; justify-content:center;
-    min-height:100dvh; padding:0;
-  }
-  /* phone frame on desktop, full-bleed on phone */
-  .phone{
-    position:relative; width:100%; max-width:430px; height:100dvh; max-height:932px;
-    overflow:hidden; background:radial-gradient(120% 80% at 50% 18%,var(--bg1),var(--bg2));
-    border-radius:0;
-  }
+  body{font-family:var(--sans); color:var(--ink); background:#0a0908;
+    display:flex; align-items:center; justify-content:center; min-height:100dvh}
+  .phone{position:relative; width:100%; max-width:430px; height:100dvh; max-height:932px;
+    overflow:hidden; background:radial-gradient(125% 80% at 50% 16%,var(--bg1),var(--bg2))}
   @media(min-width:480px){
-    body{background:#0a0908}
-    .phone{height:912px; border-radius:44px; box-shadow:0 0 0 10px #1c1a16,0 30px 80px rgba(0,0,0,.6); border:1px solid #2a2620}
+    .phone{height:912px; border-radius:46px; box-shadow:0 0 0 11px #1b1915,0 30px 90px rgba(0,0,0,.65); border:1px solid #2a2620}
   }
-  .screen{
-    position:absolute; inset:0; display:flex; flex-direction:column;
-    padding:max(env(safe-area-inset-top),26px) 26px max(env(safe-area-inset-bottom),26px);
-    opacity:0; transform:translateX(16px); pointer-events:none;
-    transition:opacity .32s ease,transform .32s ease; overflow-y:auto;
-  }
+  .screen{position:absolute; inset:0; display:flex; flex-direction:column;
+    padding:max(env(safe-area-inset-top),30px) 26px max(env(safe-area-inset-bottom),24px);
+    opacity:0; transform:translateX(18px); pointer-events:none;
+    transition:opacity .34s ease,transform .34s ease; overflow-y:auto}
   .screen.on{opacity:1; transform:none; pointer-events:auto}
   .grow{flex:1}
-  .spacer{height:18px}
+  .spacer{height:16px}
 
-  /* type */
   .kicker{font:600 11px/1 var(--mono); letter-spacing:2px; color:var(--faint); text-transform:uppercase}
-  h1{font:200 33px/1.05 var(--sans); letter-spacing:-.5px; margin:10px 0 0}
-  .lede{color:var(--sub); font-size:15px; line-height:1.45; margin:10px 0 0}
+  h1{font:300 32px/1.08 var(--sans); letter-spacing:-.4px; margin:10px 0 0}
+  .lede{color:var(--sub); font-size:15px; line-height:1.5; margin:11px 0 0}
   .micro{font:600 10.5px/1 var(--mono); letter-spacing:1.6px; color:var(--faint); text-transform:uppercase}
 
-  /* buttons */
-  .btn{display:flex; align-items:center; justify-content:center; gap:10px;
-    width:100%; height:54px; border-radius:15px; border:1px solid transparent;
-    font:600 16px var(--sans); cursor:pointer; user-select:none}
-  .btn.amber{background:linear-gradient(180deg,var(--amber-br),var(--amber)); color:#1a1206; border:none}
+  .btn{display:flex; align-items:center; justify-content:center; gap:10px; width:100%; height:54px;
+    border-radius:15px; border:1px solid transparent; font:600 16px var(--sans); cursor:pointer; user-select:none}
+  .btn.amber{background:linear-gradient(180deg,var(--amber-br),var(--amber)); color:#1a1206}
   .btn.dark{background:#000; color:#fff}
   .btn.light{background:#fff; color:#1a1a1a}
   .btn.ghost{background:var(--card); color:var(--ink); border:1px solid var(--line2)}
   .btn:active{transform:translateY(1px); filter:brightness(.96)}
-  .link{display:block; text-align:center; color:var(--sub); font-size:14px; padding:14px; cursor:pointer}
+  .link{display:block; text-align:center; color:var(--sub); font-size:14px; padding:13px; cursor:pointer}
   .link:active{color:var(--ink)}
 
-  /* logo */
+  /* FORGE brand */
   .brandwrap{display:flex; flex-direction:column; align-items:center; text-align:center}
-  .gauge{filter:drop-shadow(0 6px 18px rgba(227,168,87,.25))}
-  .word{font:700 14px var(--mono); letter-spacing:5px; color:var(--ink); margin-top:18px}
+  .tach{filter:drop-shadow(0 8px 22px rgba(227,168,87,.28))}
+  .word{font:800 22px var(--sans); letter-spacing:8px; color:var(--ink); margin-top:20px; padding-left:8px}
+  .tag{color:var(--sub); font-size:14.5px; line-height:1.5; margin-top:12px; max-width:280px}
 
-  /* progress dots */
   .dots{display:flex; gap:7px; align-items:center}
   .dot{width:7px; height:7px; border-radius:50%; background:var(--line2)}
   .dot.on{background:var(--amber); width:20px; border-radius:4px}
   .topbar{display:flex; align-items:center; justify-content:space-between; min-height:30px}
-  .back{font:300 26px var(--sans); color:var(--sub); cursor:pointer; line-height:1; width:30px}
+  .back{font:300 27px var(--sans); color:var(--sub); cursor:pointer; line-height:1; width:30px}
   .back:active{color:var(--ink)}
 
-  /* inputs */
-  .field{margin-top:22px}
+  .field{margin-top:20px}
   .field label{display:block; margin:0 0 9px 2px}
-  .input{width:100%; height:54px; border-radius:14px; background:var(--card); border:1px solid var(--line2);
-    color:var(--ink); font-size:17px; padding:0 16px; outline:none}
+  .input{width:100%; height:52px; border-radius:14px; background:var(--card); border:1px solid var(--line2);
+    color:var(--ink); font-size:16px; padding:0 16px; outline:none}
   .input:focus{border-color:var(--amber)}
   .input::placeholder{color:#5f594d}
+  .two{display:flex; gap:12px}
+  .two .field{flex:1}
 
-  /* segmented */
   .seg{display:flex; background:var(--card); border:1px solid var(--line2); border-radius:14px; padding:4px; margin-top:9px}
   .seg div{flex:1; text-align:center; padding:12px 0; border-radius:10px; font-size:15px; color:var(--sub); cursor:pointer}
   .seg div.on{background:#2a2014; color:var(--amber-br); font-weight:600}
 
-  /* source / option cards */
-  .card{display:flex; align-items:center; gap:14px; width:100%; padding:16px;
-    background:var(--card); border:1px solid var(--line); border-radius:18px; margin-top:12px; cursor:pointer; text-align:left}
-  .card .ic{width:44px; height:44px; border-radius:13px; display:flex; align-items:center; justify-content:center; flex:0 0 44px; background:#221d15}
-  .card .ttl{font-size:16px; font-weight:600}
-  .card .desc{color:var(--sub); font-size:12.5px; margin-top:3px}
-  .pill{margin-left:auto; flex:0 0 auto; padding:8px 15px; border-radius:11px; border:1px solid var(--amber);
-    color:var(--amber); font:600 12.5px var(--sans); white-space:nowrap}
-  .card.connected{border-color:#27432f; background:#15211a}
-  .card.connected .pill{border-color:transparent; background:transparent; color:var(--green)}
-  .card.connected .ic{background:#16291d}
+  /* connect source cards (beautiful) */
+  .src{display:flex; align-items:center; gap:14px; width:100%; padding:14px 15px;
+    background:var(--card); border:1px solid var(--line); border-radius:17px; margin-top:11px; cursor:pointer; text-align:left}
+  .src .tile{width:46px; height:46px; border-radius:13px; display:flex; align-items:center; justify-content:center; flex:0 0 46px}
+  .src .nm{font-size:16px; font-weight:600; letter-spacing:.2px}
+  .src .ds{color:var(--sub); font-size:12.5px; margin-top:3px}
+  .src .tag2{display:inline-block; font:600 9px var(--mono); letter-spacing:1px; color:var(--amber); border:1px solid #4a3a22; border-radius:6px; padding:2px 6px; margin-left:8px; vertical-align:2px}
+  .src .pill{margin-left:auto; flex:0 0 auto; padding:9px 16px; border-radius:11px; border:1px solid var(--amber);
+    color:var(--amber); font:600 13px var(--sans); white-space:nowrap}
+  .src.on{border-color:#27432f; background:#14211a}
+  .src.on .pill{border-color:transparent; color:var(--green); padding-right:6px}
 
-  /* choice (radio) cards */
-  .choice{border:1px solid var(--line2); border-radius:16px; padding:16px 16px; margin-top:11px; cursor:pointer; background:var(--card)}
+  .choice{border:1px solid var(--line2); border-radius:16px; padding:15px 16px; margin-top:11px; cursor:pointer; background:var(--card)}
   .choice .row{display:flex; align-items:center; gap:13px}
   .choice .radio{width:22px; height:22px; border-radius:50%; border:2px solid var(--line2); flex:0 0 22px}
   .choice.on{border-color:var(--amber); background:#1d1813}
   .choice.on .radio{border-color:var(--amber); background:radial-gradient(circle at 50% 50%,var(--amber) 0 6px,transparent 7px)}
   .choice .ttl{font-size:16px; font-weight:600}
-  .choice .desc{color:var(--sub); font-size:12.5px; margin-top:6px; padding-left:35px; line-height:1.4}
+  .choice .desc{color:var(--sub); font-size:12.5px; margin-top:7px; padding-left:35px; line-height:1.45}
 
-  /* habit chips */
   .chips{display:flex; flex-wrap:wrap; gap:10px; margin-top:18px}
-  .chip{padding:12px 16px; border-radius:13px; border:1px solid var(--line2); background:var(--card);
+  .chip{padding:12px 15px; border-radius:13px; border:1px solid var(--line2); background:var(--card);
     color:var(--sub); font-size:14.5px; cursor:pointer; display:flex; align-items:center; gap:8px}
   .chip .tick{width:16px; height:16px; border-radius:5px; border:1.5px solid var(--line2); display:flex; align-items:center; justify-content:center; font-size:11px}
   .chip.on{border-color:var(--amber); color:var(--amber-br); background:#1d1813}
   .chip.on .tick{background:var(--amber); border-color:var(--amber); color:#1a1206}
-  .chip.add{border-style:dashed; color:var(--sub)}
+  .chip.add{border-style:dashed}
 
-  /* settings rows */
-  .sect{margin-top:24px}
+  /* settings */
+  .sect{margin-top:22px}
   .listcard{background:var(--card); border:1px solid var(--line); border-radius:18px; margin-top:11px; overflow:hidden}
   .lrow{display:flex; align-items:center; gap:12px; padding:15px 16px; border-bottom:1px solid var(--line)}
   .lrow:last-child{border-bottom:none}
@@ -125,131 +109,185 @@
   .lrow .lv{margin-left:auto; color:var(--sub); font-size:14px; font-family:var(--mono)}
   .lrow .chev{color:var(--faint); font-size:18px; margin-left:8px}
   .dotg{width:9px;height:9px;border-radius:50%;background:var(--green);flex:0 0 9px}
-  .signout{color:var(--red); text-align:center; padding:18px; font-weight:600; cursor:pointer; margin-top:14px}
+  .signout{color:var(--red); text-align:center; padding:18px; font-weight:600; cursor:pointer; margin-top:12px}
 
-  .done-badge{width:96px;height:96px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-    background:radial-gradient(circle,#23341f,#16211a); border:1px solid #2c4a35; margin:0 auto}
+  /* ===== first-sync (CleanMyMac vibe) ===== */
+  #sync{justify-content:center; text-align:center; align-items:center}
+  .synccore{position:relative; width:170px; height:170px; display:flex; align-items:center; justify-content:center}
+  .ring{position:absolute; inset:0; border-radius:50%; border:2px solid #241f17}
+  .ring.pulse{animation:pulse 2.4s ease-out infinite}
+  .ring.r2{animation-delay:.8s} .ring.r3{animation-delay:1.6s}
+  @keyframes pulse{0%{transform:scale(.55);opacity:.9}100%{transform:scale(1.25);opacity:0}}
+  .needle-spin{animation:rev 2.6s cubic-bezier(.3,.9,.4,1) forwards}
+  @keyframes rev{0%{transform:rotate(-128deg)}70%{transform:rotate(10deg)}85%{transform:rotate(-6deg)}100%{transform:rotate(0)}}
+  .synctitle{font:300 26px var(--sans); margin-top:34px}
+  .syncsub{color:var(--sub); font-size:14px; margin-top:8px; min-height:20px}
+  .srcfeed{width:100%; margin-top:26px; max-width:330px}
+  .feedrow{display:flex; align-items:center; gap:12px; padding:11px 4px; opacity:0; transform:translateY(8px);
+    transition:opacity .4s ease,transform .4s ease; border-bottom:1px solid var(--line)}
+  .feedrow.in{opacity:1; transform:none}
+  .feedrow .fi{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex:0 0 30px}
+  .feedrow .fl{font-size:14px;color:var(--ink);text-align:left}
+  .feedrow .fd{font:12px var(--mono);color:var(--sub);text-align:left;margin-top:1px}
+  .feedrow .fc{margin-left:auto;color:var(--green);font-size:17px;opacity:0;transition:opacity .3s}
+  .feedrow.done .fc{opacity:1}
+  .feedrow .spin{margin-left:auto;width:16px;height:16px;border-radius:50%;border:2px solid #33291a;border-top-color:var(--amber);animation:sp .7s linear infinite}
+  .feedrow.done .spin{display:none}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .pbar{width:100%;max-width:330px;height:6px;border-radius:3px;background:#221e16;margin-top:24px;overflow:hidden}
+  .pfill{height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,var(--amber),var(--amber-br));transition:width .3s ease}
+  .pct{font:600 12px var(--mono);color:var(--faint);margin-top:10px;letter-spacing:1px}
 
-  /* floating review jumper */
+  /* ===== today preview ===== */
+  .thead{display:flex; align-items:flex-end; justify-content:space-between}
+  .twh{font:700 13px var(--mono); letter-spacing:4px; color:var(--ink)}
+  .tdate{font:600 11px var(--mono); letter-spacing:1.5px; color:var(--faint); margin-bottom:7px}
+  .gear{width:38px;height:38px;border-radius:11px;border:1px solid var(--line2);background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .wstrip{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:15px;padding:13px 14px;margin-top:16px}
+  .wstrip .wi{width:34px;height:34px;border-radius:10px;background:#241a16;border:1px solid #33291a;display:flex;align-items:center;justify-content:center}
+  .duo{display:flex; gap:11px; margin-top:11px}
+  .rec{flex:0 0 174px; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:14px}
+  .rcol{flex:1; display:flex; flex-direction:column; gap:11px}
+  .mini{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:13px 14px; flex:1}
+  .mnum{font:300 24px var(--mono); color:var(--ink)} .mnum span{font-size:11px;color:var(--sub)}
+  .bar{height:6px;border-radius:3px;background:#201d17;margin-top:9px;overflow:hidden}
+  .bar i{display:block;height:100%;border-radius:3px}
+  .ringnum{font:300 30px var(--mono)}
+  .recstat{display:flex;justify-content:space-between;font:11px var(--mono);margin-top:7px}
+  .hgrid{display:flex;flex-wrap:wrap;gap:10px;margin-top:11px}
+  .hcell{width:calc(50% - 5px);background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 14px;display:flex;align-items:center;justify-content:space-between}
+  .hcell .hn{font-size:14.5px;font-weight:600}
+  .hbox{width:22px;height:22px;border-radius:7px;border:1.4px solid #33291a}
+  .hbox.on{background:var(--green);border-color:var(--green);display:flex;align-items:center;justify-content:center;color:#0c1a10;font-size:13px}
+
   .jump{position:fixed; right:14px; bottom:14px; z-index:50; font-family:var(--mono)}
   @media(min-width:480px){ .jump{right:calc(50% - 215px + 6px)} }
   .jump .tog{width:46px;height:46px;border-radius:50%;background:#241d13;border:1px solid var(--amber);
     color:var(--amber);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.5)}
   .jump .menu{position:absolute; right:0; bottom:56px; background:#15130f; border:1px solid var(--line2);
-    border-radius:14px; padding:7px; width:198px; display:none}
+    border-radius:14px; padding:7px; width:210px; display:none}
   .jump.open .menu{display:block}
-  .jump .menu a{display:block; padding:9px 11px; color:var(--sub); font-size:12px; border-radius:9px; cursor:pointer; letter-spacing:.5px}
+  .jump .menu a{display:block; padding:9px 11px; color:var(--sub); font-size:12px; border-radius:9px; cursor:pointer; letter-spacing:.4px}
   .jump .menu a:hover{background:#211c14; color:var(--amber-br)}
-  .note{font-size:11px;color:var(--faint);text-align:center;margin-top:8px;font-family:var(--mono);letter-spacing:.5px}
+  .note{font-size:11px;color:var(--faint);text-align:center;margin-top:9px;font-family:var(--mono);letter-spacing:.5px}
 </style>
 </head>
 <body>
+<!-- reusable tach symbol -->
+<svg width="0" height="0" style="position:absolute"><defs>
+  <g id="tachsym">
+    <path d="M18.9,71.8 A38,38 0 1 1 81.1,71.8" fill="none" stroke="#2a2620" stroke-width="7" stroke-linecap="round"/>
+    <path d="M18.9,71.8 A38,38 0 1 1 86.7,40.2" fill="none" stroke="#e3a857" stroke-width="7" stroke-linecap="round"/>
+    <path d="M88,48.7 A38,38 0 0 1 81.1,71.8" fill="none" stroke="#e0664a" stroke-width="7" stroke-linecap="round"/>
+  </g>
+</defs></svg>
+
 <div class="phone" id="phone">
 
-  <!-- ============ 1 · LOGIN ============ -->
+  <!-- 1 LOGIN -->
   <section class="screen on" id="login">
     <div class="grow" style="display:flex;flex-direction:column;justify-content:center">
       <div class="brandwrap">
-        <svg class="gauge" width="84" height="84" viewBox="0 0 100 100" fill="none">
-          <circle cx="50" cy="50" r="38" stroke="#2a2620" stroke-width="7"/>
-          <circle cx="50" cy="50" r="38" stroke="#e3a857" stroke-width="7" stroke-linecap="round"
-            stroke-dasharray="239" stroke-dashoffset="78" transform="rotate(-90 50 50)"/>
-          <circle cx="50" cy="50" r="4.5" fill="#f3c378"/>
-          <path d="M50 50 L67 36" stroke="#f3c378" stroke-width="4" stroke-linecap="round"/>
+        <svg class="tach" width="96" height="96" viewBox="0 0 100 100">
+          <use href="#tachsym"/>
+          <g><line x1="50" y1="50" x2="81.9" y2="41.5" stroke="#f3c378" stroke-width="4.5" stroke-linecap="round"/>
+          <circle cx="50" cy="50" r="5.5" fill="#f3c378"/><circle cx="50" cy="50" r="2" fill="#1a1206"/></g>
         </svg>
-        <div class="word">HEALTH&nbsp;NATIVE</div>
-        <div class="lede" style="max-width:280px">Recovery, training, and habits —<br>one atomic record a day.</div>
+        <div class="word">FORGE</div>
+        <div class="tag">Recovery, training, and habits. One atomic record a day.</div>
       </div>
     </div>
     <div>
-      <button class="btn dark" onclick="go('name')">
+      <button class="btn dark" onclick="go('connect')">
         <svg width="17" height="20" viewBox="0 0 17 20" fill="#fff"><path d="M14.6 15.6c-.3.7-.5 1-.9 1.6-.6.9-1.4 2-2.5 2-.9 0-1.2-.6-2.4-.6-1.3 0-1.6.6-2.5.6-1 0-1.8-1-2.4-1.9-1.7-2.4-1.9-5.3-.8-6.8.7-1.1 1.9-1.7 3-1.7 1.1 0 1.8.6 2.7.6.9 0 1.4-.6 2.7-.6 1 0 2 .5 2.7 1.4-2.4 1.3-2 4.7.1 5.8zM11 4.2c.5-.6.9-1.5.7-2.4-.8 0-1.7.6-2.3 1.2-.5.6-.9 1.5-.8 2.3.9.1 1.8-.5 2.4-1.1z"/></svg>
         Continue with Apple
       </button>
       <div class="spacer"></div>
-      <button class="btn light" onclick="go('name')">
+      <button class="btn light" onclick="go('connect')">
         <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.6 9.2c0-.6-.1-1.2-.2-1.8H9v3.5h4.8a4.1 4.1 0 0 1-1.8 2.7v2.2h2.9c1.7-1.6 2.7-3.9 2.7-6.6z"/><path fill="#34A853" d="M9 18c2.4 0 4.5-.8 6-2.2l-2.9-2.2c-.8.5-1.8.9-3.1.9-2.4 0-4.4-1.6-5.1-3.8H.9v2.3A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.9 10.7a5.4 5.4 0 0 1 0-3.4V5H.9a9 9 0 0 0 0 8z"/><path fill="#EA4335" d="M9 3.6c1.3 0 2.5.5 3.4 1.3l2.6-2.6A9 9 0 0 0 .9 5l3 2.3C4.6 5.2 6.6 3.6 9 3.6z"/></svg>
         Continue with Google
       </button>
       <div class="spacer"></div>
-      <button class="btn ghost" onclick="go('name')">Continue with email</button>
-      <div class="note">By continuing you agree to our Terms &amp; Privacy Policy</div>
+      <button class="btn ghost" onclick="go('signup')">Sign up with email</button>
+      <div class="note">By continuing you agree to our Terms and Privacy Policy</div>
     </div>
   </section>
 
-  <!-- ============ 2 · PROFILE / NAME ============ -->
-  <section class="screen" id="name">
-    <div class="topbar">
-      <span class="back" onclick="go('login')">‹</span>
-      <div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-      <span style="width:30px"></span>
-    </div>
+  <!-- 2 EMAIL SIGNUP (email path only) -->
+  <section class="screen" id="signup">
+    <div class="topbar"><span class="back" onclick="go('login')">‹</span><span class="micro">CREATE ACCOUNT</span><span style="width:30px"></span></div>
     <div class="spacer"></div>
-    <div class="kicker">Step 1 of 4</div>
-    <h1>Let's set you up</h1>
-    <p class="lede">A couple basics. Everything's editable later in Settings.</p>
-
-    <div class="field">
-      <label class="micro">What should we call you?</label>
-      <input class="input" placeholder="First name" value="">
+    <h1>Create your account</h1>
+    <p class="lede">With Apple or Google we pull your name automatically. With email, we just need a few details.</p>
+    <div class="two">
+      <div class="field"><label class="micro">First name</label><input class="input" placeholder="First"></div>
+      <div class="field"><label class="micro">Last name</label><input class="input" placeholder="Last"></div>
     </div>
-    <div class="field">
-      <label class="micro">Units</label>
-      <div class="seg">
-        <div class="on" onclick="seg(this)">Imperial · lb</div>
-        <div onclick="seg(this)">Metric · kg</div>
-      </div>
-    </div>
+    <div class="field"><label class="micro">Email</label><input class="input" placeholder="you@email.com" type="email"></div>
+    <div class="field"><label class="micro">Password</label><input class="input" placeholder="At least 8 characters" type="password"></div>
     <div class="grow"></div>
-    <button class="btn amber" onclick="go('connect')">Continue</button>
+    <button class="btn amber" onclick="go('connect')">Create account</button>
   </section>
 
-  <!-- ============ 3 · CONNECT SOURCES ============ -->
+  <!-- 3 CONNECT -->
   <section class="screen" id="connect">
-    <div class="topbar">
-      <span class="back" onclick="go('name')">‹</span>
-      <div class="dots"><span class="dot"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
-      <span style="width:30px"></span>
-    </div>
+    <div class="topbar"><span class="back" onclick="go('login')">‹</span>
+      <div class="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div><span style="width:30px"></span></div>
     <div class="spacer"></div>
-    <div class="kicker">Step 2 of 4</div>
+    <div class="kicker">Step 1 of 3</div>
     <h1>Connect your data</h1>
-    <p class="lede">All optional — connect what you use. Each one starts capturing your atomic data from day one.</p>
+    <p class="lede">The more data sources you connect, the better your experience will be.</p>
 
-    <button class="card" onclick="conn(this)">
-      <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-9.3-9C1 8.5 2.8 5 6.2 5c2 0 3.2 1.4 3.8 2.3C10.6 6.4 11.8 5 13.8 5 17.2 5 19 8.5 21.3 12 19 16.5 12 21 12 21z" fill="#e0664a"/></svg></span>
-      <span><span class="ttl">Apple Health</span><span class="desc">Steps · weight · sleep · workouts</span></span>
+    <button class="src" onclick="conn(this)">
+      <span class="tile" style="background:#fff"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.3-9C1 8.5 2.8 5 6.2 5c2 0 3.2 1.4 3.8 2.3C10.6 6.4 11.8 5 13.8 5 17.2 5 19 8.5 21.3 12 19 16.5 12 21 12 21z" fill="#fb3640"/></svg></span>
+      <span><span class="nm">Apple Health<span class="tag2">RECOMMENDED</span></span><span class="ds">Steps, weight, sleep, workouts</span></span>
       <span class="pill">Connect</span>
     </button>
-    <button class="card" onclick="conn(this)">
-      <span class="ic"><span style="font:700 13px var(--mono);color:#fff">W</span></span>
-      <span><span class="ttl">WHOOP</span><span class="desc">Recovery · HRV · resting HR · sleep</span></span>
+    <button class="src" onclick="conn(this)">
+      <span class="tile" style="background:#000"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#fff" stroke-width="2.4"/><circle cx="12" cy="12" r="2.4" fill="#fff"/></svg></span>
+      <span><span class="nm">WHOOP</span><span class="ds">Recovery, HRV, resting HR, sleep</span></span>
       <span class="pill">Connect</span>
     </button>
-    <button class="card" onclick="conn(this)">
-      <span class="ic"><span style="font:700 12px var(--mono);color:#fc4c02">S</span></span>
-      <span><span class="ttl">Strava</span><span class="desc">Runs &amp; rides, pace &amp; heart rate</span></span>
+    <button class="src" onclick="conn(this)">
+      <span class="tile" style="background:#0a0a0a"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="12" rx="6.5" ry="8" stroke="#fff" stroke-width="2.2"/></svg></span>
+      <span><span class="nm">Oura</span><span class="ds">Sleep, readiness, HRV, temperature</span></span>
+      <span class="pill">Connect</span>
+    </button>
+    <button class="src" onclick="conn(this)">
+      <span class="tile" style="background:#fc4c02"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M9 4l5.5 11h-3.2L9 9.7 6.7 15H3.5L9 4z"/><path d="M14.3 15l1.6 3.3 1.6-3.3h2.7l-4.3 8.6-4.3-8.6h2.7z" opacity=".75"/></svg></span>
+      <span><span class="nm">Strava</span><span class="ds">Runs and rides, pace and heart rate</span></span>
+      <span class="pill">Connect</span>
+    </button>
+    <button class="src" onclick="conn(this)">
+      <span class="tile" style="background:#007cc3"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 4l7 4v8l-7 4-7-4V8l7-4z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg></span>
+      <span><span class="nm">Garmin</span><span class="ds">Runs, training load, HR, sleep</span></span>
+      <span class="pill">Connect</span>
+    </button>
+    <button class="src" onclick="conn(this)">
+      <span class="tile" style="background:#00b0b9"><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><circle cx="6" cy="12" r="2.2"/><circle cx="12" cy="8" r="2.2"/><circle cx="12" cy="16" r="2.2"/><circle cx="18" cy="12" r="2.2"/></svg></span>
+      <span><span class="nm">Fitbit</span><span class="ds">Steps, sleep, heart rate</span></span>
+      <span class="pill">Connect</span>
+    </button>
+    <button class="src" onclick="conn(this)">
+      <span class="tile" style="background:#16374a"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="14" rx="3" stroke="#9fe3df" stroke-width="2"/><path d="M9 15a3 3 0 1 1 6 0" stroke="#9fe3df" stroke-width="2"/></svg></span>
+      <span><span class="nm">Withings</span><span class="ds">Smart scale weight and body data</span></span>
       <span class="pill">Connect</span>
     </button>
 
-    <div class="grow"></div>
+    <div class="spacer"></div>
     <button class="btn amber" onclick="go('habits')">Continue</button>
     <span class="link" onclick="go('habits')">Skip for now</span>
   </section>
 
-  <!-- ============ 4 · HABITS ============ -->
+  <!-- 4 HABITS -->
   <section class="screen" id="habits">
-    <div class="topbar">
-      <span class="back" onclick="go('connect')">‹</span>
-      <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot on"></span><span class="dot"></span></div>
-      <span style="width:30px"></span>
-    </div>
+    <div class="topbar"><span class="back" onclick="go('connect')">‹</span>
+      <div class="dots"><span class="dot"></span><span class="dot on"></span><span class="dot"></span></div><span style="width:30px"></span></div>
     <div class="spacer"></div>
-    <div class="kicker">Step 3 of 4</div>
+    <div class="kicker">Step 2 of 3</div>
     <h1>Pick your habits</h1>
-    <p class="lede">Tap the ones you want to track daily. Add your own anytime.</p>
-
-    <div class="chips" id="chipwrap">
+    <p class="lede">Forge helps you track compliance to habits that are important to you. Pick the ones you want to track. You can always change these later.</p>
+    <div class="chips">
       <div class="chip on" onclick="chip(this)"><span class="tick">✓</span>AM vitamins</div>
       <div class="chip on" onclick="chip(this)"><span class="tick">✓</span>PM vitamins</div>
       <div class="chip on" onclick="chip(this)"><span class="tick">✓</span>Water</div>
@@ -258,119 +296,151 @@
       <div class="chip" onclick="chip(this)"><span class="tick"></span>Workout</div>
       <div class="chip" onclick="chip(this)"><span class="tick"></span>Protein</div>
       <div class="chip" onclick="chip(this)"><span class="tick"></span>Stretch</div>
-      <div class="chip add" onclick="alert('Add-custom-habit sheet (name + binary/counter) — same as today\\'s app')">+ Add custom</div>
+      <div class="chip add" onclick="alert('Add custom habit: name plus binary or counter type, same as the app today.')"><span class="tick">+</span>Add custom</div>
     </div>
-
     <div class="grow"></div>
     <button class="btn amber" onclick="go('plan')">Continue</button>
   </section>
 
-  <!-- ============ 5 · PLAN ============ -->
+  <!-- 5 PLAN -->
   <section class="screen" id="plan">
-    <div class="topbar">
-      <span class="back" onclick="go('habits')">‹</span>
-      <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot on"></span></div>
-      <span style="width:30px"></span>
-    </div>
+    <div class="topbar"><span class="back" onclick="go('habits')">‹</span>
+      <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot on"></span></div><span style="width:30px"></span></div>
     <div class="spacer"></div>
-    <div class="kicker">Step 4 of 4</div>
-    <h1>Choose a plan</h1>
-    <p class="lede">Drives your Today screen. Pick one or just track — change it whenever.</p>
+    <div class="kicker">Step 3 of 3</div>
+    <h1>Choose your plan</h1>
+    <p class="lede">Pick a pre-built plan or upload your own later.</p>
 
     <div class="choice on" onclick="choose(this)">
-      <div class="row"><span class="radio"></span><span class="ttl">Just track — no plan</span></div>
-      <div class="desc">Recovery, habits, water, steps. No prescribed workouts.</div>
+      <div class="row"><span class="radio"></span><span class="ttl">Just track</span></div>
+      <div class="desc">No prescribed workouts. Your Today screen shows recovery, habits, water, and steps only.</div>
     </div>
     <div class="choice" onclick="choose(this)">
-      <div class="row"><span class="radio"></span><span class="ttl">Atomic Athlete · strength</span></div>
-      <div class="desc">The shared strength template (what Brad &amp; Jared run).</div>
+      <div class="row"><span class="radio"></span><span class="ttl">Atomic Athlete</span></div>
+      <div class="desc">The Atomic Athlete strength program. Each day shows that day's lifts and accessory work to complete.</div>
     </div>
     <div class="choice" onclick="choose(this)">
       <div class="row"><span class="radio"></span><span class="ttl">Running plan</span></div>
-      <div class="desc">Marathon / half — daily mileage &amp; sessions.</div>
+      <div class="desc">A marathon or half marathon build. Each day shows your prescribed run and target mileage.</div>
+    </div>
+    <div class="choice" onclick="choose(this)">
+      <div class="row"><span class="radio"></span><span class="ttl">Hybrid</span></div>
+      <div class="desc">Atomic Athlete strength and a running plan combined across the week. Run days pair a session with a lift. This is the setup Brad runs today.</div>
     </div>
     <div class="choice" onclick="choose(this)">
       <div class="row"><span class="radio"></span><span class="ttl">Upload my own</span></div>
-      <div class="desc">Snap your program — we read it into a weekly plan.</div>
+      <div class="desc">Take photos of any program and Forge reads it into a weekly plan you follow in the app.</div>
     </div>
-
-    <div class="grow"></div>
-    <button class="btn amber" onclick="go('done')">Continue</button>
+    <div class="spacer"></div>
+    <button class="btn amber" onclick="startSync()">Continue</button>
   </section>
 
-  <!-- ============ 6 · DONE ============ -->
-  <section class="screen" id="done">
-    <div class="grow" style="display:flex;flex-direction:column;justify-content:center;text-align:center">
-      <div class="done-badge">
-        <svg width="42" height="42" viewBox="0 0 24 24" fill="none"><path d="M4 12.5l5 5L20 6" stroke="#4fd17e" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-      <h1 style="margin-top:26px">You're all set</h1>
-      <p class="lede" style="margin-left:auto;margin-right:auto;max-width:300px">Your data starts capturing now — one durable record per day, backed up to your account.</p>
-      <div class="chips" style="justify-content:center;margin-top:24px">
-        <div class="chip on"><span class="tick">✓</span>Apple Health</div>
-        <div class="chip on"><span class="tick">✓</span>4 habits</div>
-        <div class="chip on"><span class="tick">✓</span>No plan</div>
-      </div>
+  <!-- 6 FIRST SYNC -->
+  <section class="screen" id="sync">
+    <div class="synccore">
+      <div class="ring pulse"></div><div class="ring pulse r2"></div><div class="ring pulse r3"></div>
+      <svg width="150" height="150" viewBox="0 0 100 100">
+        <use href="#tachsym"/>
+        <g id="syncNeedle" style="transform-origin:50px 50px">
+          <line x1="50" y1="50" x2="81.9" y2="41.5" stroke="#f3c378" stroke-width="4.5" stroke-linecap="round"/>
+          <circle cx="50" cy="50" r="5.5" fill="#f3c378"/><circle cx="50" cy="50" r="2" fill="#1a1206"/>
+        </g>
+      </svg>
     </div>
-    <button class="btn amber" onclick="go('profile')">Enter Health Native</button>
-    <span class="link" onclick="go('login')">↺ Restart flow</span>
+    <div class="synctitle">Forging your baseline</div>
+    <div class="syncsub" id="syncSub">Pulling in your history so day one is complete.</div>
+
+    <div class="srcfeed" id="srcfeed">
+      <div class="feedrow" data-detail="90 days of recovery"><span class="fi" style="background:#000"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#fff" stroke-width="2.6"/><circle cx="12" cy="12" r="2.4" fill="#fff"/></svg></span><span><span class="fl">WHOOP</span><div class="fd">90 days of recovery</div></span><span class="spin"></span><span class="fc">✓</span></div>
+      <div class="feedrow" data-detail="steps, sleep, weight"><span class="fi" style="background:#fff"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.3-9C1 8.5 2.8 5 6.2 5c2 0 3.2 1.4 3.8 2.3C10.6 6.4 11.8 5 13.8 5 17.2 5 19 8.5 21.3 12 19 16.5 12 21 12 21z" fill="#fb3640"/></svg></span><span><span class="fl">Apple Health</span><div class="fd">steps, sleep, weight</div></span><span class="spin"></span><span class="fc">✓</span></div>
+      <div class="feedrow" data-detail="42 activities"><span class="fi" style="background:#fc4c02"><svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M9 4l5.5 11h-3.2L9 9.7 6.7 15H3.5L9 4z"/></svg></span><span><span class="fl">Strava</span><div class="fd">42 activities</div></span><span class="spin"></span><span class="fc">✓</span></div>
+      <div class="feedrow" data-detail="sleep and readiness"><span class="fi" style="background:#0a0a0a"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="12" rx="6.5" ry="8" stroke="#fff" stroke-width="2.4"/></svg></span><span><span class="fl">Oura</span><div class="fd">sleep and readiness</div></span><span class="spin"></span><span class="fc">✓</span></div>
+    </div>
+
+    <div class="pbar"><div class="pfill" id="pfill"></div></div>
+    <div class="pct" id="pct">0%</div>
   </section>
 
-  <!-- ============ 7 · PROFILE / SETTINGS ============ -->
+  <!-- 7 TODAY (landed) -->
+  <section class="screen" id="today">
+    <div class="thead">
+      <div><div class="tdate">WEDNESDAY · JUN 18</div><div class="twh">FORGE</div></div>
+      <div class="gear" onclick="go('profile')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.2" stroke="#a59d8d" stroke-width="2"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2M6 6l1.5 1.5M16.5 16.5L18 18M18 6l-1.5 1.5M7.5 16.5L6 18" stroke="#a59d8d" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="wstrip">
+      <div class="wi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M13 5l-2 6h4l-2 8" stroke="#e3a857" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div style="flex:1"><div style="font-size:16px;font-weight:600">Run + Strength</div><div style="font:10px var(--mono);color:var(--sub);margin-top:3px;letter-spacing:.5px">4 MI RUN · SHOULDERS &amp; PULL</div></div>
+      <div style="font:700 11px var(--sans);color:#e3a857">START ›</div>
+    </div>
+    <div class="duo">
+      <div class="rec">
+        <div class="micro">WHOOP</div>
+        <div style="display:flex;justify-content:center;margin:8px 0 2px"><svg width="92" height="92" viewBox="0 0 92 92"><circle cx="46" cy="46" r="38" fill="none" stroke="#201d17" stroke-width="6"/><circle cx="46" cy="46" r="38" fill="none" stroke="#4fd17e" stroke-width="6" stroke-linecap="round" stroke-dasharray="239" stroke-dashoffset="69" transform="rotate(-90 46 46)"/><text x="46" y="54" text-anchor="middle" class="ringnum" fill="#4fd17e" font-family="var(--mono)">71</text></svg></div>
+        <div class="recstat"><span style="color:var(--faint)">HRV</span><span>42</span></div>
+        <div class="recstat"><span style="color:var(--faint)">RHR</span><span>54</span></div>
+        <div class="recstat"><span style="color:var(--faint)">SLEEP</span><span>7h12m</span></div>
+      </div>
+      <div class="rcol">
+        <div class="mini"><div class="micro">STEPS</div><div class="mnum" style="margin-top:7px">8,240<span> / 10k</span></div><div class="bar"><i style="width:82%;background:#e3a857"></i></div></div>
+        <div class="mini"><div class="micro">WATER</div><div class="mnum" style="margin-top:7px">2.4<span> / 6 L</span></div><div class="bar"><i style="width:40%;background:#6fb0d8"></i></div></div>
+      </div>
+    </div>
+    <div class="micro" style="margin-top:20px">HABITS</div>
+    <div class="hgrid">
+      <div class="hcell"><span class="hn">AM vitamins</span><span class="hbox on">✓</span></div>
+      <div class="hcell"><span class="hn">Mobility</span><span class="hbox"></span></div>
+      <div class="hcell"><span class="hn">Protein</span><span style="font:13px var(--mono);color:#e3a857">3/4</span></div>
+      <div class="hcell"><span class="hn">Workout</span><span class="hbox on">✓</span></div>
+    </div>
+    <div class="note">First login lands here, already populated. No empty states.</div>
+    <div class="spacer"></div>
+  </section>
+
+  <!-- 8 SETTINGS -->
   <section class="screen" id="profile">
-    <div class="topbar">
-      <span class="back" onclick="go('done')">‹</span>
-      <span class="micro">SETTINGS</span>
-      <span style="width:30px"></span>
-    </div>
+    <div class="topbar"><span class="back" onclick="go('today')">‹</span><span class="micro">SETTINGS</span><span style="width:30px"></span></div>
     <h1 style="margin-top:14px">Profile</h1>
-
-    <div class="sect">
-      <span class="micro">Account</span>
+    <div class="sect"><span class="micro">Account</span>
       <div class="listcard">
-        <div class="lrow"><span class="lk">Name</span><span class="lv">Brad</span><span class="chev">›</span></div>
+        <div class="lrow"><span class="lk">Name</span><span class="lv">Brad Loeffler</span><span class="chev">›</span></div>
         <div class="lrow"><span class="lk">Email</span><span class="lv">brad@12thbean.com</span></div>
         <div class="lrow"><span class="lk">Units</span><span class="lv">lb</span><span class="chev">›</span></div>
         <div class="lrow"><span class="lk">Time zone</span><span class="lv">Denver</span><span class="chev">›</span></div>
       </div>
     </div>
-
-    <div class="sect">
-      <span class="micro">Connected sources</span>
+    <div class="sect"><span class="micro">Connected sources</span>
       <div class="listcard">
-        <div class="lrow"><span class="dotg"></span><span class="lk">Apple Health</span><span class="lv">synced 6:12a</span><span class="chev">›</span></div>
+        <div class="lrow"><span class="dotg"></span><span class="lk">Apple Health</span><span class="lv">6:12a</span><span class="chev">›</span></div>
         <div class="lrow"><span class="dotg"></span><span class="lk">WHOOP</span><span class="lv">recovery 71</span><span class="chev">›</span></div>
         <div class="lrow"><span class="dotg"></span><span class="lk">Strava</span><span class="lv">42 runs</span><span class="chev">›</span></div>
+        <div class="lrow"><span class="dotg"></span><span class="lk">Oura</span><span class="lv">readiness 84</span><span class="chev">›</span></div>
+        <div class="lrow"><span class="lk" style="color:var(--sub)">+ Add a source</span><span class="chev" style="margin-left:auto">›</span></div>
       </div>
     </div>
-
-    <div class="sect">
-      <span class="micro">Tracking</span>
+    <div class="sect"><span class="micro">Tracking</span>
       <div class="listcard">
         <div class="lrow"><span class="lk">Habits</span><span class="lv">6 active</span><span class="chev">›</span></div>
-        <div class="lrow"><span class="lk">Plan</span><span class="lv">No plan</span><span class="chev">›</span></div>
+        <div class="lrow"><span class="lk">Plan</span><span class="lv">Hybrid</span><span class="chev">›</span></div>
         <div class="lrow"><span class="lk">Water goal</span><span class="lv">6 L</span><span class="chev">›</span></div>
         <div class="lrow"><span class="lk">Step goal</span><span class="lv">10,000</span><span class="chev">›</span></div>
       </div>
     </div>
-
     <div class="signout" onclick="go('login')">Sign out</div>
-    <div class="note">Mockup · tap rows are illustrative</div>
     <div class="spacer"></div>
   </section>
 
 </div>
 
-<!-- review jumper -->
 <div class="jump" id="jump">
   <div class="menu">
-    <a onclick="go('login')">1 · Login / sign-up</a>
-    <a onclick="go('name')">2 · Profile basics</a>
+    <a onclick="go('login')">1 · Login</a>
+    <a onclick="go('signup')">2 · Email sign-up</a>
     <a onclick="go('connect')">3 · Connect sources</a>
     <a onclick="go('habits')">4 · Pick habits</a>
     <a onclick="go('plan')">5 · Choose plan</a>
-    <a onclick="go('done')">6 · All set</a>
-    <a onclick="go('profile')">7 · Settings / profile</a>
+    <a onclick="startSync()">6 · First sync</a>
+    <a onclick="go('today')">7 · Today (landed)</a>
+    <a onclick="go('profile')">8 · Settings</a>
   </div>
   <div class="tog" onclick="document.getElementById('jump').classList.toggle('open')">☰</div>
 </div>
@@ -382,17 +452,26 @@
     document.getElementById('jump').classList.remove('open');
   }
   function seg(el){ el.parentNode.querySelectorAll('div').forEach(d=>d.classList.remove('on')); el.classList.add('on'); }
-  function conn(el){
-    el.classList.toggle('connected');
-    el.querySelector('.pill').textContent = el.classList.contains('connected') ? 'Connected ✓' : 'Connect';
-  }
-  function chip(el){
-    el.classList.toggle('on');
-    el.querySelector('.tick').textContent = el.classList.contains('on') ? '✓' : '';
-  }
-  function choose(el){
-    el.parentNode.querySelectorAll('.choice').forEach(c=>c.classList.remove('on'));
-    el.classList.add('on');
+  function conn(el){ el.classList.toggle('on'); el.querySelector('.pill').textContent = el.classList.contains('on') ? 'Connected ✓' : 'Connect'; }
+  function chip(el){ if(el.classList.contains('add'))return; el.classList.toggle('on'); el.querySelector('.tick').textContent = el.classList.contains('on') ? '✓' : ''; }
+  function choose(el){ el.parentNode.querySelectorAll('.choice').forEach(c=>c.classList.remove('on')); el.classList.add('on'); }
+
+  var subLines=["Pulling in your history so day one is complete.","Importing 90 days of recovery.","Reading your sleep and readiness.","Building your daily baseline.","Almost there."];
+  function startSync(){
+    go('sync');
+    // restart needle animation
+    var n=document.getElementById('syncNeedle'); n.classList.remove('needle-spin'); void n.offsetWidth; n.classList.add('needle-spin');
+    var rows=[].slice.call(document.querySelectorAll('#srcfeed .feedrow'));
+    rows.forEach(r=>{r.classList.remove('in','done')});
+    var pfill=document.getElementById('pfill'), pct=document.getElementById('pct'), sub=document.getElementById('syncSub');
+    pfill.style.width='0%'; pct.textContent='0%';
+    var i=0, p=0;
+    var t=setInterval(function(){
+      if(i<rows.length){ rows[i].classList.add('in'); sub.textContent=subLines[Math.min(i+1,subLines.length-1)]; (function(row){ setTimeout(function(){row.classList.add('done')},620); })(rows[i]); i++; }
+    },520);
+    var pi=setInterval(function(){ p+=Math.random()*9+4; if(p>=100){p=100; clearInterval(pi);} pfill.style.width=p+'%'; pct.textContent=Math.round(p)+'%'; },180);
+    setTimeout(function(){ clearInterval(t); rows.forEach(r=>{r.classList.add('in','done')}); pfill.style.width='100%'; pct.textContent='100%'; sub.textContent='Ready.'; },3000);
+    setTimeout(function(){ if(document.getElementById('sync').classList.contains('on')) go('today'); },4100);
   }
 </script>
 </body>
