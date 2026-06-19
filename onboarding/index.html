@@ -133,15 +133,17 @@
   @keyframes rev{0%{transform:rotate(-128deg)}16%{transform:rotate(-96deg)}40%{transform:rotate(-48deg)}68%{transform:rotate(6deg)}82%{transform:rotate(-7deg)}92%{transform:rotate(3deg)}100%{transform:rotate(0)}}
   .synctitle{font-size:26px;font-weight:700;letter-spacing:-.02em;margin-top:34px}
   .syncsub{color:var(--sub);font-size:14px;margin-top:9px;min-height:20px;transition:opacity .3s}
-  .srcfeed{width:100%;max-width:336px;margin-top:26px}
-  .feedrow{display:flex;align-items:center;gap:13px;padding:12px 4px;border-bottom:1px solid var(--hair-1);opacity:0;transform:translateY(8px);transition:opacity .45s,transform .45s}
+  .srcfeed{width:100%;max-width:320px;margin-top:26px}
+  .feedrow{display:flex;align-items:center;gap:13px;padding:13px 2px;border-bottom:1px solid var(--hair-1);opacity:0;transform:translateY(8px);transition:opacity .45s,transform .45s}
   .feedrow.in{opacity:1;transform:none}
-  .feedrow .fi{width:34px;height:34px;border-radius:10px;flex:0 0 34px;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
-  .feedrow .fl{font-size:14.5px;font-weight:600;text-align:left}
-  .feedrow .fd{font-family:var(--mono);font-size:11.5px;color:var(--sub);text-align:left;margin-top:2px}
-  .feedrow .fc{margin-left:auto;color:var(--green);font-size:18px;opacity:0;transition:opacity .3s}
+  .feedrow .fi{width:36px;height:36px;border-radius:10px;flex:0 0 36px;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
+  .feedrow .ft{flex:1;min-width:0;text-align:left}
+  .feedrow .fl{font-size:14.5px;font-weight:600;line-height:1.2}
+  .feedrow .fd{font-family:var(--mono);font-size:11.5px;color:var(--sub);margin-top:3px}
+  .feedrow .stat{flex:0 0 20px;width:20px;height:20px;display:flex;align-items:center;justify-content:center}
+  .feedrow .fc{color:var(--green);font-size:18px;opacity:0;transition:opacity .3s;position:absolute}
   .feedrow.done .fc{opacity:1}
-  .feedrow .spin{margin-left:auto;width:17px;height:17px;border-radius:50%;border:2px solid #33291a;border-top-color:var(--amber);animation:sp .7s linear infinite}
+  .feedrow .spin{width:17px;height:17px;border-radius:50%;border:2px solid #33291a;border-top-color:var(--amber);animation:sp .7s linear infinite}
   .feedrow.done .spin{display:none}
   @keyframes sp{to{transform:rotate(360deg)}}
   .pbar{width:100%;max-width:336px;height:6px;border-radius:3px;background:#221e16;margin-top:26px;overflow:hidden}
@@ -216,7 +218,7 @@
         <circle cx="50" cy="50" r="5.5" fill="#f3c378"/><circle cx="50" cy="50" r="2" fill="#1a1206"/>
       </svg>
       <div class="word">FORGE</div>
-      <div class="tag">Recovery, training, and habits. One atomic record a day.</div>
+      <div class="tag">One place to track all of your habits &amp; performance.</div>
     </div>
     <div class="stack" style="padding-bottom:12px">
       <button class="btn btn-dark" onclick="go('connect')">
@@ -376,7 +378,7 @@
     <a onclick="startSync()">6 · First sync</a>
     <a onclick="go('today')">7 · Today (landed)</a>
     <a onclick="go('settings')">8 · Settings</a>
-    <div class="ver">BUILD v4 · FORGE</div>
+    <div class="ver">BUILD v5 · FORGE</div>
   </div>
   <div class="tog" onclick="document.getElementById('jump').classList.toggle('open')">☰</div>
 </div>
@@ -418,8 +420,8 @@
     steps:'<path d="M7 4h3v8a3 3 0 0 1-6 0V9h3zM14 8h3v8a3 3 0 0 1-6 0v-3h3z"/>',
     mobility:'<circle cx="12" cy="5" r="2"/><path d="M12 8v6m0 0-3 5m3-5 3 5M7 11h10"/>',
     workout:'<path d="M4 9v6M20 9v6M7 7v10M17 7v10M7 12h10"/>',
-    protein:'<path d="M6 4h12l-1 4a5 5 0 0 1-10 0L6 4zM9 13v5a3 3 0 0 0 6 0v-5"/>',
-    stretch:'<circle cx="12" cy="4.5" r="2"/><path d="M12 7v5m0 0 5 2m-5-2-5 2m5 1 3 5m-3-5-3 5"/>'
+    protein:'<rect x="8" y="2.5" width="8" height="3" rx="1"/><path d="M8.4 5.5h7.2l-.7 13a2 2 0 0 1-2 1.9h-1.8a2 2 0 0 1-2-1.9l-.7-13z"/><path d="M8.7 11h6.6"/>',
+    stretch:'<circle cx="12" cy="4" r="1.9"/><path d="M12 6v6m0 0-3 6m3-6 3 6M12 6 8 3.2M12 6l4-2.8"/>'
   };
   var HABITS=[['AM vitamins','sun',1],['PM vitamins','moon',1],['Water','water',1],['Steps','steps',1],['Mobility','mobility',0],['Workout','workout',0],['Protein','protein',0],['Stretch','stretch',0]];
   var grid=document.getElementById('habitGrid');
@@ -463,7 +465,7 @@
     var f=document.getElementById('srcfeed'); f.innerHTML='';
     FEED.forEach(function(s){
       var r=document.createElement('div'); r.className='feedrow';
-      r.innerHTML='<span class="fi" style="background:'+s.bg+'">'+s.svg+'</span><span><span class="fl">'+s.l+'</span><div class="fd">'+s.d+'</div></span><span class="spin"></span><span class="fc">✓</span>';
+      r.innerHTML='<span class="fi" style="background:'+s.bg+'">'+s.svg+'</span><div class="ft"><div class="fl">'+s.l+'</div><div class="fd">'+s.d+'</div></div><span class="stat"><span class="spin"></span><span class="fc">✓</span></span>';
       f.appendChild(r);
     });
     feedBuilt=true;
