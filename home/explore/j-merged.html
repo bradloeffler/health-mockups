@@ -98,19 +98,17 @@
   }
   .src-label .dot{width:5px; height:5px; border-radius:50%; background:var(--green); box-shadow:0 0 6px var(--green);}
 
+  /* Small inline play pill — lives next to the source label, never dominates */
   .play-btn{
-    position:absolute; top:14px; right:14px; z-index:3;
-    width:44px; height:44px; border-radius:50%;
-    background:linear-gradient(180deg, var(--bright), var(--amber));
-    border:none; color:#1a1306;
-    display:flex; align-items:center; justify-content:center;
-    font-size:18px;
-    cursor:pointer;
-    box-shadow:0 6px 18px rgba(227,168,87,.35), 0 0 0 1px rgba(255,255,255,.12) inset;
-    transition:transform .12s;
+    height:26px; padding:0 11px 0 9px; border-radius:99px;
+    background:rgba(227,168,87,.12); border:1px solid rgba(227,168,87,.45); color:var(--bright);
+    display:inline-flex; align-items:center; gap:5px;
+    font-family:var(--mono); font-size:10px; font-weight:600; letter-spacing:.12em; text-transform:uppercase;
+    cursor:pointer; transition:transform .12s, background .12s;
   }
-  .play-btn:active{transform:scale(.95);}
-  .play-btn i{margin-left:2px;}
+  .play-btn:active{transform:scale(.96);}
+  .play-btn i{font-size:11px}
+  .play-btn.live{background:rgba(79,209,126,.14); border-color:rgba(79,209,126,.55); color:var(--green)}
 
   .hero-body{
     display:flex; align-items:center; gap:18px;
@@ -137,26 +135,20 @@
     color:var(--sub); text-transform:uppercase;
   }
 
-  /* stacked metrics right of rings */
+  /* stacked metrics right of rings — tidy 2-col grid (label / value) */
   .metrics-stack{
-    flex:1; display:flex; flex-direction:column; gap:8px;
-    min-width:0;
+    flex:1; display:grid; grid-template-columns: auto 1fr; column-gap:14px; row-gap:8px;
+    align-content:center; min-width:0;
   }
-  .mrow{
-    display:flex; align-items:baseline; justify-content:space-between;
-    padding:5px 0;
-    border-bottom:1px solid var(--hair);
+  .metrics-stack .lbl{
+    font-family:var(--mono); font-size:10px; letter-spacing:.16em;
+    color:var(--faint); text-transform:uppercase; align-self:center;
   }
-  .mrow:last-child{border-bottom:none;}
-  .mrow .lbl{
-    font-family:var(--mono); font-size:10px; letter-spacing:.18em;
-    color:var(--faint); text-transform:uppercase;
-  }
-  .mrow .val{
+  .metrics-stack .val{
     font-family:var(--mono); font-size:15px; font-weight:600; color:var(--ink);
-    letter-spacing:-.01em;
+    letter-spacing:-.01em; text-align:right; align-self:center;
   }
-  .mrow .val .u{font-size:9px; color:var(--faint); font-weight:500; margin-left:2px; letter-spacing:.1em;}
+  .metrics-stack .val .u{font-size:9px; color:var(--faint); font-weight:500; margin-left:2px; letter-spacing:.1em;}
 
   /* ===== Section title ===== */
   .sec-title{
@@ -336,7 +328,7 @@
 
   /* empty hero */
   .hero.empty .ring-num{color:var(--faint);}
-  .hero.empty .mrow .val{color:var(--faint);}
+  .hero.empty .metrics-stack .val{color:var(--faint);}
   .hero.empty{opacity:.85;}
   .hero .connect-row{
     margin-top:14px; padding-top:14px; border-top:1px solid var(--hair);
@@ -465,9 +457,9 @@
     <div class="scroll">
       <!-- Biometric hero -->
       <div class="hero" id="hero">
-        <button class="play-btn" id="play-btn" title="Start workout"><i class="ph-bold ph-play"></i></button>
         <div class="hero-head">
           <div class="src-label"><span class="dot" id="src-dot"></span><span id="src-name">WHOOP</span></div>
+          <button class="play-btn" id="play-btn" title="Start workout"><i class="ph-bold ph-play"></i><span id="play-lbl">Start</span></button>
         </div>
         <div class="hero-body">
           <div class="rings">
@@ -502,22 +494,10 @@
           </div>
 
           <div class="metrics-stack">
-            <div class="mrow">
-              <div class="lbl">HRV</div>
-              <div class="val" id="m-hrv">62<span class="u">ms</span></div>
-            </div>
-            <div class="mrow">
-              <div class="lbl">RHR</div>
-              <div class="val" id="m-rhr">54<span class="u">bpm</span></div>
-            </div>
-            <div class="mrow">
-              <div class="lbl">REST</div>
-              <div class="val" id="m-rest">7.2<span class="u">h</span></div>
-            </div>
-            <div class="mrow">
-              <div class="lbl">SLEEP</div>
-              <div class="val" id="m-sleep">88<span class="u">%</span></div>
-            </div>
+            <div class="lbl">HRV</div>   <div class="val" id="m-hrv">62<span class="u">ms</span></div>
+            <div class="lbl">RHR</div>   <div class="val" id="m-rhr">54<span class="u">bpm</span></div>
+            <div class="lbl">REST</div>  <div class="val" id="m-rest">7.2<span class="u">h</span></div>
+            <div class="lbl">SLEEP</div> <div class="val" id="m-sleep">88<span class="u">%</span></div>
           </div>
         </div>
 
@@ -827,17 +807,14 @@
       btn.style.display = 'none';
       return;
     }
-    btn.style.display = 'flex';
+    btn.style.display = 'inline-flex';
+    var lbl = btn.querySelector('#play-lbl');
     if(workoutState === 'in-progress'){
-      btn.style.background = 'linear-gradient(180deg, var(--red), #b8492f)';
-      btn.style.boxShadow = '0 6px 18px rgba(224,102,74,.4), 0 0 0 1px rgba(255,255,255,.12) inset';
-      btn.innerHTML = '<i class="ph-bold ph-pause" style="margin-left:0"></i>';
-      btn.style.color = '#1a0606';
+      btn.classList.add('live');
+      btn.innerHTML = '<i class="ph-bold ph-record-fill" style="font-size:9px"></i><span id="play-lbl">Live</span>';
     } else {
-      btn.style.background = 'linear-gradient(180deg, var(--bright), var(--amber))';
-      btn.style.boxShadow = '0 6px 18px rgba(227,168,87,.35), 0 0 0 1px rgba(255,255,255,.12) inset';
-      btn.innerHTML = '<i class="ph-bold ph-play"></i>';
-      btn.style.color = '#1a1306';
+      btn.classList.remove('live');
+      btn.innerHTML = '<i class="ph-bold ph-play"></i><span id="play-lbl">Start</span>';
     }
   }
   $('#w-sched').addEventListener('click', () => setWorkout('scheduled'));
