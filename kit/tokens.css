@@ -43,23 +43,24 @@
   --f-mono: ui-monospace, "SF Mono", "Courier New", monospace;
 
   --t-eyebrow-size: 10px;
-  --t-eyebrow-weight: 600;
+  --t-eyebrow-weight: 700;
   --t-eyebrow-track: 0.16em;
 
   --t-label-size: 13px;
-  --t-label-weight: 500;
+  --t-label-weight: 600;
 
   --t-body-size: 15px;
-  --t-body-weight: 500;
+  --t-body-weight: 600;
 
   --t-title-size: 28px;
-  --t-title-weight: 300;
+  --t-title-weight: 500;
   --t-title-track: -0.4px;
 
   --t-num-sm: 14px;
   --t-num-md: 18px;
   --t-num-lg: 22px;
   --t-num-xl: 28px;
+  --t-num-weight: 600;
 
   /* ---- shadow ---- */
   --sh-card:   0 1px 0 rgba(255,255,255,0.02) inset, 0 8px 24px rgba(0,0,0,0.35);

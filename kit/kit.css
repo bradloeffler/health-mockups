@@ -140,12 +140,16 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
    ===================================================================== */
 
 .k-metric-list {
+  /* Cluster the label/value/unit cells tight on the right of the available
+     space, so labels sit close to their numbers and the area to the left of
+     the list breathes (e.g. for rings to grow). */
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto auto auto;
   row-gap: var(--s-2);
   column-gap: var(--s-2);
   align-items: baseline;
   min-width: 0;
+  justify-content: end;
 }
 
 .k-metric {
@@ -167,6 +171,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   font-feature-settings: "tnum" 1;
   font-variant-numeric: tabular-nums;
   font-size: var(--t-num-md);
+  font-weight: var(--t-num-weight);
   color: var(--c-ink);
   line-height: 1;
 }
@@ -194,7 +199,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   color: var(--c-ink);
   line-height: 1;
 }
-.k-numeric__val  { font-size: var(--t-num-md); }
+.k-numeric__val  { font-size: var(--t-num-md); font-weight: var(--t-num-weight); }
 .k-numeric__unit {
   font-size: var(--t-eyebrow-size);
   letter-spacing: var(--t-eyebrow-track);
@@ -262,7 +267,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   font-feature-settings: "tnum" 1;
   font-variant-numeric: tabular-nums;
   font-size: var(--t-num-lg);
-  font-weight: 400;
+  font-weight: var(--t-num-weight);
   color: var(--c-ink);
   line-height: 1;
   pointer-events: none;
