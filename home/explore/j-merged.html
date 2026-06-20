@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=430, initial-scale=1, viewport-fit=cover">
+<title>FORGE — Home / J merged</title>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<style>
+  :root{
+    --bg-a:#16140f; --bg-b:#0d0c0a;
+    --surface:#1a1814; --raised:#1f1c16;
+    --hair:#221f19; --hair2:#2c281f;
+    --ink:#efeae0; --sub:#a59d8d; --faint:#6f6859;
+    --amber:#e3a857; --bright:#f3c378;
+    --green:#4fd17e; --blue:#6fb0d8; --red:#e0664a; --yellow:#e6c14e;
+    --mono: ui-monospace, "SF Mono", "Courier New", monospace;
+    --ui: -apple-system, "Helvetica Neue", Arial, sans-serif;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; padding:0; background:#000; color:var(--ink); font-family:var(--ui);}
+  body{min-height:100vh; display:flex; align-items:flex-start; justify-content:center; padding:24px 12px 120px;}
+
+  /* phone shell */
+  .phone{
+    position:relative;
+    width:430px; min-height:900px;
+    background:radial-gradient(125% 80% at 50% 14%, var(--bg-a), var(--bg-b));
+    border-radius:44px;
+    overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.04);
+    color:var(--ink);
+    isolation:isolate;
+  }
+
+  /* status bar mimic */
+  .status{
+    height:48px; padding:18px 28px 0; display:flex; justify-content:space-between; align-items:center;
+    font-family:var(--mono); font-size:13px; color:var(--ink); letter-spacing:.02em;
+  }
+  .status .right{display:flex; gap:6px; align-items:center; color:var(--sub);}
+
+  /* top bar */
+  .topbar{
+    padding:14px 20px 6px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .datenav{display:flex; align-items:center; gap:6px;}
+  .datenav .arrow{
+    width:34px; height:34px; border-radius:50%;
+    border:1px solid var(--hair2); background:rgba(255,255,255,.02);
+    display:flex; align-items:center; justify-content:center; color:var(--sub);
+    cursor:pointer; transition:background .15s;
+  }
+  .datenav .arrow:hover{background:rgba(255,255,255,.05); color:var(--ink);}
+  .datenav .arrow.disabled{opacity:.3; cursor:default;}
+  .datelabel{
+    font-size:15px; font-weight:600; color:var(--ink);
+    letter-spacing:.01em;
+    min-width:90px; text-align:center;
+  }
+  .datelabel .sub{display:block; font-size:10px; font-weight:500; color:var(--faint); letter-spacing:.16em; text-transform:uppercase; margin-top:1px; font-family:var(--mono);}
+
+  .account-btn{
+    width:36px; height:36px; border-radius:50%;
+    background:rgba(255,255,255,.04); border:1px solid var(--hair2);
+    color:var(--sub); display:flex; align-items:center; justify-content:center;
+    cursor:pointer; transition:all .15s; font-size:20px;
+  }
+  .account-btn:hover{color:var(--ink); background:rgba(255,255,255,.07);}
+
+  /* scroll area */
+  .scroll{padding:6px 18px 140px; overflow:hidden;}
+
+  /* ===== Biometric Hero (D-style premium tile) ===== */
+  .hero{
+    position:relative;
+    background:linear-gradient(180deg, #211d16 0%, #1a1813 100%);
+    border:1px solid var(--hair2);
+    border-radius:24px;
+    padding:18px 18px 20px;
+    margin-top:10px;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:""; position:absolute; inset:0;
+    background:radial-gradient(80% 60% at 0% 0%, rgba(227,168,87,.07), transparent 60%);
+    pointer-events:none;
+  }
+  .hero-head{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:14px; position:relative; z-index:1;
+  }
+  .src-label{
+    font-family:var(--mono); font-size:10px; letter-spacing:.22em;
+    color:var(--faint); text-transform:uppercase;
+    display:flex; align-items:center; gap:6px;
+  }
+  .src-label .dot{width:5px; height:5px; border-radius:50%; background:var(--green); box-shadow:0 0 6px var(--green);}
+
+  .play-btn{
+    position:absolute; top:14px; right:14px; z-index:3;
+    width:44px; height:44px; border-radius:50%;
+    background:linear-gradient(180deg, var(--bright), var(--amber));
+    border:none; color:#1a1306;
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px;
+    cursor:pointer;
+    box-shadow:0 6px 18px rgba(227,168,87,.35), 0 0 0 1px rgba(255,255,255,.12) inset;
+    transition:transform .12s;
+  }
+  .play-btn:active{transform:scale(.95);}
+  .play-btn i{margin-left:2px;}
+
+  .hero-body{
+    display:flex; align-items:center; gap:18px;
+    position:relative; z-index:1;
+  }
+  .rings{display:flex; gap:10px; flex-shrink:0;}
+  .ring-wrap{
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+  }
+  .ring{
+    position:relative; width:96px; height:96px;
+  }
+  .ring svg{transform:rotate(-90deg);}
+  .ring .ring-bg{fill:none; stroke:#2a2620; stroke-width:7;}
+  .ring .ring-fg{fill:none; stroke-width:7; stroke-linecap:round; transition:stroke-dashoffset .4s;}
+  .ring-center{
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+  }
+  .ring-num{font-family:var(--mono); font-size:22px; font-weight:600; color:var(--ink); letter-spacing:-.01em; line-height:1;}
+  .ring-unit{font-family:var(--mono); font-size:9px; color:var(--faint); letter-spacing:.14em; margin-top:2px;}
+  .ring-label{
+    font-family:var(--mono); font-size:9px; letter-spacing:.18em;
+    color:var(--sub); text-transform:uppercase;
+  }
+
+  /* stacked metrics right of rings */
+  .metrics-stack{
+    flex:1; display:flex; flex-direction:column; gap:8px;
+    min-width:0;
+  }
+  .mrow{
+    display:flex; align-items:baseline; justify-content:space-between;
+    padding:5px 0;
+    border-bottom:1px solid var(--hair);
+  }
+  .mrow:last-child{border-bottom:none;}
+  .mrow .lbl{
+    font-family:var(--mono); font-size:10px; letter-spacing:.18em;
+    color:var(--faint); text-transform:uppercase;
+  }
+  .mrow .val{
+    font-family:var(--mono); font-size:15px; font-weight:600; color:var(--ink);
+    letter-spacing:-.01em;
+  }
+  .mrow .val .u{font-size:9px; color:var(--faint); font-weight:500; margin-left:2px; letter-spacing:.1em;}
+
+  /* ===== Section title ===== */
+  .sec-title{
+    display:flex; align-items:center; justify-content:space-between;
+    margin:24px 4px 10px;
+  }
+  .sec-title .t{
+    font-family:var(--mono); font-size:11px; letter-spacing:.22em;
+    color:var(--sub); text-transform:uppercase;
+  }
+  .sec-title .meta{
+    font-family:var(--mono); font-size:11px; color:var(--faint); letter-spacing:.08em;
+  }
+
+  /* ===== Habit list (A-style: no card, hairline separators) ===== */
+  .habits{
+    margin-top:4px;
+    padding:0 4px;
+  }
+  .habit{
+    display:flex; align-items:center; gap:14px;
+    padding:14px 0;
+    border-bottom:1px solid var(--hair);
+    cursor:pointer;
+    transition:opacity .15s;
+  }
+  .habit:last-child{border-bottom:none;}
+  .habit .icon{
+    width:28px; height:28px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--sub); font-size:18px;
+  }
+  .habit .name{
+    flex:1; font-size:15px; color:var(--ink); font-weight:500;
+    letter-spacing:-.005em;
+  }
+  .habit .count{
+    font-family:var(--mono); font-size:12px; color:var(--sub);
+    margin-right:6px;
+  }
+  .habit .check{
+    width:24px; height:24px; border-radius:7px;
+    border:1.5px solid var(--hair2); background:transparent;
+    display:flex; align-items:center; justify-content:center;
+    color:transparent; font-size:14px;
+    transition:all .15s;
+    flex-shrink:0;
+  }
+  .habit.done .check{
+    background:var(--amber); border-color:var(--amber); color:#1a1306;
+  }
+  .habit.done .name{
+    color:var(--faint); text-decoration:line-through; text-decoration-color:var(--faint); text-decoration-thickness:1px;
+  }
+  .habit.done .icon{color:var(--faint);}
+
+  .habit .plus{
+    width:24px; height:24px; border-radius:7px;
+    border:1.5px solid var(--hair2); background:transparent;
+    color:var(--sub); display:flex; align-items:center; justify-content:center;
+    font-size:12px;
+  }
+
+  /* ===== D-style premium tiles (Fuel / Steps / Water) ===== */
+  .tile{
+    background:linear-gradient(180deg, #1f1c16 0%, #1a1813 100%);
+    border:1px solid var(--hair2);
+    border-radius:20px;
+    padding:16px 16px 18px;
+    margin-bottom:12px;
+    position:relative;
+    overflow:hidden;
+  }
+  .tile-head{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:12px;
+  }
+  .tile-title{
+    display:flex; align-items:center; gap:8px;
+    font-family:var(--mono); font-size:11px; letter-spacing:.2em;
+    color:var(--sub); text-transform:uppercase;
+  }
+  .tile-title i{font-size:14px; color:var(--amber);}
+  .tile-value{
+    font-family:var(--mono); font-size:13px; color:var(--ink); font-weight:600;
+    letter-spacing:.02em;
+  }
+  .tile-value .total{color:var(--faint); font-weight:500;}
+
+  /* progress bar */
+  .pbar{
+    height:6px; border-radius:99px; background:#2a2620; overflow:hidden;
+    position:relative;
+  }
+  .pbar .fill{
+    height:100%; border-radius:99px;
+    background:linear-gradient(90deg, var(--amber), var(--bright));
+    transition:width .35s;
+  }
+  .pbar.green .fill{background:linear-gradient(90deg, var(--green), #76e09a);}
+  .pbar.blue .fill{background:linear-gradient(90deg, var(--blue), #8cc3df);}
+
+  /* macros */
+  .macros{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+    margin-top:14px;
+  }
+  .macro{
+    background:rgba(255,255,255,.02);
+    border:1px solid var(--hair);
+    border-radius:12px;
+    padding:9px 10px;
+  }
+  .macro .ml{
+    font-family:var(--mono); font-size:9px; letter-spacing:.2em; color:var(--faint);
+    text-transform:uppercase;
+  }
+  .macro .mv{
+    font-family:var(--mono); font-size:13px; color:var(--ink); font-weight:600;
+    margin-top:3px;
+  }
+  .macro .mv .mt{color:var(--faint); font-weight:500;}
+  .macro .mbar{
+    margin-top:6px; height:3px; border-radius:99px; background:#2a2620; overflow:hidden;
+  }
+  .macro .mbar .mf{height:100%; background:var(--amber); border-radius:99px;}
+
+  /* water controls */
+  .water-controls{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-top:14px; gap:10px;
+  }
+  .bottle-chip{
+    flex:1;
+    background:rgba(255,255,255,.03); border:1px solid var(--hair2);
+    border-radius:12px; padding:10px 12px;
+    display:flex; align-items:center; justify-content:space-between;
+    cursor:pointer;
+    transition:all .15s;
+  }
+  .bottle-chip:hover{background:rgba(255,255,255,.05);}
+  .bottle-chip .lbl{
+    font-family:var(--mono); font-size:10px; letter-spacing:.18em; color:var(--faint);
+    text-transform:uppercase;
+  }
+  .bottle-chip .sz{
+    font-family:var(--mono); font-size:14px; color:var(--ink); font-weight:600;
+  }
+  .steppers{display:flex; gap:8px;}
+  .step{
+    width:42px; height:42px; border-radius:12px;
+    background:rgba(255,255,255,.03); border:1px solid var(--hair2);
+    color:var(--ink); font-size:16px;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; transition:all .12s;
+  }
+  .step:hover{background:rgba(255,255,255,.07);}
+  .step.plus{background:linear-gradient(180deg, var(--bright), var(--amber)); color:#1a1306; border-color:transparent;}
+  .step:active{transform:scale(.94);}
+
+  /* empty/connect state for tiles */
+  .tile.empty{opacity:.55;}
+  .tile .connect-btn{
+    margin-top:12px;
+    width:100%;
+    padding:11px;
+    background:transparent;
+    border:1px dashed var(--hair2);
+    border-radius:12px;
+    color:var(--amber);
+    font-family:var(--mono); font-size:11px; letter-spacing:.16em;
+    text-transform:uppercase; font-weight:600;
+    cursor:pointer;
+    transition:all .15s;
+  }
+  .tile .connect-btn:hover{border-color:var(--amber); background:rgba(227,168,87,.05);}
+
+  /* empty hero */
+  .hero.empty .ring-num{color:var(--faint);}
+  .hero.empty .mrow .val{color:var(--faint);}
+  .hero.empty{opacity:.85;}
+  .hero .connect-row{
+    margin-top:14px; padding-top:14px; border-top:1px solid var(--hair);
+    display:none; align-items:center; justify-content:space-between; gap:10px;
+  }
+  .hero.empty .connect-row{display:flex;}
+  .hero .connect-row .txt{
+    font-family:var(--mono); font-size:10px; letter-spacing:.18em; color:var(--faint);
+    text-transform:uppercase;
+  }
+  .hero .connect-row .btn{
+    padding:8px 14px; border-radius:99px;
+    background:linear-gradient(180deg, var(--bright), var(--amber));
+    color:#1a1306; border:none; font-family:var(--mono);
+    font-size:11px; letter-spacing:.14em; text-transform:uppercase; font-weight:700;
+    cursor:pointer;
+  }
+
+  /* Hide fuel on fresh */
+  body.fresh #fuel-tile{display:none;}
+  body.fresh #fuel-title{display:none;}
+
+  /* ===== Floating bottom nav (glass) ===== */
+  .nav{
+    position:absolute; left:50%; transform:translateX(-50%);
+    bottom:22px;
+    width:calc(100% - 48px); max-width:380px;
+    height:64px; border-radius:32px;
+    background:rgba(26,24,20,.72);
+    border:1px solid rgba(255,255,255,.06);
+    backdrop-filter:blur(28px) saturate(1.3);
+    -webkit-backdrop-filter:blur(28px) saturate(1.3);
+    display:flex; align-items:center; justify-content:space-around;
+    box-shadow:0 12px 40px rgba(0,0,0,.5), 0 0 0 1px rgba(0,0,0,.4);
+    z-index:50;
+  }
+  .nav .tab{
+    flex:1; height:100%; display:flex; align-items:center; justify-content:center;
+    color:var(--sub); font-size:22px;
+    cursor:pointer; transition:color .15s;
+    position:relative;
+  }
+  .nav .tab:hover{color:var(--ink);}
+  .nav .tab.active{color:var(--amber);}
+  .nav .tab.active::before{
+    content:""; position:absolute; top:10px;
+    width:4px; height:4px; border-radius:50%;
+    background:var(--amber); box-shadow:0 0 8px var(--amber);
+  }
+
+  /* ===== Bottom-right dev toggles ===== */
+  .devtoggle{
+    position:fixed; right:18px; z-index:200;
+    background:rgba(20,18,14,.92); border:1px solid var(--hair2);
+    backdrop-filter:blur(20px);
+    border-radius:14px; padding:8px;
+    display:flex; gap:4px;
+    box-shadow:0 8px 24px rgba(0,0,0,.5);
+    font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+  }
+  .devtoggle.t1{bottom:78px;}
+  .devtoggle.t2{bottom:24px;}
+  .devtoggle button{
+    padding:7px 11px; border-radius:9px; background:transparent;
+    border:none; color:var(--sub); font-family:inherit; font-size:inherit;
+    letter-spacing:inherit; cursor:pointer; font-weight:600;
+  }
+  .devtoggle button.on{background:var(--amber); color:#1a1306;}
+
+  /* Account sheet */
+  .sheet-bg{
+    position:absolute; inset:0; background:rgba(0,0,0,.55);
+    z-index:100; display:none; opacity:0; transition:opacity .2s;
+  }
+  .sheet-bg.show{display:block; opacity:1;}
+  .sheet{
+    position:absolute; top:96px; right:18px; z-index:101;
+    width:240px; background:#1f1c16; border:1px solid var(--hair2);
+    border-radius:18px; padding:8px;
+    box-shadow:0 24px 60px rgba(0,0,0,.6);
+    display:none;
+    transform:translateY(-8px) scale(.96); opacity:0;
+    transition:transform .18s, opacity .18s;
+  }
+  .sheet.show{display:block; transform:translateY(0) scale(1); opacity:1;}
+  .sheet-item{
+    padding:13px 14px; display:flex; align-items:center; gap:12px;
+    border-radius:11px; cursor:pointer; color:var(--ink); font-size:14px;
+    transition:background .12s;
+  }
+  .sheet-item:hover{background:rgba(255,255,255,.04);}
+  .sheet-item i{font-size:18px; color:var(--sub); width:20px;}
+  .sheet-item.danger{color:var(--red);}
+  .sheet-item.danger i{color:var(--red);}
+  .sheet-div{height:1px; background:var(--hair); margin:4px 8px;}
+
+  /* fade for fresh */
+  body.fresh .pbar .fill{opacity:.3;}
+  body.fresh .macro .mbar .mf{opacity:.3;}
+</style>
+</head>
+<body>
+  <div class="phone" id="phone">
+    <div class="status">
+      <div>9:41</div>
+      <div class="right">
+        <i class="ph ph-cell-signal-full"></i>
+        <i class="ph ph-wifi-high"></i>
+        <i class="ph ph-battery-full"></i>
+      </div>
+    </div>
+
+    <!-- Top bar -->
+    <div class="topbar">
+      <div class="datenav">
+        <div class="arrow" id="back-day"><i class="ph-bold ph-caret-left"></i></div>
+        <div class="datelabel" id="datelabel">
+          Today
+          <span class="sub" id="datesub">SAT JUN 20</span>
+        </div>
+        <div class="arrow disabled" id="fwd-day"><i class="ph-bold ph-caret-right"></i></div>
+      </div>
+      <div class="account-btn" id="account-btn"><i class="ph ph-user-circle"></i></div>
+    </div>
+
+    <div class="scroll">
+      <!-- Biometric hero -->
+      <div class="hero" id="hero">
+        <button class="play-btn" id="play-btn" title="Start workout"><i class="ph-bold ph-play"></i></button>
+        <div class="hero-head">
+          <div class="src-label"><span class="dot" id="src-dot"></span><span id="src-name">WHOOP</span></div>
+        </div>
+        <div class="hero-body">
+          <div class="rings">
+            <div class="ring-wrap">
+              <div class="ring">
+                <svg width="96" height="96" viewBox="0 0 96 96">
+                  <circle class="ring-bg" cx="48" cy="48" r="40"/>
+                  <circle class="ring-fg" id="rec-ring" cx="48" cy="48" r="40"
+                    stroke="var(--green)" stroke-dasharray="251.3" stroke-dashoffset="60"/>
+                </svg>
+                <div class="ring-center">
+                  <div class="ring-num" id="rec-num">76</div>
+                  <div class="ring-unit">%</div>
+                </div>
+              </div>
+              <div class="ring-label">Recovery</div>
+            </div>
+            <div class="ring-wrap">
+              <div class="ring">
+                <svg width="96" height="96" viewBox="0 0 96 96">
+                  <circle class="ring-bg" cx="48" cy="48" r="40"/>
+                  <circle class="ring-fg" id="str-ring" cx="48" cy="48" r="40"
+                    stroke="var(--blue)" stroke-dasharray="251.3" stroke-dashoffset="113"/>
+                </svg>
+                <div class="ring-center">
+                  <div class="ring-num" id="str-num">12.4</div>
+                  <div class="ring-unit">STRAIN</div>
+                </div>
+              </div>
+              <div class="ring-label">Strain</div>
+            </div>
+          </div>
+
+          <div class="metrics-stack">
+            <div class="mrow">
+              <div class="lbl">HRV</div>
+              <div class="val" id="m-hrv">62<span class="u">ms</span></div>
+            </div>
+            <div class="mrow">
+              <div class="lbl">RHR</div>
+              <div class="val" id="m-rhr">54<span class="u">bpm</span></div>
+            </div>
+            <div class="mrow">
+              <div class="lbl">REST</div>
+              <div class="val" id="m-rest">7.2<span class="u">h</span></div>
+            </div>
+            <div class="mrow">
+              <div class="lbl">SLEEP</div>
+              <div class="val" id="m-sleep">88<span class="u">%</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="connect-row">
+          <div class="txt">No biometric source</div>
+          <button class="btn" onclick="setMode('connected')">Connect</button>
+        </div>
+      </div>
+
+      <!-- Steps tile -->
+      <div class="tile" id="steps-tile">
+        <div class="tile-head">
+          <div class="tile-title"><i class="ph ph-footprints"></i>Steps</div>
+          <div class="tile-value" id="steps-val">8,240 <span class="total">/ 10,000</span></div>
+        </div>
+        <div class="pbar green"><div class="fill" id="steps-fill" style="width:82%"></div></div>
+      </div>
+
+      <!-- Fuel tile (D-style) -->
+      <div class="tile" id="fuel-tile">
+        <div class="tile-head">
+          <div class="tile-title"><i class="ph ph-egg"></i>Fuel</div>
+          <div class="tile-value">1,840 <span class="total">/ 2,520 kcal</span></div>
+        </div>
+        <div class="pbar"><div class="fill" style="width:73%"></div></div>
+        <div class="macros">
+          <div class="macro">
+            <div class="ml">P</div>
+            <div class="mv">165 <span class="mt">/180</span></div>
+            <div class="mbar"><div class="mf" style="width:92%"></div></div>
+          </div>
+          <div class="macro">
+            <div class="ml">C</div>
+            <div class="mv">198 <span class="mt">/250</span></div>
+            <div class="mbar"><div class="mf" style="width:79%"></div></div>
+          </div>
+          <div class="macro">
+            <div class="ml">F</div>
+            <div class="mv">62 <span class="mt">/80</span></div>
+            <div class="mbar"><div class="mf" style="width:78%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Water tile -->
+      <div class="tile" id="water-tile">
+        <div class="tile-head">
+          <div class="tile-title"><i class="ph ph-drop"></i>Water</div>
+          <div class="tile-value" id="water-val">2.4 <span class="total">/ 6 L</span></div>
+        </div>
+        <div class="pbar blue"><div class="fill" id="water-fill" style="width:40%"></div></div>
+        <div class="water-controls">
+          <div class="bottle-chip" id="bottle-chip">
+            <span class="lbl">Bottle</span>
+            <span class="sz" id="bottle-sz">0.5 L</span>
+          </div>
+          <div class="steppers">
+            <div class="step" id="water-minus"><i class="ph-bold ph-minus"></i></div>
+            <div class="step plus" id="water-plus"><i class="ph-bold ph-plus"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Habits (A-style hairline list) -->
+      <div class="sec-title">
+        <div class="t">Habits</div>
+        <div class="meta" id="habits-meta">2 / 4</div>
+      </div>
+      <div class="habits" id="habits">
+        <div class="habit done" data-type="check">
+          <div class="icon"><i class="ph ph-pill"></i></div>
+          <div class="name">AM vitamins</div>
+          <div class="check"><i class="ph-bold ph-check"></i></div>
+        </div>
+        <div class="habit done" data-type="check">
+          <div class="icon"><i class="ph ph-barbell"></i></div>
+          <div class="name">Workout</div>
+          <div class="check"><i class="ph-bold ph-check"></i></div>
+        </div>
+        <div class="habit" data-type="check">
+          <div class="icon"><i class="ph ph-person-simple-walk"></i></div>
+          <div class="name">Mobility</div>
+          <div class="check"></div>
+        </div>
+        <div class="habit" data-type="count" data-count="3" data-target="4">
+          <div class="icon"><i class="ph ph-egg"></i></div>
+          <div class="name">Protein</div>
+          <div class="count"><span id="protein-count">3</span> / 4</div>
+          <div class="plus"><i class="ph-bold ph-plus"></i></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Account sheet -->
+    <div class="sheet-bg" id="sheet-bg"></div>
+    <div class="sheet" id="sheet">
+      <div class="sheet-item"><i class="ph ph-user"></i>Profile</div>
+      <div class="sheet-item"><i class="ph ph-plugs-connected"></i>Connected sources</div>
+      <div class="sheet-div"></div>
+      <div class="sheet-item danger"><i class="ph ph-sign-out"></i>Sign out</div>
+    </div>
+
+    <!-- Bottom nav -->
+    <div class="nav">
+      <div class="tab active"><i class="ph-bold ph-house"></i></div>
+      <div class="tab"><i class="ph ph-calendar-blank"></i></div>
+      <div class="tab"><i class="ph ph-squares-four"></i></div>
+      <div class="tab"><i class="ph ph-gear-six"></i></div>
+    </div>
+  </div>
+
+  <!-- Dev toggles -->
+  <div class="devtoggle t1">
+    <button id="m-connected" class="on">Connected</button>
+    <button id="m-fresh">Fresh</button>
+  </div>
+  <div class="devtoggle t2">
+    <button id="w-sched">Scheduled</button>
+    <button id="w-prog" class="on">In&nbsp;Progress</button>
+    <button id="w-done">Done</button>
+  </div>
+
+<script>
+  // ===== State =====
+  let mode = 'connected'; // connected | fresh
+  let workoutState = 'in-progress'; // scheduled | in-progress | done
+  const bottleSizes = [0.5, 0.75, 1, 1.25];
+  let bottleIdx = 0;
+  let waterL = 2.4;
+  const waterTarget = 6;
+
+  // ===== Helpers =====
+  const $ = s => document.querySelector(s);
+  const $$ = s => document.querySelectorAll(s);
+
+  function setMode(m){
+    mode = m;
+    document.body.classList.toggle('fresh', m === 'fresh');
+    $('#m-connected').classList.toggle('on', m === 'connected');
+    $('#m-fresh').classList.toggle('on', m === 'fresh');
+    renderMode();
+  }
+
+  function renderMode(){
+    const hero = $('#hero');
+    if(mode === 'fresh'){
+      hero.classList.add('empty');
+      $('#src-name').textContent = 'NO SOURCE';
+      $('#src-dot').style.background = 'var(--faint)';
+      $('#src-dot').style.boxShadow = 'none';
+      $('#rec-num').textContent = '--';
+      $('#str-num').textContent = '--';
+      $('#m-hrv').innerHTML = '--<span class="u">ms</span>';
+      $('#m-rhr').innerHTML = '--<span class="u">bpm</span>';
+      $('#m-rest').innerHTML = '--<span class="u">h</span>';
+      $('#m-sleep').innerHTML = '--<span class="u">%</span>';
+      $('#rec-ring').setAttribute('stroke-dashoffset', '251.3');
+      $('#str-ring').setAttribute('stroke-dashoffset', '251.3');
+
+      // steps empty
+      $('#steps-tile').classList.add('empty');
+      $('#steps-val').innerHTML = '-- <span class="total">/ 10,000</span>';
+      $('#steps-fill').style.width = '0%';
+      if(!$('#steps-tile .connect-btn')){
+        const b = document.createElement('button');
+        b.className = 'connect-btn'; b.textContent = 'Connect Health';
+        b.onclick = () => setMode('connected');
+        $('#steps-tile').appendChild(b);
+      }
+
+      // water empty
+      $('#water-tile').classList.add('empty');
+      $('#water-val').innerHTML = '0.0 <span class="total">/ 6 L</span>';
+      $('#water-fill').style.width = '0%';
+      $$('#water-tile .water-controls').forEach(el => el.style.display = 'none');
+      if(!$('#water-tile .connect-btn')){
+        const b = document.createElement('button');
+        b.className = 'connect-btn'; b.textContent = 'Choose Bottle';
+        b.onclick = () => setMode('connected');
+        $('#water-tile').appendChild(b);
+      }
+
+      // habits stay visible greyed; show add cta
+      $('#habits-meta').textContent = '0 / 0';
+      if(!$('#habits .add-habit')){
+        const a = document.createElement('div');
+        a.className = 'habit add-habit';
+        a.style.cursor = 'pointer';
+        a.innerHTML = `<div class="icon"><i class="ph ph-plus-circle"></i></div>
+          <div class="name" style="color:var(--amber); font-family:var(--mono); font-size:12px; letter-spacing:.18em; text-transform:uppercase;">Add habit</div>`;
+        a.onclick = () => setMode('connected');
+        $('#habits').appendChild(a);
+      }
+      $$('#habits .habit:not(.add-habit)').forEach(h => h.style.opacity = '0.4');
+
+      // workout affordance always hidden on fresh
+      $('#play-btn').style.display = 'none';
+
+    } else {
+      hero.classList.remove('empty');
+      $('#src-name').textContent = 'WHOOP';
+      $('#src-dot').style.background = 'var(--green)';
+      $('#src-dot').style.boxShadow = '0 0 6px var(--green)';
+      $('#rec-num').textContent = '76';
+      $('#str-num').textContent = '12.4';
+      $('#m-hrv').innerHTML = '62<span class="u">ms</span>';
+      $('#m-rhr').innerHTML = '54<span class="u">bpm</span>';
+      $('#m-rest').innerHTML = '7.2<span class="u">h</span>';
+      $('#m-sleep').innerHTML = '88<span class="u">%</span>';
+      $('#rec-ring').setAttribute('stroke-dashoffset', String(251.3 * (1 - 0.76)));
+      $('#str-ring').setAttribute('stroke-dashoffset', String(251.3 * (1 - 12.4/21)));
+
+      $('#steps-tile').classList.remove('empty');
+      $('#steps-val').innerHTML = '8,240 <span class="total">/ 10,000</span>';
+      $('#steps-fill').style.width = '82%';
+      const sb = $('#steps-tile .connect-btn'); if(sb) sb.remove();
+
+      $('#water-tile').classList.remove('empty');
+      updateWater();
+      $$('#water-tile .water-controls').forEach(el => el.style.display = 'flex');
+      const wb = $('#water-tile .connect-btn'); if(wb) wb.remove();
+
+      $$('#habits .habit:not(.add-habit)').forEach(h => h.style.opacity = '');
+      const ah = $('#habits .add-habit'); if(ah) ah.remove();
+      updateHabitsMeta();
+
+      // restore workout affordance per state
+      renderWorkout();
+    }
+  }
+
+  // Habit interactions
+  $$('#habits .habit[data-type="check"]').forEach(h => {
+    h.addEventListener('click', () => {
+      if(mode === 'fresh') return;
+      h.classList.toggle('done');
+      updateHabitsMeta();
+    });
+  });
+  const proteinHabit = document.querySelector('#habits .habit[data-type="count"]');
+  proteinHabit.addEventListener('click', () => {
+    if(mode === 'fresh') return;
+    let c = parseInt(proteinHabit.dataset.count);
+    const t = parseInt(proteinHabit.dataset.target);
+    c = c >= t ? 0 : c + 1;
+    proteinHabit.dataset.count = c;
+    $('#protein-count').textContent = c;
+    proteinHabit.classList.toggle('done', c >= t);
+    updateHabitsMeta();
+  });
+
+  function updateHabitsMeta(){
+    const items = $$('#habits .habit[data-type]');
+    let done = 0;
+    items.forEach(h => { if(h.classList.contains('done')) done++; });
+    $('#habits-meta').textContent = `${done} / ${items.length}`;
+  }
+
+  // Water
+  function updateWater(){
+    waterL = Math.max(0, Math.min(waterTarget * 2, +waterL.toFixed(2)));
+    const pct = Math.min(100, (waterL / waterTarget) * 100);
+    $('#water-val').innerHTML = `${waterL.toFixed(1)} <span class="total">/ 6 L</span>`;
+    $('#water-fill').style.width = pct + '%';
+  }
+  $('#water-plus').addEventListener('click', () => {
+    if(mode === 'fresh') return;
+    waterL += bottleSizes[bottleIdx]; updateWater();
+  });
+  $('#water-minus').addEventListener('click', () => {
+    if(mode === 'fresh') return;
+    waterL -= bottleSizes[bottleIdx]; if(waterL < 0) waterL = 0; updateWater();
+  });
+  $('#bottle-chip').addEventListener('click', () => {
+    if(mode === 'fresh') return;
+    bottleIdx = (bottleIdx + 1) % bottleSizes.length;
+    $('#bottle-sz').textContent = bottleSizes[bottleIdx] + ' L';
+  });
+
+  // Account sheet
+  $('#account-btn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    $('#sheet').classList.add('show');
+    $('#sheet-bg').classList.add('show');
+  });
+  $('#sheet-bg').addEventListener('click', () => {
+    $('#sheet').classList.remove('show');
+    $('#sheet-bg').classList.remove('show');
+  });
+
+  // Mode toggles
+  $('#m-connected').addEventListener('click', () => setMode('connected'));
+  $('#m-fresh').addEventListener('click', () => setMode('fresh'));
+
+  // Workout state
+  function setWorkout(s){
+    workoutState = s;
+    $('#w-sched').classList.toggle('on', s==='scheduled');
+    $('#w-prog').classList.toggle('on', s==='in-progress');
+    $('#w-done').classList.toggle('on', s==='done');
+    renderWorkout();
+  }
+  function renderWorkout(){
+    const btn = $('#play-btn');
+    if(mode === 'fresh' || workoutState === 'done'){
+      btn.style.display = 'none';
+      return;
+    }
+    btn.style.display = 'flex';
+    if(workoutState === 'in-progress'){
+      btn.style.background = 'linear-gradient(180deg, var(--red), #b8492f)';
+      btn.style.boxShadow = '0 6px 18px rgba(224,102,74,.4), 0 0 0 1px rgba(255,255,255,.12) inset';
+      btn.innerHTML = '<i class="ph-bold ph-pause" style="margin-left:0"></i>';
+      btn.style.color = '#1a0606';
+    } else {
+      btn.style.background = 'linear-gradient(180deg, var(--bright), var(--amber))';
+      btn.style.boxShadow = '0 6px 18px rgba(227,168,87,.35), 0 0 0 1px rgba(255,255,255,.12) inset';
+      btn.innerHTML = '<i class="ph-bold ph-play"></i>';
+      btn.style.color = '#1a1306';
+    }
+  }
+  $('#w-sched').addEventListener('click', () => setWorkout('scheduled'));
+  $('#w-prog').addEventListener('click', () => setWorkout('in-progress'));
+  $('#w-done').addEventListener('click', () => setWorkout('done'));
+
+  // Date nav: just toggles label for show
+  let dayOffset = 0;
+  function renderDate(){
+    if(dayOffset === 0){
+      $('#datelabel').childNodes[0].nodeValue = 'Today';
+      $('#datesub').textContent = 'SAT JUN 20';
+      $('#fwd-day').classList.add('disabled');
+    } else if(dayOffset === -1){
+      $('#datelabel').childNodes[0].nodeValue = 'Yesterday';
+      $('#datesub').textContent = 'FRI JUN 19';
+      $('#fwd-day').classList.remove('disabled');
+    } else {
+      const d = new Date(); d.setDate(d.getDate() + dayOffset);
+      const wk = ['SUN','MON','TUE','WED','THU','FRI','SAT'][d.getDay()];
+      const mo = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'][d.getMonth()];
+      $('#datelabel').childNodes[0].nodeValue = wk.charAt(0)+wk.slice(1).toLowerCase()+'day';
+      $('#datesub').textContent = `${wk} ${mo} ${d.getDate()}`;
+      $('#fwd-day').classList.remove('disabled');
+    }
+  }
+  $('#back-day').addEventListener('click', () => { dayOffset--; renderDate(); });
+  $('#fwd-day').addEventListener('click', () => {
+    if(dayOffset < 0){ dayOffset++; renderDate(); }
+  });
+
+  // init
+  renderMode();
+  renderWorkout();
+</script>
+</body>
+</html>

@@ -1,0 +1,811 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=430, initial-scale=1, viewport-fit=cover" />
+<title>FORGE — Home (K)</title>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+  :root{
+    --bg-1:#16140f; --bg-2:#0d0c0a;
+    --surface:#1a1814; --raised:#1f1c16;
+    --hair:#221f19; --hair2:#2c281f;
+    --ink:#efeae0; --sub:#a59d8d; --faint:#6f6859;
+    --amber:#e3a857; --bright:#f3c378;
+    --green:#4fd17e; --blue:#6fb0d8; --red:#e0664a; --yellow:#e6c14e;
+    --mono: ui-monospace, "SF Mono", "Courier New", monospace;
+    --ui: -apple-system, "Helvetica Neue", Arial, sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0;background:#000;color:var(--ink);font-family:var(--ui);}
+  body{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:24px;}
+  .phone{
+    width:430px; min-height:932px; position:relative;
+    background:radial-gradient(125% 80% at 50% 14%, var(--bg-1), var(--bg-2));
+    border-radius:48px; overflow:hidden;
+    box-shadow:0 40px 120px rgba(0,0,0,.7), 0 0 0 1px #000 inset;
+  }
+  .scroll{
+    height:932px; overflow-y:auto; overflow-x:hidden;
+    padding:54px 18px 150px;
+    scrollbar-width:none;
+  }
+  .scroll::-webkit-scrollbar{display:none}
+
+  /* ============ TOP BAR ============ */
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 4px 10px;
+  }
+  .date{
+    display:flex; align-items:center; gap:8px;
+    font-family:var(--ui); cursor:pointer;
+  }
+  .date .chev{
+    width:26px;height:26px;border-radius:50%;
+    display:grid;place-items:center;
+    color:var(--sub); font-size:14px;
+    border:1px solid var(--hair2);
+  }
+  .date .label{
+    font-size:18px; font-weight:600; letter-spacing:-.01em; color:var(--ink);
+  }
+  .date .sub{
+    display:block; font-size:10.5px; color:var(--faint);
+    letter-spacing:.14em; text-transform:uppercase; margin-top:1px; font-family:var(--mono);
+  }
+  .account{
+    width:36px;height:36px;border-radius:50%;
+    display:grid;place-items:center;
+    background:var(--surface); border:1px solid var(--hair2);
+    color:var(--ink); cursor:pointer; font-size:16px;
+  }
+
+  /* ============ HERO BIOMETRIC ============ */
+  .hero{
+    background:linear-gradient(180deg, #1d1a14, #181612);
+    border:1px solid var(--hair2);
+    border-radius:22px;
+    padding:14px 16px 16px;
+    margin-top:4px;
+    position:relative;
+  }
+  .src{
+    display:flex; align-items:center; gap:6px;
+    color:var(--faint); font-family:var(--mono);
+    font-size:9.5px; letter-spacing:.16em; text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  .src .dot{width:5px;height:5px;border-radius:50%;background:var(--amber);box-shadow:0 0 6px var(--amber)}
+  .hero-row{
+    display:grid;
+    grid-template-columns: 1fr 1fr 132px;
+    gap:8px; align-items:center;
+  }
+  .ring-wrap{ display:flex; flex-direction:column; align-items:center; gap:6px;}
+  .ring{ position:relative; width:108px; height:108px;}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .num{
+    position:absolute; inset:0;
+    display:grid; place-items:center;
+    font-family:var(--mono); font-weight:600;
+    font-size:26px; letter-spacing:-.02em;
+  }
+  .ring .num small{font-size:11px; color:var(--sub); margin-left:1px; font-weight:500}
+  .ring-label{
+    font-family:var(--mono); font-size:9.5px; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--sub);
+  }
+  .metrics{
+    display:flex; flex-direction:column;
+    gap:0;
+    border-left:1px solid var(--hair2);
+    padding-left:14px;
+    height:100%;
+    justify-content:space-between;
+    padding-top:2px; padding-bottom:2px;
+  }
+  .met{
+    display:flex; align-items:baseline; justify-content:space-between;
+    padding:6px 0;
+    border-bottom:1px solid var(--hair);
+  }
+  .met:last-child{border-bottom:none}
+  .met .k{
+    font-family:var(--mono); font-size:9.5px; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--faint);
+  }
+  .met .v{
+    font-family:var(--mono); font-size:14px; color:var(--ink); font-weight:600;
+  }
+  .met .v small{font-size:9px; color:var(--faint); margin-left:2px; font-weight:500}
+
+  /* ============ WORKOUT MINI-CARD (between hero and tiles) ============ */
+  .wkt-mini{
+    margin-top:10px;
+    background:linear-gradient(90deg, rgba(227,168,87,.10), rgba(227,168,87,.02));
+    border:1px solid rgba(227,168,87,.28);
+    border-radius:14px;
+    padding:10px 12px;
+    display:flex; align-items:center; gap:12px;
+    cursor:pointer;
+  }
+  .wkt-mini .play{
+    width:34px; height:34px; border-radius:50%;
+    background:var(--amber); color:#1a1206;
+    display:grid; place-items:center; font-size:14px;
+    box-shadow:0 4px 14px rgba(227,168,87,.35);
+    flex-shrink:0;
+  }
+  .wkt-mini .play i{margin-left:1px}
+  .wkt-mini .meta{
+    display:flex; flex-direction:column; gap:1px; flex:1; min-width:0;
+  }
+  .wkt-mini .name{
+    font-size:13px; font-weight:600; color:var(--ink); letter-spacing:-.01em;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .wkt-mini .sub{
+    font-family:var(--mono); font-size:9.5px; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--amber);
+  }
+  .wkt-mini .arrow{ color:var(--amber); font-size:14px;}
+  .wkt-mini.in-progress{
+    background:linear-gradient(90deg, rgba(227,168,87,.18), rgba(227,168,87,.04));
+    border-color:rgba(227,168,87,.45);
+  }
+  .wkt-mini.in-progress .play{ background:var(--red); color:#fff;}
+  .wkt-mini .pulse{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--red);
+    box-shadow:0 0 0 0 rgba(224,102,74,.6);
+    animation:pulse 1.6s infinite;
+    display:none;
+  }
+  .wkt-mini.in-progress .pulse{display:inline-block}
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(224,102,74,.5)}
+    70%{box-shadow:0 0 0 8px rgba(224,102,74,0)}
+    100%{box-shadow:0 0 0 0 rgba(224,102,74,0)}
+  }
+
+  /* ============ TRIPTYCH (Fuel | Steps | Water) ============ */
+  .triptych{
+    margin-top:12px;
+    display:grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap:8px;
+  }
+  .tile{
+    background:linear-gradient(180deg, var(--raised), #1a1812);
+    border:1px solid var(--hair2);
+    border-radius:18px;
+    padding:12px;
+    display:flex; flex-direction:column;
+    min-height:182px;
+    position:relative;
+  }
+  .tile .head{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:10px;
+  }
+  .tile .head .name{
+    font-family:var(--mono); font-size:9.5px; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--sub);
+    display:flex; align-items:center; gap:6px;
+  }
+  .tile .head .name i{font-size:13px; color:var(--amber)}
+
+  /* fuel */
+  .fuel .big{
+    font-family:var(--mono); font-weight:600; font-size:26px;
+    letter-spacing:-.02em; color:var(--ink); line-height:1;
+  }
+  .fuel .big small{font-size:11px; color:var(--faint); margin-left:3px; font-weight:500}
+  .fuel .kcal-sub{
+    font-family:var(--mono); font-size:9.5px; color:var(--faint);
+    letter-spacing:.12em; margin-top:4px;
+  }
+  .macro-bar{
+    height:3px; border-radius:3px; background:#27241d; overflow:hidden;
+    margin-top:10px; display:flex; gap:2px;
+  }
+  .macro-bar span{display:block; height:100%}
+  .macros{
+    margin-top:12px; display:grid; grid-template-columns:repeat(3,1fr); gap:6px;
+  }
+  .macro{
+    display:flex; flex-direction:column; gap:2px; align-items:flex-start;
+  }
+  .macro .lab{
+    font-family:var(--mono); font-size:9px; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--faint);
+  }
+  .macro .val{
+    font-family:var(--mono); font-size:12px; color:var(--ink); font-weight:600;
+  }
+  .macro .val small{ color:var(--faint); font-size:10px; font-weight:500;}
+  .macro .mb{ height:2px; width:100%; background:#27241d; border-radius:2px; margin-top:3px; overflow:hidden;}
+  .macro .mb span{display:block;height:100%}
+
+  /* steps */
+  .steps .big{
+    font-family:var(--mono); font-weight:600; font-size:24px;
+    letter-spacing:-.02em; color:var(--ink); line-height:1;
+  }
+  .steps .goal{
+    font-family:var(--mono); font-size:9.5px; color:var(--faint);
+    margin-top:4px; letter-spacing:.12em;
+  }
+  .step-arc{ margin-top:auto; display:flex; justify-content:center;}
+  .step-arc svg{display:block}
+
+  /* water */
+  .water .row{
+    display:flex; align-items:flex-end; gap:4px;
+  }
+  .water .big{
+    font-family:var(--mono); font-weight:600; font-size:24px;
+    letter-spacing:-.02em; color:var(--ink); line-height:1;
+  }
+  .water .unit{
+    font-family:var(--mono); font-size:11px; color:var(--faint); margin-bottom:2px;
+  }
+  .water .goal{
+    font-family:var(--mono); font-size:9.5px; color:var(--faint);
+    letter-spacing:.12em; margin-top:4px;
+  }
+  .bottle-chip{
+    display:inline-flex; align-items:center; gap:5px;
+    background:#252119; border:1px solid var(--hair2);
+    border-radius:999px; padding:3px 8px;
+    font-family:var(--mono); font-size:10px; color:var(--ink); cursor:pointer;
+    margin-top:10px; align-self:flex-start;
+  }
+  .bottle-chip i{font-size:11px; color:var(--blue)}
+  .water-steppers{
+    display:flex; gap:6px; margin-top:8px;
+  }
+  .water-steppers button{
+    flex:1; background:#252119; border:1px solid var(--hair2);
+    border-radius:10px; padding:7px 0; color:var(--ink);
+    font-family:var(--mono); font-size:13px; font-weight:600;
+    cursor:pointer;
+  }
+  .water-steppers button:active{background:#2e2920}
+
+  /* dots row for steps */
+  .seg-dots{
+    display:flex; gap:3px; margin-top:8px;
+  }
+  .seg-dots span{
+    flex:1; height:3px; border-radius:2px; background:#27241d;
+  }
+  .seg-dots span.on{ background:var(--amber); }
+
+  /* ============ HABITS (A-style: no chrome) ============ */
+  .section{ margin-top:22px; padding:0 4px;}
+  .section-head{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:8px;
+  }
+  .section-head h3{
+    margin:0; font-family:var(--mono); font-size:10px; letter-spacing:.22em;
+    color:var(--sub); text-transform:uppercase; font-weight:600;
+  }
+  .section-head .add{
+    color:var(--faint); cursor:pointer; font-size:14px;
+  }
+  .habit{
+    display:flex; align-items:center; gap:12px;
+    padding:12px 4px;
+    border-top:1px solid var(--hair);
+  }
+  .habit:last-child{ border-bottom:1px solid var(--hair); }
+  .habit .icon{
+    width:24px; height:24px; display:grid; place-items:center;
+    color:var(--amber); font-size:16px;
+  }
+  .habit .name{
+    flex:1; font-size:14px; color:var(--ink); letter-spacing:-.01em;
+  }
+  .habit .count{
+    font-family:var(--mono); font-size:11px; color:var(--sub);
+  }
+  .habit .check{
+    width:22px; height:22px; border-radius:7px;
+    border:1.5px solid var(--hair2);
+    display:grid; place-items:center;
+    color:transparent; font-size:13px; cursor:pointer;
+  }
+  .habit.done .check{
+    background:var(--amber); border-color:var(--amber); color:#1a1206;
+  }
+  .habit.done .name{
+    color:var(--faint); text-decoration:line-through; text-decoration-color:rgba(165,157,141,.35);
+  }
+  .habit.done .icon{ color:var(--faint);}
+  .habit.done .count{color:var(--faint)}
+
+  /* ============ BOTTOM NAV ============ */
+  .nav{
+    position:absolute; left:18px; right:18px; bottom:22px;
+    background:rgba(26,24,20,.75);
+    backdrop-filter: blur(22px) saturate(140%);
+    -webkit-backdrop-filter: blur(22px) saturate(140%);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:999px;
+    padding:11px 14px;
+    display:flex; align-items:center; justify-content:space-around;
+    box-shadow:0 12px 40px rgba(0,0,0,.55);
+    z-index:5;
+  }
+  .nav button{
+    background:transparent; border:0; color:var(--faint); cursor:pointer;
+    width:46px; height:36px; display:grid; place-items:center; font-size:20px;
+    border-radius:14px;
+  }
+  .nav button.active{ color:var(--amber);}
+
+  /* ============ TOGGLES (dev) ============ */
+  .toggles{
+    position:fixed; right:18px; bottom:18px;
+    display:flex; flex-direction:column; gap:6px; z-index:50;
+    align-items:flex-end;
+  }
+  .toggles .grp{
+    background:rgba(20,18,14,.92); border:1px solid var(--hair2);
+    border-radius:999px; padding:3px; display:flex; gap:2px;
+    backdrop-filter:blur(10px);
+  }
+  .toggles .grp button{
+    background:transparent; border:0; color:var(--sub);
+    font-family:var(--mono); font-size:10px; letter-spacing:.12em;
+    padding:5px 10px; border-radius:999px; cursor:pointer; text-transform:uppercase;
+  }
+  .toggles .grp button.on{ background:var(--amber); color:#1a1206;}
+
+  /* ============ ACCOUNT SHEET ============ */
+  .scrim{
+    position:absolute; inset:0; background:rgba(0,0,0,.5);
+    backdrop-filter: blur(6px); opacity:0; pointer-events:none;
+    transition:opacity .2s; z-index:20;
+  }
+  .scrim.show{opacity:1; pointer-events:auto}
+  .sheet{
+    position:absolute; left:18px; right:18px; top:60px;
+    background:#1c1a15; border:1px solid var(--hair2);
+    border-radius:18px; padding:6px; z-index:25;
+    transform:translateY(-8px); opacity:0; pointer-events:none;
+    transition:all .2s;
+    box-shadow:0 18px 50px rgba(0,0,0,.55);
+  }
+  .sheet.show{transform:translateY(0); opacity:1; pointer-events:auto;}
+  .sheet .row{
+    display:flex; align-items:center; gap:12px;
+    padding:13px 12px; cursor:pointer;
+    border-radius:12px; color:var(--ink); font-size:14px;
+  }
+  .sheet .row i{font-size:17px; color:var(--sub); width:18px; text-align:center;}
+  .sheet .row:hover{background:#221f19}
+  .sheet .row.sep{ border-top:1px solid var(--hair); margin-top:2px; padding-top:13px;}
+  .sheet .row.danger{color:var(--red)}
+  .sheet .row.danger i{color:var(--red)}
+
+  /* ============ EMPTY STATE ============ */
+  .empty .ring svg circle.fg{ stroke:#2c281f !important; }
+  .empty .ring .num{ color:var(--faint);}
+  .empty .ring .num small{color:var(--faint)}
+  .empty .met .v{ color:var(--faint);}
+  .empty .hero{ opacity:.85;}
+  .connect-btn{
+    margin-top:10px; width:100%;
+    background:#252119; border:1px solid var(--hair2);
+    border-radius:10px; padding:8px 0;
+    color:var(--ink); font-family:var(--mono); font-size:11px;
+    letter-spacing:.16em; text-transform:uppercase; cursor:pointer;
+  }
+  .connect-btn i{margin-right:6px; color:var(--amber)}
+  .tile.greyed{ opacity:.55;}
+  .tile.greyed .big, .tile.greyed .val, .tile.greyed .step-arc{ color:var(--faint);}
+  .tile.greyed .head .name i{color:var(--faint)}
+
+  /* hidden by mode */
+  .hidden{display:none !important}
+</style>
+</head>
+<body>
+<div class="phone" id="phone">
+
+  <!-- ACCOUNT SHEET -->
+  <div class="scrim" id="scrim"></div>
+  <div class="sheet" id="sheet">
+    <div class="row"><i class="ph ph-user-circle"></i><span>Profile</span></div>
+    <div class="row"><i class="ph ph-plugs-connected"></i><span>Connected sources</span></div>
+    <div class="row sep danger"><i class="ph ph-sign-out"></i><span>Sign out</span></div>
+  </div>
+
+  <div class="scroll">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <div class="date" id="dateNav">
+        <div class="chev"><i class="ph-bold ph-caret-left"></i></div>
+        <div>
+          <span class="label" id="dateLabel">Today</span>
+          <span class="sub" id="dateSub">FRI · JUN 19</span>
+        </div>
+      </div>
+      <div class="account" id="accountBtn" title="Account">
+        <i class="ph ph-user"></i>
+      </div>
+    </div>
+
+    <!-- HERO -->
+    <div class="hero" id="hero">
+      <div class="src">
+        <span class="dot"></span><span id="srcLabel">WHOOP · 6:42 AM</span>
+      </div>
+      <div class="hero-row">
+        <!-- Recovery ring -->
+        <div class="ring-wrap">
+          <div class="ring">
+            <svg width="108" height="108" viewBox="0 0 108 108">
+              <circle cx="54" cy="54" r="46" fill="none" stroke="#2c281f" stroke-width="7"/>
+              <circle class="fg" id="recRing" cx="54" cy="54" r="46" fill="none" stroke="#4fd17e"
+                      stroke-width="7" stroke-linecap="round"
+                      stroke-dasharray="289" stroke-dashoffset="58" />
+            </svg>
+            <div class="num"><span id="recNum">78</span><small>%</small></div>
+          </div>
+          <div class="ring-label">RECOVERY</div>
+        </div>
+        <!-- Strain ring -->
+        <div class="ring-wrap">
+          <div class="ring">
+            <svg width="108" height="108" viewBox="0 0 108 108">
+              <circle cx="54" cy="54" r="46" fill="none" stroke="#2c281f" stroke-width="7"/>
+              <circle class="fg" id="strRing" cx="54" cy="54" r="46" fill="none" stroke="#6fb0d8"
+                      stroke-width="7" stroke-linecap="round"
+                      stroke-dasharray="289" stroke-dashoffset="125" />
+            </svg>
+            <div class="num"><span id="strNum">11.4</span></div>
+          </div>
+          <div class="ring-label">STRAIN</div>
+        </div>
+        <!-- Metrics stack -->
+        <div class="metrics">
+          <div class="met">
+            <span class="k">HRV</span>
+            <span class="v" id="vHRV">62<small>ms</small></span>
+          </div>
+          <div class="met">
+            <span class="k">RHR</span>
+            <span class="v" id="vRHR">54<small>bpm</small></span>
+          </div>
+          <div class="met">
+            <span class="k">REST</span>
+            <span class="v" id="vRST">16.2<small>br</small></span>
+          </div>
+          <div class="met">
+            <span class="k">SLEEP</span>
+            <span class="v" id="vSLP">7:24</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WORKOUT MINI-CARD (alt placement: between hero + tiles) -->
+    <div class="wkt-mini" id="wktMini">
+      <div class="play"><i class="ph-fill ph-play"></i></div>
+      <div class="meta">
+        <div class="name" id="wktName">Push · Day 3</div>
+        <div class="sub" id="wktSub"><span class="pulse"></span> 6 EXERCISES · 48 MIN</div>
+      </div>
+      <i class="ph-bold ph-caret-right arrow"></i>
+    </div>
+
+    <!-- TRIPTYCH: Fuel (1.4fr) | Steps | Water -->
+    <div class="triptych" id="triptych">
+
+      <!-- FUEL -->
+      <div class="tile fuel" id="fuelTile">
+        <div class="head">
+          <span class="name"><i class="ph-fill ph-fork-knife"></i> FUEL</span>
+          <span style="color:var(--faint); font-family:var(--mono); font-size:10px;">1,840</span>
+        </div>
+        <div class="big">680<small>kcal left</small></div>
+        <div class="kcal-sub">OF 2,520</div>
+        <div class="macro-bar">
+          <span style="width:38%; background:#e3a857"></span>
+          <span style="width:42%; background:#6fb0d8"></span>
+          <span style="width:20%; background:#e6c14e"></span>
+        </div>
+        <div class="macros">
+          <div class="macro">
+            <span class="lab">P</span>
+            <span class="val">165<small>/180</small></span>
+            <div class="mb"><span style="width:91%; background:#e3a857"></span></div>
+          </div>
+          <div class="macro">
+            <span class="lab">C</span>
+            <span class="val">198<small>/250</small></span>
+            <div class="mb"><span style="width:79%; background:#6fb0d8"></span></div>
+          </div>
+          <div class="macro">
+            <span class="lab">F</span>
+            <span class="val">62<small>/80</small></span>
+            <div class="mb"><span style="width:78%; background:#e6c14e"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEPS -->
+      <div class="tile steps" id="stepsTile">
+        <div class="head">
+          <span class="name"><i class="ph-fill ph-sneaker"></i> STEPS</span>
+        </div>
+        <div class="big" id="stepsVal">8,240</div>
+        <div class="goal">/ 10,000</div>
+        <div class="seg-dots" id="stepDots"></div>
+        <div class="step-arc">
+          <svg width="120" height="68" viewBox="0 0 120 68">
+            <path d="M10,60 A50,50 0 0,1 110,60" fill="none" stroke="#2c281f" stroke-width="6" stroke-linecap="round"/>
+            <path id="stepArc" d="M10,60 A50,50 0 0,1 110,60" fill="none" stroke="#e3a857" stroke-width="6"
+                  stroke-linecap="round"
+                  stroke-dasharray="157" stroke-dashoffset="28"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- WATER -->
+      <div class="tile water" id="waterTile">
+        <div class="head">
+          <span class="name"><i class="ph-fill ph-drop"></i> WATER</span>
+        </div>
+        <div class="row">
+          <span class="big" id="waterVal">2.4</span>
+          <span class="unit">/ 6 L</span>
+        </div>
+        <div class="bottle-chip" id="bottleChip">
+          <i class="ph-fill ph-bottle"></i><span id="bottleSize">0.75 L</span>
+        </div>
+        <div class="water-steppers">
+          <button id="waterMinus"><i class="ph-bold ph-minus"></i></button>
+          <button id="waterPlus"><i class="ph-bold ph-plus"></i></button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- HABITS -->
+    <div class="section">
+      <div class="section-head">
+        <h3>Habits</h3>
+        <span class="add"><i class="ph-bold ph-plus"></i></span>
+      </div>
+      <div class="habit done">
+        <div class="icon"><i class="ph-fill ph-pill"></i></div>
+        <div class="name">AM vitamins</div>
+        <div class="check"><i class="ph-bold ph-check"></i></div>
+      </div>
+      <div class="habit done">
+        <div class="icon"><i class="ph-fill ph-barbell"></i></div>
+        <div class="name">Workout</div>
+        <div class="check"><i class="ph-bold ph-check"></i></div>
+      </div>
+      <div class="habit">
+        <div class="icon"><i class="ph-fill ph-person-simple-tai-chi"></i></div>
+        <div class="name">Mobility</div>
+        <div class="check"></div>
+      </div>
+      <div class="habit">
+        <div class="icon"><i class="ph-fill ph-egg"></i></div>
+        <div class="name">Protein</div>
+        <div class="count">3 / 4</div>
+        <div class="check"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="nav">
+    <button class="active" title="Home"><i class="ph-fill ph-house"></i></button>
+    <button title="Plan"><i class="ph ph-calendar-blank"></i></button>
+    <button title="Habits"><i class="ph ph-check-square"></i></button>
+    <button title="Settings"><i class="ph ph-gear-six"></i></button>
+  </div>
+
+</div>
+
+<!-- DEV TOGGLES -->
+<div class="toggles">
+  <div class="grp" id="modeGrp">
+    <button data-mode="conn" class="on">CONNECTED</button>
+    <button data-mode="fresh">FRESH</button>
+  </div>
+  <div class="grp" id="wktGrp">
+    <button data-wkt="sched" class="on">SCHEDULED</button>
+    <button data-wkt="prog">IN-PROGRESS</button>
+    <button data-wkt="done">DONE</button>
+  </div>
+</div>
+
+<script>
+  // ============ ACCOUNT SHEET ============
+  const accountBtn = document.getElementById('accountBtn');
+  const scrim = document.getElementById('scrim');
+  const sheet = document.getElementById('sheet');
+  accountBtn.addEventListener('click', ()=>{
+    scrim.classList.add('show'); sheet.classList.add('show');
+  });
+  scrim.addEventListener('click', ()=>{
+    scrim.classList.remove('show'); sheet.classList.remove('show');
+  });
+
+  // ============ DATE SWIPE BACK ============
+  const dateLabel = document.getElementById('dateLabel');
+  const dateSub = document.getElementById('dateSub');
+  const dayLabels = ['Today','Yesterday','Wednesday','Tuesday','Monday'];
+  const daySubs = ['FRI · JUN 19','THU · JUN 18','WED · JUN 17','TUE · JUN 16','MON · JUN 15'];
+  let dayIdx = 0;
+  document.getElementById('dateNav').addEventListener('click', ()=>{
+    dayIdx = (dayIdx + 1) % dayLabels.length;
+    dateLabel.textContent = dayLabels[dayIdx];
+    dateSub.textContent = daySubs[dayIdx];
+  });
+
+  // ============ STEP DOTS ============
+  const stepDots = document.getElementById('stepDots');
+  for(let i=0;i<10;i++){
+    const s = document.createElement('span');
+    if(i<8) s.classList.add('on');
+    stepDots.appendChild(s);
+  }
+
+  // ============ WATER ============
+  const bottleSizes = [0.5, 0.75, 1, 1.25];
+  let bottleIdx = 1;
+  let waterL = 2.4;
+  const waterVal = document.getElementById('waterVal');
+  const bottleSizeEl = document.getElementById('bottleSize');
+  document.getElementById('bottleChip').addEventListener('click', ()=>{
+    bottleIdx = (bottleIdx + 1) % bottleSizes.length;
+    bottleSizeEl.textContent = bottleSizes[bottleIdx] + ' L';
+  });
+  function setWater(v){
+    waterL = Math.max(0, Math.min(12, +v.toFixed(2)));
+    waterVal.textContent = waterL.toFixed(1);
+  }
+  document.getElementById('waterPlus').addEventListener('click', ()=> setWater(waterL + bottleSizes[bottleIdx]));
+  document.getElementById('waterMinus').addEventListener('click', ()=> setWater(waterL - bottleSizes[bottleIdx]));
+
+  // ============ MODE: CONNECTED / FRESH ============
+  const modeGrp = document.getElementById('modeGrp');
+  const hero = document.getElementById('hero');
+  const fuelTile = document.getElementById('fuelTile');
+  const stepsTile = document.getElementById('stepsTile');
+  const waterTile = document.getElementById('waterTile');
+  const triptych = document.getElementById('triptych');
+  const srcLabel = document.getElementById('srcLabel');
+
+  const realMetrics = {
+    rec:'78', str:'11.4', hrv:'62', rhr:'54', rst:'16.2', slp:'7:24'
+  };
+
+  function setMode(mode){
+    modeGrp.querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.mode===mode));
+    if(mode === 'fresh'){
+      hero.classList.add('empty');
+      srcLabel.innerHTML = 'NO SOURCE';
+      document.querySelector('.src .dot').style.background = '#6f6859';
+      document.querySelector('.src .dot').style.boxShadow = 'none';
+      document.getElementById('recNum').textContent = '--';
+      document.getElementById('strNum').textContent = '--';
+      document.getElementById('vHRV').innerHTML = '--';
+      document.getElementById('vRHR').innerHTML = '--';
+      document.getElementById('vRST').innerHTML = '--';
+      document.getElementById('vSLP').innerHTML = '--';
+      document.getElementById('recRing').setAttribute('stroke','#2c281f');
+      document.getElementById('strRing').setAttribute('stroke','#2c281f');
+
+      // Add connect button under hero (once)
+      if(!document.getElementById('heroConnect')){
+        const b = document.createElement('button');
+        b.id = 'heroConnect'; b.className = 'connect-btn';
+        b.innerHTML = '<i class="ph-bold ph-plugs-connected"></i>CONNECT SOURCE';
+        b.onclick = ()=>{ setMode('conn'); };
+        hero.appendChild(b);
+      }
+
+      // FUEL HIDDEN entirely on fresh
+      fuelTile.classList.add('hidden');
+      triptych.style.gridTemplateColumns = '1fr 1fr';
+
+      // Steps + Water greyed with CTA
+      stepsTile.classList.add('greyed');
+      waterTile.classList.add('greyed');
+      document.getElementById('stepsVal').textContent = '--';
+      document.getElementById('waterVal').textContent = '--';
+      document.getElementById('stepArc').setAttribute('stroke','#2c281f');
+      if(!document.getElementById('stepConnect')){
+        const b = document.createElement('button');
+        b.id = 'stepConnect'; b.className = 'connect-btn';
+        b.innerHTML = '<i class="ph-bold ph-plus"></i>CONNECT';
+        b.onclick = ()=>{ setMode('conn'); };
+        stepsTile.appendChild(b);
+      }
+      if(!document.getElementById('waterConnect')){
+        const b = document.createElement('button');
+        b.id = 'waterConnect'; b.className = 'connect-btn';
+        b.innerHTML = '<i class="ph-bold ph-plus"></i>ADD';
+        b.onclick = ()=>{ setMode('conn'); };
+        waterTile.appendChild(b);
+      }
+    } else {
+      hero.classList.remove('empty');
+      srcLabel.textContent = 'WHOOP · 6:42 AM';
+      document.querySelector('.src .dot').style.background = 'var(--amber)';
+      document.querySelector('.src .dot').style.boxShadow = '0 0 6px var(--amber)';
+      document.getElementById('recNum').textContent = realMetrics.rec;
+      document.getElementById('strNum').textContent = realMetrics.str;
+      document.getElementById('vHRV').innerHTML = '62<small>ms</small>';
+      document.getElementById('vRHR').innerHTML = '54<small>bpm</small>';
+      document.getElementById('vRST').innerHTML = '16.2<small>br</small>';
+      document.getElementById('vSLP').innerHTML = '7:24';
+      document.getElementById('recRing').setAttribute('stroke','#4fd17e');
+      document.getElementById('strRing').setAttribute('stroke','#6fb0d8');
+      const hc = document.getElementById('heroConnect'); if(hc) hc.remove();
+
+      fuelTile.classList.remove('hidden');
+      triptych.style.gridTemplateColumns = '1.4fr 1fr 1fr';
+
+      stepsTile.classList.remove('greyed');
+      waterTile.classList.remove('greyed');
+      document.getElementById('stepsVal').textContent = '8,240';
+      document.getElementById('waterVal').textContent = waterL.toFixed(1);
+      document.getElementById('stepArc').setAttribute('stroke','#e3a857');
+      const sc = document.getElementById('stepConnect'); if(sc) sc.remove();
+      const wc = document.getElementById('waterConnect'); if(wc) wc.remove();
+    }
+  }
+  modeGrp.querySelectorAll('button').forEach(b=>{
+    b.addEventListener('click', ()=> setMode(b.dataset.mode));
+  });
+
+  // ============ WORKOUT MINI ============
+  const wktMini = document.getElementById('wktMini');
+  const wktName = document.getElementById('wktName');
+  const wktSub = document.getElementById('wktSub');
+  const wktGrp = document.getElementById('wktGrp');
+  function setWkt(state){
+    wktGrp.querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.wkt===state));
+    wktMini.classList.remove('in-progress');
+    if(state === 'sched'){
+      wktMini.classList.remove('hidden');
+      wktName.textContent = 'Push · Day 3';
+      wktSub.innerHTML = '<span class="pulse"></span>6 EXERCISES · 48 MIN';
+      wktMini.querySelector('.play i').className = 'ph-fill ph-play';
+    } else if(state === 'prog'){
+      wktMini.classList.remove('hidden');
+      wktMini.classList.add('in-progress');
+      wktName.textContent = 'Push · Day 3';
+      wktSub.innerHTML = '<span class="pulse"></span>LIVE · 22:14 · 3 / 6';
+      wktMini.querySelector('.play i').className = 'ph-fill ph-pause';
+    } else {
+      wktMini.classList.add('hidden');
+    }
+  }
+  wktGrp.querySelectorAll('button').forEach(b=>{
+    b.addEventListener('click', ()=> setWkt(b.dataset.wkt));
+  });
+
+  // init
+  setMode('conn');
+  setWkt('sched');
+</script>
+</body>
+</html>
