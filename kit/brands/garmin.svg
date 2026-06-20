@@ -1,0 +1,10 @@
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="garmin-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0093d0"/>
+      <stop offset="100%" stop-color="#005e8e"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#garmin-bg)"/>
+  <path fill="#ffffff" d="M32 14 13 50h38L32 14Zm0 9 11 21H21l11-21Z"/>
+</svg>

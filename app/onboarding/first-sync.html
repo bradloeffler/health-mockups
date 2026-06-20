@@ -3,156 +3,64 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>FORGE · Forging your baseline</title>
+  <title>FORGE · Syncing</title>
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
   <link rel="stylesheet" href="../../kit/kit.css" />
-  <link rel="stylesheet" href="./_onboarding.css" />
 </head>
 <body>
-  <main class="k-screen ob-screen">
-    <div class="ob-scroll">
+  <main class="k-screen">
+    <div class="k-screen__scroll" style="justify-content: space-between;">
 
-      <section class="ob-sync">
+      <header class="k-row k-row--between">
+        <span class="k-icon-tile k-icon-tile--sm" style="visibility: hidden;"></span>
+        <span class="k-eyebrow">Step 6 of 6</span>
+        <span class="k-icon-tile k-icon-tile--sm" style="visibility: hidden;"></span>
+      </header>
 
-        <h1 class="ob-h1 ob-h1--display" style="text-align:center;">Forging your <strong>baseline.</strong></h1>
+      <div class="k-stack" style="--gap: var(--s-5); align-items: center; text-align: center;">
 
-        <div class="ob-sync__ring" aria-hidden="true">
-          <svg viewBox="0 0 100 100">
-            <circle class="k-ring__track" cx="50" cy="50" r="46" stroke-width="6"/>
-            <circle class="k-ring__bar"   cx="50" cy="50" r="46" stroke-width="6" pathLength="100"/>
+        <div class="k-ring" style="--ring-color: var(--c-amber); --ring-pct: 64; --ring-size: calc(var(--s-8) * 2 + var(--s-3));">
+          <svg class="k-ring__svg" viewBox="0 0 100 100" aria-hidden="true">
+            <circle class="k-ring__track" cx="50" cy="50" r="46" fill="none" stroke-width="6"/>
+            <circle class="k-ring__bar" cx="50" cy="50" r="46" fill="none" stroke-width="6" pathLength="100"/>
           </svg>
-          <span class="ob-sync__num" id="syncNum">0</span>
+          <div class="k-ring__num">64</div>
+          <div class="k-ring__label">%</div>
         </div>
 
-        <p class="ob-sync__status" id="syncStatus">Pulling in your history so day one is complete.</p>
-
-        <div class="ob-sync__feed" id="feed">
-
-          <div class="ob-feed-row" data-row="0">
-            <span class="k-icon-tile k-icon-tile--sm ob-tile--whoop"><i class="ph ph-heartbeat"></i></span>
-            <span class="ob-feed-row__name">WHOOP <span class="ob-feed-row__desc">· 90 days of recovery</span></span>
-            <span class="ob-feed-row__status">
-              <span class="ob-spinner" aria-hidden="true"></span>
-              <i class="ph ph-check ob-check" aria-hidden="true"></i>
-            </span>
-          </div>
-
-          <div class="ob-feed-row" data-row="1">
-            <span class="k-icon-tile k-icon-tile--sm ob-tile--apple"><i class="ph ph-heartbeat"></i></span>
-            <span class="ob-feed-row__name">Apple Health <span class="ob-feed-row__desc">· steps + sleep + weight</span></span>
-            <span class="ob-feed-row__status">
-              <span class="ob-spinner" aria-hidden="true"></span>
-              <i class="ph ph-check ob-check" aria-hidden="true"></i>
-            </span>
-          </div>
-
-          <div class="ob-feed-row" data-row="2">
-            <span class="k-icon-tile k-icon-tile--sm ob-tile--strava"><i class="ph ph-person-simple-run"></i></span>
-            <span class="ob-feed-row__name">Strava <span class="ob-feed-row__desc">· 42 activities</span></span>
-            <span class="ob-feed-row__status">
-              <span class="ob-spinner" aria-hidden="true"></span>
-              <i class="ph ph-check ob-check" aria-hidden="true"></i>
-            </span>
-          </div>
-
-          <div class="ob-feed-row" data-row="3">
-            <span class="k-icon-tile k-icon-tile--sm ob-tile--oura"><i class="ph ph-moon"></i></span>
-            <span class="ob-feed-row__name">Oura <span class="ob-feed-row__desc">· sleep + readiness</span></span>
-            <span class="ob-feed-row__status">
-              <span class="ob-spinner" aria-hidden="true"></span>
-              <i class="ph ph-check ob-check" aria-hidden="true"></i>
-            </span>
-          </div>
-
+        <div class="k-stack" style="--gap: var(--s-2);">
+          <span class="k-text-title" style="font-size: var(--t-num-lg);">Pulling your history</span>
+          <span class="k-text-sub">90 days of recovery, workouts and sleep.</span>
         </div>
 
-        <div style="width:100%;">
-          <div class="k-progress" id="syncBar" style="--p-pct: 0;"></div>
+        <div class="k-stack" style="--gap: var(--s-1); width: 100%;">
+          <div class="k-row k-row--between" style="padding: 0 var(--s-2);">
+            <span class="k-eyebrow"><i class="ph ph-check" style="color: var(--c-green);"></i> Recovery</span>
+            <span class="k-text-faint">90 / 90</span>
+          </div>
+          <div class="k-row k-row--between" style="padding: 0 var(--s-2);">
+            <span class="k-eyebrow"><i class="ph ph-check" style="color: var(--c-green);"></i> Sleep</span>
+            <span class="k-text-faint">90 / 90</span>
+          </div>
+          <div class="k-row k-row--between" style="padding: 0 var(--s-2);">
+            <span class="k-eyebrow" style="color: var(--c-amber);"><i class="ph ph-arrow-clockwise"></i> Workouts</span>
+            <span class="k-text-faint">57 / 90</span>
+          </div>
+          <div class="k-row k-row--between" style="padding: 0 var(--s-2);">
+            <span class="k-eyebrow">Habits</span>
+            <span class="k-text-faint">waiting</span>
+          </div>
         </div>
 
-      </section>
-
-      <div class="ob-continue">
-        <a class="ob-btn ob-btn--primary" href="../home.html" id="enterBtn" style="opacity:0; pointer-events:none; transition: opacity var(--m-slow);">
-          <i class="ph ph-arrow-right"></i> Enter Forge
-        </a>
       </div>
+
+      <span class="k-text-faint" style="text-align: center; padding: 0 var(--s-3);">
+        Hang tight. This screen is one-time only.
+      </span>
 
     </div>
   </main>
-
-  <script type="module">
-    import { icons } from '../../kit/icons.js';
-    // (Icons already match registry; nothing to swap.)
-  </script>
-
-  <script>
-    (function () {
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      // ---- ring counter + progress bar (sync over ~5.4s) ----
-      const numEl = document.getElementById('syncNum');
-      const barEl = document.getElementById('syncBar');
-      const duration = prefersReduced ? 600 : 5400;
-      const start = performance.now();
-      function tick(now) {
-        const t = Math.min(1, (now - start) / duration);
-        const pct = Math.round(t * 100);
-        if (numEl) numEl.textContent = String(pct);
-        if (barEl) barEl.style.setProperty('--p-pct', String(pct));
-        if (t < 1) requestAnimationFrame(tick);
-      }
-      requestAnimationFrame(tick);
-
-      // ---- cycling status line (every ~900ms) ----
-      const statusEl = document.getElementById('syncStatus');
-      const messages = [
-        'Pulling in your history so day one is complete.',
-        'Importing 90 days of recovery.',
-        'Reading your sleep and readiness.',
-        'Mapping every run and workout.',
-        'Building your daily baseline.',
-        'Almost there.'
-      ];
-      let i = 0;
-      const interval = prefersReduced ? 9000 : 900;
-      const cycleId = setInterval(() => {
-        i = (i + 1) % messages.length;
-        if (!statusEl) return;
-        statusEl.style.opacity = '0';
-        setTimeout(() => {
-          statusEl.textContent = messages[i];
-          statusEl.style.opacity = '1';
-        }, 180);
-      }, interval);
-
-      // ---- staggered feed-row completion ----
-      const completions = prefersReduced
-        ? [200, 250, 300, 350]
-        : [1200, 2200, 3400, 4700];
-      completions.forEach((delay, idx) => {
-        setTimeout(() => {
-          const row = document.querySelector('.ob-feed-row[data-row="' + idx + '"]');
-          if (row) row.classList.add('is-done');
-        }, delay);
-      });
-
-      // ---- reveal Enter Forge button ----
-      const enter = document.getElementById('enterBtn');
-      setTimeout(() => {
-        if (cycleId) clearInterval(cycleId);
-        if (statusEl) {
-          statusEl.style.opacity = '0';
-          setTimeout(() => { statusEl.textContent = 'Baseline ready.'; statusEl.style.opacity = '1'; }, 180);
-        }
-        if (enter) {
-          enter.style.opacity = '1';
-          enter.style.pointerEvents = 'auto';
-        }
-      }, prefersReduced ? 500 : 6500);
-    })();
-  </script>
   <script src="../_nav.js"></script>
 </body>
 </html>

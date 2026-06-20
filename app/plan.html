@@ -3,785 +3,120 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>FORGE Plan</title>
+  <title>FORGE · Plan</title>
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
-  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
-  <link rel="stylesheet" href="../kit/tokens.css" />
   <link rel="stylesheet" href="../kit/kit.css" />
-  <style>
-    /* ===========================================================
-       PLAN · page-local one-offs only. Tokens only.
-       =========================================================== */
-
-    /* Ambient drifting amber glow */
-    .ambient {
-      position: absolute;
-      top: 0; left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      height: calc(var(--s-8) * 6);
-      pointer-events: none;
-      background:
-        radial-gradient(60% 50% at 50% 10%, rgba(227, 168, 87, 0.12), transparent 70%),
-        radial-gradient(40% 40% at 20% 30%, rgba(227, 168, 87, 0.06), transparent 80%);
-      filter: blur(var(--s-3));
-      animation: ambientDrift 16s ease-in-out infinite alternate;
-      z-index: 0;
-    }
-    @keyframes ambientDrift {
-      0%   { transform: translate(-52%, 0); opacity: 0.85; }
-      100% { transform: translate(-48%, var(--s-2)); opacity: 1; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .ambient { animation: none; }
-    }
-
-    /* Scroll progress */
-    .scroll-progress {
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: thin;
-      background: transparent;
-      z-index: 60;
-    }
-    .scroll-progress::after {
-      content: '';
-      display: block;
-      height: 100%;
-      width: var(--sp-pct, 0%);
-      background: linear-gradient(90deg, rgba(227, 168, 87, 0.0), var(--c-amber) 50%, rgba(227, 168, 87, 0.0));
-      transition: width var(--m-fast);
-    }
-
-    /* Frosted masthead */
-    .masthead {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: var(--s-2) var(--s-3);
-      margin: calc(var(--s-3) * -1) calc(var(--s-3) * -1) 0;
-      background: rgba(20, 18, 14, 0.62);
-      -webkit-backdrop-filter: blur(var(--s-4)) saturate(140%);
-      backdrop-filter: blur(var(--s-4)) saturate(140%);
-      border-bottom: thin solid var(--c-hair);
-    }
-    .masthead__date {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--s-1);
-    }
-    .masthead__date .is-disabled { opacity: 0.3; pointer-events: none; }
-    .date-label {
-      min-width: calc(var(--s-6) * 2 + var(--s-2));
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      line-height: 1.1;
-    }
-    .date-label__main {
-      font-size: var(--t-body-size);
-      font-weight: 600;
-      color: var(--c-ink);
-    }
-
-    /* Page display header */
-    .page-header {
-      padding: var(--s-3) var(--s-0) var(--s-2);
-      position: relative;
-      z-index: 1;
-    }
-    .page-header h1 {
-      margin: var(--s-2) 0 var(--s-2);
-      font-family: var(--f-ui);
-      font-size: calc(var(--t-title-size) + var(--s-1));
-      font-weight: 500;
-      letter-spacing: -0.02em;
-      color: var(--c-ink);
-      line-height: 1.02;
-    }
-    .word-thin  { font-weight: 300; color: var(--c-sub); }
-    .word-amber { color: var(--c-amber); font-weight: 500; }
-    .page-header p {
-      margin: 0 0 var(--s-2);
-      color: var(--c-sub);
-      font-size: var(--t-label-size);
-      font-weight: 400;
-      max-width: 36ch;
-      line-height: 1.45;
-    }
-
-    /* ============ PHASE STRIP ============ */
-    .phase-card { padding: var(--s-3); }
-    .phase-card .k-eyebrow { display: block; margin-bottom: var(--s-2); }
-    .phase-progress {
-      position: relative;
-      margin: var(--s-2) 0 var(--s-2);
-    }
-    .phase-marker {
-      position: absolute;
-      top: calc(var(--s-0) * -1);
-      width: calc(var(--s-1) - var(--s-0) * 0.5);
-      height: calc(var(--s-2));
-      background: var(--c-deep);
-      border: thin solid var(--c-hair-strong);
-      border-radius: var(--r-pill);
-      transform: translateX(-50%);
-    }
-    .phase-marker[data-at="25"]  { left: 25%; }
-    .phase-marker[data-at="50"]  { left: 50%; }
-    .phase-marker[data-at="75"]  { left: 75%; }
-    .phase-marker.is-passed { background: var(--c-amber); border-color: var(--c-amber); }
-    .phase-marker.is-current {
-      background: var(--c-amber);
-      border-color: var(--c-amber);
-      box-shadow: 0 0 0 var(--s-0) rgba(227, 168, 87, 0.25);
-    }
-    .phase-labels {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      margin-top: var(--s-2);
-    }
-    .phase-labels span {
-      font-family: var(--f-mono);
-      font-size: var(--t-eyebrow-size);
-      letter-spacing: var(--t-eyebrow-track);
-      text-transform: uppercase;
-      color: var(--c-faint);
-      text-align: center;
-    }
-    .phase-labels span.is-current { color: var(--c-amber); font-weight: var(--t-eyebrow-weight); }
-
-    /* ============ WEEK STRIP (museum vitrine) ============ */
-    .week-card {
-      background: var(--c-surface);
-      border: thin solid var(--c-hair);
-      border-radius: var(--r-lg);
-      padding: var(--s-3);
-      position: relative;
-      overflow: hidden;
-    }
-    .week-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background:
-        linear-gradient(180deg, rgba(227, 168, 87, 0.04), transparent 40%);
-      border-radius: inherit;
-    }
-    .week-strip {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: var(--s-1);
-      margin-top: var(--s-3);
-    }
-    .day-tile {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--s-0);
-      padding: var(--s-1) var(--s-0);
-      border-radius: var(--r-md);
-      background: var(--c-bg);
-      border: thin solid var(--c-hair);
-      min-width: 0;
-      position: relative;
-      transition: transform var(--m-fast), border-color var(--m-fast);
-    }
-    .day-tile__d {
-      font-family: var(--f-mono);
-      font-size: var(--t-eyebrow-size);
-      font-weight: var(--t-eyebrow-weight);
-      letter-spacing: var(--t-eyebrow-track);
-      color: var(--c-faint);
-      text-transform: uppercase;
-    }
-    .day-tile__icon {
-      width: var(--s-5);
-      height: var(--s-5);
-      border-radius: var(--r-sm);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--c-sub);
-      font-size: var(--t-label-size);
-    }
-    .day-tile--run     .day-tile__icon { color: var(--c-blue); }
-    .day-tile--lift    .day-tile__icon { color: var(--c-amber); }
-    .day-tile--rest    .day-tile__icon { color: var(--c-faint); }
-    .day-tile--stretch .day-tile__icon { color: var(--c-green); }
-    .day-tile.is-done  {
-      border-color: rgba(79, 209, 126, 0.25);
-      background: rgba(79, 209, 126, 0.04);
-    }
-    .day-tile.is-done .day-tile__d { color: var(--c-green); }
-    .day-tile.is-done::after {
-      content: '\2713';
-      position: absolute;
-      top: var(--s-0);
-      right: var(--s-0);
-      width: var(--s-2);
-      height: var(--s-2);
-      border-radius: var(--r-pill);
-      background: var(--c-green);
-      color: var(--c-deep);
-      font-size: 0.6em;
-      font-weight: 700;
-      line-height: 1;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .day-tile.is-today {
-      background: rgba(227, 168, 87, 0.08);
-      border-color: var(--c-amber);
-      box-shadow:
-        0 0 0 thin rgba(227, 168, 87, 0.35),
-        0 0 calc(var(--s-3)) rgba(227, 168, 87, 0.18);
-    }
-    .day-tile.is-today .day-tile__d {
-      color: var(--c-amber);
-    }
-    .day-tile.is-today .day-tile__icon {
-      color: var(--c-amber);
-    }
-    .day-dot {
-      width: var(--s-0);
-      height: var(--s-0);
-      border-radius: var(--r-pill);
-      background: var(--c-amber);
-      margin-top: var(--s-0);
-      box-shadow: 0 0 var(--s-1) rgba(227, 168, 87, 0.7);
-    }
-    .day-dot.is-hidden { visibility: hidden; }
-
-    /* Week footer summary */
-    .week-foot {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-top: var(--s-3);
-      padding-top: var(--s-2);
-      border-top: thin solid var(--c-hair);
-    }
-
-    /* ============ TODAY'S SESSION (the hero) ============ */
-    .today-card {
-      position: relative;
-      padding: var(--s-4) var(--s-3) var(--s-3);
-      overflow: hidden;
-    }
-    .today-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      pointer-events: none;
-      background:
-        radial-gradient(70% 60% at 80% 0%, rgba(227, 168, 87, 0.12), transparent 70%);
-    }
-    .today-card > * { position: relative; z-index: 1; }
-    .today-title {
-      font-family: var(--f-ui);
-      font-size: calc(var(--t-title-size) - var(--s-0));
-      font-weight: 500;
-      letter-spacing: -0.013em;
-      color: var(--c-ink);
-      margin: var(--s-1) 0 var(--s-0);
-      line-height: 1.1;
-    }
-    .today-sub {
-      color: var(--c-sub);
-      font-size: var(--t-label-size);
-      font-weight: 400;
-      margin: 0 0 var(--s-3);
-    }
-    .today-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: var(--s-2);
-      padding: var(--s-2);
-      background: rgba(0, 0, 0, 0.18);
-      border-radius: var(--r-md);
-      border: thin solid var(--c-hair);
-      margin-bottom: var(--s-3);
-    }
-    .today-stat {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--s-0);
-    }
-    .today-stat__lbl {
-      font-family: var(--f-mono);
-      font-size: var(--t-eyebrow-size);
-      letter-spacing: var(--t-eyebrow-track);
-      text-transform: uppercase;
-      color: var(--c-faint);
-      font-weight: var(--t-eyebrow-weight);
-    }
-    .today-stat__val {
-      font-family: var(--f-mono);
-      font-feature-settings: "tnum" 1;
-      font-variant-numeric: tabular-nums;
-      font-size: var(--t-num-md);
-      font-weight: var(--t-num-weight);
-      color: var(--c-ink);
-      line-height: 1;
-    }
-    .today-stat__unit {
-      font-family: var(--f-mono);
-      font-size: var(--t-eyebrow-size);
-      letter-spacing: var(--t-eyebrow-track);
-      text-transform: uppercase;
-      color: var(--c-faint);
-    }
-
-    .start-btn {
-      width: 100%;
-      height: calc(var(--s-7) + var(--s-1));
-      border-radius: var(--r-pill);
-      background: var(--c-amber);
-      color: var(--c-on-amber);
-      font-family: var(--f-mono);
-      font-size: var(--t-label-size);
-      font-weight: 700;
-      letter-spacing: var(--t-eyebrow-track);
-      text-transform: uppercase;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--s-1);
-      box-shadow:
-        0 calc(var(--s-0) * 0.5) 0 rgba(227, 168, 87, 0.2) inset,
-        0 var(--s-1) var(--s-3) rgba(227, 168, 87, 0.25),
-        0 0 0 thin rgba(227, 168, 87, 0.45);
-      transition: transform var(--m-fast), box-shadow var(--m-fast);
-    }
-    .start-btn:active {
-      transform: translateY(thin);
-      box-shadow:
-        0 calc(var(--s-0) * 0.5) 0 rgba(227, 168, 87, 0.2) inset,
-        0 var(--s-0) var(--s-2) rgba(227, 168, 87, 0.2);
-    }
-    .start-btn i { font-size: var(--t-num-md); }
-
-    /* ============ UPCOMING LIST ============ */
-    .section-head {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      padding: 0 var(--s-1);
-      margin-bottom: var(--s-1);
-    }
-    .section-head .k-eyebrow::before {
-      content: '';
-      display: inline-block;
-      width: var(--s-2);
-      height: thin;
-      background: var(--c-amber);
-      border-radius: var(--r-pill);
-      margin-right: var(--s-1);
-      vertical-align: middle;
-    }
-
-    .upcoming-row {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: var(--s-2);
-      padding: var(--s-2) 0;
-      border-bottom: thin solid var(--c-hair);
-    }
-    .upcoming-row:last-child { border-bottom: 0; }
-    .upcoming-row__body {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      min-width: 0;
-    }
-    .upcoming-row__day {
-      font-family: var(--f-mono);
-      font-size: var(--t-eyebrow-size);
-      letter-spacing: var(--t-eyebrow-track);
-      color: var(--c-faint);
-      text-transform: uppercase;
-      font-weight: var(--t-eyebrow-weight);
-    }
-    .upcoming-row__name {
-      font-size: var(--t-body-size);
-      font-weight: var(--t-body-weight);
-      color: var(--c-ink);
-      line-height: 1.2;
-      margin-top: var(--s-0);
-    }
-    .upcoming-row__chip {
-      font-family: var(--f-mono);
-      font-size: var(--t-eyebrow-size);
-      letter-spacing: var(--t-eyebrow-track);
-      color: var(--c-sub);
-      text-transform: uppercase;
-      padding: var(--s-0) var(--s-2);
-      border: thin solid var(--c-hair);
-      border-radius: var(--r-pill);
-      white-space: nowrap;
-    }
-
-    /* ============ PLAN SETTINGS ============ */
-    .plan-set-row {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: var(--s-3);
-      padding: var(--s-2) 0;
-      border-bottom: thin solid var(--c-hair);
-    }
-    .plan-set-row:last-child { border-bottom: 0; }
-    .plan-set-row__name {
-      font-size: var(--t-body-size);
-      font-weight: var(--t-body-weight);
-      color: var(--c-ink);
-    }
-
-    /* Footer */
-    .footer-sigil {
-      margin-top: var(--s-4);
-      text-align: center;
-      color: var(--c-faint);
-      font-family: var(--f-mono);
-      font-size: var(--t-eyebrow-size);
-      letter-spacing: var(--t-eyebrow-track);
-      text-transform: uppercase;
-    }
-    .footer-sigil .dot {
-      display: inline-block;
-      width: var(--s-0);
-      height: var(--s-0);
-      border-radius: var(--r-pill);
-      background: var(--c-amber);
-      margin: 0 var(--s-1);
-      vertical-align: middle;
-    }
-
-    /* Entrance stagger */
-    .stagger > * {
-      opacity: 0;
-      transform: translateY(var(--s-1));
-      transition: opacity var(--m-base), transform var(--m-base);
-    }
-    .stagger.is-ready > * {
-      opacity: 1;
-      transform: none;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .stagger > * { opacity: 1; transform: none; transition: none; }
-    }
-  </style>
 </head>
 <body>
-  <main class="k-screen" id="screen">
-    <span class="ambient" aria-hidden="true"></span>
-    <div class="scroll-progress" id="scrollProg" aria-hidden="true"></div>
+  <main class="k-screen">
+    <div class="k-screen__scroll">
 
-    <div class="k-screen__scroll stagger" id="scroller">
-
-      <!-- ============ MASTHEAD ============ -->
-      <header class="masthead">
-        <div class="masthead__date">
-          <button class="k-icon-tile k-icon-tile--sm" id="dayBack" aria-label="Previous day">
-            <i class="ph-bold" id="iconBack"></i>
-          </button>
-          <div class="date-label">
-            <span class="date-label__main">Today</span>
-            <span class="k-eyebrow">SAT JUN 20</span>
-          </div>
-          <button class="k-icon-tile k-icon-tile--sm is-disabled" id="dayFwd" aria-label="Next day">
-            <i class="ph-bold" id="iconFwd"></i>
-          </button>
-        </div>
-        <button class="k-icon-tile" aria-label="Account">
-          <i class="ph" id="iconAcct"></i>
-        </button>
+      <header class="k-row k-row--between">
+        <span class="k-text-body" style="font-weight: 500;">Plan</span>
+        <button class="k-icon-tile" aria-label="Account"><i class="ph ph-user-circle"></i></button>
       </header>
 
-      <!-- ============ PAGE HEADER ============ -->
-      <header class="page-header">
-        <span class="k-eyebrow">TRAINING PLAN</span>
-        <h1><span class="word-thin">Hybrid</span> <span class="word-amber">Week 3.</span></h1>
-        <p>Atomic Athlete strength on the steel side, marathon build on the road side.</p>
-        <span class="k-pill k-pill--ghost">Phase 2 of 4 &middot; Build</span>
-      </header>
-
-      <!-- ============ PHASE PROGRESS ============ -->
-      <section class="k-card phase-card">
-        <span class="k-eyebrow">Cycle progress &middot; 50%</span>
-        <div class="phase-progress">
-          <div class="k-progress" style="--p-pct: 50; --p-color: var(--c-amber); --p-height: var(--s-1);"></div>
-          <span class="phase-marker is-passed"  data-at="25"></span>
-          <span class="phase-marker is-current" data-at="50"></span>
-          <span class="phase-marker"            data-at="75"></span>
-        </div>
-        <div class="phase-labels">
-          <span>Base</span>
-          <span class="is-current">Build</span>
-          <span>Peak</span>
-          <span>Taper</span>
-        </div>
-      </section>
-
-      <!-- ============ THIS WEEK (museum vitrine) ============ -->
-      <section class="week-card">
-        <div class="k-row k-row--between">
-          <span class="k-eyebrow">This week &middot; Jun 16 to Jun 22</span>
-          <span class="k-pill k-pill--green">3 done</span>
-        </div>
-        <div class="week-strip" id="weekStrip">
-          <div class="day-tile day-tile--lift is-done">
-            <span class="day-tile__d">M</span>
-            <span class="day-tile__icon"><i class="ph" id="iconDay1"></i></span>
-            <span class="day-dot is-hidden"></span>
-          </div>
-          <div class="day-tile day-tile--run is-done">
-            <span class="day-tile__d">T</span>
-            <span class="day-tile__icon"><i class="ph" id="iconDay2"></i></span>
-            <span class="day-dot is-hidden"></span>
-          </div>
-          <div class="day-tile day-tile--lift is-done">
-            <span class="day-tile__d">W</span>
-            <span class="day-tile__icon"><i class="ph" id="iconDay3"></i></span>
-            <span class="day-dot is-hidden"></span>
-          </div>
-          <div class="day-tile day-tile--run is-today">
-            <span class="day-tile__d">T</span>
-            <span class="day-tile__icon"><i class="ph" id="iconDay4"></i></span>
-            <span class="day-dot"></span>
-          </div>
-          <div class="day-tile day-tile--lift">
-            <span class="day-tile__d">F</span>
-            <span class="day-tile__icon"><i class="ph" id="iconDay5"></i></span>
-            <span class="day-dot is-hidden"></span>
-          </div>
-          <div class="day-tile day-tile--run">
-            <span class="day-tile__d">S</span>
-            <span class="day-tile__icon"><i class="ph" id="iconDay6"></i></span>
-            <span class="day-dot is-hidden"></span>
-          </div>
-          <div class="day-tile day-tile--stretch">
-            <span class="day-tile__d">S</span>
-            <span class="day-tile__icon"><i class="ph" id="iconDay7"></i></span>
-            <span class="day-dot is-hidden"></span>
-          </div>
-        </div>
-        <div class="week-foot">
-          <span class="k-eyebrow">Volume</span>
-          <span class="k-numeric k-numeric--sm">
-            <span class="k-numeric__val">22</span>
-            <span class="k-numeric__unit">mi planned</span>
-          </span>
-        </div>
-      </section>
-
-      <!-- ============ TODAY'S SESSION ============ -->
-      <section class="k-card k-card--accent today-card">
-        <span class="k-eyebrow">Today &middot; Thu &middot; Jun 18</span>
-        <h2 class="today-title">Run + Strength</h2>
-        <p class="today-sub">4 mi easy run, then shoulders and pull volume.</p>
-
-        <div class="today-stats">
-          <div class="today-stat">
-            <span class="today-stat__val">90</span>
-            <span class="today-stat__unit">min</span>
-            <span class="today-stat__lbl">Duration</span>
-          </div>
-          <div class="today-stat">
-            <span class="today-stat__val">6</span>
-            <span class="today-stat__unit">/ 10 RPE</span>
-            <span class="today-stat__lbl">Effort</span>
-          </div>
-          <div class="today-stat">
-            <span class="today-stat__val">12</span>
-            <span class="today-stat__unit">sets</span>
-            <span class="today-stat__lbl">Volume</span>
-          </div>
-        </div>
-
-        <button class="start-btn" type="button">
-          <i class="ph-fill" id="iconStart"></i>
-          Start workout
-        </button>
-      </section>
-
-      <!-- ============ UPCOMING ============ -->
-      <div class="section-head">
-        <span class="k-eyebrow">Upcoming this week</span>
-        <span class="k-pill k-pill--ghost">4 sessions</span>
-      </div>
       <section class="k-card">
-        <div class="upcoming-row">
-          <span class="k-icon-tile k-icon-tile--blue"><i class="ph" id="iconUp1"></i></span>
-          <span class="upcoming-row__body">
-            <span class="upcoming-row__day">Fri</span>
-            <span class="upcoming-row__name">Long run 8 mi</span>
-          </span>
-          <span class="upcoming-row__chip">Jun 19</span>
+        <div class="k-row k-row--between" style="margin-bottom: var(--s-3);">
+          <span class="k-eyebrow">Phase &middot; week 3 of 6</span>
+          <span class="k-pill k-pill--amber">Hypertrophy</span>
         </div>
-        <div class="upcoming-row">
-          <span class="k-icon-tile k-icon-tile--amber"><i class="ph" id="iconUp2"></i></span>
-          <span class="upcoming-row__body">
-            <span class="upcoming-row__day">Sat</span>
-            <span class="upcoming-row__name">Squats + Run intervals</span>
-          </span>
-          <span class="upcoming-row__chip">Jun 20</span>
+        <div class="k-progress" style="--p-pct: 50; --p-color: var(--c-amber);"></div>
+      </section>
+
+      <section class="k-card">
+        <div class="k-row k-row--between" style="margin-bottom: var(--s-3);">
+          <span class="k-eyebrow">This week</span>
+          <span class="k-text-faint">Jun 16 – 22</span>
         </div>
-        <div class="upcoming-row">
-          <span class="k-icon-tile k-icon-tile--amber"><i class="ph" id="iconUp3"></i></span>
-          <span class="upcoming-row__body">
-            <span class="upcoming-row__day">Sat pm</span>
-            <span class="upcoming-row__name">Push day + 5k tempo</span>
-          </span>
-          <span class="upcoming-row__chip">Jun 20</span>
-        </div>
-        <div class="upcoming-row">
-          <span class="k-icon-tile k-icon-tile--green"><i class="ph" id="iconUp4"></i></span>
-          <span class="upcoming-row__body">
-            <span class="upcoming-row__day">Sun</span>
-            <span class="upcoming-row__name">Rest + Mobility</span>
-          </span>
-          <span class="upcoming-row__chip">Jun 21</span>
+        <div class="k-row" style="gap: var(--s-1); justify-content: space-between;">
+          <div class="k-stack k-stack--tight" style="align-items: center; flex: 1;">
+            <span class="k-eyebrow">Mon</span>
+            <span class="k-icon-tile k-icon-tile--sm k-icon-tile--amber"><i class="ph ph-check"></i></span>
+          </div>
+          <div class="k-stack k-stack--tight" style="align-items: center; flex: 1;">
+            <span class="k-eyebrow">Tue</span>
+            <span class="k-icon-tile k-icon-tile--sm k-icon-tile--amber"><i class="ph ph-check"></i></span>
+          </div>
+          <div class="k-stack k-stack--tight" style="align-items: center; flex: 1;">
+            <span class="k-eyebrow">Wed</span>
+            <span class="k-icon-tile k-icon-tile--sm"><i class="ph ph-minus"></i></span>
+          </div>
+          <div class="k-stack k-stack--tight" style="align-items: center; flex: 1;">
+            <span class="k-eyebrow">Thu</span>
+            <span class="k-icon-tile k-icon-tile--sm k-icon-tile--amber"><i class="ph ph-check"></i></span>
+          </div>
+          <div class="k-stack k-stack--tight" style="align-items: center; flex: 1;">
+            <span class="k-eyebrow">Fri</span>
+            <span class="k-icon-tile k-icon-tile--sm k-icon-tile--amber"><i class="ph ph-check"></i></span>
+          </div>
+          <div class="k-stack k-stack--tight" style="align-items: center; flex: 1;">
+            <span class="k-eyebrow" style="color: var(--c-amber);">Sat</span>
+            <span class="k-icon-tile k-icon-tile--sm k-icon-tile--amber"><i class="ph ph-barbell"></i></span>
+          </div>
+          <div class="k-stack k-stack--tight" style="align-items: center; flex: 1;">
+            <span class="k-eyebrow">Sun</span>
+            <span class="k-icon-tile k-icon-tile--sm"><i class="ph ph-minus"></i></span>
+          </div>
         </div>
       </section>
 
-      <!-- ============ PLAN SETTINGS ============ -->
-      <div class="section-head">
-        <span class="k-eyebrow">Plan settings</span>
-        <span class="k-pill k-pill--ghost">Quick</span>
-      </div>
-      <section class="k-card k-card--quiet">
-        <div class="plan-set-row">
-          <span class="k-icon-tile k-icon-tile--sm"><i class="ph" id="iconSwitch"></i></span>
-          <span class="plan-set-row__name">Switch plan</span>
-          <button class="k-pill k-pill--ghost"><i class="ph-bold" id="iconArr1"></i></button>
+      <section class="k-card k-card--accent">
+        <div class="k-row k-row--between" style="margin-bottom: var(--s-2);">
+          <span class="k-eyebrow">Today</span>
+          <span class="k-text-faint">~ 55 min</span>
         </div>
-        <div class="plan-set-row">
-          <span class="k-icon-tile k-icon-tile--sm"><i class="ph" id="iconFlag"></i></span>
-          <span class="plan-set-row__name">Add a goal race</span>
-          <button class="k-pill k-pill--ghost"><i class="ph-bold" id="iconArr2"></i></button>
+        <div class="k-stack" style="--gap: var(--s-1); margin-bottom: var(--s-3);">
+          <span class="k-text-title">Push A</span>
+          <span class="k-text-sub">Bench &middot; OHP &middot; Dips &middot; Triceps</span>
         </div>
-        <div class="plan-set-row">
-          <span class="k-icon-tile k-icon-tile--sm"><i class="ph" id="iconPause"></i></span>
-          <span class="plan-set-row__name">Pause this week</span>
-          <button class="k-pill k-pill--ghost"><i class="ph-bold" id="iconArr3"></i></button>
-        </div>
+        <button class="k-pill k-pill--amber" style="height: calc(var(--s-6) + var(--s-0)); padding: 0 var(--s-4);">
+          <i class="ph ph-play"></i> Start workout
+        </button>
       </section>
 
-      <!-- ============ FOOTER ============ -->
-      <div class="footer-sigil">
-        FORGE <span class="dot"></span> Week 3 of 16 <span class="dot"></span> Hybrid build
-      </div>
+      <section class="k-card">
+        <div class="k-row k-row--between" style="margin-bottom: var(--s-3);">
+          <span class="k-eyebrow">Upcoming</span>
+        </div>
+        <div class="k-stack" style="--gap: 0;">
+          <div class="k-habit-row">
+            <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-barbell"></i></span>
+            <div class="k-stack k-stack--tight" style="min-width: 0;">
+              <span class="k-habit-row__name">Pull A</span>
+              <span class="k-text-faint">Sun &middot; ~ 50 min</span>
+            </div>
+            <i class="ph ph-caret-right" style="color: var(--c-faint); font-size: var(--t-num-sm);"></i>
+          </div>
+          <div class="k-habit-row">
+            <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-barbell"></i></span>
+            <div class="k-stack k-stack--tight" style="min-width: 0;">
+              <span class="k-habit-row__name">Legs B</span>
+              <span class="k-text-faint">Mon &middot; ~ 60 min</span>
+            </div>
+            <i class="ph ph-caret-right" style="color: var(--c-faint); font-size: var(--t-num-sm);"></i>
+          </div>
+          <div class="k-habit-row">
+            <span class="k-icon-tile k-icon-tile--blue"><i class="ph ph-person-simple-run"></i></span>
+            <div class="k-stack k-stack--tight" style="min-width: 0;">
+              <span class="k-habit-row__name">Zone 2 · 30 min</span>
+              <span class="k-text-faint">Tue &middot; easy</span>
+            </div>
+            <i class="ph ph-caret-right" style="color: var(--c-faint); font-size: var(--t-num-sm);"></i>
+          </div>
+        </div>
+      </section>
 
     </div>
 
-    <!-- ============ BOTTOM NAV ============ -->
     <nav class="k-nav" aria-label="Primary">
-      <button class="k-nav__btn" aria-label="Home"><i class="ph" id="iconNavHome"></i></button>
-      <button class="k-nav__btn is-active" aria-current="page" aria-label="Plan"><i class="ph" id="iconNavPlan"></i></button>
-      <button class="k-nav__btn" aria-label="Habits"><i class="ph" id="iconNavHabits"></i></button>
-      <button class="k-nav__btn" aria-label="Settings"><i class="ph" id="iconNavSettings"></i></button>
+      <button class="k-nav__btn" aria-label="Home"><i class="ph ph-house"></i></button>
+      <button class="k-nav__btn" aria-current="page" aria-label="Plan"><i class="ph ph-calendar-blank"></i></button>
+      <button class="k-nav__btn" aria-label="Habits"><i class="ph ph-check-square"></i></button>
+      <button class="k-nav__btn" aria-label="Settings"><i class="ph ph-gear-six"></i></button>
     </nav>
   </main>
-
-  <script>
-    // Inline mirror of kit/icons.js · typed registry, never raw ph- strings in markup.
-    const icons = Object.freeze({
-      recovery:'ph-heartbeat', strain:'ph-pulse', sleep:'ph-moon',
-      hrv:'ph-wave-sine', rhr:'ph-heartbeat',
-      steps:'ph-footprints', water:'ph-drop', weight:'ph-scales',
-      fuel:'ph-fire', calories:'ph-fire',
-      protein:'ph-egg', carbs:'ph-bowl-food', fat:'ph-drop-half',
-      workout:'ph-barbell', run:'ph-person-simple-run',
-      mobility:'ph-person-simple-walk', stretch:'ph-person-simple-tai-chi',
-      vitaminsAM:'ph-sun', vitaminsPM:'ph-moon-stars',
-      home:'ph-house', plan:'ph-calendar-blank',
-      habits:'ph-check-square', settings:'ph-gear-six', account:'ph-user-circle',
-      refresh:'ph-arrow-clockwise', edit:'ph-pencil-simple',
-      plus:'ph-plus', minus:'ph-minus', check:'ph-check',
-      caretLeft:'ph-caret-left', caretRight:'ph-caret-right', x:'ph-x',
-      play:'ph-play', pause:'ph-pause', record:'ph-record-fill',
-    });
-
-    // Page-local extensions (kept separate from the typed registry).
-    const localIcons = Object.freeze({
-      arrowRight: 'ph-arrow-right',
-      flag:       'ph-flag',
-      pauseAlt:   'ph-pause-circle',
-      shuffle:    'ph-shuffle',
-    });
-
-    const ic = (id, name) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const cls = icons[name] || localIcons[name];
-      if (cls) el.classList.add(cls);
-    };
-
-    ic('iconBack', 'caretLeft');
-    ic('iconFwd', 'caretRight');
-    ic('iconAcct', 'account');
-
-    // Week strip icons
-    ic('iconDay1', 'workout');
-    ic('iconDay2', 'run');
-    ic('iconDay3', 'workout');
-    ic('iconDay4', 'run');
-    ic('iconDay5', 'workout');
-    ic('iconDay6', 'run');
-    ic('iconDay7', 'stretch');
-
-    // Today's session
-    ic('iconStart', 'play');
-
-    // Upcoming rows
-    ic('iconUp1', 'run');
-    ic('iconUp2', 'workout');
-    ic('iconUp3', 'workout');
-    ic('iconUp4', 'stretch');
-
-    // Plan settings
-    ic('iconSwitch', 'shuffle');
-    ic('iconFlag',   'flag');
-    ic('iconPause',  'pauseAlt');
-    ic('iconArr1',   'arrowRight');
-    ic('iconArr2',   'arrowRight');
-    ic('iconArr3',   'arrowRight');
-
-    // Nav
-    ic('iconNavHome', 'home');
-    ic('iconNavPlan', 'plan');
-    ic('iconNavHabits', 'habits');
-    ic('iconNavSettings', 'settings');
-
-    // Entrance stagger
-    const scroller = document.getElementById('scroller');
-    Array.from(scroller.children).forEach((child, i) => {
-      child.style.transitionDelay = (i * 35) + 'ms';
-    });
-    requestAnimationFrame(() => requestAnimationFrame(() => scroller.classList.add('is-ready')));
-
-    // Scroll progress
-    const prog = document.getElementById('scrollProg');
-    function updateProg() {
-      const max = scroller.scrollHeight - window.innerHeight;
-      const pct = max > 0 ? Math.min(100, Math.max(0, (window.scrollY / max) * 100)) : 0;
-      prog.style.setProperty('--sp-pct', pct + '%');
-    }
-    window.addEventListener('scroll', updateProg, { passive: true });
-    window.addEventListener('resize', updateProg);
-    updateProg();
-  </script>
   <script src="./_nav.js"></script>
 </body>
 </html>

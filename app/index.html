@@ -3,494 +3,101 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>FORGE · App Prototype</title>
+  <title>FORGE · Prototype</title>
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
-  <link rel="stylesheet" href="../kit/tokens.css" />
   <link rel="stylesheet" href="../kit/kit.css" />
-  <style>
-    /* ---- Prototype-index page chrome · token-only ---- */
-    html, body {
-      max-width: 100vw;
-      overflow-x: clip;
-    }
-    body {
-      background:
-        radial-gradient(120% 60% at 50% -10%, rgba(227, 168, 87, 0.06), transparent 60%),
-        linear-gradient(180deg, var(--c-bg) 0%, var(--c-deep) 100%);
-      min-height: 100dvh;
-      color: var(--c-ink);
-      font-family: var(--f-ui);
-    }
-    .px-shell {
-      width: 100%;
-      max-width: calc(var(--s-8) * 24);
-      margin: 0 auto;
-      padding:
-        calc(env(safe-area-inset-top, 0) + var(--s-6))
-        var(--s-4)
-        calc(env(safe-area-inset-bottom, 0) + var(--s-7))
-        var(--s-4);
-      box-sizing: border-box;
-    }
-    .px-shell p { overflow-wrap: anywhere; word-break: break-word; }
-
-    /* ---- Masthead ---- */
-    .px-mast {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: var(--s-3);
-      margin-bottom: var(--s-6);
-    }
-    .px-mast__brand {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--s-2);
-    }
-    .px-mast__mark {
-      width: calc(var(--s-5) + var(--s-0));
-      height: calc(var(--s-5) + var(--s-0));
-      border-radius: var(--r-md);
-      background: linear-gradient(180deg, var(--c-amber-bright), var(--c-amber));
-      color: var(--c-on-amber);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--f-ui);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      box-shadow: 0 calc(var(--s-0) * 1.5) calc(var(--s-3)) rgba(227, 168, 87, 0.25);
-    }
-    .px-mast__word {
-      font-family: var(--f-ui);
-      font-size: var(--t-label-size);
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--c-ink);
-    }
-    .px-mast__word span {
-      color: var(--c-sub);
-      font-weight: 500;
-    }
-    .px-mast__status {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--s-1);
-      padding: var(--s-1) var(--s-3);
-      border-radius: var(--r-pill);
-      background: rgba(79, 209, 126, 0.10);
-      border: thin solid rgba(79, 209, 126, 0.35);
-      color: var(--c-green);
-      font-family: var(--f-mono);
-      font-size: var(--t-eyebrow-size);
-      font-weight: var(--t-eyebrow-weight);
-      letter-spacing: var(--t-eyebrow-track);
-      text-transform: uppercase;
-    }
-    .px-mast__status::before {
-      content: '';
-      width: var(--s-1);
-      height: var(--s-1);
-      border-radius: var(--r-pill);
-      background: var(--c-green);
-      box-shadow: 0 0 var(--s-1) var(--c-green);
-    }
-
-    /* ---- Hero ---- */
-    .px-hero {
-      padding: calc(var(--s-7) + var(--s-2)) 0 calc(var(--s-7));
-      text-align: center;
-      position: relative;
-    }
-    .px-hero__eyebrow {
-      display: inline-block;
-      font-family: var(--f-mono);
-      font-size: var(--t-eyebrow-size);
-      font-weight: var(--t-eyebrow-weight);
-      letter-spacing: var(--t-eyebrow-track);
-      text-transform: uppercase;
-      color: var(--c-amber);
-      margin-bottom: var(--s-3);
-    }
-    .px-hero__eyebrow::before {
-      content: '';
-      display: inline-block;
-      width: var(--s-4);
-      height: thin;
-      background: var(--c-amber);
-      vertical-align: middle;
-      margin-right: var(--s-2);
-      transform: translateY(calc(var(--s-0) * -0.5));
-    }
-    .px-hero__h1 {
-      font-family: var(--f-ui);
-      font-weight: 600;
-      font-size: calc(var(--t-title-size) + var(--s-6));
-      letter-spacing: -0.04em;
-      line-height: 1;
-      margin: 0;
-      color: var(--c-ink);
-    }
-    .px-hero__h1 .accent {
-      font-weight: 300;
-      color: var(--c-sub);
-      letter-spacing: -0.03em;
-    }
-    .px-hero__lede {
-      max-width: calc(var(--s-8) * 14);
-      margin: var(--s-4) auto 0;
-      font-size: var(--t-body-size);
-      line-height: 1.55;
-      color: var(--c-sub);
-    }
-    .px-hero__stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(calc(var(--s-8) * 3 + var(--s-3)), 1fr));
-      gap: var(--s-3);
-      max-width: calc(var(--s-8) * 16);
-      margin: var(--s-6) auto 0;
-    }
-    .px-stat {
-      padding: var(--s-3) var(--s-2);
-      border: thin solid var(--c-hair);
-      border-radius: var(--r-lg);
-      background: linear-gradient(180deg, rgba(31, 28, 22, 0.6), rgba(26, 24, 20, 0.6));
-      text-align: center;
-    }
-    .px-stat__n {
-      display: block;
-      font-family: var(--f-mono);
-      font-feature-settings: "tnum" 1;
-      font-variant-numeric: tabular-nums;
-      font-size: calc(var(--t-num-xl) + var(--s-2));
-      font-weight: 600;
-      color: var(--c-ink);
-      letter-spacing: -0.02em;
-      line-height: 1;
-    }
-    .px-stat__n .unit {
-      font-size: var(--t-eyebrow-size);
-      font-weight: var(--t-eyebrow-weight);
-      letter-spacing: var(--t-eyebrow-track);
-      color: var(--c-amber);
-      margin-left: var(--s-0);
-    }
-    .px-stat__lbl {
-      display: block;
-      margin-top: var(--s-1);
-      font-family: var(--f-mono);
-      font-size: var(--t-eyebrow-size);
-      font-weight: var(--t-eyebrow-weight);
-      letter-spacing: var(--t-eyebrow-track);
-      text-transform: uppercase;
-      color: var(--c-faint);
-    }
-
-    /* ---- Section bar ---- */
-    .px-section {
-      margin-top: calc(var(--s-7) + var(--s-2));
-    }
-    .px-section__bar {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: var(--s-3);
-      padding-bottom: var(--s-3);
-      margin-bottom: var(--s-4);
-      border-bottom: thin solid var(--c-hair);
-      position: relative;
-    }
-    .px-section__bar::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: calc(thin * -1);
-      width: calc(var(--s-7) + var(--s-2));
-      height: thin;
-      background: var(--c-amber);
-      box-shadow: 0 0 var(--s-2) rgba(227, 168, 87, 0.5);
-    }
-    .px-section__h {
-      font-family: var(--f-ui);
-      font-size: calc(var(--t-title-size) - var(--s-1));
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      color: var(--c-ink);
-      margin: 0;
-    }
-    .px-section__count {
-      font-family: var(--f-mono);
-      font-size: var(--t-eyebrow-size);
-      font-weight: var(--t-eyebrow-weight);
-      letter-spacing: var(--t-eyebrow-track);
-      text-transform: uppercase;
-      color: var(--c-faint);
-    }
-
-    /* ---- Tile grid ---- */
-    .px-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--s-8) * 5)), 1fr));
-      gap: var(--s-3);
-    }
-    .px-tile {
-      position: relative;
-      display: block;
-      padding: var(--s-4);
-      border-radius: var(--r-lg);
-      background: linear-gradient(180deg, var(--c-raised), var(--c-surface));
-      border: thin solid var(--c-hair);
-      color: var(--c-ink);
-      text-decoration: none;
-      transition:
-        transform var(--m-base),
-        border-color var(--m-base),
-        box-shadow var(--m-base);
-      overflow: hidden;
-      isolation: isolate;
-    }
-    .px-tile::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 0%, rgba(227, 168, 87, 0.05) 100%);
-      opacity: 0;
-      transition: opacity var(--m-base);
-      pointer-events: none;
-      z-index: -1;
-    }
-    .px-tile:hover,
-    .px-tile:focus-visible {
-      transform: translateY(calc(var(--s-0) * -0.5));
-      border-color: rgba(227, 168, 87, 0.45);
-      box-shadow: 0 var(--s-4) var(--s-6) rgba(0, 0, 0, 0.35);
-    }
-    .px-tile:hover::after,
-    .px-tile:focus-visible::after {
-      opacity: 1;
-    }
-    .px-tile:focus-visible {
-      outline: thin solid var(--c-amber);
-      outline-offset: var(--s-0);
-    }
-    .px-tile__icon {
-      width: calc(var(--s-6));
-      height: calc(var(--s-6));
-      border-radius: var(--r-md);
-      background: rgba(227, 168, 87, 0.10);
-      border: thin solid rgba(227, 168, 87, 0.25);
-      color: var(--c-amber);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: var(--t-num-md);
-      margin-bottom: var(--s-3);
-    }
-    .px-tile__h {
-      font-family: var(--f-ui);
-      font-size: var(--t-body-size);
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      margin: 0;
-    }
-    .px-tile__d {
-      margin: var(--s-1) 0 0;
-      font-size: var(--t-label-size);
-      line-height: 1.5;
-      color: var(--c-sub);
-    }
-    .px-tile__meta {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: var(--s-1);
-      margin-top: var(--s-3);
-      font-family: var(--f-mono);
-      font-size: var(--t-eyebrow-size);
-      font-weight: var(--t-eyebrow-weight);
-      letter-spacing: var(--t-eyebrow-track);
-      text-transform: uppercase;
-      color: var(--c-faint);
-      overflow-wrap: anywhere;
-      word-break: break-word;
-    }
-    .px-tile__meta i { color: var(--c-amber); }
-
-    /* CTA tile · onboarding start */
-    .px-tile--cta {
-      background: linear-gradient(180deg, rgba(243, 195, 120, 0.10), rgba(227, 168, 87, 0.04));
-      border-color: rgba(227, 168, 87, 0.45);
-    }
-
-    /* ---- Footer ---- */
-    .px-footer {
-      margin-top: calc(var(--s-8) + var(--s-3));
-      padding-top: var(--s-5);
-      border-top: thin solid var(--c-hair);
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: var(--s-3);
-      font-family: var(--f-mono);
-      font-size: var(--t-eyebrow-size);
-      font-weight: var(--t-eyebrow-weight);
-      letter-spacing: var(--t-eyebrow-track);
-      text-transform: uppercase;
-      color: var(--c-faint);
-    }
-    .px-footer a {
-      color: var(--c-sub);
-      text-decoration: none;
-      transition: color var(--m-fast);
-    }
-    .px-footer a:hover { color: var(--c-amber-bright); }
-
-    /* ---- Entrance · only animates when motion is allowed; default is visible
-       so reduced-motion users (and headless screenshots) never see blank chrome. */
-    @media (prefers-reduced-motion: no-preference) {
-      .px-section, .px-hero, .px-tile {
-        animation: px-rise calc(var(--m-base) * 1.5) calc(var(--i, 0) * var(--m-fast)) ease both;
-      }
-    }
-    @keyframes px-rise {
-      from { opacity: 0; transform: translateY(var(--s-1)); }
-      to   { opacity: 1; transform: none; }
-    }
-
-    /* Small screens · tighten the hero + stats grid */
-    @media (max-width: 33.75em) {
-      .px-hero__h1 { font-size: calc(var(--t-title-size) + var(--s-3)); }
-      .px-hero__stats {
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--s-2);
-      }
-      .px-stat__n { font-size: var(--t-num-xl); }
-    }
-  </style>
 </head>
 <body>
-  <div class="px-shell">
+  <main class="k-screen">
+    <div class="k-screen__scroll">
 
-    <!-- ======= MASTHEAD ======= -->
-    <header class="px-mast">
-      <div class="px-mast__brand">
-        <span class="px-mast__mark">F</span>
-        <span class="px-mast__word">FORGE <span>· App Prototype</span></span>
-      </div>
-      <span class="px-mast__status">13 Pages · Harness Pass</span>
-    </header>
+      <header class="k-row" style="gap: var(--s-3); justify-content: center;">
+        <img src="../kit/brands/forge.svg" width="36" height="36" alt="FORGE" />
+        <span class="k-text-title" style="font-size: var(--t-num-lg); letter-spacing: 0.04em;">FORGE</span>
+      </header>
 
-    <!-- ======= HERO ======= -->
-    <section class="px-hero" style="--i: 0;">
-      <span class="px-hero__eyebrow">Click-through prototype</span>
-      <h1 class="px-hero__h1">The full app, <span class="accent">on the kit.</span></h1>
-      <p class="px-hero__lede">
-        Every surface in FORGE, rebuilt on the design system. Six core screens + a seven-step onboarding flow.
-        Bottom-nav tabs and the account icon are wired across all pages, so this is a real click-through.
-      </p>
-      <div class="px-hero__stats">
-        <div class="px-stat"><span class="px-stat__n">13<span class="unit">pg</span></span><span class="px-stat__lbl">Pages</span></div>
-        <div class="px-stat"><span class="px-stat__n">6<span class="unit">core</span></span><span class="px-stat__lbl">App screens</span></div>
-        <div class="px-stat"><span class="px-stat__n">7<span class="unit">steps</span></span><span class="px-stat__lbl">Onboarding</span></div>
-        <div class="px-stat"><span class="px-stat__n">100<span class="unit">%</span></span><span class="px-stat__lbl">Harness pass</span></div>
-      </div>
-    </section>
+      <section class="k-card k-card--quiet">
+        <div class="k-row k-row--between" style="margin-bottom: var(--s-2);">
+          <span class="k-eyebrow">App</span>
+        </div>
+        <div class="k-stack" style="--gap: 0;">
+          <a href="./home.html" class="k-habit-row" style="text-decoration: none; color: inherit;">
+            <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-house"></i></span>
+            <span class="k-habit-row__name">Home</span>
+            <i class="ph ph-caret-right" style="color: var(--c-faint); font-size: var(--t-num-sm);"></i>
+          </a>
+          <a href="./plan.html" class="k-habit-row" style="text-decoration: none; color: inherit;">
+            <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-calendar-blank"></i></span>
+            <span class="k-habit-row__name">Plan</span>
+            <i class="ph ph-caret-right" style="color: var(--c-faint); font-size: var(--t-num-sm);"></i>
+          </a>
+          <a href="./workout.html" class="k-habit-row" style="text-decoration: none; color: inherit;">
+            <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-barbell"></i></span>
+            <span class="k-habit-row__name">Workout</span>
+            <i class="ph ph-caret-right" style="color: var(--c-faint); font-size: var(--t-num-sm);"></i>
+          </a>
+          <a href="./habits.html" class="k-habit-row" style="text-decoration: none; color: inherit;">
+            <span class="k-icon-tile k-icon-tile--green"><i class="ph ph-check-square"></i></span>
+            <span class="k-habit-row__name">Habits</span>
+            <i class="ph ph-caret-right" style="color: var(--c-faint); font-size: var(--t-num-sm);"></i>
+          </a>
+          <a href="./settings.html" class="k-habit-row" style="text-decoration: none; color: inherit;">
+            <span class="k-icon-tile"><i class="ph ph-gear-six"></i></span>
+            <span class="k-habit-row__name">Settings</span>
+            <i class="ph ph-caret-right" style="color: var(--c-faint); font-size: var(--t-num-sm);"></i>
+          </a>
+          <a href="./account.html" class="k-habit-row" style="text-decoration: none; color: inherit;">
+            <span class="k-icon-tile"><i class="ph ph-user-circle"></i></span>
+            <span class="k-habit-row__name">Account</span>
+            <i class="ph ph-caret-right" style="color: var(--c-faint); font-size: var(--t-num-sm);"></i>
+          </a>
+        </div>
+      </section>
 
-    <!-- ======= CORE APP ======= -->
-    <section class="px-section" style="--i: 1;">
-      <div class="px-section__bar">
-        <h2 class="px-section__h">Core app</h2>
-        <span class="px-section__count">Tap the bottom nav to move between · Account icon top-right opens Account</span>
-      </div>
-      <div class="px-grid">
-        <a class="px-tile" href="./home.html" style="--i: 2;">
-          <span class="px-tile__icon"><i class="ph ph-house"></i></span>
-          <h3 class="px-tile__h">Home</h3>
-          <p class="px-tile__d">Day-by-day. Biometric hero with Recovery + Strain rings, fuel, steps, water, habits.</p>
-          <span class="px-tile__meta"><i class="ph ph-arrow-right"></i> Start here</span>
-        </a>
-        <a class="px-tile" href="./plan.html" style="--i: 3;">
-          <span class="px-tile__icon"><i class="ph ph-calendar-blank"></i></span>
-          <h3 class="px-tile__h">Plan</h3>
-          <p class="px-tile__d">Phase strip, this week, today's session card with the Start workout pill.</p>
-        </a>
-        <a class="px-tile" href="./workout.html" style="--i: 4;">
-          <span class="px-tile__icon"><i class="ph ph-barbell"></i></span>
-          <h3 class="px-tile__h">Workout view</h3>
-          <p class="px-tile__d">In-session screen. Live timer, current exercise card, up-next blocks, live stats.</p>
-        </a>
-        <a class="px-tile" href="./habits.html" style="--i: 5;">
-          <span class="px-tile__icon"><i class="ph ph-check-square"></i></span>
-          <h3 class="px-tile__h">Habits</h3>
-          <p class="px-tile__d">Compliance ring, today's list with mixed trailings, 7-day dot calendar, insights.</p>
-        </a>
-        <a class="px-tile" href="./settings.html" style="--i: 6;">
-          <span class="px-tile__icon"><i class="ph ph-gear-six"></i></span>
-          <h3 class="px-tile__h">Settings</h3>
-          <p class="px-tile__d">Connected sources, tracking targets, notifications, profile, app, sign out.</p>
-        </a>
-        <a class="px-tile" href="./account.html" style="--i: 7;">
-          <span class="px-tile__icon"><i class="ph ph-user-circle"></i></span>
-          <h3 class="px-tile__h">Account</h3>
-          <p class="px-tile__d">Identity, connected sources, training plan, subscription. Reached from the account icon anywhere.</p>
-        </a>
-      </div>
-    </section>
+      <section class="k-card k-card--quiet">
+        <div class="k-row k-row--between" style="margin-bottom: var(--s-2);">
+          <span class="k-eyebrow">Onboarding</span>
+        </div>
+        <div class="k-stack" style="--gap: 0;">
+          <a href="./onboarding/welcome.html" class="k-habit-row" style="text-decoration: none; color: inherit;">
+            <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-hand-waving"></i></span>
+            <span class="k-habit-row__name">Welcome</span>
+            <span class="k-text-faint">1</span>
+          </a>
+          <a href="./onboarding/signup.html" class="k-habit-row" style="text-decoration: none; color: inherit;">
+            <span class="k-icon-tile"><i class="ph ph-user-plus"></i></span>
+            <span class="k-habit-row__name">Sign in</span>
+            <span class="k-text-faint">2</span>
+          </a>
+          <a href="./onboarding/connect.html" class="k-habit-row" style="text-decoration: none; color: inherit;">
+            <span class="k-icon-tile k-icon-tile--blue"><i class="ph ph-plugs-connected"></i></span>
+            <span class="k-habit-row__name">Connect</span>
+            <span class="k-text-faint">3</span>
+          </a>
+          <a href="./onboarding/habits.html" class="k-habit-row" style="text-decoration: none; color: inherit;">
+            <span class="k-icon-tile k-icon-tile--green"><i class="ph ph-check-square"></i></span>
+            <span class="k-habit-row__name">Pick habits</span>
+            <span class="k-text-faint">4</span>
+          </a>
+          <a href="./onboarding/plan.html" class="k-habit-row" style="text-decoration: none; color: inherit;">
+            <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-barbell"></i></span>
+            <span class="k-habit-row__name">Pick a plan</span>
+            <span class="k-text-faint">5</span>
+          </a>
+          <a href="./onboarding/first-sync.html" class="k-habit-row" style="text-decoration: none; color: inherit;">
+            <span class="k-icon-tile"><i class="ph ph-cloud-arrow-down"></i></span>
+            <span class="k-habit-row__name">First sync</span>
+            <span class="k-text-faint">6</span>
+          </a>
+        </div>
+      </section>
 
-    <!-- ======= ONBOARDING ======= -->
-    <section class="px-section" style="--i: 8;">
-      <div class="px-section__bar">
-        <h2 class="px-section__h">Onboarding</h2>
-        <span class="px-section__count">Walks forward step-by-step · ends on Home</span>
-      </div>
-      <div class="px-grid">
-        <a class="px-tile px-tile--cta" href="./onboarding/welcome.html" style="--i: 9;">
-          <span class="px-tile__icon"><i class="ph ph-play"></i></span>
-          <h3 class="px-tile__h">Start from the beginning</h3>
-          <p class="px-tile__d">Walk the full first-run experience from welcome through to entering FORGE.</p>
-          <span class="px-tile__meta"><i class="ph ph-arrow-right"></i> Welcome → Sign up → Connect → Habits → Plan → Sync</span>
-        </a>
-        <a class="px-tile" href="./onboarding/welcome.html" style="--i: 10;">
-          <span class="px-tile__icon"><i class="ph ph-door"></i></span>
-          <h3 class="px-tile__h">1 · Welcome</h3>
-          <p class="px-tile__d">Splash + sign-in. Apple, Google, or email.</p>
-        </a>
-        <a class="px-tile" href="./onboarding/signup.html" style="--i: 11;">
-          <span class="px-tile__icon"><i class="ph ph-user-plus"></i></span>
-          <h3 class="px-tile__h">2 · Sign up</h3>
-          <p class="px-tile__d">First and last name, email, password.</p>
-        </a>
-        <a class="px-tile" href="./onboarding/connect.html" style="--i: 12;">
-          <span class="px-tile__icon"><i class="ph ph-plugs-connected"></i></span>
-          <h3 class="px-tile__h">3 · Connect</h3>
-          <p class="px-tile__d">Apple Health, WHOOP, Oura, Strava, Garmin, Fitbit, Withings.</p>
-        </a>
-        <a class="px-tile" href="./onboarding/habits.html" style="--i: 13;">
-          <span class="px-tile__icon"><i class="ph ph-check-square"></i></span>
-          <h3 class="px-tile__h">4 · Habits</h3>
-          <p class="px-tile__d">Pick the daily habits that matter to you.</p>
-        </a>
-        <a class="px-tile" href="./onboarding/plan.html" style="--i: 14;">
-          <span class="px-tile__icon"><i class="ph ph-calendar-blank"></i></span>
-          <h3 class="px-tile__h">5 · Plan</h3>
-          <p class="px-tile__d">Just track, Atomic Athlete, Running, Hybrid, or Upload your own.</p>
-        </a>
-        <a class="px-tile" href="./onboarding/first-sync.html" style="--i: 15;">
-          <span class="px-tile__icon"><i class="ph ph-arrow-clockwise"></i></span>
-          <h3 class="px-tile__h">6 · First sync</h3>
-          <p class="px-tile__d">Forging your baseline. The animated loading moment. Lands on Home.</p>
-        </a>
-      </div>
-    </section>
+      <section class="k-card k-card--quiet" style="text-align: center;">
+        <span class="k-text-faint">FORGE · v0.1 prototype</span>
+      </section>
 
-    <!-- ======= FOOTER ======= -->
-    <footer class="px-footer">
-      <span>FORGE · App Prototype · 2026</span>
-      <span><a href="../kit/catalog/">View the kit catalog ↗</a></span>
-    </footer>
-
-  </div>
+    </div>
+  </main>
 </body>
 </html>

@@ -3,116 +3,80 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>FORGE · Pick your habits</title>
+  <title>FORGE · Pick habits</title>
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
   <link rel="stylesheet" href="../../kit/kit.css" />
-  <link rel="stylesheet" href="./_onboarding.css" />
 </head>
 <body>
-  <main class="k-screen ob-screen">
-    <div class="ob-scroll">
+  <main class="k-screen">
+    <div class="k-screen__scroll" style="justify-content: space-between;">
 
-      <header class="ob-top">
-        <span class="ob-word">
-          <span class="ob-word__mark">F</span>
-          <span>FORGE</span>
-        </span>
-        <span class="k-pill k-pill--ghost">Step 3 of 4</span>
-      </header>
+      <div class="k-stack" style="--gap: var(--s-4);">
 
-      <section class="ob-intro">
-        <span class="ob-eyebrow">Step 3 of 4</span>
-        <h1 class="ob-h1 ob-h1--display">Pick your <strong>habits</strong></h1>
-        <p class="ob-lede">Forge helps you track compliance to habits that are important to you. You can change these later.</p>
-      </section>
+        <header class="k-row k-row--between">
+          <button class="k-icon-tile k-icon-tile--sm" aria-label="Back"><i class="ph ph-caret-left"></i></button>
+          <span class="k-eyebrow">Step 4 of 6</span>
+          <span class="k-icon-tile k-icon-tile--sm" style="visibility: hidden;"></span>
+        </header>
 
-      <section class="ob-habits" id="habits">
-
-        <button type="button" class="ob-habit is-selected" data-habit="vitaminsAM">
-          <span class="k-icon-tile"><i class="ph" id="ic-vitaminsAM"></i></span>
-          <span class="ob-habit__name">AM vitamins</span>
-          <span class="ob-habit__tick"><i class="ph ph-check"></i></span>
-        </button>
-
-        <button type="button" class="ob-habit is-selected" data-habit="vitaminsPM">
-          <span class="k-icon-tile"><i class="ph" id="ic-vitaminsPM"></i></span>
-          <span class="ob-habit__name">PM vitamins</span>
-          <span class="ob-habit__tick"><i class="ph ph-check"></i></span>
-        </button>
-
-        <button type="button" class="ob-habit is-selected" data-habit="water">
-          <span class="k-icon-tile"><i class="ph" id="ic-water"></i></span>
-          <span class="ob-habit__name">Water</span>
-          <span class="ob-habit__tick"><i class="ph ph-check"></i></span>
-        </button>
-
-        <button type="button" class="ob-habit is-selected" data-habit="steps">
-          <span class="k-icon-tile"><i class="ph" id="ic-steps"></i></span>
-          <span class="ob-habit__name">Steps</span>
-          <span class="ob-habit__tick"><i class="ph ph-check"></i></span>
-        </button>
-
-        <button type="button" class="ob-habit" data-habit="mobility">
-          <span class="k-icon-tile"><i class="ph" id="ic-mobility"></i></span>
-          <span class="ob-habit__name">Mobility</span>
-          <span class="ob-habit__tick"><i class="ph ph-check"></i></span>
-        </button>
-
-        <button type="button" class="ob-habit" data-habit="workout">
-          <span class="k-icon-tile"><i class="ph" id="ic-workout"></i></span>
-          <span class="ob-habit__name">Workout</span>
-          <span class="ob-habit__tick"><i class="ph ph-check"></i></span>
-        </button>
-
-        <button type="button" class="ob-habit" data-habit="protein">
-          <span class="k-icon-tile"><i class="ph" id="ic-protein"></i></span>
-          <span class="ob-habit__name">Protein</span>
-          <span class="ob-habit__tick"><i class="ph ph-check"></i></span>
-        </button>
-
-        <button type="button" class="ob-habit" data-habit="stretch">
-          <span class="k-icon-tile"><i class="ph" id="ic-stretch"></i></span>
-          <span class="ob-habit__name">Stretch</span>
-          <span class="ob-habit__tick"><i class="ph ph-check"></i></span>
-        </button>
-
-        <button type="button" class="ob-habit-add">
-          <i class="ph ph-plus"></i> Add custom habit
-        </button>
-
-      </section>
-
-      <div class="ob-continue">
-        <div class="ob-continue__row">
-          <a class="ob-btn ob-btn--ghost" href="./plan.html">Skip for now</a>
-          <a class="ob-btn ob-btn--primary" href="./plan.html"><i class="ph ph-play"></i> Continue</a>
+        <div class="k-stack" style="--gap: var(--s-2);">
+          <span class="k-text-title" style="font-size: var(--t-num-lg);">Pick a few habits</span>
+          <span class="k-text-sub">Three is plenty. You can edit later.</span>
         </div>
+
+        <section class="k-card">
+          <div class="k-stack" style="--gap: 0;">
+            <div class="k-habit-row">
+              <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-sun"></i></span>
+              <span class="k-habit-row__name">Vitamins AM</span>
+              <span class="k-checkbox is-checked"><i class="ph ph-check"></i></span>
+            </div>
+            <div class="k-habit-row">
+              <span class="k-icon-tile k-icon-tile--blue"><i class="ph ph-person-simple-tai-chi"></i></span>
+              <span class="k-habit-row__name">Stretch 10 min</span>
+              <span class="k-checkbox is-checked"><i class="ph ph-check"></i></span>
+            </div>
+            <div class="k-habit-row">
+              <span class="k-icon-tile k-icon-tile--green"><i class="ph ph-drop"></i></span>
+              <span class="k-habit-row__name">Hydration</span>
+              <span class="k-checkbox is-checked"><i class="ph ph-check"></i></span>
+            </div>
+            <div class="k-habit-row">
+              <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-moon-stars"></i></span>
+              <span class="k-habit-row__name">Vitamins PM</span>
+              <span class="k-checkbox" aria-label="Toggle"></span>
+            </div>
+            <div class="k-habit-row">
+              <span class="k-icon-tile"><i class="ph ph-book-open"></i></span>
+              <span class="k-habit-row__name">Read 20 min</span>
+              <span class="k-checkbox" aria-label="Toggle"></span>
+            </div>
+            <div class="k-habit-row">
+              <span class="k-icon-tile"><i class="ph ph-moon"></i></span>
+              <span class="k-habit-row__name">In bed by 10:30</span>
+              <span class="k-checkbox" aria-label="Toggle"></span>
+            </div>
+            <div class="k-habit-row">
+              <span class="k-icon-tile"><i class="ph ph-leaf"></i></span>
+              <span class="k-habit-row__name">No alcohol</span>
+              <span class="k-checkbox" aria-label="Toggle"></span>
+            </div>
+          </div>
+        </section>
+
+        <button class="k-pill k-pill--ghost" style="height: calc(var(--s-6) + var(--s-0)); padding: 0 var(--s-3); align-self: flex-start;">
+          <i class="ph ph-plus"></i> Custom
+        </button>
+
       </div>
+
+      <button class="k-pill k-pill--amber" style="height: calc(var(--s-7) + var(--s-1)); padding: 0 var(--s-4); justify-content: center;">
+        Continue
+      </button>
 
     </div>
   </main>
-
-  <script type="module">
-    import { icons } from '../../kit/icons.js';
-    const need = ['vitaminsAM','vitaminsPM','water','steps','mobility','workout','protein','stretch'];
-    need.forEach(name => {
-      const el = document.getElementById('ic-' + name);
-      if (el) el.className = 'ph ' + icons[name];
-    });
-  </script>
-
-  <script>
-    document.querySelectorAll('.ob-habit').forEach(btn => {
-      btn.addEventListener('click', () => btn.classList.toggle('is-selected'));
-    });
-    (function () {
-      const top = document.querySelector('.ob-top');
-      window.addEventListener('scroll', () => {
-        if (top) top.classList.toggle('is-faded', window.scrollY > 24);
-      }, { passive: true });
-    })();
-  </script>
   <script src="../_nav.js"></script>
 </body>
 </html>

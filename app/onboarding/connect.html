@@ -3,151 +3,90 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>FORGE · Connect data</title>
+  <title>FORGE · Connect</title>
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
   <link rel="stylesheet" href="../../kit/kit.css" />
-  <link rel="stylesheet" href="./_onboarding.css" />
 </head>
 <body>
-  <main class="k-screen ob-screen">
-    <div class="ob-scroll">
+  <main class="k-screen">
+    <div class="k-screen__scroll" style="justify-content: space-between;">
 
-      <header class="ob-top">
-        <span class="ob-word">
-          <span class="ob-word__mark">F</span>
-          <span>FORGE</span>
-        </span>
-        <span class="k-pill k-pill--ghost">Step 2 of 4</span>
-      </header>
+      <div class="k-stack" style="--gap: var(--s-4);">
 
-      <section class="ob-intro">
-        <span class="ob-eyebrow">Step 2 of 4</span>
-        <h1 class="ob-h1 ob-h1--display">Connect your <strong>data</strong></h1>
-        <p class="ob-lede">Forge gets better the more sources you connect.</p>
-      </section>
+        <header class="k-row k-row--between">
+          <button class="k-icon-tile k-icon-tile--sm" aria-label="Back"><i class="ph ph-caret-left"></i></button>
+          <span class="k-eyebrow">Step 3 of 6</span>
+          <span class="k-icon-tile k-icon-tile--sm" style="visibility: hidden;"></span>
+        </header>
 
-      <section class="ob-sources" id="sources">
-
-        <div class="ob-source" data-src="apple">
-          <span class="k-icon-tile k-icon-tile--lg ob-tile--apple"><i class="ph ph-heartbeat" id="ic-apple"></i></span>
-          <div class="ob-source__meta">
-            <span class="ob-source__name">Apple Health <span class="k-pill k-pill--amber">Recommended</span></span>
-            <span class="ob-source__desc">Steps, weight, sleep, workouts.</span>
-          </div>
-          <button type="button" class="k-pill k-pill--ghost ob-source__btn" data-act="toggle">Connect</button>
+        <div class="k-stack" style="--gap: var(--s-2);">
+          <span class="k-text-title">Connect a source</span>
+          <span class="k-text-sub">Pick one to start. Add more later.</span>
         </div>
 
-        <div class="ob-source" data-src="whoop">
-          <span class="k-icon-tile k-icon-tile--lg ob-tile--whoop"><i class="ph ph-heartbeat" id="ic-whoop"></i></span>
-          <div class="ob-source__meta">
-            <span class="ob-source__name">WHOOP</span>
-            <span class="ob-source__desc">Recovery, HRV, resting HR, sleep.</span>
-          </div>
-          <button type="button" class="k-pill k-pill--ghost ob-source__btn" data-act="toggle">Connect</button>
+        <div class="k-stack" style="--gap: var(--s-2);">
+
+          <button class="k-card" style="display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3); cursor: pointer; text-align: left;">
+            <img src="../../kit/brands/apple-health.svg" width="36" height="36" alt="Apple Health" />
+            <div class="k-stack k-stack--tight" style="flex: 1; min-width: 0;">
+              <span class="k-text-body" style="font-weight: 500;">Apple Health</span>
+              <span class="k-text-faint">Steps, heart rate, sleep, workouts</span>
+            </div>
+            <i class="ph ph-caret-right" style="color: var(--c-faint); font-size: var(--t-num-sm);"></i>
+          </button>
+
+          <button class="k-card" style="display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3); cursor: pointer; text-align: left;">
+            <img src="../../kit/brands/whoop.svg" width="36" height="36" alt="Whoop" />
+            <div class="k-stack k-stack--tight" style="flex: 1; min-width: 0;">
+              <span class="k-text-body" style="font-weight: 500;">Whoop</span>
+              <span class="k-text-faint">Recovery, strain, HRV, sleep</span>
+            </div>
+            <i class="ph ph-caret-right" style="color: var(--c-faint); font-size: var(--t-num-sm);"></i>
+          </button>
+
+          <button class="k-card" style="display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3); cursor: pointer; text-align: left;">
+            <img src="../../kit/brands/oura.svg" width="36" height="36" alt="Oura" />
+            <div class="k-stack k-stack--tight" style="flex: 1; min-width: 0;">
+              <span class="k-text-body" style="font-weight: 500;">Oura</span>
+              <span class="k-text-faint">Readiness, sleep, temperature</span>
+            </div>
+            <i class="ph ph-caret-right" style="color: var(--c-faint); font-size: var(--t-num-sm);"></i>
+          </button>
+
+          <button class="k-card" style="display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3); cursor: pointer; text-align: left;">
+            <img src="../../kit/brands/garmin.svg" width="36" height="36" alt="Garmin" />
+            <div class="k-stack k-stack--tight" style="flex: 1; min-width: 0;">
+              <span class="k-text-body" style="font-weight: 500;">Garmin</span>
+              <span class="k-text-faint">Workouts, GPS, daily stats</span>
+            </div>
+            <i class="ph ph-caret-right" style="color: var(--c-faint); font-size: var(--t-num-sm);"></i>
+          </button>
+
+          <button class="k-card" style="display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3); cursor: pointer; text-align: left;">
+            <img src="../../kit/brands/fitbit.svg" width="36" height="36" alt="Fitbit" />
+            <div class="k-stack k-stack--tight" style="flex: 1; min-width: 0;">
+              <span class="k-text-body" style="font-weight: 500;">Fitbit</span>
+              <span class="k-text-faint">Steps, sleep, heart rate</span>
+            </div>
+            <i class="ph ph-caret-right" style="color: var(--c-faint); font-size: var(--t-num-sm);"></i>
+          </button>
+
         </div>
 
-        <div class="ob-source" data-src="oura">
-          <span class="k-icon-tile k-icon-tile--lg ob-tile--oura"><i class="ph ph-moon" id="ic-oura"></i></span>
-          <div class="ob-source__meta">
-            <span class="ob-source__name">Oura</span>
-            <span class="ob-source__desc">Sleep, readiness, HRV, temperature.</span>
-          </div>
-          <button type="button" class="k-pill k-pill--ghost ob-source__btn" data-act="toggle">Connect</button>
-        </div>
+      </div>
 
-        <div class="ob-source" data-src="strava">
-          <span class="k-icon-tile k-icon-tile--lg ob-tile--strava"><i class="ph ph-person-simple-run" id="ic-strava"></i></span>
-          <div class="ob-source__meta">
-            <span class="ob-source__name">Strava</span>
-            <span class="ob-source__desc">Runs and rides, pace and heart rate.</span>
-          </div>
-          <button type="button" class="k-pill k-pill--ghost ob-source__btn" data-act="toggle">Connect</button>
-        </div>
-
-        <div class="ob-source" data-src="garmin">
-          <span class="k-icon-tile k-icon-tile--lg ob-tile--garmin"><i class="ph ph-person-simple-run" id="ic-garmin"></i></span>
-          <div class="ob-source__meta">
-            <span class="ob-source__name">Garmin</span>
-            <span class="ob-source__desc">Runs, training load, HR, sleep.</span>
-          </div>
-          <button type="button" class="k-pill k-pill--ghost ob-source__btn" data-act="toggle">Connect</button>
-        </div>
-
-        <div class="ob-source" data-src="fitbit">
-          <span class="k-icon-tile k-icon-tile--lg ob-tile--fitbit"><i class="ph ph-footprints" id="ic-fitbit"></i></span>
-          <div class="ob-source__meta">
-            <span class="ob-source__name">Fitbit</span>
-            <span class="ob-source__desc">Steps, sleep, heart rate.</span>
-          </div>
-          <button type="button" class="k-pill k-pill--ghost ob-source__btn" data-act="toggle">Connect</button>
-        </div>
-
-        <div class="ob-source" data-src="withings">
-          <span class="k-icon-tile k-icon-tile--lg ob-tile--withings"><i class="ph ph-scales" id="ic-withings"></i></span>
-          <div class="ob-source__meta">
-            <span class="ob-source__name">Withings</span>
-            <span class="ob-source__desc">Smart scale weight and body data.</span>
-          </div>
-          <button type="button" class="k-pill k-pill--ghost ob-source__btn" data-act="toggle">Connect</button>
-        </div>
-
-      </section>
-
-      <div class="ob-continue">
-        <div class="ob-continue__row">
-          <a class="ob-btn ob-btn--ghost" href="./habits.html">Skip for now</a>
-          <a class="ob-btn ob-btn--primary" href="./habits.html"><i class="ph ph-play"></i> Continue</a>
+      <div class="k-stack" style="--gap: var(--s-2);">
+        <button class="k-pill k-pill--amber" style="height: calc(var(--s-7) + var(--s-1)); padding: 0 var(--s-4); justify-content: center;">
+          Continue
+        </button>
+        <div class="k-row" style="justify-content: center;">
+          <button class="k-pill k-pill--ghost" style="height: var(--s-6);">Skip for now</button>
         </div>
       </div>
 
     </div>
   </main>
-
-  <script type="module">
-    import { icons } from '../../kit/icons.js';
-
-    // Apply icons via registry (replace placeholder classes).
-    const map = {
-      'ic-apple':    icons.recovery,
-      'ic-whoop':    icons.recovery,
-      'ic-oura':     icons.sleep,
-      'ic-strava':   icons.run,
-      'ic-garmin':   icons.run,
-      'ic-fitbit':   icons.steps,
-      'ic-withings': icons.weight,
-    };
-    Object.entries(map).forEach(([id, cls]) => {
-      const el = document.getElementById(id);
-      if (el) el.className = 'ph ' + cls;
-    });
-  </script>
-
-  <script>
-    // Toggle Connect <-> Connected per source row.
-    document.querySelectorAll('.ob-source').forEach(row => {
-      const btn = row.querySelector('[data-act="toggle"]');
-      if (!btn) return;
-      btn.addEventListener('click', () => {
-        const on = row.classList.toggle('is-connected');
-        if (on) {
-          btn.className = 'k-pill k-pill--green ob-source__btn';
-          btn.innerHTML = '<i class="ph ph-check"></i> Connected';
-        } else {
-          btn.className = 'k-pill k-pill--ghost ob-source__btn';
-          btn.textContent = 'Connect';
-        }
-      });
-    });
-
-    // Top bar fades on scroll.
-    (function () {
-      const top = document.querySelector('.ob-top');
-      window.addEventListener('scroll', () => {
-        if (top) top.classList.toggle('is-faded', window.scrollY > 24);
-      }, { passive: true });
-    })();
-  </script>
   <script src="../_nav.js"></script>
 </body>
 </html>

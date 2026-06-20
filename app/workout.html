@@ -6,588 +6,107 @@
   <title>FORGE · Workout</title>
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
-  <link rel="stylesheet" href="../kit/tokens.css" />
   <link rel="stylesheet" href="../kit/kit.css" />
-  <style>
-    /* ---- Page-local one-offs. Token-only values (no raw hex, no raw px). ---- */
-
-    /* Workout MODAL chrome · replaces the standard masthead and the bottom nav. */
-    .wo-topbar {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: var(--s-3);
-      padding:
-        calc(env(safe-area-inset-top, 0) + var(--s-2))
-        var(--s-3)
-        var(--s-2)
-        var(--s-3);
-      background: rgba(13, 12, 10, 0.72);
-      -webkit-backdrop-filter: saturate(140%) blur(var(--s-3));
-      backdrop-filter: saturate(140%) blur(var(--s-3));
-      border-bottom: thin solid var(--c-hair);
-    }
-    .wo-topbar__title {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0;
-      line-height: 1.15;
-      min-width: 0;
-      flex: 1;
-    }
-    .wo-topbar__t {
-      font-size: var(--t-label-size);
-      font-weight: 600;
-      color: var(--c-ink);
-      letter-spacing: -0.01em;
-    }
-    .wo-topbar__sub {
-      font-family: var(--f-mono);
-      font-size: var(--t-eyebrow-size);
-      font-weight: var(--t-eyebrow-weight);
-      letter-spacing: var(--t-eyebrow-track);
-      text-transform: uppercase;
-      color: var(--c-faint);
-    }
-
-    /* ---- HERO: display-grade timer with ambient amber glow ---- */
-    .wo-hero {
-      position: relative;
-      padding: var(--s-6) var(--s-3) var(--s-5);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--s-3);
-      overflow: hidden;
-      isolation: isolate;
-      contain: paint;
-    }
-    .wo-hero::before {
-      /* drifting amber glow · kept inside the section bounds so the harness
-         doesn't see it as overflow. */
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(60% 60% at 50% 30%, rgba(227, 168, 87, 0.18), transparent 70%),
-        radial-gradient(50% 40% at 30% 60%, rgba(227, 168, 87, 0.08), transparent 70%);
-      filter: blur(var(--s-3));
-      z-index: -1;
-      animation: wo-drift calc(var(--m-slow) * 50) ease-in-out infinite alternate;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .wo-hero::before { animation: none; }
-    }
-    @keyframes wo-drift {
-      0%   { transform: translate3d(0, 0, 0) scale(1); opacity: 0.85; }
-      50%  { transform: translate3d(0, calc(var(--s-1) * -1), 0) scale(1.04); opacity: 1; }
-      100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.9; }
-    }
-
-    .wo-live {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--s-1);
-    }
-    .wo-live__dot {
-      width: var(--s-1);
-      height: var(--s-1);
-      border-radius: var(--r-pill);
-      background: var(--c-green);
-      box-shadow: 0 0 var(--s-1) rgba(79, 209, 126, 0.7);
-      display: inline-block;
-      animation: wo-pulse calc(var(--m-slow) * 4) ease-in-out infinite;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .wo-live__dot { animation: none; }
-    }
-    @keyframes wo-pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%      { opacity: 0.45; transform: scale(0.85); }
-    }
-
-    .wo-timer {
-      font-family: var(--f-mono);
-      font-feature-settings: "tnum" 1;
-      font-variant-numeric: tabular-nums;
-      font-weight: 300;
-      color: var(--c-ink);
-      font-size: calc(var(--t-num-xl) * 2);
-      letter-spacing: -0.02em;
-      line-height: 0.95;
-      display: inline-flex;
-      align-items: baseline;
-      gap: 0;
-      text-shadow: 0 0 calc(var(--s-3)) rgba(227, 168, 87, 0.20);
-    }
-    .wo-timer__c {
-      color: var(--c-amber);
-      animation: wo-blink calc(var(--m-slow) * 3) steps(2, end) infinite;
-      padding: 0 calc(var(--s-0) * 0.5);
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .wo-timer__c { animation: none; }
-    }
-    @keyframes wo-blink {
-      0%, 50%   { opacity: 1; }
-      51%, 100% { opacity: 0.35; }
-    }
-    .wo-timer__sub {
-      font-family: var(--f-mono);
-      font-size: var(--t-eyebrow-size);
-      font-weight: var(--t-eyebrow-weight);
-      letter-spacing: var(--t-eyebrow-track);
-      text-transform: uppercase;
-      color: var(--c-sub);
-      text-align: center;
-    }
-
-    /* ---- CURRENT exercise card · the hero of the page ---- */
-    .wo-current { padding: var(--s-4); }
-    .wo-current__title {
-      font-family: var(--f-ui);
-      font-size: calc(var(--t-title-size) + var(--s-0));
-      font-weight: 500;
-      letter-spacing: -0.02em;
-      color: var(--c-ink);
-      line-height: 1.05;
-    }
-    .wo-set-line {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: var(--s-2);
-      font-family: var(--f-mono);
-      font-size: var(--t-eyebrow-size);
-      font-weight: var(--t-eyebrow-weight);
-      letter-spacing: var(--t-eyebrow-track);
-      text-transform: uppercase;
-      color: var(--c-sub);
-    }
-    .wo-set-line__val { color: var(--c-amber); }
-
-    .wo-stats3 {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: var(--s-1);
-      padding: var(--s-3) 0 var(--s-1);
-      border-top: thin solid var(--c-hair);
-      border-bottom: thin solid var(--c-hair);
-      margin-top: var(--s-1);
-    }
-    .wo-stat {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--s-0);
-      min-width: 0;
-    }
-    .wo-stat__lbl {
-      font-family: var(--f-mono);
-      font-size: var(--t-eyebrow-size);
-      font-weight: var(--t-eyebrow-weight);
-      letter-spacing: var(--t-eyebrow-track);
-      text-transform: uppercase;
-      color: var(--c-faint);
-    }
-    .wo-stat__val {
-      font-family: var(--f-mono);
-      font-feature-settings: "tnum" 1;
-      font-variant-numeric: tabular-nums;
-      font-size: var(--t-num-lg);
-      font-weight: var(--t-num-weight);
-      color: var(--c-ink);
-      line-height: 1;
-    }
-    .wo-stat__unit {
-      font-family: var(--f-mono);
-      font-size: var(--t-eyebrow-size);
-      font-weight: var(--t-eyebrow-weight);
-      letter-spacing: var(--t-eyebrow-track);
-      text-transform: uppercase;
-      color: var(--c-faint);
-      margin-left: var(--s-0);
-    }
-
-    /* Big pill buttons */
-    .wo-btn {
-      width: 100%;
-      height: calc(var(--s-7) + var(--s-2));
-      border-radius: var(--r-pill);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--s-1);
-      font-family: var(--f-ui);
-      font-size: var(--t-body-size);
-      font-weight: 600;
-      letter-spacing: 0.01em;
-      transition:
-        transform var(--m-fast),
-        background var(--m-fast),
-        box-shadow var(--m-fast),
-        border-color var(--m-fast),
-        color var(--m-fast);
-    }
-    .wo-btn--amber {
-      background: var(--c-amber);
-      color: var(--c-on-amber);
-      border: thin solid transparent;
-      box-shadow:
-        0 0 0 thin rgba(227, 168, 87, 0.4) inset,
-        0 calc(var(--s-1)) calc(var(--s-3)) rgba(227, 168, 87, 0.28);
-    }
-    .wo-btn--amber:hover { background: var(--c-amber-bright); }
-    .wo-btn--amber:active {
-      transform: scale(0.985);
-      box-shadow: 0 0 0 thin rgba(227, 168, 87, 0.4) inset;
-    }
-    .wo-btn--ghost {
-      background: transparent;
-      color: var(--c-sub);
-      border: thin solid var(--c-hair-strong);
-    }
-    .wo-btn--ghost:hover { border-color: var(--c-amber); color: var(--c-ink); }
-    .wo-btn--ghost:active { transform: scale(0.985); }
-    .wo-btn--danger {
-      background: transparent;
-      color: var(--c-red);
-      border: thin solid var(--c-hair-strong);
-    }
-    .wo-btn--danger:hover { border-color: var(--c-red); }
-
-    .wo-btn-row {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: var(--s-2);
-    }
-
-    /* Up-next list */
-    .wo-next-row {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: var(--s-3);
-      padding: var(--s-2) 0;
-      border-bottom: thin solid var(--c-hair);
-      color: var(--c-ink);
-      cursor: pointer;
-      transition: padding var(--m-fast);
-    }
-    .wo-next-row:last-child { border-bottom: 0; }
-    .wo-next-row:hover { padding-left: var(--s-0); }
-    .wo-next-row__num {
-      font-family: var(--f-mono);
-      font-size: var(--t-eyebrow-size);
-      font-weight: var(--t-eyebrow-weight);
-      letter-spacing: var(--t-eyebrow-track);
-      text-transform: uppercase;
-      color: var(--c-faint);
-      width: calc(var(--s-6) + var(--s-1));
-      flex: 0 0 auto;
-    }
-    .wo-next-row__body {
-      display: flex;
-      flex-direction: column;
-      gap: var(--s-0);
-      min-width: 0;
-    }
-    .wo-next-row__name {
-      font-size: var(--t-body-size);
-      font-weight: 600;
-      color: var(--c-ink);
-    }
-    .wo-next-row__meta {
-      font-family: var(--f-mono);
-      font-feature-settings: "tnum" 1;
-      font-variant-numeric: tabular-nums;
-      font-size: var(--t-num-sm);
-      color: var(--c-sub);
-    }
-    .wo-next-row__play {
-      width: var(--s-6);
-      height: var(--s-6);
-      border-radius: var(--r-pill);
-      background: var(--c-raised);
-      border: thin solid var(--c-hair);
-      color: var(--c-amber);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: var(--t-label-size);
-      transition: background var(--m-fast), border-color var(--m-fast);
-    }
-    .wo-next-row:hover .wo-next-row__play {
-      background: rgba(227, 168, 87, 0.08);
-      border-color: rgba(227, 168, 87, 0.35);
-    }
-
-    /* Live stats grid (cal + hr) */
-    .wo-live-stat__num {
-      font-family: var(--f-mono);
-      font-feature-settings: "tnum" 1;
-      font-variant-numeric: tabular-nums;
-      font-size: var(--t-num-xl);
-      font-weight: var(--t-num-weight);
-      color: var(--c-ink);
-      line-height: 1;
-    }
-    .wo-live-stat__unit {
-      font-family: var(--f-mono);
-      font-size: var(--t-eyebrow-size);
-      font-weight: var(--t-eyebrow-weight);
-      letter-spacing: var(--t-eyebrow-track);
-      text-transform: uppercase;
-      color: var(--c-faint);
-      margin-left: var(--s-0);
-    }
-    .wo-hr-dot {
-      display: inline-block;
-      width: var(--s-1);
-      height: var(--s-1);
-      border-radius: var(--r-pill);
-      background: var(--c-green);
-      box-shadow: 0 0 var(--s-1) rgba(79, 209, 126, 0.6);
-      margin-right: var(--s-0);
-      animation: wo-pulse calc(var(--m-slow) * 3) ease-in-out infinite;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .wo-hr-dot { animation: none; }
-    }
-
-    /* Sticky END pill (replaces nav for the workout modal) */
-    .wo-end {
-      position: fixed;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: calc(env(safe-area-inset-bottom, 0) + var(--s-3));
-      width: calc(100% - var(--s-6));
-      max-width: calc(var(--s-8) * 6 + var(--s-7));
-      z-index: 50;
-      background: rgba(20, 18, 14, 0.72);
-      -webkit-backdrop-filter: blur(var(--s-4)) saturate(140%);
-      backdrop-filter: blur(var(--s-4)) saturate(140%);
-      border-radius: var(--r-pill);
-      box-shadow: var(--sh-nav);
-    }
-
-    /* Section entrance stagger (gated on reduced-motion). */
-    @media (prefers-reduced-motion: no-preference) {
-      .k-screen__scroll > * {
-        animation: wo-rise var(--m-slow) cubic-bezier(0.2, 0.0, 0.2, 1) both;
-      }
-      .k-screen__scroll > *:nth-child(1) { animation-delay: 0ms; }
-      .k-screen__scroll > *:nth-child(2) { animation-delay: 40ms; }
-      .k-screen__scroll > *:nth-child(3) { animation-delay: 80ms; }
-      .k-screen__scroll > *:nth-child(4) { animation-delay: 120ms; }
-      .k-screen__scroll > *:nth-child(5) { animation-delay: 160ms; }
-      .k-screen__scroll > *:nth-child(6) { animation-delay: 200ms; }
-    }
-    @keyframes wo-rise {
-      from { opacity: 0; transform: translateY(var(--s-1)); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Scroll padding override: replace the standard nav clearance with
-       our own sticky END pill clearance. */
-    .k-screen__scroll {
-      /* Reserve room for the sticky End-workout pill PLUS breathing space so the
-         last stats cards never sit jammed against it. */
-      padding-bottom: calc(env(safe-area-inset-bottom, 0) + var(--s-8) + var(--s-8));
-      gap: var(--s-3);
-    }
-
-    /* Section eyebrow row used outside cards. */
-    .wo-section-head {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: var(--s-2);
-      padding: 0 var(--s-1);
-      margin-bottom: calc(var(--s-1) * -1);
-    }
-
-    .wo-up-card { padding: var(--s-3) var(--s-3) var(--s-2); }
-
-    .wo-stat-card {
-      display: flex;
-      flex-direction: column;
-      gap: var(--s-2);
-    }
-
-    /* Make the in-card progress feel deliberate */
-    .wo-set-progress { --p-height: calc(var(--s-1) - var(--s-0) * 0.5); }
-  </style>
 </head>
 <body>
   <main class="k-screen">
-
-    <!-- MODAL-style top bar (replaces masthead + nav) -->
-    <header class="wo-topbar">
-      <button class="k-icon-tile" aria-label="Close workout"><i class="ph ph-x"></i></button>
-      <div class="wo-topbar__title">
-        <span class="wo-topbar__t">Run + Strength</span>
-        <span class="wo-topbar__sub">Week 3 &middot; Day 3</span>
-      </div>
-      <button class="k-icon-tile" aria-label="Pause"><i class="ph ph-pause"></i></button>
-    </header>
-
     <div class="k-screen__scroll">
 
-      <!-- HERO: timer + live pill -->
-      <section class="wo-hero">
-        <span class="k-pill k-pill--green wo-live">
-          <span class="wo-live__dot" aria-hidden="true"></span> LIVE
-        </span>
-        <div class="wo-timer" aria-label="Elapsed time">
-          <span id="wo-hh">00</span>
-          <span class="wo-timer__c">:</span>
-          <span id="wo-mm">14</span>
-          <span class="wo-timer__c">:</span>
-          <span id="wo-ss">32</span>
+      <header class="k-row k-row--between">
+        <button class="k-icon-tile k-icon-tile--sm" aria-label="Close"><i class="ph ph-x"></i></button>
+        <div class="k-stack k-stack--tight" style="align-items: center;">
+          <span class="k-text-body" style="font-weight: 500;">Push A</span>
+          <span class="k-eyebrow">12:36 elapsed</span>
         </div>
-        <span class="wo-timer__sub">Block 2 of 5 &middot; Squats</span>
+        <button class="k-icon-tile k-icon-tile--sm" aria-label="Pause"><i class="ph ph-pause"></i></button>
+      </header>
+
+      <section class="k-card k-card--accent">
+        <div class="k-row k-row--between" style="margin-bottom: var(--s-2);">
+          <span class="k-eyebrow">Now · Set 2 of 4</span>
+          <span class="k-pill k-pill--amber">Working</span>
+        </div>
+        <div class="k-stack" style="--gap: var(--s-1); margin-bottom: var(--s-3);">
+          <span class="k-text-title">Bench press</span>
+          <span class="k-text-sub">8 reps &middot; 185 lb</span>
+        </div>
+        <div class="k-row k-row--between">
+          <button class="k-step-btn" aria-label="Decrement"><i class="ph ph-minus"></i></button>
+          <span class="k-numeric k-numeric--xl"><span class="k-numeric__val">185</span><span class="k-numeric__unit">lb</span></span>
+          <button class="k-step-btn" aria-label="Increment"><i class="ph ph-plus"></i></button>
+        </div>
+        <div class="k-row k-row--between" style="margin-top: var(--s-3);">
+          <span class="k-text-faint">2:00 rest</span>
+          <button class="k-pill k-pill--amber"><i class="ph ph-check"></i> Log set</button>
+        </div>
       </section>
 
-      <!-- CURRENT exercise card -->
-      <section class="k-card k-card--accent wo-current">
-        <div class="k-stack" style="--gap: var(--s-2);">
-          <div class="k-row k-row--between">
-            <span class="k-eyebrow">Current &middot; Block 2 / 5</span>
-            <span class="k-pill k-pill--amber">Active</span>
+      <section class="k-card">
+        <div class="k-row k-row--between" style="margin-bottom: var(--s-3);">
+          <span class="k-eyebrow">Sets &middot; bench press</span>
+        </div>
+        <div class="k-stack" style="--gap: 0;">
+          <div class="k-habit-row k-habit-row--done">
+            <span class="k-icon-tile k-icon-tile--sm k-icon-tile--amber"><i class="ph ph-check"></i></span>
+            <span class="k-habit-row__name">Set 1</span>
+            <span class="k-habit-row__trail">8 × 185</span>
           </div>
-
-          <h2 class="wo-current__title">Back Squat</h2>
-
-          <div class="k-stack" style="--gap: var(--s-1);">
-            <div class="wo-set-line">
-              <span>Set <span class="wo-set-line__val">3</span> of 5</span>
-              <span>40% rest remaining</span>
-            </div>
-            <div class="k-progress wo-set-progress"
-                 style="--p-pct: 40; --p-color: var(--c-amber);"
-                 role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+          <div class="k-habit-row">
+            <span class="k-icon-tile k-icon-tile--sm"><i class="ph ph-record-fill"></i></span>
+            <span class="k-habit-row__name">Set 2</span>
+            <span class="k-habit-row__trail">— × 185</span>
           </div>
-
-          <div class="wo-stats3">
-            <div class="wo-stat">
-              <span class="wo-stat__lbl">Weight</span>
-              <span class="wo-stat__val">225<span class="wo-stat__unit">lb</span></span>
-            </div>
-            <div class="wo-stat">
-              <span class="wo-stat__lbl">Reps</span>
-              <span class="wo-stat__val">5</span>
-            </div>
-            <div class="wo-stat">
-              <span class="wo-stat__lbl">Rest</span>
-              <span class="wo-stat__val">2<span class="wo-stat__unit">:00</span></span>
-            </div>
+          <div class="k-habit-row">
+            <span class="k-icon-tile k-icon-tile--sm"><i class="ph ph-minus"></i></span>
+            <span class="k-habit-row__name">Set 3</span>
+            <span class="k-habit-row__trail">— × 185</span>
           </div>
-
-          <div class="wo-btn-row" style="margin-top: var(--s-1);">
-            <button class="wo-btn wo-btn--amber" type="button">
-              <i class="ph ph-check"></i> Complete set
-            </button>
-            <button class="wo-btn wo-btn--ghost" type="button">Skip</button>
+          <div class="k-habit-row">
+            <span class="k-icon-tile k-icon-tile--sm"><i class="ph ph-minus"></i></span>
+            <span class="k-habit-row__name">Set 4</span>
+            <span class="k-habit-row__trail">— × 185</span>
           </div>
         </div>
       </section>
 
-      <!-- UP NEXT -->
-      <section class="k-stack" style="--gap: var(--s-2);">
-        <div class="wo-section-head">
+      <section class="k-card">
+        <div class="k-row k-row--between" style="margin-bottom: var(--s-3);">
           <span class="k-eyebrow">Up next</span>
-          <span class="k-eyebrow" style="color: var(--c-sub);">3 blocks</span>
         </div>
-        <div class="k-card wo-up-card">
-          <div class="wo-next-row">
-            <span class="wo-next-row__num">B3</span>
-            <div class="wo-next-row__body">
-              <span class="wo-next-row__name">Bench Press</span>
-              <span class="wo-next-row__meta">4 &times; 6 &middot; 185 lb</span>
+        <div class="k-stack" style="--gap: 0;">
+          <div class="k-habit-row">
+            <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-barbell"></i></span>
+            <div class="k-stack k-stack--tight" style="min-width: 0;">
+              <span class="k-habit-row__name">OHP</span>
+              <span class="k-text-faint">4 × 8 &middot; 115 lb</span>
             </div>
-            <button class="wo-next-row__play" aria-label="Start Bench Press"><i class="ph ph-play"></i></button>
+            <i class="ph ph-caret-right" style="color: var(--c-faint); font-size: var(--t-num-sm);"></i>
           </div>
-          <div class="wo-next-row">
-            <span class="wo-next-row__num">B4</span>
-            <div class="wo-next-row__body">
-              <span class="wo-next-row__name">Pull-ups</span>
-              <span class="wo-next-row__meta">3 &times; AMRAP &middot; bodyweight</span>
+          <div class="k-habit-row">
+            <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-barbell"></i></span>
+            <div class="k-stack k-stack--tight" style="min-width: 0;">
+              <span class="k-habit-row__name">Dips</span>
+              <span class="k-text-faint">3 × 10 &middot; bw + 25</span>
             </div>
-            <button class="wo-next-row__play" aria-label="Start Pull-ups"><i class="ph ph-play"></i></button>
+            <i class="ph ph-caret-right" style="color: var(--c-faint); font-size: var(--t-num-sm);"></i>
           </div>
-          <div class="wo-next-row">
-            <span class="wo-next-row__num">B5</span>
-            <div class="wo-next-row__body">
-              <span class="wo-next-row__name">Plank</span>
-              <span class="wo-next-row__meta">3 &times; 60 s &middot; finisher</span>
+          <div class="k-habit-row">
+            <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-barbell"></i></span>
+            <div class="k-stack k-stack--tight" style="min-width: 0;">
+              <span class="k-habit-row__name">Triceps rope</span>
+              <span class="k-text-faint">3 × 12 &middot; 50 lb</span>
             </div>
-            <button class="wo-next-row__play" aria-label="Start Plank"><i class="ph ph-play"></i></button>
+            <i class="ph ph-caret-right" style="color: var(--c-faint); font-size: var(--t-num-sm);"></i>
           </div>
         </div>
       </section>
 
-      <!-- LIVE STATS -->
-      <section class="k-grid-2">
-        <div class="k-card wo-stat-card">
-          <div class="k-row k-row--between">
-            <span class="k-eyebrow">Calories</span>
-            <span class="k-icon-tile k-icon-tile--sm k-icon-tile--amber" aria-hidden="true"><i class="ph ph-fire"></i></span>
-          </div>
-          <div class="k-row" style="align-items: baseline; gap: var(--s-0);">
-            <span class="wo-live-stat__num">214</span>
-            <span class="wo-live-stat__unit">kcal</span>
-          </div>
-          <span class="k-text-faint">Burn rate steady</span>
-        </div>
-        <div class="k-card wo-stat-card">
-          <div class="k-row k-row--between">
-            <span class="k-eyebrow">Heart rate</span>
-            <span class="k-icon-tile k-icon-tile--sm k-icon-tile--green" aria-hidden="true"><i class="ph ph-heartbeat"></i></span>
-          </div>
-          <div class="k-row" style="align-items: baseline; gap: var(--s-0);">
-            <span class="wo-hr-dot" aria-hidden="true"></span>
-            <span class="wo-live-stat__num">148</span>
-            <span class="wo-live-stat__unit">bpm</span>
-          </div>
-          <span class="k-text-faint">Zone 3 &middot; threshold</span>
-        </div>
+      <section class="k-card k-card--quiet" style="text-align: center;">
+        <button class="k-pill k-pill--ghost" style="height: calc(var(--s-6) + var(--s-0)); padding: 0 var(--s-4);">End workout</button>
       </section>
 
-    </div>
-
-    <!-- End workout sticky pill (replaces standard nav for modal screen) -->
-    <div class="wo-end">
-      <button class="wo-btn wo-btn--danger" type="button">End workout</button>
     </div>
   </main>
-
-  <script>
-    // Tiny live timer · increments seconds once a second.
-    (function () {
-      var hh = document.getElementById('wo-hh');
-      var mm = document.getElementById('wo-mm');
-      var ss = document.getElementById('wo-ss');
-      if (!hh || !mm || !ss) return;
-      var total = parseInt(hh.textContent, 10) * 3600
-                + parseInt(mm.textContent, 10) * 60
-                + parseInt(ss.textContent, 10);
-      var pad = function (n) { return n < 10 ? '0' + n : '' + n; };
-      setInterval(function () {
-        total += 1;
-        var h = Math.floor(total / 3600);
-        var m = Math.floor((total % 3600) / 60);
-        var s = total % 60;
-        hh.textContent = pad(h);
-        mm.textContent = pad(m);
-        ss.textContent = pad(s);
-      }, 1000);
-    })();
-  </script>
   <script src="./_nav.js"></script>
 </body>
 </html>
