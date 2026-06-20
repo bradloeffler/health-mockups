@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE Settings</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="../kit/tokens.css" />
+  <link rel="stylesheet" href="../kit/kit.css" />
+  <style>
+    /* ===========================================================
+       SETTINGS — page-local one-offs only. Tokens only.
+       =========================================================== */
+
+    /* Ambient amber glow that drifts behind the page hero. */
+    .ambient {
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      height: calc(var(--s-8) * 6);
+      pointer-events: none;
+      background:
+        radial-gradient(60% 50% at 50% 10%, rgba(227, 168, 87, 0.10), transparent 70%);
+      filter: blur(var(--s-3));
+      animation: ambientDrift 16s ease-in-out infinite alternate;
+      z-index: 0;
+    }
+    @keyframes ambientDrift {
+      0%   { transform: translate(-52%, 0); opacity: 0.85; }
+      100% { transform: translate(-48%, var(--s-2)); opacity: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ambient { animation: none; }
+    }
+
+    /* Scroll progress strip pinned to the very top of the screen. */
+    .scroll-progress {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: thin;
+      background: transparent;
+      z-index: 60;
+    }
+    .scroll-progress::after {
+      content: '';
+      display: block;
+      height: 100%;
+      width: var(--sp-pct, 0%);
+      background: linear-gradient(90deg, rgba(227, 168, 87, 0.0), var(--c-amber) 50%, rgba(227, 168, 87, 0.0));
+      transition: width var(--m-fast);
+    }
+
+    /* Frosted masthead */
+    .masthead {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--s-2) var(--s-3);
+      margin: calc(var(--s-3) * -1) calc(var(--s-3) * -1) 0;
+      background: rgba(20, 18, 14, 0.62);
+      -webkit-backdrop-filter: blur(var(--s-4)) saturate(140%);
+      backdrop-filter: blur(var(--s-4)) saturate(140%);
+      border-bottom: thin solid var(--c-hair);
+    }
+    .masthead__date {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-1);
+    }
+    .masthead__date .k-icon-tile { cursor: pointer; }
+    .masthead__date .is-disabled { opacity: 0.3; pointer-events: none; }
+    .date-label {
+      min-width: calc(var(--s-6) * 2 + var(--s-2));
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      line-height: 1.1;
+    }
+    .date-label__main {
+      font-size: var(--t-body-size);
+      font-weight: 600;
+      color: var(--c-ink);
+    }
+
+    /* Page display header */
+    .page-header {
+      padding: var(--s-3) var(--s-0) var(--s-2);
+      position: relative;
+      z-index: 1;
+    }
+    .page-header h1 {
+      margin: var(--s-2) 0 var(--s-2);
+      font-family: var(--f-ui);
+      font-size: calc(var(--t-title-size) + var(--s-1));
+      font-weight: 500;
+      letter-spacing: -0.6px;
+      color: var(--c-ink);
+      line-height: 1.02;
+    }
+    .word-thin  { font-weight: 300; color: var(--c-sub); }
+    .word-amber { color: var(--c-amber); font-weight: 500; }
+    .page-header p {
+      margin: 0;
+      color: var(--c-sub);
+      font-size: var(--t-label-size);
+      font-weight: 400;
+      max-width: 32ch;
+      line-height: 1.45;
+    }
+
+    /* Section eyebrow heading above each card */
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 0 var(--s-1);
+      margin-bottom: var(--s-1);
+    }
+    .section-head .k-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: var(--s-2);
+      height: thin;
+      background: var(--c-amber);
+      border-radius: var(--r-pill);
+      margin-right: var(--s-1);
+      vertical-align: middle;
+    }
+
+    /* Settings row primitive (built on k-habit-row semantics) */
+    .set-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: var(--s-3);
+      padding: var(--s-2) 0;
+      border-bottom: thin solid var(--c-hair);
+      color: var(--c-ink);
+    }
+    .set-row:last-child { border-bottom: 0; }
+    .set-row__body {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      min-width: 0;
+    }
+    .set-row__name {
+      font-size: var(--t-body-size);
+      font-weight: var(--t-body-weight);
+      color: var(--c-ink);
+      line-height: 1.2;
+    }
+    .set-row__sub {
+      font-size: var(--t-label-size);
+      color: var(--c-sub);
+      font-weight: 400;
+      margin-top: var(--s-0);
+      line-height: 1.35;
+    }
+    .set-row__trail {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-1);
+      color: var(--c-sub);
+      font-size: var(--t-label-size);
+      font-weight: 500;
+    }
+    .set-row__trail .ph,
+    .set-row__trail .ph-bold { font-size: var(--t-num-md); color: var(--c-faint); }
+
+    /* "Add a source" footer row inside Connected sources card */
+    .add-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: var(--s-3);
+      padding: var(--s-2) 0 0;
+      color: var(--c-amber);
+      cursor: pointer;
+    }
+    .add-row .k-icon-tile {
+      color: var(--c-amber);
+      background: rgba(227, 168, 87, 0.06);
+      border-color: rgba(227, 168, 87, 0.22);
+      border-style: dashed;
+    }
+    .add-row__name {
+      font-family: var(--f-mono);
+      font-size: var(--t-eyebrow-size);
+      font-weight: var(--t-eyebrow-weight);
+      letter-spacing: var(--t-eyebrow-track);
+      text-transform: uppercase;
+      color: var(--c-amber);
+    }
+
+    /* Toggle switch (used in Notifications card) */
+    .switch {
+      width: calc(var(--s-6) + var(--s-2));
+      height: calc(var(--s-5));
+      border-radius: var(--r-pill);
+      background: var(--c-hair);
+      border: thin solid var(--c-hair-strong);
+      position: relative;
+      cursor: pointer;
+      transition: background var(--m-base), border-color var(--m-base);
+      flex: 0 0 auto;
+    }
+    .switch::after {
+      content: '';
+      position: absolute;
+      top: calc(var(--s-0) * 0.5);
+      left: calc(var(--s-0) * 0.5);
+      width: calc(var(--s-4) - var(--s-0));
+      height: calc(var(--s-4) - var(--s-0));
+      border-radius: var(--r-pill);
+      background: var(--c-ink);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+      transition: transform var(--m-base);
+    }
+    .switch.is-on {
+      background: var(--c-amber);
+      border-color: var(--c-amber);
+    }
+    .switch.is-on::after {
+      transform: translateX(var(--s-4));
+      background: var(--c-on-amber);
+    }
+
+    /* Units pill toggle */
+    .unit-toggle {
+      display: inline-flex;
+      padding: var(--s-0);
+      gap: 0;
+      border-radius: var(--r-pill);
+      border: thin solid var(--c-hair);
+      background: var(--c-bg);
+    }
+    .unit-toggle button {
+      padding: var(--s-0) var(--s-2);
+      border-radius: var(--r-pill);
+      font-family: var(--f-mono);
+      font-size: var(--t-eyebrow-size);
+      font-weight: var(--t-eyebrow-weight);
+      letter-spacing: var(--t-eyebrow-track);
+      text-transform: uppercase;
+      color: var(--c-faint);
+      transition: background var(--m-fast), color var(--m-fast);
+    }
+    .unit-toggle button.is-on {
+      background: var(--c-amber);
+      color: var(--c-on-amber);
+    }
+
+    /* Sign out red row */
+    .sign-out {
+      display: block;
+      width: 100%;
+      padding: var(--s-3);
+      margin-top: var(--s-3);
+      text-align: center;
+      border-radius: var(--r-lg);
+      border: thin solid var(--c-hair);
+      background: var(--c-surface);
+      color: var(--c-red);
+      font-size: var(--t-body-size);
+      font-weight: 600;
+      transition: background var(--m-fast), border-color var(--m-fast);
+    }
+    .sign-out:active { background: var(--c-hair); }
+
+    /* Footer sigil */
+    .footer-sigil {
+      margin-top: var(--s-4);
+      text-align: center;
+      color: var(--c-faint);
+      font-family: var(--f-mono);
+      font-size: var(--t-eyebrow-size);
+      letter-spacing: var(--t-eyebrow-track);
+      text-transform: uppercase;
+    }
+    .footer-sigil .dot {
+      display: inline-block;
+      width: var(--s-0);
+      height: var(--s-0);
+      border-radius: var(--r-pill);
+      background: var(--c-amber);
+      margin: 0 var(--s-1);
+      vertical-align: middle;
+    }
+
+    /* Entrance stagger */
+    .stagger > * {
+      opacity: 0;
+      transform: translateY(var(--s-1));
+      transition: opacity var(--m-base), transform var(--m-base);
+    }
+    .stagger.is-ready > * {
+      opacity: 1;
+      transform: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .stagger > * { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* Premium pressed state on every interactive row */
+    .set-row, .add-row, .sign-out, .switch, .unit-toggle button, .k-pill {
+      transition: background var(--m-fast), border-color var(--m-fast), color var(--m-fast), transform var(--m-fast);
+    }
+    .set-row:active, .add-row:active { background: var(--c-bg); }
+  </style>
+</head>
+<body>
+  <main class="k-screen" id="screen">
+    <span class="ambient" aria-hidden="true"></span>
+    <div class="scroll-progress" id="scrollProg" aria-hidden="true"></div>
+
+    <div class="k-screen__scroll stagger" id="scroller">
+
+      <!-- ============ MASTHEAD ============ -->
+      <header class="masthead">
+        <div class="masthead__date">
+          <button class="k-icon-tile k-icon-tile--sm" id="dayBack" aria-label="Previous day">
+            <i class="ph-bold" id="iconBack"></i>
+          </button>
+          <div class="date-label">
+            <span class="date-label__main">Today</span>
+            <span class="k-eyebrow">SAT JUN 20</span>
+          </div>
+          <button class="k-icon-tile k-icon-tile--sm is-disabled" id="dayFwd" aria-label="Next day">
+            <i class="ph-bold" id="iconFwd"></i>
+          </button>
+        </div>
+        <button class="k-icon-tile" aria-label="Account">
+          <i class="ph" id="iconAcct"></i>
+        </button>
+      </header>
+
+      <!-- ============ PAGE HEADER ============ -->
+      <header class="page-header">
+        <span class="k-eyebrow">SETTINGS</span>
+        <h1><span class="word-thin">Prefer</span><span class="word-amber">ences.</span></h1>
+        <p>Forge adapts to how you train. Tune the inputs, the targets, and the reminders.</p>
+      </header>
+
+      <!-- ============ CONNECTED SOURCES ============ -->
+      <div class="section-head">
+        <span class="k-eyebrow">Connected sources</span>
+        <span class="k-pill k-pill--green">3 active</span>
+      </div>
+      <section class="k-card">
+        <div class="set-row">
+          <span class="k-icon-tile k-icon-tile--green"><i class="ph" id="iconHealth"></i></span>
+          <span class="set-row__body">
+            <span class="set-row__name">Apple Health</span>
+            <span class="set-row__sub">Synced 6:12a</span>
+          </span>
+          <button class="k-pill k-pill--ghost">
+            <i class="ph-bold" id="iconRefresh1"></i> SYNC
+          </button>
+        </div>
+        <div class="set-row">
+          <span class="k-icon-tile k-icon-tile--amber"><i class="ph" id="iconWhoop"></i></span>
+          <span class="set-row__body">
+            <span class="set-row__name">WHOOP</span>
+            <span class="set-row__sub">Recovery 71% &middot; Synced 6:12a</span>
+          </span>
+          <button class="k-pill k-pill--ghost">
+            <i class="ph-bold" id="iconRefresh2"></i> SYNC
+          </button>
+        </div>
+        <div class="set-row">
+          <span class="k-icon-tile k-icon-tile--blue"><i class="ph" id="iconStrava"></i></span>
+          <span class="set-row__body">
+            <span class="set-row__name">Strava</span>
+            <span class="set-row__sub">42 runs &middot; Synced just now</span>
+          </span>
+          <button class="k-pill k-pill--ghost">
+            <i class="ph-bold" id="iconRefresh3"></i> SYNC
+          </button>
+        </div>
+        <div class="add-row">
+          <span class="k-icon-tile"><i class="ph-bold" id="iconAddSrc"></i></span>
+          <span class="add-row__name">Add a source</span>
+          <i class="ph" id="iconChevAdd" style="color: var(--c-amber);"></i>
+        </div>
+      </section>
+
+      <!-- ============ TRACKING ============ -->
+      <div class="section-head">
+        <span class="k-eyebrow">Tracking</span>
+        <span class="k-pill k-pill--ghost">Hybrid</span>
+      </div>
+      <section class="k-card">
+        <div class="set-row">
+          <span class="k-icon-tile k-icon-tile--amber"><i class="ph" id="iconHabits"></i></span>
+          <span class="set-row__body">
+            <span class="set-row__name">Habits</span>
+            <span class="set-row__sub">6 active</span>
+          </span>
+          <button class="k-pill k-pill--ghost"><i class="ph-bold" id="iconEdit1"></i> EDIT</button>
+        </div>
+        <div class="set-row">
+          <span class="k-icon-tile k-icon-tile--amber"><i class="ph" id="iconPlanT"></i></span>
+          <span class="set-row__body">
+            <span class="set-row__name">Plan</span>
+            <span class="set-row__sub">Hybrid build, week 3 of 16</span>
+          </span>
+          <button class="k-pill k-pill--ghost"><i class="ph-bold" id="iconEdit2"></i> CHANGE</button>
+        </div>
+        <div class="set-row">
+          <span class="k-icon-tile k-icon-tile--blue"><i class="ph" id="iconWater"></i></span>
+          <span class="set-row__body">
+            <span class="set-row__name">Water goal</span>
+            <span class="set-row__sub">Daily target</span>
+          </span>
+          <span class="set-row__trail">6 L <i class="ph" id="iconChev1"></i></span>
+        </div>
+        <div class="set-row">
+          <span class="k-icon-tile k-icon-tile--green"><i class="ph" id="iconSteps"></i></span>
+          <span class="set-row__body">
+            <span class="set-row__name">Step goal</span>
+            <span class="set-row__sub">Daily target</span>
+          </span>
+          <span class="set-row__trail">10,000 <i class="ph" id="iconChev2"></i></span>
+        </div>
+        <div class="set-row">
+          <span class="k-icon-tile k-icon-tile--amber"><i class="ph" id="iconFuel"></i></span>
+          <span class="set-row__body">
+            <span class="set-row__name">Calorie target</span>
+            <span class="set-row__sub">Build phase</span>
+          </span>
+          <span class="set-row__trail">2,520 kcal <i class="ph" id="iconChev3"></i></span>
+        </div>
+      </section>
+
+      <!-- ============ NOTIFICATIONS ============ -->
+      <div class="section-head">
+        <span class="k-eyebrow">Notifications</span>
+        <span class="k-pill k-pill--ghost">2 on</span>
+      </div>
+      <section class="k-card">
+        <div class="set-row">
+          <span class="k-icon-tile k-icon-tile--amber"><i class="ph" id="iconBell1"></i></span>
+          <span class="set-row__body">
+            <span class="set-row__name">Morning recap</span>
+            <span class="set-row__sub">6:30a daily</span>
+          </span>
+          <span class="switch is-on" data-toggle role="switch" aria-checked="true"></span>
+        </div>
+        <div class="set-row">
+          <span class="k-icon-tile k-icon-tile--amber"><i class="ph" id="iconBell2"></i></span>
+          <span class="set-row__body">
+            <span class="set-row__name">Workout reminder</span>
+            <span class="set-row__sub">T &middot; Th &middot; S at 6a</span>
+          </span>
+          <span class="switch is-on" data-toggle role="switch" aria-checked="true"></span>
+        </div>
+        <div class="set-row">
+          <span class="k-icon-tile"><i class="ph" id="iconBell3"></i></span>
+          <span class="set-row__body">
+            <span class="set-row__name">Daily summary</span>
+            <span class="set-row__sub">Sent at bedtime</span>
+          </span>
+          <span class="switch" data-toggle role="switch" aria-checked="false"></span>
+        </div>
+      </section>
+
+      <!-- ============ PROFILE ============ -->
+      <div class="section-head">
+        <span class="k-eyebrow">Profile</span>
+        <span class="k-pill k-pill--ghost">Forge member</span>
+      </div>
+      <section class="k-card">
+        <div class="set-row">
+          <span class="k-icon-tile"><i class="ph" id="iconUser"></i></span>
+          <span class="set-row__body">
+            <span class="set-row__name">Name</span>
+          </span>
+          <span class="set-row__trail">Brad Pearson <i class="ph" id="iconChev4"></i></span>
+        </div>
+        <div class="set-row">
+          <span class="k-icon-tile"><i class="ph" id="iconMail"></i></span>
+          <span class="set-row__body">
+            <span class="set-row__name">Email</span>
+          </span>
+          <span class="set-row__trail">brad@12thbean &nbsp;<i class="ph" id="iconChev5"></i></span>
+        </div>
+        <div class="set-row">
+          <span class="k-icon-tile"><i class="ph" id="iconScale"></i></span>
+          <span class="set-row__body">
+            <span class="set-row__name">Units</span>
+          </span>
+          <span class="unit-toggle" role="group" aria-label="Units">
+            <button class="is-on" type="button" data-unit="lb">LB</button>
+            <button type="button" data-unit="kg">KG</button>
+          </span>
+        </div>
+        <div class="set-row">
+          <span class="k-icon-tile"><i class="ph" id="iconClock"></i></span>
+          <span class="set-row__body">
+            <span class="set-row__name">Timezone</span>
+          </span>
+          <span class="set-row__trail">Denver <i class="ph" id="iconChev6"></i></span>
+        </div>
+      </section>
+
+      <!-- ============ APP ============ -->
+      <div class="section-head">
+        <span class="k-eyebrow">App</span>
+        <span class="k-pill k-pill--ghost">v1.0.3</span>
+      </div>
+      <section class="k-card k-card--quiet">
+        <div class="set-row">
+          <span class="k-icon-tile k-icon-tile--sm"><i class="ph" id="iconInfo"></i></span>
+          <span class="set-row__body">
+            <span class="set-row__name">Version</span>
+          </span>
+          <span class="set-row__trail">1.0.3 &middot; Build 32</span>
+        </div>
+        <div class="set-row">
+          <span class="k-icon-tile k-icon-tile--sm"><i class="ph" id="iconLock"></i></span>
+          <span class="set-row__body">
+            <span class="set-row__name">Privacy</span>
+          </span>
+          <i class="ph" id="iconChev7" style="color: var(--c-faint);"></i>
+        </div>
+        <div class="set-row">
+          <span class="k-icon-tile k-icon-tile--sm"><i class="ph" id="iconScroll"></i></span>
+          <span class="set-row__body">
+            <span class="set-row__name">Terms</span>
+          </span>
+          <i class="ph" id="iconChev8" style="color: var(--c-faint);"></i>
+        </div>
+        <div class="set-row">
+          <span class="k-icon-tile k-icon-tile--sm"><i class="ph" id="iconHelp"></i></span>
+          <span class="set-row__body">
+            <span class="set-row__name">Help</span>
+          </span>
+          <i class="ph" id="iconChev9" style="color: var(--c-faint);"></i>
+        </div>
+      </section>
+
+      <!-- ============ SIGN OUT ============ -->
+      <button class="sign-out" type="button">Sign out</button>
+
+      <!-- ============ FOOTER SIGIL ============ -->
+      <div class="footer-sigil">
+        FORGE <span class="dot"></span> v1.0.3 <span class="dot"></span> Built in Denver
+      </div>
+
+    </div>
+
+    <!-- ============ BOTTOM NAV ============ -->
+    <nav class="k-nav" aria-label="Primary">
+      <button class="k-nav__btn" aria-label="Home"><i class="ph" id="iconNavHome"></i></button>
+      <button class="k-nav__btn" aria-label="Plan"><i class="ph" id="iconNavPlan"></i></button>
+      <button class="k-nav__btn" aria-label="Habits"><i class="ph" id="iconNavHabits"></i></button>
+      <button class="k-nav__btn is-active" aria-current="page" aria-label="Settings"><i class="ph" id="iconNavSettings"></i></button>
+    </nav>
+  </main>
+
+  <script>
+    // Inline mirror of kit/icons.js — keeps the page file:// friendly,
+    // and keeps every glyph reference inside the typed registry.
+    const icons = Object.freeze({
+      recovery:'ph-heartbeat', strain:'ph-pulse', sleep:'ph-moon',
+      hrv:'ph-wave-sine', rhr:'ph-heartbeat',
+      steps:'ph-footprints', water:'ph-drop', weight:'ph-scales',
+      fuel:'ph-fire', calories:'ph-fire',
+      protein:'ph-egg', carbs:'ph-bowl-food', fat:'ph-drop-half',
+      workout:'ph-barbell', run:'ph-person-simple-run',
+      mobility:'ph-person-simple-walk', stretch:'ph-person-simple-tai-chi',
+      vitaminsAM:'ph-sun', vitaminsPM:'ph-moon-stars',
+      home:'ph-house', plan:'ph-calendar-blank',
+      habits:'ph-check-square', settings:'ph-gear-six', account:'ph-user-circle',
+      refresh:'ph-arrow-clockwise', edit:'ph-pencil-simple',
+      plus:'ph-plus', minus:'ph-minus', check:'ph-check',
+      caretLeft:'ph-caret-left', caretRight:'ph-caret-right', x:'ph-x',
+      play:'ph-play', pause:'ph-pause', record:'ph-record-fill',
+    });
+
+    // Tiny page-local extensions for icons the kit hasn't promoted yet.
+    // Kept separate from the typed registry so authors never reach past it.
+    const localIcons = Object.freeze({
+      bell:        'ph-bell',
+      bellSlash:   'ph-bell-slash',
+      lock:        'ph-lock-simple',
+      scroll:      'ph-scroll',
+      help:        'ph-question',
+      info:        'ph-info',
+      mail:        'ph-envelope-simple',
+      clock:       'ph-clock',
+      user:        'ph-user',
+      chevron:     'ph-caret-right',
+      heart:       'ph-heart',
+      lightning:   'ph-lightning',
+      lineUp:      'ph-trend-up',
+    });
+
+    const ic = (id, name) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const cls = icons[name] || localIcons[name];
+      if (cls) el.classList.add(cls);
+    };
+
+    ic('iconBack', 'caretLeft');
+    ic('iconFwd', 'caretRight');
+    ic('iconAcct', 'account');
+    ic('iconHealth', 'heart');
+    ic('iconWhoop', 'recovery');
+    ic('iconStrava', 'run');
+    ic('iconRefresh1', 'refresh');
+    ic('iconRefresh2', 'refresh');
+    ic('iconRefresh3', 'refresh');
+    ic('iconAddSrc', 'plus');
+    ic('iconChevAdd', 'chevron');
+    ic('iconHabits', 'habits');
+    ic('iconPlanT', 'plan');
+    ic('iconWater', 'water');
+    ic('iconSteps', 'steps');
+    ic('iconFuel', 'fuel');
+    ic('iconChev1', 'chevron');
+    ic('iconChev2', 'chevron');
+    ic('iconChev3', 'chevron');
+    ic('iconChev4', 'chevron');
+    ic('iconChev5', 'chevron');
+    ic('iconChev6', 'chevron');
+    ic('iconChev7', 'chevron');
+    ic('iconChev8', 'chevron');
+    ic('iconChev9', 'chevron');
+    ic('iconBell1', 'bell');
+    ic('iconBell2', 'bell');
+    ic('iconBell3', 'bellSlash');
+    ic('iconUser', 'user');
+    ic('iconMail', 'mail');
+    ic('iconScale', 'weight');
+    ic('iconClock', 'clock');
+    ic('iconInfo', 'info');
+    ic('iconLock', 'lock');
+    ic('iconScroll', 'scroll');
+    ic('iconHelp', 'help');
+    ic('iconEdit1', 'edit');
+    ic('iconEdit2', 'edit');
+    ic('iconNavHome', 'home');
+    ic('iconNavPlan', 'plan');
+    ic('iconNavHabits', 'habits');
+    ic('iconNavSettings', 'settings');
+
+    // Notification + unit toggles
+    document.querySelectorAll('[data-toggle]').forEach(el => {
+      el.addEventListener('click', () => {
+        el.classList.toggle('is-on');
+        el.setAttribute('aria-checked', el.classList.contains('is-on'));
+      });
+    });
+    document.querySelectorAll('.unit-toggle').forEach(group => {
+      group.querySelectorAll('button').forEach(b => {
+        b.addEventListener('click', () => {
+          group.querySelectorAll('button').forEach(o => o.classList.remove('is-on'));
+          b.classList.add('is-on');
+        });
+      });
+    });
+
+    // Entrance stagger: paint, then attach .is-ready and let each child
+    // pick up the transition with a small delay.
+    const scroller = document.getElementById('scroller');
+    Array.from(scroller.children).forEach((child, i) => {
+      child.style.transitionDelay = (i * 35) + 'ms';
+    });
+    requestAnimationFrame(() => requestAnimationFrame(() => scroller.classList.add('is-ready')));
+
+    // Scroll progress
+    const prog = document.getElementById('scrollProg');
+    function updateProg() {
+      const el = scroller;
+      const max = el.scrollHeight - window.innerHeight;
+      const pct = max > 0 ? Math.min(100, Math.max(0, (window.scrollY / max) * 100)) : 0;
+      prog.style.setProperty('--sp-pct', pct + '%');
+    }
+    window.addEventListener('scroll', updateProg, { passive: true });
+    window.addEventListener('resize', updateProg);
+    updateProg();
+  </script>
+</body>
+</html>

@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE — Home</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+  <link rel="stylesheet" href="../kit/tokens.css">
+  <link rel="stylesheet" href="../kit/kit.css">
+  <style>
+    /* ---- Home page — token-only authoring ---- */
+
+    /* Ring sized between kit defaults — uses token math (5 * s-3 = 80). */
+    .home-ring { --ring-size: calc(var(--s-3) * 5); --ring-stroke: calc(var(--s-0) * 1.5); }
+
+    /* Subtle drifting amber ambient glow — gated on motion preference. */
+    .ambient-glow {
+      position: absolute;
+      top: calc(var(--s-8) * -1);
+      left: 50%;
+      width: calc(var(--s-8) * 6);
+      height: calc(var(--s-8) * 4);
+      transform: translateX(-50%);
+      background: radial-gradient(closest-side, rgba(227,168,87,0.10), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(var(--s-4));
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .ambient-glow { animation: drift 18s ease-in-out infinite alternate; }
+    }
+    @keyframes drift {
+      0%   { transform: translateX(-58%) translateY(0); opacity: 0.85; }
+      100% { transform: translateX(-42%) translateY(var(--s-2)); opacity: 1; }
+    }
+
+    /* Sticky frosted masthead — sits above scroll, blurs content below. */
+    .masthead {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--s-2) var(--s-1);
+      margin: calc(var(--s-3) * -1) calc(var(--s-3) * -1) 0;
+      padding-left: var(--s-3);
+      padding-right: var(--s-3);
+      padding-top: calc(env(safe-area-inset-top, 0px) + var(--s-2));
+      background: rgba(20, 18, 14, 0.72);
+      -webkit-backdrop-filter: blur(var(--s-4)) saturate(140%);
+      backdrop-filter: blur(var(--s-4)) saturate(140%);
+      border-bottom: thin solid var(--c-hair);
+    }
+
+    /* Source dot */
+    .src-dot {
+      width: var(--s-1);
+      height: var(--s-1);
+      border-radius: var(--r-pill);
+      background: var(--c-green);
+      box-shadow: 0 0 var(--s-1) rgba(79, 209, 126, 0.6);
+      display: inline-block;
+      flex: 0 0 auto;
+    }
+    .src-dot.is-off { background: var(--c-faint); box-shadow: none; }
+
+    /* Date label in masthead */
+    .date-label {
+      min-width: calc(var(--s-6) * 2 + var(--s-3));
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      line-height: 1.1;
+    }
+    .date-label__main {
+      font-size: var(--t-body-size);
+      font-weight: 600;
+      color: var(--c-ink);
+      letter-spacing: -0.2px;
+    }
+    .date-label__sub { margin-top: var(--s-0); }
+
+    .topbar-btn.is-disabled { opacity: 0.3; pointer-events: none; }
+    .topbar-btn:active { transform: scale(0.94); }
+    .topbar-btn { transition: transform var(--m-fast), background var(--m-fast); }
+    .topbar-btn:focus-visible {
+      outline: thin solid var(--c-amber);
+      outline-offset: var(--s-0);
+    }
+
+    /* Hero layout */
+    .hero-body {
+      display: flex;
+      align-items: center;
+      gap: var(--s-3);
+      min-width: 0;
+    }
+    .hero-rings {
+      display: flex;
+      gap: var(--s-1);
+      flex: 0 0 auto;
+    }
+    .hero-metrics { flex: 1; min-width: 0; }
+
+    /* Ring fill on load — animate --ring-pct from 0 to target. */
+    .k-ring__bar {
+      stroke-dashoffset: 100;
+      transition: stroke-dashoffset var(--m-slow);
+    }
+    .is-loaded .k-ring__bar {
+      stroke-dashoffset: calc(100 - var(--ring-pct));
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .k-ring__bar {
+        stroke-dashoffset: calc(100 - var(--ring-pct));
+        transition: none;
+      }
+    }
+
+    .play-pill .ph-bold { font-size: var(--t-eyebrow-size); }
+    .play-pill.is-hidden { display: none; }
+    .play-pill { transition: transform var(--m-fast); }
+    .play-pill:active { transform: scale(0.96); }
+
+    /* Fuel macro rows */
+    .macro-row { display: grid; grid-template-columns: var(--s-3) 1fr auto; align-items: center; column-gap: var(--s-2); }
+    .macro-row__lbl {
+      font-family: var(--f-mono);
+      font-size: var(--t-eyebrow-size);
+      font-weight: var(--t-eyebrow-weight);
+      letter-spacing: var(--t-eyebrow-track);
+      color: var(--c-faint);
+      text-transform: uppercase;
+    }
+
+    /* Steps + Water tiles */
+    .tile-numeric .k-numeric__val { font-size: var(--t-num-lg); font-weight: 400; }
+
+    .water-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--s-1);
+      margin-top: var(--s-2);
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+    .water-controls .k-step-btn {
+      width: var(--s-6);
+      height: var(--s-6);
+      font-size: var(--t-label-size);
+    }
+    .water-controls .k-pill { font-size: var(--t-eyebrow-size); }
+    .k-step-btn:focus-visible,
+    .k-pill:focus-visible {
+      outline: thin solid var(--c-amber);
+      outline-offset: var(--s-0);
+    }
+    .k-step-btn:active { transform: scale(0.92); }
+    .k-step-btn { transition: transform var(--m-fast), background var(--m-fast); }
+
+    /* Habits — no card, hairline list */
+    .habits-list { display: flex; flex-direction: column; }
+    .habit-clickable { cursor: pointer; transition: background var(--m-fast); border-radius: var(--r-sm); }
+    .habit-clickable:active { background: rgba(255,255,255,0.02); }
+
+    /* Account popover */
+    .acct-pop {
+      position: absolute;
+      top: calc(var(--s-7) + var(--s-5));
+      right: var(--s-3);
+      z-index: 90;
+      width: calc(var(--s-8) * 4);
+      background: var(--c-raised);
+      border: thin solid var(--c-hair);
+      border-radius: var(--r-lg);
+      padding: var(--s-1);
+      box-shadow: var(--sh-raised);
+      transform: translateY(calc(var(--s-0) * -1)) scale(0.96);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--m-base), transform var(--m-base);
+    }
+    .acct-pop.is-open { opacity: 1; transform: none; pointer-events: auto; }
+    .acct-pop__item {
+      display: flex;
+      align-items: center;
+      gap: var(--s-2);
+      padding: var(--s-2) var(--s-2);
+      border-radius: var(--r-sm);
+      color: var(--c-ink);
+      font-size: var(--t-label-size);
+      cursor: pointer;
+      transition: background var(--m-fast);
+      text-decoration: none;
+    }
+    .acct-pop__item:hover { background: var(--c-hair); }
+    .acct-pop__item i { color: var(--c-sub); width: var(--s-3); text-align: center; }
+    .acct-pop__item.is-danger { color: var(--c-red); }
+    .acct-pop__item.is-danger i { color: var(--c-red); }
+    .acct-pop__sep { height: thin; background: var(--c-hair); margin: var(--s-0) var(--s-1); }
+
+    /* Dev toggles */
+    .dev-toggle {
+      position: fixed;
+      right: var(--s-2);
+      z-index: 200;
+      background: rgba(20, 18, 14, 0.88);
+      border: thin solid var(--c-hair);
+      border-radius: var(--r-md);
+      padding: var(--s-0);
+      display: flex;
+      gap: var(--s-0);
+      box-shadow: var(--sh-card);
+      backdrop-filter: blur(var(--s-4));
+      -webkit-backdrop-filter: blur(var(--s-4));
+    }
+    .dev-toggle--top    { bottom: calc(env(safe-area-inset-bottom, 0px) + var(--s-7) + var(--s-6)); }
+    .dev-toggle--bottom { bottom: calc(env(safe-area-inset-bottom, 0px) + var(--s-2)); }
+    .dev-toggle__btn {
+      padding: var(--s-1) var(--s-2);
+      border-radius: var(--r-sm);
+      font-family: var(--f-mono);
+      font-size: var(--t-eyebrow-size);
+      font-weight: var(--t-eyebrow-weight);
+      letter-spacing: var(--t-eyebrow-track);
+      text-transform: uppercase;
+      color: var(--c-sub);
+      background: transparent;
+    }
+    .dev-toggle__btn.is-on { background: var(--c-amber); color: var(--c-on-amber); }
+
+    /* Fresh mode greying */
+    .is-fresh .k-card:not(.k-card--fuel),
+    .is-fresh .habits-list {
+      opacity: 0.7;
+    }
+    .is-fresh .k-card .k-progress::after,
+    .is-fresh .k-card .k-ring__bar { opacity: 0.25; }
+    .is-fresh .fuel-card { display: none; }
+
+    /* Connect CTAs inside fresh cards */
+    .connect-cta {
+      display: none;
+      margin-top: var(--s-2);
+      width: 100%;
+      padding: var(--s-2);
+      background: transparent;
+      border: thin dashed var(--c-hair-strong);
+      border-radius: var(--r-md);
+      color: var(--c-amber);
+      font-family: var(--f-mono);
+      font-size: var(--t-eyebrow-size);
+      font-weight: var(--t-eyebrow-weight);
+      letter-spacing: var(--t-eyebrow-track);
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color var(--m-fast), background var(--m-fast);
+    }
+    .connect-cta:hover { border-color: var(--c-amber); background: rgba(227, 168, 87, 0.06); }
+    .is-fresh .connect-cta { display: block; }
+    .is-fresh .water-controls { display: none; }
+    .is-fresh .habits-edit { display: none; }
+    .is-fresh .play-pill { display: none; }
+    .is-fresh .k-ring__num { color: var(--c-faint); }
+    .is-fresh .k-metric__val { color: var(--c-faint); }
+
+    /* Section entrance stagger */
+    .enter {
+      opacity: 0;
+      transform: translateY(var(--s-1));
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .enter {
+        animation: enter var(--m-base) cubic-bezier(0.2, 0.0, 0.2, 1) forwards;
+        animation-delay: calc(var(--i, 0) * 60ms);
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .enter { opacity: 1; transform: none; }
+    }
+    @keyframes enter {
+      to { opacity: 1; transform: none; }
+    }
+
+    /* z-index — keep content above the ambient glow */
+    .k-screen__scroll { position: relative; z-index: 1; }
+  </style>
+</head>
+<body>
+  <main class="k-screen" id="screen">
+    <div class="ambient-glow" aria-hidden="true"></div>
+    <div class="k-screen__scroll">
+
+      <!-- ======= STICKY MASTHEAD ======= -->
+      <header class="masthead enter" style="--i: 0;">
+        <div class="k-row" style="gap: var(--s-1);">
+          <button class="k-icon-tile k-icon-tile--sm topbar-btn" id="dayBack" aria-label="Previous day">
+            <i class="ph-bold" id="iconBack"></i>
+          </button>
+          <div class="date-label">
+            <span class="date-label__main" id="dateMain">Today</span>
+            <span class="k-eyebrow date-label__sub" id="dateSub">SAT JUN 20</span>
+          </div>
+          <button class="k-icon-tile k-icon-tile--sm topbar-btn is-disabled" id="dayFwd" aria-label="Next day">
+            <i class="ph-bold" id="iconFwd"></i>
+          </button>
+        </div>
+        <button class="k-icon-tile topbar-btn" id="acctBtn" aria-label="Account">
+          <i class="ph" id="iconAcct"></i>
+        </button>
+      </header>
+
+      <!-- ======= BIOMETRIC HERO ======= -->
+      <section class="k-card k-card--accent enter" id="heroCard" style="--i: 1;">
+        <div class="k-row k-row--between" style="margin-bottom: var(--s-3);">
+          <span class="k-eyebrow">
+            <span class="src-dot" id="srcDot"></span>
+            <span id="srcName">WHOOP</span>
+          </span>
+          <button class="k-pill k-pill--amber play-pill" id="playPill">
+            <i class="ph-bold" id="iconPlay"></i>
+            <span id="playLbl">START</span>
+          </button>
+        </div>
+
+        <div class="hero-body">
+          <div class="hero-rings">
+            <div class="k-ring home-ring" style="--ring-color: var(--c-green); --ring-pct: 71;">
+              <svg class="k-ring__svg" viewBox="0 0 100 100" aria-hidden="true">
+                <circle class="k-ring__track" cx="50" cy="50" r="44" stroke-width="6" pathLength="100" />
+                <circle class="k-ring__bar"   cx="50" cy="50" r="44" stroke-width="6" pathLength="100" />
+              </svg>
+              <div class="k-ring__num" id="recNum">71</div>
+              <div class="k-ring__label">Recovery</div>
+            </div>
+            <div class="k-ring home-ring" style="--ring-color: var(--c-blue); --ring-pct: 42;">
+              <svg class="k-ring__svg" viewBox="0 0 100 100" aria-hidden="true">
+                <circle class="k-ring__track" cx="50" cy="50" r="44" stroke-width="6" pathLength="100" />
+                <circle class="k-ring__bar"   cx="50" cy="50" r="44" stroke-width="6" pathLength="100" />
+              </svg>
+              <div class="k-ring__num" id="strNum">8.4</div>
+              <div class="k-ring__label">Strain</div>
+            </div>
+          </div>
+
+          <div class="k-metric-list hero-metrics">
+            <div class="k-metric">
+              <span class="k-metric__lbl">HRV</span>
+              <span class="k-metric__val" id="mHrv">62</span>
+              <span class="k-metric__unit">ms</span>
+            </div>
+            <div class="k-metric">
+              <span class="k-metric__lbl">RHR</span>
+              <span class="k-metric__val" id="mRhr">54</span>
+              <span class="k-metric__unit">bpm</span>
+            </div>
+            <div class="k-metric">
+              <span class="k-metric__lbl">Rest</span>
+              <span class="k-metric__val" id="mRest">7.4</span>
+              <span class="k-metric__unit">hr</span>
+            </div>
+            <div class="k-metric">
+              <span class="k-metric__lbl">Sleep</span>
+              <span class="k-metric__val" id="mSleep">92</span>
+              <span class="k-metric__unit">%</span>
+            </div>
+          </div>
+        </div>
+        <button class="connect-cta" data-connect="hero">Connect biometric source</button>
+      </section>
+
+      <!-- ======= FUEL CARD ======= -->
+      <section class="k-card fuel-card k-card--fuel enter" id="fuelCard" style="--i: 2;">
+        <div class="k-row k-row--between" style="margin-bottom: var(--s-3);">
+          <span class="k-eyebrow">
+            <i class="ph" id="iconFuel"></i>
+            FUEL · 1,840 / 2,520 KCAL
+          </span>
+          <button class="k-pill k-pill--ghost">
+            <i class="ph-bold" id="iconPlusFuel"></i>
+            LOG
+          </button>
+        </div>
+        <div class="k-stack" style="--gap: var(--s-2);">
+          <div class="macro-row">
+            <span class="macro-row__lbl">P</span>
+            <div class="k-progress" style="--p-pct: 92; --p-color: var(--c-green);"></div>
+            <span class="k-numeric k-numeric--sm">
+              <span class="k-numeric__val">165 / 180</span>
+              <span class="k-numeric__unit">g</span>
+            </span>
+          </div>
+          <div class="macro-row">
+            <span class="macro-row__lbl">C</span>
+            <div class="k-progress" style="--p-pct: 79; --p-color: var(--c-amber);"></div>
+            <span class="k-numeric k-numeric--sm">
+              <span class="k-numeric__val">198 / 250</span>
+              <span class="k-numeric__unit">g</span>
+            </span>
+          </div>
+          <div class="macro-row">
+            <span class="macro-row__lbl">F</span>
+            <div class="k-progress" style="--p-pct: 78; --p-color: var(--c-yellow);"></div>
+            <span class="k-numeric k-numeric--sm">
+              <span class="k-numeric__val">62 / 80</span>
+              <span class="k-numeric__unit">g</span>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======= STEPS + WATER ======= -->
+      <section class="k-grid-2 enter" style="--i: 3;">
+
+        <div class="k-card" id="stepsCard">
+          <div class="k-row k-row--between" style="margin-bottom: var(--s-3);">
+            <span class="k-eyebrow">STEPS</span>
+            <i class="ph" id="iconSteps" style="color: var(--c-faint); font-size: var(--t-num-sm);"></i>
+          </div>
+          <div class="k-stack" style="--gap: var(--s-2);">
+            <span class="k-numeric k-numeric--lg tile-numeric">
+              <span class="k-numeric__val" id="stepsVal">8,240</span>
+              <span class="k-numeric__unit">/ 10K</span>
+            </span>
+            <div class="k-progress" style="--p-pct: 82; --p-color: var(--c-amber);"></div>
+          </div>
+          <button class="connect-cta" data-connect="steps">Connect Health</button>
+        </div>
+
+        <div class="k-card" id="waterCard">
+          <div class="k-row k-row--between" style="margin-bottom: var(--s-3);">
+            <span class="k-eyebrow">WATER</span>
+            <i class="ph" id="iconWater" style="color: var(--c-faint); font-size: var(--t-num-sm);"></i>
+          </div>
+          <div class="k-stack" style="--gap: var(--s-2);">
+            <span class="k-numeric k-numeric--lg tile-numeric">
+              <span class="k-numeric__val" id="waterVal">2.4</span>
+              <span class="k-numeric__unit">/ 6 L</span>
+            </span>
+            <div class="k-progress" style="--p-pct: 40; --p-color: var(--c-blue);" id="waterBar"></div>
+            <div class="water-controls">
+              <button class="k-pill k-pill--ghost" id="bottlePill">
+                BOTTLE · <span id="bottleSz">0.5</span> L
+              </button>
+              <div class="k-row" style="gap: var(--s-1);">
+                <button class="k-step-btn" id="waterMinus" aria-label="Less water">
+                  <i class="ph-bold" id="iconMinus"></i>
+                </button>
+                <button class="k-step-btn" id="waterPlus" aria-label="More water">
+                  <i class="ph-bold" id="iconPlusWater"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <button class="connect-cta" data-connect="water">Choose bottle</button>
+        </div>
+
+      </section>
+
+      <!-- ======= HABITS ======= -->
+      <section class="enter" style="--i: 4;">
+        <div class="k-row k-row--between" style="margin-bottom: var(--s-1); padding: 0 var(--s-0);">
+          <span class="k-eyebrow">HABITS · <span id="habitsMeta">2 / 4</span></span>
+          <button class="k-pill k-pill--ghost habits-edit">
+            <i class="ph-bold" id="iconEdit"></i>
+            EDIT
+          </button>
+        </div>
+
+        <div class="habits-list" id="habitsList">
+          <div class="k-habit-row k-habit-row--done habit-clickable" data-habit="check">
+            <span class="k-icon-tile k-icon-tile--amber"><i class="ph" id="iconVitAm"></i></span>
+            <span class="k-habit-row__name">AM vitamins</span>
+            <span class="k-checkbox is-checked"><i class="ph-bold" id="iconChk1"></i></span>
+          </div>
+          <div class="k-habit-row k-habit-row--done habit-clickable" data-habit="check">
+            <span class="k-icon-tile k-icon-tile--amber"><i class="ph" id="iconWk"></i></span>
+            <span class="k-habit-row__name">Workout</span>
+            <span class="k-checkbox is-checked"><i class="ph-bold" id="iconChk2"></i></span>
+          </div>
+          <div class="k-habit-row habit-clickable" data-habit="check">
+            <span class="k-icon-tile k-icon-tile--blue"><i class="ph" id="iconMb"></i></span>
+            <span class="k-habit-row__name">Mobility</span>
+            <span class="k-checkbox"></span>
+          </div>
+          <div class="k-habit-row habit-clickable" data-habit="count" data-count="3" data-target="4">
+            <span class="k-icon-tile k-icon-tile--green"><i class="ph" id="iconPr"></i></span>
+            <span class="k-habit-row__name">Protein</span>
+            <span class="k-habit-row__trail"><span id="protCount">3</span> / 4</span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ======= ACCOUNT POPOVER ======= -->
+    <div class="acct-pop" id="acctPop" role="menu">
+      <a href="./account.html" class="acct-pop__item"><i class="ph" id="iconAcctP1"></i>Profile</a>
+      <div class="acct-pop__item"><i class="ph" id="iconAcctP2"></i>Connected sources</div>
+      <div class="acct-pop__sep"></div>
+      <div class="acct-pop__item is-danger"><i class="ph" id="iconAcctP3"></i>Sign out</div>
+    </div>
+
+    <!-- ======= BOTTOM NAV ======= -->
+    <nav class="k-nav" aria-label="Primary">
+      <button class="k-nav__btn is-active" aria-current="page" aria-label="Home"><i class="ph" id="iconNavHome"></i></button>
+      <button class="k-nav__btn" aria-label="Plan"><i class="ph" id="iconNavPlan"></i></button>
+      <button class="k-nav__btn" aria-label="Habits"><i class="ph" id="iconNavHabits"></i></button>
+      <button class="k-nav__btn" aria-label="Settings"><i class="ph" id="iconNavSettings"></i></button>
+    </nav>
+  </main>
+
+  <!-- ======= DEV TOGGLES ======= -->
+  <div class="dev-toggle dev-toggle--top" role="group" aria-label="Account mode">
+    <button class="dev-toggle__btn is-on" id="modeConn">Connected</button>
+    <button class="dev-toggle__btn" id="modeFresh">Fresh</button>
+  </div>
+  <div class="dev-toggle dev-toggle--bottom" role="group" aria-label="Workout state">
+    <button class="dev-toggle__btn" id="wkSched">Sched</button>
+    <button class="dev-toggle__btn is-on" id="wkProg">Live</button>
+    <button class="dev-toggle__btn" id="wkDone">Done</button>
+  </div>
+
+  <script>
+    // Inline icon registry mirror (kit/icons.js is the source of truth).
+    const icons = Object.freeze({
+      recovery:'ph-heartbeat', strain:'ph-pulse', sleep:'ph-moon',
+      hrv:'ph-wave-sine', rhr:'ph-heartbeat',
+      steps:'ph-footprints', water:'ph-drop', weight:'ph-scales',
+      fuel:'ph-fire', calories:'ph-fire',
+      protein:'ph-egg', carbs:'ph-bowl-food', fat:'ph-drop-half',
+      workout:'ph-barbell', run:'ph-person-simple-run',
+      mobility:'ph-person-simple-walk', stretch:'ph-person-simple-tai-chi',
+      vitaminsAM:'ph-sun', vitaminsPM:'ph-moon-stars',
+      home:'ph-house', plan:'ph-calendar-blank',
+      habits:'ph-check-square', settings:'ph-gear-six', account:'ph-user-circle',
+      refresh:'ph-arrow-clockwise', edit:'ph-pencil-simple',
+      plus:'ph-plus', minus:'ph-minus', check:'ph-check',
+      caretLeft:'ph-caret-left', caretRight:'ph-caret-right', x:'ph-x',
+      play:'ph-play', pause:'ph-pause', record:'ph-record-fill',
+    });
+
+    const ic = (id, name) => { const el = document.getElementById(id); if (el) el.classList.add(icons[name]); };
+
+    ic('iconBack', 'caretLeft');
+    ic('iconFwd', 'caretRight');
+    ic('iconAcct', 'account');
+    ic('iconPlay', 'play');
+    ic('iconFuel', 'fuel');
+    ic('iconPlusFuel', 'plus');
+    ic('iconSteps', 'steps');
+    ic('iconWater', 'water');
+    ic('iconMinus', 'minus');
+    ic('iconPlusWater', 'plus');
+    ic('iconEdit', 'edit');
+    ic('iconVitAm', 'vitaminsAM');
+    ic('iconWk', 'workout');
+    ic('iconMb', 'mobility');
+    ic('iconPr', 'protein');
+    ic('iconChk1', 'check');
+    ic('iconChk2', 'check');
+    ic('iconAcctP1', 'account');
+    ic('iconAcctP2', 'refresh');
+    ic('iconAcctP3', 'x');
+    ic('iconNavHome', 'home');
+    ic('iconNavPlan', 'plan');
+    ic('iconNavHabits', 'habits');
+    ic('iconNavSettings', 'settings');
+
+    // ---- State ----
+    let mode = 'connected';
+    let workoutState = 'in-progress';
+    const bottleSizes = [0.5, 0.75, 1, 1.25];
+    let bottleIdx = 0;
+    let waterL = 2.4;
+    const waterTarget = 6;
+    let dayOffset = 0;
+
+    const $ = s => document.querySelector(s);
+
+    // ---- Ring fill on load ----
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      document.body.classList.add('is-loaded');
+    }));
+
+    // ---- Account popover ----
+    const acctBtn = $('#acctBtn');
+    const acctPop = $('#acctPop');
+    acctBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      acctPop.classList.toggle('is-open');
+    });
+    document.addEventListener('click', (e) => {
+      if (!acctPop.contains(e.target) && e.target !== acctBtn && !acctBtn.contains(e.target)) {
+        acctPop.classList.remove('is-open');
+      }
+    });
+
+    // ---- Date nav ----
+    function renderDate() {
+      const today = new Date(2026, 5, 20);
+      const d = new Date(today); d.setDate(d.getDate() + dayOffset);
+      const dayNames = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+      const monthNames = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+      const wk = dayNames[d.getDay()];
+      const mo = monthNames[d.getMonth()];
+      const sub = wk + ' ' + mo + ' ' + d.getDate();
+      let main;
+      if (dayOffset === 0) main = 'Today';
+      else if (dayOffset === -1) main = 'Yesterday';
+      else main = wk.charAt(0) + wk.slice(1).toLowerCase();
+      $('#dateMain').textContent = main;
+      $('#dateSub').textContent = sub;
+      $('#dayFwd').classList.toggle('is-disabled', dayOffset >= 0);
+    }
+    $('#dayBack').addEventListener('click', () => { dayOffset--; renderDate(); });
+    $('#dayFwd').addEventListener('click', () => { if (dayOffset < 0) { dayOffset++; renderDate(); } });
+
+    // ---- Habits ----
+    function updateHabitsMeta() {
+      if (mode === 'fresh') { $('#habitsMeta').textContent = '0 / 0'; return; }
+      const rows = document.querySelectorAll('#habitsList .k-habit-row');
+      let done = 0;
+      rows.forEach(r => {
+        if (r.dataset.habit === 'check' && r.classList.contains('k-habit-row--done')) done++;
+        if (r.dataset.habit === 'count') {
+          const c = +r.dataset.count, t = +r.dataset.target;
+          if (c >= t) done++;
+        }
+      });
+      $('#habitsMeta').textContent = done + ' / ' + rows.length;
+    }
+    document.querySelectorAll('#habitsList .k-habit-row[data-habit="check"]').forEach(row => {
+      row.addEventListener('click', () => {
+        if (mode === 'fresh') return;
+        row.classList.toggle('k-habit-row--done');
+        const chk = row.querySelector('.k-checkbox');
+        chk.classList.toggle('is-checked');
+        if (chk.classList.contains('is-checked')) {
+          if (!chk.querySelector('i')) {
+            const i = document.createElement('i');
+            i.className = 'ph-bold ' + icons.check;
+            chk.appendChild(i);
+          }
+        } else {
+          const i = chk.querySelector('i'); if (i) i.remove();
+        }
+        updateHabitsMeta();
+      });
+    });
+    const protRow = document.querySelector('#habitsList .k-habit-row[data-habit="count"]');
+    protRow.addEventListener('click', () => {
+      if (mode === 'fresh') return;
+      let c = +protRow.dataset.count;
+      const t = +protRow.dataset.target;
+      c = c >= t ? 0 : c + 1;
+      protRow.dataset.count = c;
+      $('#protCount').textContent = c;
+      protRow.classList.toggle('k-habit-row--done', c >= t);
+      updateHabitsMeta();
+    });
+
+    // ---- Water ----
+    function updateWater() {
+      waterL = Math.max(0, Math.min(waterTarget, +waterL.toFixed(2)));
+      const pct = Math.min(100, (waterL / waterTarget) * 100);
+      $('#waterVal').textContent = waterL.toFixed(1);
+      $('#waterBar').style.setProperty('--p-pct', pct);
+    }
+    $('#waterPlus').addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (mode === 'fresh') return;
+      waterL += bottleSizes[bottleIdx]; updateWater();
+    });
+    $('#waterMinus').addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (mode === 'fresh') return;
+      waterL -= bottleSizes[bottleIdx]; updateWater();
+    });
+    $('#bottlePill').addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (mode === 'fresh') return;
+      bottleIdx = (bottleIdx + 1) % bottleSizes.length;
+      $('#bottleSz').textContent = bottleSizes[bottleIdx];
+    });
+
+    // ---- Mode + workout ----
+    function setMode(m) {
+      mode = m;
+      document.body.classList.toggle('is-fresh', m === 'fresh');
+      $('#modeConn').classList.toggle('is-on', m === 'connected');
+      $('#modeFresh').classList.toggle('is-on', m === 'fresh');
+      if (m === 'fresh') {
+        $('#srcName').textContent = 'NO SOURCE';
+        $('#srcDot').classList.add('is-off');
+        $('#recNum').textContent = '00';
+        $('#strNum').textContent = '0.0';
+        ['mHrv','mRhr','mRest','mSleep'].forEach(id => $('#' + id).textContent = '00');
+        $('#stepsVal').textContent = '0';
+        $('#waterVal').textContent = '0.0';
+        $('#stepsCard').querySelector('.k-progress').style.setProperty('--p-pct', 0);
+        $('#waterBar').style.setProperty('--p-pct', 0);
+        $('#habitsMeta').textContent = '0 / 0';
+      } else {
+        $('#srcName').textContent = 'WHOOP';
+        $('#srcDot').classList.remove('is-off');
+        $('#recNum').textContent = '71';
+        $('#strNum').textContent = '8.4';
+        $('#mHrv').textContent = '62';
+        $('#mRhr').textContent = '54';
+        $('#mRest').textContent = '7.4';
+        $('#mSleep').textContent = '92';
+        $('#stepsVal').textContent = '8,240';
+        $('#stepsCard').querySelector('.k-progress').style.setProperty('--p-pct', 82);
+        updateWater();
+        updateHabitsMeta();
+      }
+      renderWorkoutPill();
+    }
+    function renderWorkoutPill() {
+      const pill = $('#playPill');
+      $('#wkSched').classList.toggle('is-on', workoutState === 'scheduled');
+      $('#wkProg').classList.toggle('is-on', workoutState === 'in-progress');
+      $('#wkDone').classList.toggle('is-on', workoutState === 'done');
+      if (mode === 'fresh' || workoutState === 'done') {
+        pill.classList.add('is-hidden');
+        return;
+      }
+      pill.classList.remove('is-hidden');
+      const iconEl = $('#iconPlay');
+      const lblEl = $('#playLbl');
+      if (workoutState === 'in-progress') {
+        pill.classList.remove('k-pill--amber');
+        pill.classList.add('k-pill--green');
+        iconEl.className = 'ph-bold ' + icons.record;
+        lblEl.textContent = 'LIVE';
+      } else {
+        pill.classList.add('k-pill--amber');
+        pill.classList.remove('k-pill--green');
+        iconEl.className = 'ph-bold ' + icons.play;
+        lblEl.textContent = 'START';
+      }
+    }
+    $('#modeConn').addEventListener('click', () => setMode('connected'));
+    $('#modeFresh').addEventListener('click', () => setMode('fresh'));
+    $('#wkSched').addEventListener('click', () => { workoutState = 'scheduled'; renderWorkoutPill(); });
+    $('#wkProg').addEventListener('click', () => { workoutState = 'in-progress'; renderWorkoutPill(); });
+    $('#wkDone').addEventListener('click', () => { workoutState = 'done'; renderWorkoutPill(); });
+
+    document.querySelectorAll('.connect-cta').forEach(b => b.addEventListener('click', () => setMode('connected')));
+
+    // ---- Init ----
+    renderDate();
+    renderWorkoutPill();
+    updateHabitsMeta();
+  </script>
+</body>
+</html>
