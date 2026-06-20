@@ -235,22 +235,21 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   display: block;
   transform: rotate(-90deg);
 }
+/* Geometry comes from SVG attributes (cx/cy/r/stroke-width set on the
+   <circle> in markup) for maximum cross-browser robustness. The kit's
+   ring shell renders an SVG with these baked-in attributes; only the
+   visual properties (stroke color, dasharray) live in CSS. */
 .k-ring__track,
-.k-ring__bar {
-  fill: none;
-  cx: 50%;
-  cy: 50%;
-  /* radius is computed in CSS: half - stroke/2, expressed as 47% of viewBox 100 for simplicity */
-  r: 46;
-  stroke-width: calc(var(--ring-stroke) * 100 / var(--ring-size));
-}
+.k-ring__bar { fill: none; }
 .k-ring__track { stroke: var(--ring-track); }
 .k-ring__bar {
   stroke: var(--ring-color);
   stroke-linecap: round;
-  /* circumference of r=46 ≈ 289.03 */
-  stroke-dasharray: 289.03;
-  stroke-dashoffset: calc(289.03 - (289.03 * var(--ring-pct) / 100));
+  /* pathLength="100" is set on the <circle> in markup so the dash math
+     becomes simple integer math — no calc(), no float, works on
+     Mobile Safari, old Chromium, everywhere. */
+  stroke-dasharray: 100;
+  stroke-dashoffset: calc(100 - var(--ring-pct));
   transition: stroke-dashoffset var(--m-slow);
 }
 
