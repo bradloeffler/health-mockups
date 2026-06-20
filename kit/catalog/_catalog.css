@@ -1,0 +1,404 @@
+/* FORGE catalog shared chrome — premium polish layer.
+   Authored with tokens only. Every catalog page imports this AFTER kit.css
+   and BEFORE its own page-scoped <style>, so per-page tweaks can override. */
+
+/* ───────────────────────── page foundation ───────────────────────── */
+/* Warm-charcoal page background with a faint top vignette + grain weave.
+   No raster images — purely token-driven layered gradients. */
+html, body { background: var(--c-deep); }
+body {
+  display: block;
+  background:
+    radial-gradient(120% 60% at 50% -10%, rgba(227,168,87,0.06), transparent 60%),
+    radial-gradient(80% 50% at 100% 0%, rgba(111,176,216,0.025), transparent 70%),
+    repeating-linear-gradient(0deg,    rgba(255,255,255,0.012) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg,   rgba(0,0,0,0.16)        0 1px, transparent 1px 3px),
+    linear-gradient(180deg, var(--c-deep) 0%, var(--c-bg) 35%, var(--c-deep) 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* ───────────────────────── sticky masthead ───────────────────────── */
+/* Lives at the very top of every page. Translucent + backdrop-blur so
+   the page tints through. Pages add <header class="cat-masthead"> ... */
+.cat-masthead {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding:
+    calc(env(safe-area-inset-top, 0px) + var(--s-2))
+    var(--s-4)
+    var(--s-2)
+    var(--s-4);
+  background: rgba(13,12,10,0.72);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
+  backdrop-filter: saturate(140%) blur(14px);
+  border-bottom: 1px solid var(--c-hair);
+}
+.cat-masthead__left,
+.cat-masthead__right {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-width: 0;
+}
+.cat-masthead__mark {
+  width: 22px; height: 22px;
+  border-radius: var(--r-sm);
+  background: var(--c-amber);
+  color: var(--c-on-amber);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--f-mono);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  box-shadow: 0 0 0 1px rgba(243,195,120,0.25), 0 1px 0 rgba(255,255,255,0.10) inset;
+}
+.cat-masthead__word {
+  font-family: var(--f-mono);
+  font-size: var(--t-eyebrow-size);
+  font-weight: var(--t-eyebrow-weight);
+  letter-spacing: var(--t-eyebrow-track);
+  text-transform: uppercase;
+  color: var(--c-ink);
+}
+.cat-masthead__word .dim { color: var(--c-faint); }
+.cat-masthead__back {
+  font-family: var(--f-mono);
+  font-size: var(--t-eyebrow-size);
+  font-weight: var(--t-eyebrow-weight);
+  letter-spacing: var(--t-eyebrow-track);
+  text-transform: uppercase;
+  color: var(--c-sub);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  padding: var(--s-1) var(--s-2);
+  border-radius: var(--r-pill);
+  transition: color var(--m-fast), background var(--m-fast);
+}
+.cat-masthead__back:hover {
+  color: var(--c-ink);
+  background: rgba(255,255,255,0.04);
+}
+.cat-masthead__pill {
+  font-family: var(--f-mono);
+  font-size: var(--t-eyebrow-size);
+  font-weight: var(--t-eyebrow-weight);
+  letter-spacing: var(--t-eyebrow-track);
+  text-transform: uppercase;
+  color: var(--c-faint);
+  padding: var(--s-0) var(--s-2);
+  border-radius: var(--r-pill);
+  border: 1px solid var(--c-hair);
+  background: rgba(255,255,255,0.02);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+}
+.cat-masthead__pill .dot {
+  width: 6px; height: 6px;
+  border-radius: var(--r-pill);
+  background: var(--c-green);
+  box-shadow: 0 0 8px rgba(79,209,126,0.5);
+}
+@media (max-width: 480px) {
+  .cat-masthead__pill .hide-sm { display: none; }
+  /* Tighter on the smallest viewports so right cluster fits beside the brand. */
+  .cat-masthead { gap: var(--s-2); padding-left: var(--s-3); padding-right: var(--s-3); }
+  .cat-masthead__back { padding: var(--s-1); }
+  .cat-masthead__back .label { display: none; }
+  .cat-masthead__pill { padding-left: var(--s-1); padding-right: var(--s-1); }
+}
+
+/* ───────────────────────── section dividers ───────────────────────── */
+/* Short amber accent + heavier title — replaces dull hairline rules. */
+.cat-rule {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-bottom: var(--s-3);
+}
+.cat-rule::before {
+  content: "";
+  display: inline-block;
+  width: 24px;
+  height: 2px;
+  border-radius: var(--r-pill);
+  background: linear-gradient(90deg, var(--c-amber), rgba(227,168,87,0));
+}
+.cat-rule__label {
+  font-family: var(--f-mono);
+  font-size: var(--t-eyebrow-size);
+  font-weight: var(--t-eyebrow-weight);
+  letter-spacing: var(--t-eyebrow-track);
+  text-transform: uppercase;
+  color: var(--c-amber);
+}
+
+/* ───────────────────────── stage / example surface ───────────────────────── */
+/* A subtle inset surface with a faint inner highlight + caption bar. Pages
+   that want the upgraded treatment wrap an example in:
+     <figure class="cat-stage">
+       <figcaption class="cat-stage__cap">Caption · meta</figcaption>
+       <div class="cat-stage__inner"> ...example... </div>
+     </figure>
+   But the polish layer also visually enriches the existing .ex / .cat-demo
+   surfaces so legacy markup gains depth automatically. */
+.cat-stage {
+  margin: var(--s-4) 0 0;
+  border: 1px solid var(--c-hair);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--c-surface);
+  box-shadow: var(--sh-card);
+}
+.cat-stage__cap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding: var(--s-2) var(--s-3);
+  border-bottom: 1px solid var(--c-hair);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.02), transparent),
+    var(--c-raised);
+  font-family: var(--f-mono);
+  font-size: var(--t-eyebrow-size);
+  font-weight: var(--t-eyebrow-weight);
+  letter-spacing: var(--t-eyebrow-track);
+  text-transform: uppercase;
+  color: var(--c-sub);
+}
+.cat-stage__cap b { color: var(--c-ink); font-weight: var(--t-eyebrow-weight); }
+.cat-stage__cap .meta { color: var(--c-faint); }
+.cat-stage__inner {
+  padding: var(--s-5) var(--s-4);
+  background:
+    radial-gradient(120% 70% at 50% -10%, rgba(227,168,87,0.05), transparent 60%),
+    var(--c-bg);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Legacy .ex (pattern pages) — keep their structure, lift visuals. */
+.ex {
+  box-shadow: var(--sh-card);
+  transition: border-color var(--m-base), box-shadow var(--m-base);
+}
+.ex:hover { border-color: var(--c-hair-strong); }
+.ex__head {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.02), transparent),
+    var(--c-raised) !important;
+}
+.ex__stage {
+  box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset;
+}
+
+/* Legacy .cat-demo (component pages) — same lift. */
+.cat-demo {
+  box-shadow: var(--sh-card), 0 1px 0 rgba(255,255,255,0.04) inset;
+}
+
+/* ───────────────────────── tile lift ───────────────────────── */
+/* Index tiles get a soft amber border-tint on hover. */
+.tile {
+  transition:
+    border-color var(--m-base),
+    transform var(--m-base),
+    box-shadow var(--m-base),
+    background var(--m-base);
+}
+.tile:hover {
+  border-color: rgba(227,168,87,0.35);
+  background:
+    linear-gradient(180deg, rgba(227,168,87,0.04), transparent),
+    var(--c-surface);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.5), 0 0 0 1px rgba(227,168,87,0.10) inset;
+  transform: translateY(-2px);
+}
+.tile__preview {
+  background:
+    radial-gradient(120% 70% at 50% -20%, rgba(227,168,87,0.04), transparent 60%),
+    var(--c-bg) !important;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset;
+}
+
+/* ───────────────────────── refined code block ───────────────────────── */
+/* Lifts both .code and .cat-code with a pinned COPY chip and Copied success. */
+.code, .cat-code {
+  border-color: var(--c-hair) !important;
+  transition: border-color var(--m-fast), background var(--m-fast);
+}
+.code:hover, .cat-code:hover { border-color: var(--c-hair-strong) !important; }
+
+/* Language hint chip (optional; pages may add data-lang="html" etc.) */
+.code[data-lang]::before, .cat-code[data-lang]::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: var(--s-1);
+  left: var(--s-2);
+  font-family: var(--f-mono);
+  font-size: var(--t-eyebrow-size);
+  font-weight: var(--t-eyebrow-weight);
+  letter-spacing: var(--t-eyebrow-track);
+  text-transform: uppercase;
+  color: var(--c-faint);
+}
+
+/* Premium COPY chip — both legacy .code__copy and .cat-code__copy. */
+.code__copy, .cat-code__copy {
+  font-family: var(--f-mono) !important;
+  font-size: var(--t-eyebrow-size) !important;
+  font-weight: var(--t-eyebrow-weight) !important;
+  letter-spacing: var(--t-eyebrow-track) !important;
+  text-transform: uppercase !important;
+  color: var(--c-faint) !important;
+  background: var(--c-raised) !important;
+  border: 1px solid var(--c-hair) !important;
+  padding: 3px var(--s-1) !important;
+  border-radius: var(--r-sm) !important;
+  pointer-events: none;
+  transition:
+    color var(--m-fast),
+    border-color var(--m-fast),
+    background var(--m-fast),
+    transform var(--m-base),
+    opacity var(--m-base);
+}
+.code:hover .code__copy,
+.cat-code:hover .cat-code__copy {
+  color: var(--c-ink) !important;
+  border-color: var(--c-hair-strong) !important;
+}
+.code.is-copied .code__copy,
+.cat-code.is-copied .cat-code__copy {
+  color: var(--c-green) !important;
+  border-color: rgba(79,209,126,0.4) !important;
+  background: rgba(79,209,126,0.08) !important;
+}
+
+/* ───────────────────────── footer ───────────────────────── */
+.cat-footer {
+  margin-top: var(--s-8);
+  padding: var(--s-5) 0 calc(env(safe-area-inset-bottom, 0px) + var(--s-4));
+  border-top: 1px solid var(--c-hair);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-3);
+  color: var(--c-faint);
+  font-size: var(--t-label-size);
+  font-weight: 400;
+}
+@media (min-width: 600px) {
+  .cat-footer { grid-template-columns: 1fr auto; align-items: center; }
+}
+.cat-footer__row {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  flex-wrap: wrap;
+}
+.cat-footer__tag {
+  font-family: var(--f-mono);
+  font-size: var(--t-eyebrow-size);
+  font-weight: var(--t-eyebrow-weight);
+  letter-spacing: var(--t-eyebrow-track);
+  text-transform: uppercase;
+  color: var(--c-faint);
+  padding: var(--s-0) var(--s-2);
+  border-radius: var(--r-pill);
+  border: 1px solid var(--c-hair);
+  background: rgba(255,255,255,0.02);
+}
+.cat-footer code {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  color: var(--c-amber);
+  background: rgba(227,168,87,0.06);
+  padding: 1px 6px;
+  border-radius: var(--r-sm);
+  border: 1px solid rgba(227,168,87,0.18);
+}
+.cat-footer a {
+  color: var(--c-amber);
+  text-decoration: none;
+  font-weight: 600;
+}
+.cat-footer a:hover { text-decoration: underline; }
+
+/* ───────────────────────── index hero live demo ───────────────────────── */
+/* A small live-rendered showcase pinned to the right of the hero on wider
+   screens; collapses below the lede on narrow viewports. */
+.cat-hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-5);
+  align-items: end;
+  padding: var(--s-6) 0 var(--s-5);
+  border-bottom: 1px solid var(--c-hair);
+  margin-bottom: var(--s-6);
+}
+@media (min-width: 720px) {
+  .cat-hero { grid-template-columns: 1.4fr 1fr; gap: var(--s-7); }
+}
+.cat-hero__demo {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-4);
+  padding: var(--s-5) var(--s-4);
+  background:
+    radial-gradient(120% 80% at 50% -10%, rgba(227,168,87,0.10), transparent 65%),
+    var(--c-surface);
+  border: 1px solid var(--c-hair);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-raised), 0 1px 0 rgba(255,255,255,0.04) inset;
+  overflow: hidden;
+}
+.cat-hero__demo::after {
+  content: "LIVE";
+  position: absolute;
+  top: var(--s-2);
+  right: var(--s-2);
+  font-family: var(--f-mono);
+  font-size: var(--t-eyebrow-size);
+  font-weight: var(--t-eyebrow-weight);
+  letter-spacing: var(--t-eyebrow-track);
+  color: var(--c-amber);
+  padding: 2px var(--s-1);
+  border-radius: var(--r-sm);
+  border: 1px solid rgba(227,168,87,0.3);
+  background: rgba(227,168,87,0.08);
+}
+.cat-hero__pills {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  align-items: flex-start;
+}
+
+/* ───────────────────────── typography polish ───────────────────────── */
+/* Pull existing big titles up to a more confident scale. */
+.doc-header h1,
+.cat-head__title,
+.cat-header__title {
+  font-feature-settings: "ss01", "cv11";
+}
+
+/* Body text in ledes — slightly more relaxed. */
+.doc-header p,
+.cat-head__desc,
+.cat-header__desc,
+.doc-lede { line-height: 1.55; }

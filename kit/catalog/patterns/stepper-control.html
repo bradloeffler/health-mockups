@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
   <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="../_catalog.css" />
   <style>
     body { display: block; background: var(--c-deep); }
     .doc { max-width: 880px; margin: 0 auto; padding: var(--s-5) var(--s-4) var(--s-8); }
@@ -30,7 +31,19 @@
   </style>
 </head>
 <body>
-  <main class="doc">
+
+  <header class="cat-masthead">
+    <div class="cat-masthead__left">
+      <span class="cat-masthead__mark">F</span>
+      <span class="cat-masthead__word">FORGE <span class="dim">Kit</span></span>
+    </div>
+    <div class="cat-masthead__right">
+      <a class="cat-masthead__back" href="../index.html"><i class="ph ph-caret-left"></i> <span class="label">Catalog</span></a>
+      <span class="cat-masthead__pill"><span class="dot"></span>Patterns</span>
+    </div>
+  </header>
+
+<main class="doc">
 
     <header class="doc-bar">
       <div>
@@ -58,7 +71,7 @@
           <div class="k-progress" id="water-bar" style="--p-pct: 62.5; --p-color: var(--c-blue); margin-top: var(--s-3);"></div>
         </section>
       </div>
-      <div class="note">Try the buttons &mdash; the value clamps between <b>0</b> and <b>10</b>, +/&minus;1 per tap. Buttons disable at the boundary.</div>
+      <div class="note">Try the buttons, the value clamps between <b>0</b> and <b>10</b>, plus / minus1 per tap. Buttons disable at the boundary.</div>
 <pre class="code" data-copy>&lt;div class="k-row k-row--between"&gt;
   &lt;button class="k-step-btn" id="minus" aria-label="Less"&gt;&lt;i class="ph ph-minus"&gt;&lt;/i&gt;&lt;/button&gt;
   &lt;span class="k-numeric k-numeric--lg"&gt;
@@ -113,6 +126,18 @@
 &lt;/div&gt;<span class="code__copy">Copy</span></pre>
     </section>
 
+  
+    <footer class="cat-footer">
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Edit</span>
+        <code>kit/catalog/patterns/stepper-control.html</code>
+      </div>
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Verify</span>
+        <code>node tooling/mock-check.mjs kit/catalog/patterns/stepper-control.html</code>
+      </div>
+      <div class="cat-footer__tag">FORGE &middot; v0.1</div>
+    </footer>
   </main>
   <script>
     // copy

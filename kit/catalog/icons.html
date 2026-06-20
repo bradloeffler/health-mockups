@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
   <link rel="stylesheet" href="../kit.css" />
+  <link rel="stylesheet" href="./_catalog.css" />
   <style>
     body { display: block; background: var(--c-deep); }
 
@@ -177,6 +178,18 @@
   </style>
 </head>
 <body>
+
+  <header class="cat-masthead">
+    <div class="cat-masthead__left">
+      <span class="cat-masthead__mark">F</span>
+      <span class="cat-masthead__word">FORGE <span class="dim">Kit</span></span>
+    </div>
+    <div class="cat-masthead__right">
+      <a class="cat-masthead__back" href="./index.html"><i class="ph ph-caret-left"></i> <span class="label">Catalog</span></a>
+      <span class="cat-masthead__pill"><span class="dot"></span>Icons</span>
+    </div>
+  </header>
+
   <main class="cat-page">
 
     <header class="cat-header">
@@ -188,10 +201,22 @@
     <section class="cat-usage">
       <span class="cat-usage__lbl">Usage</span>
       <div class="cat-usage__code">&lt;i class="ph ${icons.fuel}"&gt;&lt;/i&gt;</div>
-      <p class="cat-usage__note">Always import through <code>icons.&lt;name&gt;</code> — never reference raw <code>ph-...</code> strings. Tap any tile to copy its semantic import string.</p>
+      <p class="cat-usage__note">Always import through <code>icons.&lt;name&gt;</code>. Never reference raw <code>ph-...</code> strings. Tap any tile to copy its semantic import string.</p>
     </section>
 
     <div id="catalog"></div>
+
+    <footer class="cat-footer">
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Edit</span>
+        <code>kit/catalog/icons.html</code>
+      </div>
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Verify</span>
+        <code>node tooling/mock-check.mjs kit/catalog/icons.html</code>
+      </div>
+      <div class="cat-footer__tag">FORGE &middot; v0.1</div>
+    </footer>
 
   </main>
 
@@ -249,7 +274,7 @@
     const GROUPS = [
       {
         title: 'Biometrics',
-        desc: 'Body signals — recovery, strain, sleep architecture.',
+        desc: 'Body signals. Recovery, strain, sleep architecture.',
         tone: 'amber',
         keys: ['recovery', 'strain', 'sleep', 'hrv', 'rhr', 'weight'],
       },

@@ -7,10 +7,23 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
   <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="../_catalog.css" />
   <link rel="stylesheet" href="./_chrome.css" />
 </head>
 <body>
-  <main class="cat">
+
+  <header class="cat-masthead">
+    <div class="cat-masthead__left">
+      <span class="cat-masthead__mark">F</span>
+      <span class="cat-masthead__word">FORGE <span class="dim">Kit</span></span>
+    </div>
+    <div class="cat-masthead__right">
+      <a class="cat-masthead__back" href="../index.html"><i class="ph ph-caret-left"></i> <span class="label">Catalog</span></a>
+      <span class="cat-masthead__pill"><span class="dot"></span>Components</span>
+    </div>
+  </header>
+
+<main class="cat">
 
     <header class="cat-bar">
       <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
@@ -19,7 +32,7 @@
 
     <section class="cat-head">
       <h1 class="cat-head__title">Eyebrow</h1>
-      <p class="cat-head__desc">Tiny mono uppercase label. The locked typographic primitive for any label-shaped string — eyebrows, metric labels, unit suffixes, nav labels. Never restyle; always use the class.</p>
+      <p class="cat-head__desc">Tiny mono uppercase label. The locked typographic primitive for any label-shaped string, eyebrows, metric labels, unit suffixes, nav labels. Never restyle; always use the class.</p>
     </section>
 
     <!-- ANATOMY -->
@@ -42,7 +55,7 @@
     <!-- VARIANTS -->
     <section class="cat-section">
       <h2 class="cat-section__h">Variants</h2>
-      <p class="cat-section__sub">One canonical look. The eyebrow composes by sitting next to other primitives — icons, dots, pills — via an inline-flex with <code>--s-1</code> gap.</p>
+      <p class="cat-section__sub">One canonical look. The eyebrow composes by sitting next to other primitives, icons, dots, pills, via an inline-flex with <code>--s-1</code> gap.</p>
       <div class="cat-demo" style="display: grid; grid-template-columns: 1fr; gap: var(--s-4);">
 
         <div class="cat-cell">
@@ -66,7 +79,7 @@
     <!-- IN CONTEXT -->
     <section class="cat-section">
       <h2 class="cat-section__h">In context</h2>
-      <p class="cat-section__sub">The canonical use case — a card header pairing an eyebrow with a trailing pill.</p>
+      <p class="cat-section__sub">The canonical use case, a card header pairing an eyebrow with a trailing pill.</p>
       <div class="cat-demo">
         <div class="k-card" style="width: 100%;">
           <div class="k-row k-row--between" style="margin-bottom: var(--s-3);">
@@ -86,10 +99,10 @@
           <thead><tr><th>Class / token</th><th>Role</th></tr></thead>
           <tbody>
             <tr><td>.k-eyebrow</td><td>Inline-flex container holding the label string and any leading glyph.</td></tr>
-            <tr><td>--t-eyebrow-size</td><td>10px — sized to read as metadata, not content.</td></tr>
+            <tr><td>--t-eyebrow-size</td><td>10px, sized to read as metadata, not content.</td></tr>
             <tr><td>--t-eyebrow-track</td><td>0.16em letter-spacing. Tracking is what makes mono read as label.</td></tr>
             <tr><td>--c-faint</td><td>De-emphasized ink. Use the same color for unit suffixes for visual coherence.</td></tr>
-            <tr><td>.k-text-eyebrow</td><td>Alias class with identical specs — use when you can't apply <code>.k-eyebrow</code> directly.</td></tr>
+            <tr><td>.k-text-eyebrow</td><td>Alias class with identical specs, use when you can't apply <code>.k-eyebrow</code> directly.</td></tr>
           </tbody>
         </table>
       </div>
@@ -97,6 +110,18 @@
       <pre class="cat-code" data-copy='<span class="k-eyebrow">Recovery</span>'><span class="cat-code__copy">tap to copy</span>&lt;span class="k-eyebrow"&gt;Recovery&lt;/span&gt;</pre>
     </section>
 
+  
+    <footer class="cat-footer">
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Edit</span>
+        <code>kit/catalog/components/eyebrow.html</code>
+      </div>
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Verify</span>
+        <code>node tooling/mock-check.mjs kit/catalog/components/eyebrow.html</code>
+      </div>
+      <div class="cat-footer__tag">FORGE &middot; v0.1</div>
+    </footer>
   </main>
 
   <script>

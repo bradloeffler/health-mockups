@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
   <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="../_catalog.css" />
   <style>
     body { display: block; background: var(--c-deep); }
     .doc { max-width: 880px; margin: 0 auto; padding: var(--s-5) var(--s-4) var(--s-8); }
@@ -34,13 +35,25 @@
   </style>
 </head>
 <body>
-  <main class="doc">
+
+  <header class="cat-masthead">
+    <div class="cat-masthead__left">
+      <span class="cat-masthead__mark">F</span>
+      <span class="cat-masthead__word">FORGE <span class="dim">Kit</span></span>
+    </div>
+    <div class="cat-masthead__right">
+      <a class="cat-masthead__back" href="../index.html"><i class="ph ph-caret-left"></i> <span class="label">Catalog</span></a>
+      <span class="cat-masthead__pill"><span class="dot"></span>Patterns</span>
+    </div>
+  </header>
+
+<main class="doc">
 
     <header class="doc-bar">
       <div>
         <span class="doc-title__crumb">Pattern &middot; Card grid</span>
         <h1 class="doc-title">Card grid (2-up)</h1>
-        <p class="doc-lede">Two small cards side-by-side using <code style="font-family: var(--f-mono); color: var(--c-amber);">k-grid-2</code>. Used to pair related metrics that are too small to deserve their own row &mdash; steps + water, weight + sleep, AM + PM vitamins. Each card holds a single eyebrow and a single primary value.</p>
+        <p class="doc-lede">Two small cards side-by-side using <code style="font-family: var(--f-mono); color: var(--c-amber);">k-grid-2</code>. Used to pair related metrics that are too small to deserve their own row, steps + water, weight + sleep, AM + PM vitamins. Each card holds a single eyebrow and a single primary value.</p>
       </div>
       <a class="doc-bar__back" href="../index.html">&larr; Catalog</a>
     </header>
@@ -109,7 +122,7 @@
           <div class="k-card">
             <div class="k-row k-row--between" style="margin-bottom: var(--s-3);">
               <span class="k-eyebrow">Weight</span>
-              <span class="k-pill k-pill--green">&minus;0.4</span>
+              <span class="k-pill k-pill--green">-0.4</span>
             </div>
             <span class="k-numeric k-numeric--xl"><span class="k-numeric__val">182.6</span><span class="k-numeric__unit">lb</span></span>
             <p class="k-text-faint" style="margin: var(--s-2) 0 0;">7-day avg 183.1</p>
@@ -140,6 +153,18 @@
 &lt;/section&gt;<span class="code__copy">Copy</span></pre>
     </section>
 
+  
+    <footer class="cat-footer">
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Edit</span>
+        <code>kit/catalog/patterns/card-grid.html</code>
+      </div>
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Verify</span>
+        <code>node tooling/mock-check.mjs kit/catalog/patterns/card-grid.html</code>
+      </div>
+      <div class="cat-footer__tag">FORGE &middot; v0.1</div>
+    </footer>
   </main>
   <script>
     document.querySelectorAll('.code[data-copy]').forEach(el => {

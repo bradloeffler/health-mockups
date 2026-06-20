@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
   <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="../_catalog.css" />
   <link rel="stylesheet" href="./_chrome.css" />
   <style>
     /* Wrap k-screen in a frame so the catalog can show its boundary + safe areas. */
@@ -22,7 +23,7 @@
     .cat-frame .k-screen { width: 100%; max-width: none; min-height: 520px; }
     .cat-frame .k-screen__scroll { min-height: 520px; padding-bottom: var(--s-7); }
 
-    /* Safe area overlay — outline the inset zone */
+    /* Safe area overlay, outline the inset zone */
     .cat-safe {
       position: absolute;
       inset: 0;
@@ -58,7 +59,19 @@
   </style>
 </head>
 <body>
-  <main class="cat">
+
+  <header class="cat-masthead">
+    <div class="cat-masthead__left">
+      <span class="cat-masthead__mark">F</span>
+      <span class="cat-masthead__word">FORGE <span class="dim">Kit</span></span>
+    </div>
+    <div class="cat-masthead__right">
+      <a class="cat-masthead__back" href="../index.html"><i class="ph ph-caret-left"></i> <span class="label">Catalog</span></a>
+      <span class="cat-masthead__pill"><span class="dot"></span>Components</span>
+    </div>
+  </header>
+
+<main class="cat">
 
     <header class="cat-bar">
       <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
@@ -67,13 +80,13 @@
 
     <section class="cat-head">
       <h1 class="cat-head__title">Screen</h1>
-      <p class="cat-head__desc">The phone-shell primitive. Caps width at 430px, fills the viewport, applies the brand gradient background, and clips anything that would overflow horizontally — the discipline that makes a 430px mock impossible to clip on a 390px device.</p>
+      <p class="cat-head__desc">The phone-shell primitive. Caps width at 430px, fills the viewport, applies the brand gradient background, and clips anything that would overflow horizontally, the discipline that makes a 430px mock impossible to clip on a 390px device.</p>
     </section>
 
     <!-- ANATOMY -->
     <section class="cat-section">
       <h2 class="cat-section__h">Anatomy</h2>
-      <p class="cat-section__sub">Two elements. The outer <code>.k-screen</code> is the shell — fixed-max-width, full-viewport, hidden-overflow, background gradient. The inner <code>.k-screen__scroll</code> is the padded vertical stack that holds the page's content, with built-in safe-area insets.</p>
+      <p class="cat-section__sub">Two elements. The outer <code>.k-screen</code> is the shell, fixed-max-width, full-viewport, hidden-overflow, background gradient. The inner <code>.k-screen__scroll</code> is the padded vertical stack that holds the page's content, with built-in safe-area insets.</p>
       <div class="cat-demo">
         <div class="cat-frame">
           <div class="cat-safe">
@@ -97,13 +110,25 @@
                 <span class="k-numeric k-numeric--lg"><span class="k-numeric__val">7,420</span></span>
               </section>
             </div>
-          </main>
+          
+    <footer class="cat-footer">
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Edit</span>
+        <code>kit/catalog/components/screen.html</code>
+      </div>
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Verify</span>
+        <code>node tooling/mock-check.mjs kit/catalog/components/screen.html</code>
+      </div>
+      <div class="cat-footer__tag">FORGE &middot; v0.1</div>
+    </footer>
+  </main>
         </div>
         <ul class="cat-anatomy__notes">
-          <li><b>Max width</b> <span>430px — caps even on landscape iPad / desktop.</span></li>
-          <li><b>Min height</b> <span><code>100dvh</code> — fills the dynamic viewport on iOS Safari.</span></li>
+          <li><b>Max width</b> <span>430px, caps even on landscape iPad / desktop.</span></li>
+          <li><b>Min height</b> <span><code>100dvh</code>, fills the dynamic viewport on iOS Safari.</span></li>
           <li><b>Background</b> <span>Radial amber wash from top, layered over a vertical gradient from <code>--c-bg</code> to <code>--c-deep</code>.</span></li>
-          <li><b>Overflow</b> <span><code>hidden</code> — content wider than 430px is clipped, never scrollable horizontally.</span></li>
+          <li><b>Overflow</b> <span><code>hidden</code>, content wider than 430px is clipped, never scrollable horizontally.</span></li>
           <li><b>Isolation</b> <span>Its own stacking context so floating nav and modals don't bleed elsewhere.</span></li>
         </ul>
       </div>
@@ -127,7 +152,7 @@
         <ul class="cat-anatomy__notes">
           <li><b>Direction</b> <span>flex column, gap <code>--s-3</code>.</span></li>
           <li><b>Top padding</b> <span><code>env(safe-area-inset-top) + --s-3</code>.</span></li>
-          <li><b>Bottom padding</b> <span><code>env(safe-area-inset-bottom) + 96px</code> — clears the floating nav.</span></li>
+          <li><b>Bottom padding</b> <span><code>env(safe-area-inset-bottom) + 96px</code>, clears the floating nav.</span></li>
           <li><b>Side padding</b> <span><code>--s-3</code> left and right.</span></li>
         </ul>
       </div>
@@ -142,8 +167,8 @@
           <tbody>
             <tr><td>.k-screen</td><td>Phone shell. <code>max-width: 430px</code>, <code>min-height: 100dvh</code>, <code>overflow: hidden</code>, brand background.</td></tr>
             <tr><td>.k-screen__scroll</td><td>Inner column. Flex column, gap <code>--s-3</code>, safe-area padded, 96px bottom reserve.</td></tr>
-            <tr><td>isolation</td><td>Creates its own stacking context — nav and modals can't leak.</td></tr>
-            <tr><td>Background</td><td>Two-layer gradient — radial amber + vertical bg → deep.</td></tr>
+            <tr><td>isolation</td><td>Creates its own stacking context, nav and modals can't leak.</td></tr>
+            <tr><td>Background</td><td>Two-layer gradient, radial amber + vertical bg → deep.</td></tr>
           </tbody>
         </table>
       </div>

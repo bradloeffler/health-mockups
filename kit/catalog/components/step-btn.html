@@ -7,10 +7,23 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
   <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="../_catalog.css" />
   <link rel="stylesheet" href="./_chrome.css" />
 </head>
 <body>
-  <main class="cat">
+
+  <header class="cat-masthead">
+    <div class="cat-masthead__left">
+      <span class="cat-masthead__mark">F</span>
+      <span class="cat-masthead__word">FORGE <span class="dim">Kit</span></span>
+    </div>
+    <div class="cat-masthead__right">
+      <a class="cat-masthead__back" href="../index.html"><i class="ph ph-caret-left"></i> <span class="label">Catalog</span></a>
+      <span class="cat-masthead__pill"><span class="dot"></span>Components</span>
+    </div>
+  </header>
+
+<main class="cat">
 
     <header class="cat-bar">
       <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
@@ -29,7 +42,7 @@
       <div class="cat-demo">
         <button class="k-step-btn" aria-label="Add"><i class="ph ph-plus"></i></button>
         <ul class="cat-anatomy__notes">
-          <li><b>Size</b> <span>44 × 44 — meets the 44pt minimum tap target.</span></li>
+          <li><b>Size</b> <span>44 × 44, meets the 44pt minimum tap target.</span></li>
           <li><b>Surface</b> <span><code>--c-raised</code> bg, <code>--c-hair</code> border, <code>--c-ink</code> icon.</span></li>
           <li><b>Press</b> <span>bg shifts to <code>--c-hair</code> via <code>:active</code>, <code>--m-fast</code>.</span></li>
           <li><b>Disabled</b> <span><code>--c-faint</code> icon, opacity 0.6.</span></li>
@@ -100,7 +113,7 @@
             <tr><td>.k-step-btn</td><td>44px round button. <code>--c-raised</code> bg, hairline border, ink icon.</td></tr>
             <tr><td>:active</td><td>Background to <code>--c-hair</code>, transitions with <code>--m-fast</code>.</td></tr>
             <tr><td>[disabled]</td><td>Icon to <code>--c-faint</code>, opacity 0.6.</td></tr>
-            <tr><td>aria-label</td><td>Required — the glyph alone isn't enough for AT.</td></tr>
+            <tr><td>aria-label</td><td>Required, the glyph alone isn't enough for AT.</td></tr>
           </tbody>
         </table>
       </div>
@@ -110,6 +123,18 @@
 &lt;/button&gt;</pre>
     </section>
 
+  
+    <footer class="cat-footer">
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Edit</span>
+        <code>kit/catalog/components/step-btn.html</code>
+      </div>
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Verify</span>
+        <code>node tooling/mock-check.mjs kit/catalog/components/step-btn.html</code>
+      </div>
+      <div class="cat-footer__tag">FORGE &middot; v0.1</div>
+    </footer>
   </main>
 
   <script>

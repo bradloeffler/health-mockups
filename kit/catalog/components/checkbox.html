@@ -7,10 +7,23 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
   <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="../_catalog.css" />
   <link rel="stylesheet" href="./_chrome.css" />
 </head>
 <body>
-  <main class="cat">
+
+  <header class="cat-masthead">
+    <div class="cat-masthead__left">
+      <span class="cat-masthead__mark">F</span>
+      <span class="cat-masthead__word">FORGE <span class="dim">Kit</span></span>
+    </div>
+    <div class="cat-masthead__right">
+      <a class="cat-masthead__back" href="../index.html"><i class="ph ph-caret-left"></i> <span class="label">Catalog</span></a>
+      <span class="cat-masthead__pill"><span class="dot"></span>Components</span>
+    </div>
+  </header>
+
+<main class="cat">
 
     <header class="cat-bar">
       <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
@@ -25,7 +38,7 @@
     <!-- ANATOMY -->
     <section class="cat-section">
       <h2 class="cat-section__h">Anatomy</h2>
-      <p class="cat-section__sub">A square inline-flex with a 1.5px border, 6px radius, and a check glyph that's transparent in the unchecked state. All three properties — border, bg, glyph color — transition together with <code>--m-fast</code>.</p>
+      <p class="cat-section__sub">A square inline-flex with a 1.5px border, 6px radius, and a check glyph that's transparent in the unchecked state. All three properties, border, bg, glyph color, transition together with <code>--m-fast</code>.</p>
       <div class="cat-demo cat-demo--row" style="justify-content: space-around;">
         <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">unchecked</span><span class="k-checkbox" aria-label="Toggle"><i class="ph ph-check"></i></span></div>
         <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">checked</span><span class="k-checkbox is-checked"><i class="ph ph-check"></i></span></div>
@@ -86,6 +99,18 @@
 &lt;/span&gt;</pre>
     </section>
 
+  
+    <footer class="cat-footer">
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Edit</span>
+        <code>kit/catalog/components/checkbox.html</code>
+      </div>
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Verify</span>
+        <code>node tooling/mock-check.mjs kit/catalog/components/checkbox.html</code>
+      </div>
+      <div class="cat-footer__tag">FORGE &middot; v0.1</div>
+    </footer>
   </main>
 
   <script>

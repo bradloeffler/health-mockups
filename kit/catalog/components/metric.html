@@ -7,10 +7,23 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
   <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="../_catalog.css" />
   <link rel="stylesheet" href="./_chrome.css" />
 </head>
 <body>
-  <main class="cat">
+
+  <header class="cat-masthead">
+    <div class="cat-masthead__left">
+      <span class="cat-masthead__mark">F</span>
+      <span class="cat-masthead__word">FORGE <span class="dim">Kit</span></span>
+    </div>
+    <div class="cat-masthead__right">
+      <a class="cat-masthead__back" href="../index.html"><i class="ph ph-caret-left"></i> <span class="label">Catalog</span></a>
+      <span class="cat-masthead__pill"><span class="dot"></span>Components</span>
+    </div>
+  </header>
+
+<main class="cat">
 
     <header class="cat-bar">
       <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
@@ -25,7 +38,7 @@
     <!-- ANATOMY -->
     <section class="cat-section">
       <h2 class="cat-section__h">Anatomy</h2>
-      <p class="cat-section__sub">Each <code>.k-metric</code> uses <code>display: contents</code> to flatten its three children into the parent grid — so all rows share one set of column tracks. Digits are tabular and right-aligned in the middle column; that's what keeps the 1s, 10s, 100s columns lined up.</p>
+      <p class="cat-section__sub">Each <code>.k-metric</code> uses <code>display: contents</code> to flatten its three children into the parent grid, so all rows share one set of column tracks. Digits are tabular and right-aligned in the middle column; that's what keeps the 1s, 10s, 100s columns lined up.</p>
       <div class="cat-demo">
         <div class="k-metric-list">
           <div class="k-metric">
@@ -43,7 +56,7 @@
           <li><b>Columns</b> <span><code>auto auto auto</code>, justified to <code>end</code> so the list hugs the right edge of available space.</span></li>
           <li><b>Row gap</b> <span><code>--s-2</code> · column gap <code>--s-2</code> · baseline aligned.</span></li>
           <li><b>Value</b> <span>tabular-nums mono so 7.4 and 62 share digit-column widths.</span></li>
-          <li><b>Label &amp; unit</b> <span>both use the eyebrow spec — mono, uppercase, faint, 10px.</span></li>
+          <li><b>Label &amp; unit</b> <span>both use the eyebrow spec, mono, uppercase, faint, 10px.</span></li>
         </ul>
       </div>
     </section>
@@ -105,7 +118,7 @@
     <!-- WITH / WITHOUT UNITS -->
     <section class="cat-section">
       <h2 class="cat-section__h">With &amp; without units</h2>
-      <p class="cat-section__sub">The unit column is optional per row — leave the third cell empty and the value still right-aligns to the same column.</p>
+      <p class="cat-section__sub">The unit column is optional per row, leave the third cell empty and the value still right-aligns to the same column.</p>
       <div class="cat-demo">
         <div class="k-card" style="width: 100%;">
           <div class="k-metric-list">
@@ -142,6 +155,18 @@
 &lt;/div&gt;</pre>
     </section>
 
+  
+    <footer class="cat-footer">
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Edit</span>
+        <code>kit/catalog/components/metric.html</code>
+      </div>
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Verify</span>
+        <code>node tooling/mock-check.mjs kit/catalog/components/metric.html</code>
+      </div>
+      <div class="cat-footer__tag">FORGE &middot; v0.1</div>
+    </footer>
   </main>
 
   <script>

@@ -1,6 +1,7 @@
 /* FORGE catalog page chrome — shared layout for primitive doc pages.
    Inlined into each page (also exported here for reference). Author surfaces
    the kit primitives + tokens only. */
+@import url("../_catalog.css");
 
 /* Override body's centering to give docs full width + breathing room. */
 body { display: block; }
@@ -10,20 +11,20 @@ body { display: block; }
   max-width: 880px;
   margin: 0 auto;
   padding:
-    calc(env(safe-area-inset-top, 0px) + var(--s-5))
+    var(--s-5)
     var(--s-4)
     var(--s-8)
     var(--s-4);
 }
 
-/* --- Top bar (kit name + back) --- */
+/* --- Eyebrow crumb row (sits below the sticky masthead) --- */
 .cat-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-bottom: var(--s-3);
-  margin-bottom: var(--s-5);
-  border-bottom: 1px solid var(--c-hair);
+  margin-bottom: var(--s-4);
+  border-bottom: 0;
 }
 .cat-bar__brand {
   font-family: var(--f-mono);
@@ -54,12 +55,12 @@ body { display: block; }
 }
 .cat-head__title {
   font-family: var(--f-ui);
-  font-size: 40px;
+  font-size: 48px;
   font-weight: 500;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.8px;
   color: var(--c-ink);
   margin: 0 0 var(--s-2);
-  line-height: 1.05;
+  line-height: 1.0;
 }
 .cat-head__desc {
   font-size: var(--t-body-size);
@@ -80,6 +81,17 @@ body { display: block; }
   text-transform: uppercase;
   color: var(--c-amber);
   margin: 0 0 var(--s-2);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+.cat-section__h::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 2px;
+  border-radius: var(--r-pill);
+  background: linear-gradient(90deg, var(--c-amber), rgba(227,168,87,0));
 }
 .cat-section__sub {
   font-size: var(--t-label-size);
@@ -262,7 +274,7 @@ body { display: block; }
 /* --- Mobile tweaks --- */
 @media (max-width: 480px) {
   .cat { padding-left: var(--s-3); padding-right: var(--s-3); }
-  .cat-head__title { font-size: 30px; }
+  .cat-head__title { font-size: 34px; letter-spacing: -0.5px; }
   .cat-spec th, .cat-spec td { padding: var(--s-2); font-size: 12px; }
   .cat-anatomy__notes b { min-width: 78px; }
 }

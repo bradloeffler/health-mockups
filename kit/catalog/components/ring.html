@@ -7,10 +7,23 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
   <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="../_catalog.css" />
   <link rel="stylesheet" href="./_chrome.css" />
 </head>
 <body>
-  <main class="cat">
+
+  <header class="cat-masthead">
+    <div class="cat-masthead__left">
+      <span class="cat-masthead__mark">F</span>
+      <span class="cat-masthead__word">FORGE <span class="dim">Kit</span></span>
+    </div>
+    <div class="cat-masthead__right">
+      <a class="cat-masthead__back" href="../index.html"><i class="ph ph-caret-left"></i> <span class="label">Catalog</span></a>
+      <span class="cat-masthead__pill"><span class="dot"></span>Components</span>
+    </div>
+  </header>
+
+<main class="cat">
 
     <header class="cat-bar">
       <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
@@ -19,13 +32,13 @@
 
     <section class="cat-head">
       <h1 class="cat-head__title">Ring</h1>
-      <p class="cat-head__desc">Circular progress with an inner number and an outer label. Sized, colored, and filled by CSS custom properties — one component, many semantic uses.</p>
+      <p class="cat-head__desc">Circular progress with an inner number and an outer label. Sized, colored, and filled by CSS custom properties, one component, many semantic uses.</p>
     </section>
 
     <!-- ANATOMY -->
     <section class="cat-section">
       <h2 class="cat-section__h">Anatomy</h2>
-      <p class="cat-section__sub">An SVG with two stacked circles — track and bar — overlaid by an absolutely-positioned number, with a label flowing beneath as a separate text element. All sizing comes from <code>--ring-size</code>.</p>
+      <p class="cat-section__sub">An SVG with two stacked circles, track and bar, overlaid by an absolutely-positioned number, with a label flowing beneath as a separate text element. All sizing comes from <code>--ring-size</code>.</p>
       <div class="cat-demo cat-demo--center">
         <div class="k-ring" style="--ring-color: var(--c-green); --ring-pct: 71; --ring-size: 120px;">
           <svg class="k-ring__svg" viewBox="0 0 100 100" aria-hidden="true">
@@ -156,7 +169,7 @@
     <!-- ALL COLORS × 3 PCTS -->
     <section class="cat-section">
       <h2 class="cat-section__h">Fill states · all colors</h2>
-      <p class="cat-section__sub">Each color at 25 / 50 / 75 percent — sanity-check the dash math, the cap rounding, and the contrast.</p>
+      <p class="cat-section__sub">Each color at 25 / 50 / 75 percent, sanity-check the dash math, the cap rounding, and the contrast.</p>
       <div class="cat-demo" style="display: grid; grid-template-columns: 1fr; gap: var(--s-5);">
         <div class="cat-cell">
           <span class="cat-cell__cap">green</span>
@@ -222,6 +235,18 @@
 &lt;/div&gt;</pre>
     </section>
 
+  
+    <footer class="cat-footer">
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Edit</span>
+        <code>kit/catalog/components/ring.html</code>
+      </div>
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Verify</span>
+        <code>node tooling/mock-check.mjs kit/catalog/components/ring.html</code>
+      </div>
+      <div class="cat-footer__tag">FORGE &middot; v0.1</div>
+    </footer>
   </main>
 
   <script>

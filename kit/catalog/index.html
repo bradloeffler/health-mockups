@@ -7,27 +7,24 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
   <link rel="stylesheet" href="../kit.css" />
+  <link rel="stylesheet" href="./_catalog.css" />
   <style>
-    /* ---------- catalog chrome (kit/ exempt — but still tokens-only) ---------- */
-    body {
-      display: block;
-      background: var(--c-deep);
-    }
+    /* ---------- index-specific (shared chrome lives in _catalog.css) ---------- */
     .doc {
       max-width: 1080px;
       margin: 0 auto;
-      padding: var(--s-6) var(--s-4) var(--s-8);
+      padding: var(--s-5) var(--s-4) var(--s-8);
     }
     .doc-header {
-      border-bottom: 1px solid var(--c-hair);
-      padding-bottom: var(--s-5);
-      margin-bottom: var(--s-6);
+      padding-bottom: 0;
+      margin-bottom: 0;
+      border-bottom: 0;
     }
     .doc-header__brand {
       display: inline-flex;
       align-items: center;
       gap: var(--s-2);
-      margin-bottom: var(--s-2);
+      margin-bottom: var(--s-3);
     }
     .doc-header__logo {
       width: 28px;
@@ -46,37 +43,59 @@
     .doc-header h1 {
       margin: 0;
       font-family: var(--f-ui);
-      font-size: 36px;
+      font-size: 44px;
       font-weight: 500;
-      letter-spacing: -0.6px;
+      letter-spacing: -0.8px;
       color: var(--c-ink);
+      line-height: 1.02;
     }
     .doc-header p {
-      margin: var(--s-2) 0 0;
+      margin: var(--s-3) 0 0;
       color: var(--c-sub);
       font-weight: 400;
-      font-size: 16px;
-      max-width: 60ch;
+      font-size: 17px;
+      max-width: 56ch;
     }
     .doc-section {
-      margin-top: var(--s-7);
+      margin-top: var(--s-8);
     }
     .doc-section__head {
       display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: var(--s-3);
-      margin-bottom: var(--s-4);
-      padding-bottom: var(--s-2);
-      border-bottom: 1px solid var(--c-hair);
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--s-2);
+      margin-bottom: var(--s-5);
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+    @media (min-width: 720px) {
+      .doc-section__head {
+        flex-direction: row;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: var(--s-4);
+      }
     }
     .doc-section__title {
       font-family: var(--f-ui);
-      font-size: 22px;
+      font-size: 26px;
       font-weight: 500;
-      letter-spacing: -0.3px;
+      letter-spacing: -0.4px;
       margin: 0;
       color: var(--c-ink);
+      position: relative;
+      padding-left: var(--s-4);
+    }
+    .doc-section__title::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 2px;
+      border-radius: var(--r-pill);
+      background: var(--c-amber);
     }
     .doc-section__lede {
       color: var(--c-sub);
@@ -84,7 +103,10 @@
       font-size: 14px;
       margin: 0;
       max-width: 50ch;
-      text-align: right;
+      text-align: left;
+    }
+    @media (min-width: 720px) {
+      .doc-section__lede { text-align: right; }
     }
     .how-grid {
       display: grid;
@@ -206,22 +228,52 @@
   </style>
 </head>
 <body>
+
+  <header class="cat-masthead">
+    <div class="cat-masthead__left">
+      <span class="cat-masthead__mark">F</span>
+      <span class="cat-masthead__word">FORGE <span class="dim">Kit</span></span>
+    </div>
+    <div class="cat-masthead__right">
+      <span class="cat-masthead__pill"><span class="dot"></span>Harness <span class="hide-sm">&middot; 24 pages</span></span>
+    </div>
+  </header>
+
   <main class="doc">
 
     <header class="doc-header">
-      <div class="doc-header__brand">
-        <span class="doc-header__logo">F</span>
-        <span class="k-eyebrow">FORGE &middot; UI KIT</span>
+      <div class="cat-hero">
+        <div>
+          <div class="doc-header__brand">
+            <span class="doc-header__logo">F</span>
+            <span class="k-eyebrow">FORGE &middot; UI KIT</span>
+          </div>
+          <h1>The kit that builds FORGE.</h1>
+          <p>Tokens, primitives, and composed patterns. Everything authors need to assemble a screen without writing a raw hex or a raw pixel.</p>
+        </div>
+        <div class="cat-hero__demo" aria-label="Live kit preview">
+          <div class="k-ring" style="--ring-size: 96px; --ring-color: var(--c-green); --ring-pct: 71;">
+            <svg class="k-ring__svg" viewBox="0 0 100 100" aria-hidden="true">
+              <circle class="k-ring__track" cx="50" cy="50" r="46" fill="none" stroke-width="7"/>
+              <circle class="k-ring__bar" cx="50" cy="50" r="46" fill="none" stroke-width="7" pathLength="100"/>
+            </svg>
+            <div class="k-ring__num">71</div>
+            <div class="k-ring__label">Recovery</div>
+          </div>
+          <div class="cat-hero__pills">
+            <span class="k-pill k-pill--amber">Start</span>
+            <span class="k-pill k-pill--green">Done</span>
+            <span class="k-pill">Default</span>
+          </div>
+        </div>
       </div>
-      <h1>FORGE UI Kit</h1>
-      <p>The component library FORGE is built from. Tokens, primitives, and composed patterns &mdash; everything authors need to assemble a screen without ever writing a raw hex or a raw pixel.</p>
     </header>
 
     <!-- ===================== HOW TO USE ===================== -->
     <section class="doc-section">
       <div class="doc-section__head">
         <h2 class="doc-section__title">How to use</h2>
-        <p class="doc-section__lede">Two stylesheets, one icon registry. Compose primitives &mdash; never author raw values.</p>
+        <p class="doc-section__lede">Two stylesheets, one icon registry. Compose primitives, never author raw values.</p>
       </div>
       <div class="how-grid">
         <div>
@@ -247,7 +299,7 @@
     <section class="doc-section">
       <div class="doc-section__head">
         <h2 class="doc-section__title">Foundations</h2>
-        <p class="doc-section__lede">The raw material &mdash; color, space, type, motion, and the icon registry.</p>
+        <p class="doc-section__lede">The raw material. Color, space, type, motion, and the icon registry.</p>
       </div>
       <div class="tile-grid">
         <a class="tile" href="./foundations.html">
@@ -274,7 +326,7 @@
             </div>
           </div>
           <span class="tile__name">Icons <i class="ph ph-arrow-up-right"></i></span>
-          <span class="tile__desc">Typed semantic registry &mdash; authors reference <code style="font-family: var(--f-mono); color: var(--c-amber);">icons.recovery</code>, not glyph names.</span>
+          <span class="tile__desc">Typed semantic registry. Authors reference <code style="font-family: var(--f-mono); color: var(--c-amber);">icons.recovery</code>, not glyph names.</span>
         </a>
       </div>
     </section>
@@ -283,7 +335,7 @@
     <section class="doc-section">
       <div class="doc-section__head">
         <h2 class="doc-section__title">Components</h2>
-        <p class="doc-section__lede">Each primitive in isolation &mdash; props, states, and the markup that drives them.</p>
+        <p class="doc-section__lede">Each primitive in isolation. Props, states, and the markup that drives them.</p>
       </div>
       <div class="tile-grid">
 
@@ -295,7 +347,7 @@
             </div>
           </div>
           <span class="tile__name">k-card</span>
-          <span class="tile__desc">Surface container &mdash; quiet, default, accent variants.</span>
+          <span class="tile__desc">Surface container. Quiet, default, accent variants.</span>
         </a>
 
         <a class="tile" href="./components/eyebrow.html">
@@ -371,7 +423,7 @@
             <div class="k-progress" style="--p-pct: 68; --p-color: var(--c-amber); width: 140px;"></div>
           </div>
           <span class="tile__name">k-progress</span>
-          <span class="tile__desc">Slim bar &mdash; any color, percent-driven.</span>
+          <span class="tile__desc">Slim bar, any color, percent-driven.</span>
         </a>
 
         <a class="tile" href="./components/step-btn.html">
@@ -393,7 +445,7 @@
             </div>
           </div>
           <span class="tile__name">k-checkbox</span>
-          <span class="tile__desc">Square check toggle &mdash; checked &amp; unchecked states.</span>
+          <span class="tile__desc">Square check toggle, checked &amp; unchecked states.</span>
         </a>
 
         <a class="tile" href="./components/habit-row.html">
@@ -428,7 +480,7 @@
               linear-gradient(180deg, var(--c-surface) 0%, var(--c-bg) 60%, var(--c-deep) 100%);"></div>
           </div>
           <span class="tile__name">k-screen</span>
-          <span class="tile__desc">Phone shell &mdash; max-width 430, safe-area aware, gradient backdrop.</span>
+          <span class="tile__desc">Phone shell. Max-width 430, safe-area aware, gradient backdrop.</span>
         </a>
 
       </div>
@@ -438,7 +490,7 @@
     <section class="doc-section">
       <div class="doc-section__head">
         <h2 class="doc-section__title">Patterns</h2>
-        <p class="doc-section__lede">Common compositions &mdash; how primitives combine into recurring building blocks.</p>
+        <p class="doc-section__lede">Common compositions. How primitives combine into recurring building blocks.</p>
       </div>
       <div class="tile-grid">
 
@@ -469,7 +521,7 @@
             </div>
           </div>
           <span class="tile__name">Ring pair</span>
-          <span class="tile__desc">Two rings side-by-side &mdash; recovery + strain layout.</span>
+          <span class="tile__desc">Two rings side-by-side. Recovery + strain layout.</span>
         </a>
 
         <a class="tile" href="./patterns/progress-stat.html">
@@ -481,7 +533,7 @@
             </div>
           </div>
           <span class="tile__name">Progress stat</span>
-          <span class="tile__desc">Label &middot; bar &middot; value row &mdash; macros, water, steps.</span>
+          <span class="tile__desc">Label &middot; bar &middot; value row. Macros, water, steps.</span>
         </a>
 
         <a class="tile" href="./patterns/stepper-control.html">
@@ -493,7 +545,7 @@
             </div>
           </div>
           <span class="tile__name">Stepper control</span>
-          <span class="tile__desc">+/&minus; with current value. Interactive demo.</span>
+          <span class="tile__desc">Plus / minus with current value. Interactive demo.</span>
         </a>
 
         <a class="tile" href="./patterns/habit-checklist.html">
@@ -512,7 +564,7 @@
             </div>
           </div>
           <span class="tile__name">Habit checklist</span>
-          <span class="tile__desc">Hairline rows with mixed trailing types &mdash; check, count, counter.</span>
+          <span class="tile__desc">Hairline rows with mixed trailing types. Check, count, counter.</span>
         </a>
 
         <a class="tile" href="./patterns/bottom-nav-shell.html">
@@ -525,7 +577,7 @@
             </div>
           </div>
           <span class="tile__name">Bottom nav shell</span>
-          <span class="tile__desc">Four-tab floating glass nav &mdash; each state shown.</span>
+          <span class="tile__desc">Four-tab floating glass nav, each state shown.</span>
         </a>
 
         <a class="tile" href="./patterns/card-grid.html">
@@ -536,7 +588,7 @@
             </div>
           </div>
           <span class="tile__name">Card grid</span>
-          <span class="tile__desc">Two-column small card layout &mdash; steps + water style.</span>
+          <span class="tile__desc">Two-column small card layout. Steps + water style.</span>
         </a>
 
         <a class="tile" href="./patterns/eyebrow-pill-row.html">
@@ -547,19 +599,27 @@
             </div>
           </div>
           <span class="tile__name">Eyebrow + pill row</span>
-          <span class="tile__desc">Card header pattern &mdash; eyebrow left, pill right.</span>
+          <span class="tile__desc">Card header pattern. Eyebrow left, pill right.</span>
         </a>
 
       </div>
     </section>
 
-    <footer class="doc-footer">
-      <div>
-        <span class="doc-footer__tag">EXAMPLE</span>
+    <footer class="cat-footer">
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Example</span>
         See the kit assembled into a real screen &rarr;
         <a href="../../home/home-final.html">Home (example app screen)</a>
       </div>
-      <div class="doc-footer__tag">FORGE &middot; v0.1</div>
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Edit</span>
+        <code>kit/catalog/index.html</code>
+      </div>
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Verify</span>
+        <code>node tooling/mock-check.mjs kit/catalog/**/*.html</code>
+      </div>
+      <div class="cat-footer__tag">FORGE &middot; v0.1</div>
     </footer>
 
   </main>

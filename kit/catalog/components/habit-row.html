@@ -7,10 +7,23 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
   <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="../_catalog.css" />
   <link rel="stylesheet" href="./_chrome.css" />
 </head>
 <body>
-  <main class="cat">
+
+  <header class="cat-masthead">
+    <div class="cat-masthead__left">
+      <span class="cat-masthead__mark">F</span>
+      <span class="cat-masthead__word">FORGE <span class="dim">Kit</span></span>
+    </div>
+    <div class="cat-masthead__right">
+      <a class="cat-masthead__back" href="../index.html"><i class="ph ph-caret-left"></i> <span class="label">Catalog</span></a>
+      <span class="cat-masthead__pill"><span class="dot"></span>Components</span>
+    </div>
+  </header>
+
+<main class="cat">
 
     <header class="cat-bar">
       <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
@@ -19,7 +32,7 @@
 
     <section class="cat-head">
       <h1 class="cat-head__title">Habit Row</h1>
-      <p class="cat-head__desc">A three-column row — leading icon · name · trailing element — separated by a hairline divider. Stacks inside a card to form a habit list, settings list, or any vertical menu.</p>
+      <p class="cat-head__desc">A three-column row, leading icon · name · trailing element, separated by a hairline divider. Stacks inside a card to form a habit list, settings list, or any vertical menu.</p>
     </section>
 
     <!-- ANATOMY -->
@@ -36,7 +49,7 @@
         </div>
         <ul class="cat-anatomy__notes">
           <li><b>Grid</b> <span><code>auto 1fr auto</code> · gap <code>--s-3</code> · center-aligned.</span></li>
-          <li><b>Padding</b> <span><code>--s-2</code> vertical, 0 horizontal — relies on the parent for side padding.</span></li>
+          <li><b>Padding</b> <span><code>--s-2</code> vertical, 0 horizontal, relies on the parent for side padding.</span></li>
           <li><b>Divider</b> <span>1px <code>--c-hair</code> bottom; suppressed on <code>:last-child</code>.</span></li>
           <li><b>Done state</b> <span><code>--done</code> modifier strikes the name and dims the icon to 50%.</span></li>
         </ul>
@@ -74,7 +87,7 @@
     <!-- TRAILING VARIANTS -->
     <section class="cat-section">
       <h2 class="cat-section__h">Trailing elements</h2>
-      <p class="cat-section__sub">The third column is open — any kit primitive can sit there. Most common: count chip, checkbox, pill, or step button group.</p>
+      <p class="cat-section__sub">The third column is open, any kit primitive can sit there. Most common: count chip, checkbox, pill, or step button group.</p>
       <div class="cat-demo">
         <div class="k-card" style="width: 100%;">
           <div class="k-stack" style="--gap: 0;">
@@ -148,7 +161,7 @@
           <thead><tr><th>Class / token</th><th>Role</th></tr></thead>
           <tbody>
             <tr><td>.k-habit-row</td><td>Grid container, three tracks, center-aligned, gap <code>--s-3</code>, padding <code>--s-2</code> 0.</td></tr>
-            <tr><td>.k-habit-row--done</td><td>Done modifier — strikes the name, dims the leading tile to 50% opacity.</td></tr>
+            <tr><td>.k-habit-row--done</td><td>Done modifier, strikes the name, dims the leading tile to 50% opacity.</td></tr>
             <tr><td>.k-habit-row__name</td><td>Middle cell. Body type, ink color, transitions on color change.</td></tr>
             <tr><td>.k-habit-row__trail</td><td>Standard textual trail (e.g. "3 / 4"). Mono, <code>--c-sub</code>.</td></tr>
             <tr><td>:last-child</td><td>Bottom border suppressed for a clean stack.</td></tr>
@@ -167,6 +180,18 @@
 &lt;/div&gt;</pre>
     </section>
 
+  
+    <footer class="cat-footer">
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Edit</span>
+        <code>kit/catalog/components/habit-row.html</code>
+      </div>
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Verify</span>
+        <code>node tooling/mock-check.mjs kit/catalog/components/habit-row.html</code>
+      </div>
+      <div class="cat-footer__tag">FORGE &middot; v0.1</div>
+    </footer>
   </main>
 
   <script>

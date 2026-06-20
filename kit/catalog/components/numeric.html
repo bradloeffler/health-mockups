@@ -7,10 +7,23 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
   <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="../_catalog.css" />
   <link rel="stylesheet" href="./_chrome.css" />
 </head>
 <body>
-  <main class="cat">
+
+  <header class="cat-masthead">
+    <div class="cat-masthead__left">
+      <span class="cat-masthead__mark">F</span>
+      <span class="cat-masthead__word">FORGE <span class="dim">Kit</span></span>
+    </div>
+    <div class="cat-masthead__right">
+      <a class="cat-masthead__back" href="../index.html"><i class="ph ph-caret-left"></i> <span class="label">Catalog</span></a>
+      <span class="cat-masthead__pill"><span class="dot"></span>Components</span>
+    </div>
+  </header>
+
+<main class="cat">
 
     <header class="cat-bar">
       <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
@@ -19,13 +32,13 @@
 
     <section class="cat-head">
       <h1 class="cat-head__title">Numeric</h1>
-      <p class="cat-head__desc">Standalone tabular number with optional unit suffix. Four sizes from sm to xl — xl is the marquee hero number. Always uses mono with tabular-nums so digit columns stay aligned.</p>
+      <p class="cat-head__desc">Standalone tabular number with optional unit suffix. Four sizes from sm to xl, xl is the marquee hero number. Always uses mono with tabular-nums so digit columns stay aligned.</p>
     </section>
 
     <!-- ANATOMY -->
     <section class="cat-section">
       <h2 class="cat-section__h">Anatomy</h2>
-      <p class="cat-section__sub">Inline-flex container with baseline-aligned value and unit. The unit picks up the eyebrow spec — faint, mono, uppercase, narrow.</p>
+      <p class="cat-section__sub">Inline-flex container with baseline-aligned value and unit. The unit picks up the eyebrow spec, faint, mono, uppercase, narrow.</p>
       <div class="cat-demo">
         <span class="k-numeric k-numeric--xl"><span class="k-numeric__val">7,420</span><span class="k-numeric__unit">steps</span></span>
         <ul class="cat-anatomy__notes">
@@ -40,7 +53,7 @@
     <!-- SIZES -->
     <section class="cat-section">
       <h2 class="cat-section__h">Sizes</h2>
-      <p class="cat-section__sub">Four steps. xl drops to weight 300 — a deliberate switch from semibold so the marquee number reads as quietly confident rather than shouty.</p>
+      <p class="cat-section__sub">Four steps. xl drops to weight 300, a deliberate switch from semibold so the marquee number reads as quietly confident rather than shouty.</p>
       <div class="cat-demo cat-demo--row">
         <div class="cat-cell"><span class="cat-cell__cap">sm · 14</span><span class="k-numeric k-numeric--sm"><span class="k-numeric__val">7,420</span></span></div>
         <div class="cat-cell"><span class="cat-cell__cap">md · 18</span><span class="k-numeric k-numeric--md"><span class="k-numeric__val">7,420</span></span></div>
@@ -110,6 +123,18 @@
 &lt;/span&gt;</pre>
     </section>
 
+  
+    <footer class="cat-footer">
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Edit</span>
+        <code>kit/catalog/components/numeric.html</code>
+      </div>
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Verify</span>
+        <code>node tooling/mock-check.mjs kit/catalog/components/numeric.html</code>
+      </div>
+      <div class="cat-footer__tag">FORGE &middot; v0.1</div>
+    </footer>
   </main>
 
   <script>

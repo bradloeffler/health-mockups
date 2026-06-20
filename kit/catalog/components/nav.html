@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
   <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="../_catalog.css" />
   <link rel="stylesheet" href="./_chrome.css" />
   <style>
     /* Nav is normally position:fixed. Override so the catalog can show it docked
@@ -40,7 +41,19 @@
   </style>
 </head>
 <body>
-  <main class="cat">
+
+  <header class="cat-masthead">
+    <div class="cat-masthead__left">
+      <span class="cat-masthead__mark">F</span>
+      <span class="cat-masthead__word">FORGE <span class="dim">Kit</span></span>
+    </div>
+    <div class="cat-masthead__right">
+      <a class="cat-masthead__back" href="../index.html"><i class="ph ph-caret-left"></i> <span class="label">Catalog</span></a>
+      <span class="cat-masthead__pill"><span class="dot"></span>Components</span>
+    </div>
+  </header>
+
+<main class="cat">
 
     <header class="cat-bar">
       <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
@@ -55,7 +68,7 @@
     <!-- ANATOMY -->
     <section class="cat-section">
       <h2 class="cat-section__h">Anatomy</h2>
-      <p class="cat-section__sub">A pill-shaped bar that floats above content. Backdrop-filter blur lets the screen show through. Each tab is a 44 × 44 round button — meets minimum tap target.</p>
+      <p class="cat-section__sub">A pill-shaped bar that floats above content. Backdrop-filter blur lets the screen show through. Each tab is a 44 × 44 round button, meets minimum tap target.</p>
       <div class="cat-demo">
         <div class="cat-phone">
           <span class="k-eyebrow cat-phone__caption">Anatomy</span>
@@ -71,7 +84,7 @@
           <li><b>Shape</b> <span><code>--r-pill</code> radius · <code>--sh-nav</code> shadow.</span></li>
           <li><b>Position</b> <span>fixed, bottom-anchored, max-width 374px, centered, respects safe-area-inset-bottom.</span></li>
           <li><b>Buttons</b> <span>44 × 44 each, evenly spaced, 20px icon.</span></li>
-          <li><b>Active</b> <span><code>aria-current="page"</code> OR <code>.is-active</code> — flips icon to <code>--c-amber</code>.</span></li>
+          <li><b>Active</b> <span><code>aria-current="page"</code> OR <code>.is-active</code>, flips icon to <code>--c-amber</code>.</span></li>
         </ul>
       </div>
     </section>
@@ -79,7 +92,7 @@
     <!-- ACTIVE TABS -->
     <section class="cat-section">
       <h2 class="cat-section__h">Active tab states</h2>
-      <p class="cat-section__sub">Each tab shown as the active one in turn. Active is the only state with color — inactive tabs stay <code>--c-faint</code>.</p>
+      <p class="cat-section__sub">Each tab shown as the active one in turn. Active is the only state with color, inactive tabs stay <code>--c-faint</code>.</p>
       <div class="cat-demo" style="display: grid; gap: var(--s-4);">
 
         <div class="cat-phone">
@@ -135,7 +148,7 @@
             <tr><td>.k-nav</td><td>Floating pill bar. Position fixed, bottom-anchored, frosted backdrop.</td></tr>
             <tr><td>.k-nav__btn</td><td>44 × 44 round tab button. Default <code>--c-faint</code> icon.</td></tr>
             <tr><td>aria-current="page"</td><td>Active marker. Flips icon to <code>--c-amber</code>.</td></tr>
-            <tr><td>.is-active</td><td>JS-toggleable active class — same effect as <code>aria-current</code>.</td></tr>
+            <tr><td>.is-active</td><td>JS-toggleable active class, same effect as <code>aria-current</code>.</td></tr>
             <tr><td>aria-label="Primary"</td><td>Required on the <code>nav</code> element so AT users distinguish from secondary navs.</td></tr>
             <tr><td>--sh-nav</td><td>Custom shadow + 1px inset top highlight for tactile floating feel.</td></tr>
           </tbody>
@@ -158,6 +171,18 @@
 &lt;/nav&gt;</pre>
     </section>
 
+  
+    <footer class="cat-footer">
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Edit</span>
+        <code>kit/catalog/components/nav.html</code>
+      </div>
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Verify</span>
+        <code>node tooling/mock-check.mjs kit/catalog/components/nav.html</code>
+      </div>
+      <div class="cat-footer__tag">FORGE &middot; v0.1</div>
+    </footer>
   </main>
 
   <script>

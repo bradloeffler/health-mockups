@@ -7,10 +7,23 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
   <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="../_catalog.css" />
   <link rel="stylesheet" href="./_chrome.css" />
 </head>
 <body>
-  <main class="cat">
+
+  <header class="cat-masthead">
+    <div class="cat-masthead__left">
+      <span class="cat-masthead__mark">F</span>
+      <span class="cat-masthead__word">FORGE <span class="dim">Kit</span></span>
+    </div>
+    <div class="cat-masthead__right">
+      <a class="cat-masthead__back" href="../index.html"><i class="ph ph-caret-left"></i> <span class="label">Catalog</span></a>
+      <span class="cat-masthead__pill"><span class="dot"></span>Components</span>
+    </div>
+  </header>
+
+<main class="cat">
 
     <header class="cat-bar">
       <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
@@ -30,8 +43,8 @@
         <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-sun"></i></span>
         <ul class="cat-anatomy__notes">
           <li><b>--tile-size</b> <span>square side (default 36px). Drives width, height, and icon size.</span></li>
-          <li><b>--tile-bg</b> <span>fill — semantic color at 10% alpha.</span></li>
-          <li><b>--tile-fg</b> <span>icon color — the same semantic color at full strength.</span></li>
+          <li><b>--tile-bg</b> <span>fill, semantic color at 10% alpha.</span></li>
+          <li><b>--tile-fg</b> <span>icon color, the same semantic color at full strength.</span></li>
           <li><b>Border</b> <span>1px in matching color at 18% alpha (default: <code>--c-hair</code>).</span></li>
           <li><b>Radius</b> <span><code>--r-md</code> by default · <code>--r-sm</code> at sm · <code>--r-lg</code> at lg.</span></li>
         </ul>
@@ -41,7 +54,7 @@
     <!-- COLORS -->
     <section class="cat-section">
       <h2 class="cat-section__h">Colors</h2>
-      <p class="cat-section__sub">Four variants — default (neutral), amber, green, blue. The neutral tile uses ink on raised, no semantic accent.</p>
+      <p class="cat-section__sub">Four variants, default (neutral), amber, green, blue. The neutral tile uses ink on raised, no semantic accent.</p>
       <div class="cat-demo cat-demo--row" style="justify-content: space-around;">
         <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">default</span><span class="k-icon-tile"><i class="ph ph-gear-six"></i></span></div>
         <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">--amber</span><span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-sun"></i></span></div>
@@ -53,7 +66,7 @@
     <!-- SIZES -->
     <section class="cat-section">
       <h2 class="cat-section__h">Sizes</h2>
-      <p class="cat-section__sub">Three sizes — sm (28px) for inline labels, default (36px) for row leaders, lg (44px) for buttons and tap targets.</p>
+      <p class="cat-section__sub">Three sizes, sm (28px) for inline labels, default (36px) for row leaders, lg (44px) for buttons and tap targets.</p>
       <div class="cat-demo cat-demo--row" style="justify-content: space-around; align-items: flex-end;">
         <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">--sm · 28</span><span class="k-icon-tile k-icon-tile--sm k-icon-tile--amber"><i class="ph ph-sun"></i></span></div>
         <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">default · 36</span><span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-sun"></i></span></div>
@@ -98,7 +111,7 @@
     <!-- PAIRINGS -->
     <section class="cat-section">
       <h2 class="cat-section__h">Pairings</h2>
-      <p class="cat-section__sub">Canonical uses — icon tile + name row, button face, and habit row leader.</p>
+      <p class="cat-section__sub">Canonical uses, icon tile + name row, button face, and habit row leader.</p>
       <div class="cat-demo" style="display: grid; grid-template-columns: 1fr; gap: var(--s-4);">
         <div class="cat-cell">
           <span class="cat-cell__cap">tile + name row</span>
@@ -135,8 +148,8 @@
             <tr><td>.k-icon-tile--sm</td><td>28px · radius <code>--r-sm</code> · 14px icon.</td></tr>
             <tr><td>.k-icon-tile--lg</td><td>44px · radius <code>--r-lg</code> · 22px icon.</td></tr>
             <tr><td>.k-icon-tile--amber</td><td>Amber tint @10% + amber icon + amber border @18%.</td></tr>
-            <tr><td>.k-icon-tile--green</td><td>Green tint variant — water, growth, completed.</td></tr>
-            <tr><td>.k-icon-tile--blue</td><td>Blue tint variant — strain, mobility, calm.</td></tr>
+            <tr><td>.k-icon-tile--green</td><td>Green tint variant, water, growth, completed.</td></tr>
+            <tr><td>.k-icon-tile--blue</td><td>Blue tint variant, strain, mobility, calm.</td></tr>
             <tr><td>--tile-size</td><td>Side length override.</td></tr>
             <tr><td>--tile-bg / --tile-fg</td><td>Direct overrides if you need a one-off color outside the four variants.</td></tr>
           </tbody>
@@ -148,6 +161,18 @@
 &lt;/span&gt;</pre>
     </section>
 
+  
+    <footer class="cat-footer">
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Edit</span>
+        <code>kit/catalog/components/icon-tile.html</code>
+      </div>
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Verify</span>
+        <code>node tooling/mock-check.mjs kit/catalog/components/icon-tile.html</code>
+      </div>
+      <div class="cat-footer__tag">FORGE &middot; v0.1</div>
+    </footer>
   </main>
 
   <script>

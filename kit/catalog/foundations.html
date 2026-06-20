@@ -7,9 +7,10 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
   <link rel="stylesheet" href="../kit.css" />
+  <link rel="stylesheet" href="./_catalog.css" />
   <style>
-    /* Catalog-only layout primitives. Tokens only — no raw hex/px. */
-    body { display: block; background: var(--c-deep); }
+    /* Catalog-only layout primitives. Tokens only - no raw hex/px. */
+    body { display: block; }
 
     .cat-page {
       width: 100%;
@@ -293,12 +294,24 @@
   </style>
 </head>
 <body>
+
+  <header class="cat-masthead">
+    <div class="cat-masthead__left">
+      <span class="cat-masthead__mark">F</span>
+      <span class="cat-masthead__word">FORGE <span class="dim">Kit</span></span>
+    </div>
+    <div class="cat-masthead__right">
+      <a class="cat-masthead__back" href="./index.html"><i class="ph ph-caret-left"></i> <span class="label">Catalog</span></a>
+      <span class="cat-masthead__pill"><span class="dot"></span>Foundations</span>
+    </div>
+  </header>
+
   <main class="cat-page">
 
     <header class="cat-header">
       <span class="k-eyebrow cat-header__crumb">FORGE Kit · Foundations</span>
       <h1 class="cat-header__title">Foundations</h1>
-      <p class="cat-header__desc">Design tokens — the raw atoms every component composes from. Tap any value to copy its CSS custom property.</p>
+      <p class="cat-header__desc">Design tokens. The raw atoms every component composes from. Tap any value to copy its CSS custom property.</p>
     </header>
 
     <!-- ============================================================
@@ -307,7 +320,7 @@
     <section class="cat-section">
       <div class="cat-section__head">
         <h2 class="cat-section__title">Color</h2>
-        <p class="cat-section__desc">Semantic, dark-first. Never reference raw hex in author code — only these tokens.</p>
+        <p class="cat-section__desc">Semantic, dark-first. Never reference raw hex in author code, only these tokens.</p>
       </div>
 
       <div class="cat-subhead">Surfaces</div>
@@ -360,11 +373,11 @@
           <span class="cat-type-row__meta">--t-eyebrow · 10/700/0.16em</span>
         </div>
         <div class="cat-type-row">
-          <span class="cat-type-row__sample cat-sample-label">Label — section header</span>
+          <span class="cat-type-row__sample cat-sample-label">Label, section header</span>
           <span class="cat-type-row__meta">--t-label · 13/600</span>
         </div>
         <div class="cat-type-row">
-          <span class="cat-type-row__sample cat-sample-body">Body — habit name, list row, default UI text.</span>
+          <span class="cat-type-row__sample cat-sample-body">Body, habit name, list row, default UI text.</span>
           <span class="cat-type-row__meta">--t-body · 15/600</span>
         </div>
         <div class="cat-type-row">
@@ -428,6 +441,18 @@
       </div>
       <div class="cat-motion-list" id="motion-list"></div>
     </section>
+
+    <footer class="cat-footer">
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Edit</span>
+        <code>kit/catalog/foundations.html</code>
+      </div>
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Verify</span>
+        <code>node tooling/mock-check.mjs kit/catalog/foundations.html</code>
+      </div>
+      <div class="cat-footer__tag">FORGE &middot; v0.1</div>
+    </footer>
 
   </main>
 

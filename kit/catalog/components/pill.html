@@ -7,10 +7,23 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
   <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="../_catalog.css" />
   <link rel="stylesheet" href="./_chrome.css" />
 </head>
 <body>
-  <main class="cat">
+
+  <header class="cat-masthead">
+    <div class="cat-masthead__left">
+      <span class="cat-masthead__mark">F</span>
+      <span class="cat-masthead__word">FORGE <span class="dim">Kit</span></span>
+    </div>
+    <div class="cat-masthead__right">
+      <a class="cat-masthead__back" href="../index.html"><i class="ph ph-caret-left"></i> <span class="label">Catalog</span></a>
+      <span class="cat-masthead__pill"><span class="dot"></span>Components</span>
+    </div>
+  </header>
+
+<main class="cat">
 
     <header class="cat-bar">
       <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
@@ -19,7 +32,7 @@
 
     <section class="cat-head">
       <h1 class="cat-head__title">Pill</h1>
-      <p class="cat-head__desc">A small 24px capsule for trailing actions, status chips, and counts. Three semantic variants — amber (primary), green (success), ghost (neutral).</p>
+      <p class="cat-head__desc">A small 24px capsule for trailing actions, status chips, and counts. Three semantic variants, amber (primary), green (success), ghost (neutral).</p>
     </section>
 
     <!-- ANATOMY -->
@@ -30,7 +43,7 @@
         <button class="k-pill k-pill--amber"><i class="ph ph-play"></i> Start</button>
         <ul class="cat-anatomy__notes">
           <li><b>Height</b> <span>24px · radius <code>--r-pill</code> · padding 0 <code>--s-2</code>.</span></li>
-          <li><b>Type</b> <span>eyebrow spec — mono uppercase, 10px, 700 weight, 0.16em tracking.</span></li>
+          <li><b>Type</b> <span>eyebrow spec, mono uppercase, 10px, 700 weight, 0.16em tracking.</span></li>
           <li><b>Gap</b> <span><code>--s-0</code> (4px) between glyph and label.</span></li>
           <li><b>Icon size</b> <span>12px when an icon is present.</span></li>
         </ul>
@@ -64,7 +77,7 @@
     <!-- STATES -->
     <section class="cat-section">
       <h2 class="cat-section__h">States</h2>
-      <p class="cat-section__sub">Default and pressed. Pressed dims via a subtle filter — the shape and color don't change.</p>
+      <p class="cat-section__sub">Default and pressed. Pressed dims via a subtle filter, the shape and color don't change.</p>
       <div class="cat-demo cat-demo--row">
         <div class="cat-cell"><span class="cat-cell__cap">default</span><button class="k-pill k-pill--amber"><i class="ph ph-play"></i> Start</button></div>
         <div class="cat-cell"><span class="cat-cell__cap">pressed</span><button class="k-pill k-pill--amber" style="filter: brightness(0.88); transform: scale(0.97);"><i class="ph ph-play"></i> Start</button></div>
@@ -107,6 +120,18 @@
 &lt;/button&gt;</pre>
     </section>
 
+  
+    <footer class="cat-footer">
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Edit</span>
+        <code>kit/catalog/components/pill.html</code>
+      </div>
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Verify</span>
+        <code>node tooling/mock-check.mjs kit/catalog/components/pill.html</code>
+      </div>
+      <div class="cat-footer__tag">FORGE &middot; v0.1</div>
+    </footer>
   </main>
 
   <script>

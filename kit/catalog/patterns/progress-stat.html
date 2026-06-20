@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
   <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="../_catalog.css" />
   <style>
     body { display: block; background: var(--c-deep); }
     .doc { max-width: 880px; margin: 0 auto; padding: var(--s-5) var(--s-4) var(--s-8); }
@@ -29,13 +30,25 @@
   </style>
 </head>
 <body>
-  <main class="doc">
+
+  <header class="cat-masthead">
+    <div class="cat-masthead__left">
+      <span class="cat-masthead__mark">F</span>
+      <span class="cat-masthead__word">FORGE <span class="dim">Kit</span></span>
+    </div>
+    <div class="cat-masthead__right">
+      <a class="cat-masthead__back" href="../index.html"><i class="ph ph-caret-left"></i> <span class="label">Catalog</span></a>
+      <span class="cat-masthead__pill"><span class="dot"></span>Patterns</span>
+    </div>
+  </header>
+
+<main class="doc">
 
     <header class="doc-bar">
       <div>
         <span class="doc-title__crumb">Pattern &middot; Progress stat</span>
         <h1 class="doc-title">Progress stat</h1>
-        <p class="doc-lede">A single row: short label on the left, a progress bar in the middle, the value on the right. Used for macros, hydration cups, and step counts &mdash; anywhere a target needs to be readable in one glance.</p>
+        <p class="doc-lede">A single row: short label on the left, a progress bar in the middle, the value on the right. Used for macros, hydration cups, and step counts, anywhere a target needs to be readable in one glance.</p>
       </div>
       <a class="doc-bar__back" href="../index.html">&larr; Catalog</a>
     </header>
@@ -98,6 +111,18 @@
 &lt;/section&gt;<span class="code__copy">Copy</span></pre>
     </section>
 
+  
+    <footer class="cat-footer">
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Edit</span>
+        <code>kit/catalog/patterns/progress-stat.html</code>
+      </div>
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Verify</span>
+        <code>node tooling/mock-check.mjs kit/catalog/patterns/progress-stat.html</code>
+      </div>
+      <div class="cat-footer__tag">FORGE &middot; v0.1</div>
+    </footer>
   </main>
   <script>
     document.querySelectorAll('.code[data-copy]').forEach(el => {
