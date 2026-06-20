@@ -139,9 +139,10 @@
     color:var(--sub); text-transform:uppercase;
   }
 
-  /* stacked metrics right of rings — tidy 2-col grid (label / value) */
+  /* stacked metrics right of rings — tidy 3-col grid (label / value / unit)
+     so the digits column-align, not the unit suffixes. */
   .metrics-stack{
-    flex:1; display:grid; grid-template-columns: auto 1fr; column-gap:14px; row-gap:8px;
+    flex:1; display:grid; grid-template-columns: auto 1fr auto; column-gap:10px; row-gap:8px;
     align-content:center; min-width:0;
   }
   .metrics-stack .lbl{
@@ -151,8 +152,12 @@
   .metrics-stack .val{
     font-family:var(--mono); font-size:15px; font-weight:600; color:var(--ink);
     letter-spacing:-.01em; text-align:right; align-self:center;
+    font-variant-numeric: tabular-nums;
   }
-  .metrics-stack .val .u{font-size:9px; color:var(--faint); font-weight:500; margin-left:2px; letter-spacing:.1em;}
+  .metrics-stack .u{
+    font-family:var(--mono); font-size:9px; color:var(--faint); font-weight:500;
+    letter-spacing:.08em; align-self:center; min-width:22px; text-align:left;
+  }
 
   /* ===== Section title ===== */
   .sec-title{
@@ -496,10 +501,10 @@
           </div>
 
           <div class="metrics-stack">
-            <div class="lbl">HRV</div>   <div class="val" id="m-hrv">62<span class="u">ms</span></div>
-            <div class="lbl">RHR</div>   <div class="val" id="m-rhr">54<span class="u">bpm</span></div>
-            <div class="lbl">REST</div>  <div class="val" id="m-rest">7.2<span class="u">h</span></div>
-            <div class="lbl">SLEEP</div> <div class="val" id="m-sleep">88<span class="u">%</span></div>
+            <div class="lbl">HRV</div>   <div class="val" id="m-hrv">62</div>   <div class="u">ms</div>
+            <div class="lbl">RHR</div>   <div class="val" id="m-rhr">54</div>   <div class="u">bpm</div>
+            <div class="lbl">REST</div>  <div class="val" id="m-rest">7.2</div> <div class="u">h</div>
+            <div class="lbl">SLEEP</div> <div class="val" id="m-sleep">88</div> <div class="u">%</div>
           </div>
         </div>
 
@@ -653,10 +658,10 @@
       $('#src-dot').style.boxShadow = 'none';
       $('#rec-num').textContent = '--';
       $('#str-num').textContent = '--';
-      $('#m-hrv').innerHTML = '--<span class="u">ms</span>';
-      $('#m-rhr').innerHTML = '--<span class="u">bpm</span>';
-      $('#m-rest').innerHTML = '--<span class="u">h</span>';
-      $('#m-sleep').innerHTML = '--<span class="u">%</span>';
+      $('#m-hrv').textContent = '--';
+      $('#m-rhr').textContent = '--';
+      $('#m-rest').textContent = '--';
+      $('#m-sleep').textContent = '--';
       $('#rec-ring').setAttribute('stroke-dashoffset', '251.3');
       $('#str-ring').setAttribute('stroke-dashoffset', '251.3');
 
@@ -706,10 +711,10 @@
       $('#src-dot').style.boxShadow = '0 0 6px var(--green)';
       $('#rec-num').textContent = '76';
       $('#str-num').textContent = '12.4';
-      $('#m-hrv').innerHTML = '62<span class="u">ms</span>';
-      $('#m-rhr').innerHTML = '54<span class="u">bpm</span>';
-      $('#m-rest').innerHTML = '7.2<span class="u">h</span>';
-      $('#m-sleep').innerHTML = '88<span class="u">%</span>';
+      $('#m-hrv').textContent = '62';
+      $('#m-rhr').textContent = '54';
+      $('#m-rest').textContent = '7.2';
+      $('#m-sleep').textContent = '88';
       $('#rec-ring').setAttribute('stroke-dashoffset', String(251.3 * (1 - 0.76)));
       $('#str-ring').setAttribute('stroke-dashoffset', String(251.3 * (1 - 12.4/21)));
 
