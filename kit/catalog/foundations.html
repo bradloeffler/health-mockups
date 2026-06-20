@@ -301,6 +301,7 @@
       <span class="cat-masthead__word">FORGE <span class="dim">Kit</span></span>
     </div>
     <div class="cat-masthead__right">
+      <button class="cat-kbd" type="button" aria-label="Open command palette"><kbd>&#8984;K</kbd></button>
       <a class="cat-masthead__back" href="./index.html"><i class="ph ph-caret-left"></i> <span class="label">Catalog</span></a>
       <span class="cat-masthead__pill"><span class="dot"></span>Foundations</span>
     </div>
@@ -345,6 +346,7 @@
         <p class="cat-section__desc">An 8pt-leaning scale. Bar width equals the token value.</p>
       </div>
       <div class="cat-spacelist" id="space-list"></div>
+      <div class="cat-spaceapplied" id="space-applied" aria-label="Each step applied between elements"></div>
     </section>
 
     <!-- ============================================================
@@ -369,19 +371,27 @@
 
       <div class="cat-type-list">
         <div class="cat-type-row">
-          <span class="cat-type-row__sample cat-sample-eyebrow">Eyebrow / mono label</span>
+          <span class="cat-type-row__sample cat-sample-eyebrow">EYEBROW / MONO LABEL
+            <em class="cite">&ldquo;Whitespace is to be regarded as an active element, not a passive background.&rdquo; &middot; J. Tschichold</em>
+          </span>
           <span class="cat-type-row__meta">--t-eyebrow · 10/700/0.16em</span>
         </div>
         <div class="cat-type-row">
-          <span class="cat-type-row__sample cat-sample-label">Label, section header</span>
+          <span class="cat-type-row__sample cat-sample-label">Label, section header
+            <em class="cite">&ldquo;Type is a beautiful group of letters, not a group of beautiful letters.&rdquo; &middot; M. Carter</em>
+          </span>
           <span class="cat-type-row__meta">--t-label · 13/600</span>
         </div>
         <div class="cat-type-row">
-          <span class="cat-type-row__sample cat-sample-body">Body, habit name, list row, default UI text.</span>
+          <span class="cat-type-row__sample cat-sample-body">Body, habit name, list row, default UI text.
+            <em class="cite">&ldquo;The details are not the details. They make the design.&rdquo; &middot; C. Eames</em>
+          </span>
           <span class="cat-type-row__meta">--t-body · 15/600</span>
         </div>
         <div class="cat-type-row">
-          <span class="cat-type-row__sample cat-sample-title">Title display</span>
+          <span class="cat-type-row__sample cat-sample-title">Title display
+            <em class="cite">&ldquo;Typography is the craft of endowing human language with a durable visual form.&rdquo; &middot; R. Bringhurst</em>
+          </span>
           <span class="cat-type-row__meta">--t-title · 28/500/-0.4px</span>
         </div>
         <div class="cat-type-row">
@@ -538,6 +548,23 @@
       spaceHost.appendChild(row);
     }
 
+    // ----- applied space (each step shown between two chips) -----
+    const appliedHost = document.getElementById('space-applied');
+    if (appliedHost) {
+      for (const t of SPACE_TOKENS) {
+        const cell = document.createElement('div');
+        cell.className = 'cat-spaceapplied__cell';
+        cell.innerHTML = `
+          <div class="cat-spaceapplied__stack" style="gap: var(${t});">
+            <span class="cat-spaceapplied__chip"></span>
+            <span class="cat-spaceapplied__chip"></span>
+          </div>
+          <span class="cat-spaceapplied__name">${t}</span>
+        `;
+        appliedHost.appendChild(cell);
+      }
+    }
+
     // ----- radius -----
     const radiusHost = document.getElementById('radius-grid');
     for (const t of RADIUS_TOKENS) {
@@ -581,5 +608,6 @@
       motionHost.appendChild(row);
     }
   </script>
+  <script src="./_catalog.js"></script>
 </body>
 </html>

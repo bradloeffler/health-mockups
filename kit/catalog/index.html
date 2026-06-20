@@ -235,6 +235,8 @@
       <span class="cat-masthead__word">FORGE <span class="dim">Kit</span></span>
     </div>
     <div class="cat-masthead__right">
+      <button class="cat-news" type="button" aria-haspopup="dialog"><span class="dot"></span><span class="label">New</span></button>
+      <button class="cat-kbd" type="button" aria-label="Open command palette"><kbd>&#8984;K</kbd></button>
       <span class="cat-masthead__pill"><span class="dot"></span>Harness <span class="hide-sm">&middot; 24 pages</span></span>
     </div>
   </header>
@@ -243,13 +245,21 @@
 
     <header class="doc-header">
       <div class="cat-hero">
+        <a class="cat-viewsrc" href="https://github.com/" target="_blank" rel="noopener" aria-label="View source on GitHub">
+          <i class="ph ph-code"></i> View source
+        </a>
         <div>
           <div class="doc-header__brand">
             <span class="doc-header__logo">F</span>
             <span class="k-eyebrow">FORGE &middot; UI KIT</span>
           </div>
-          <h1>The kit that builds FORGE.</h1>
+          <h1><span class="word-thin">The kit that builds</span> <span class="word-amber">FORGE.</span></h1>
+          <span class="doc-header__kicker">v0.1 <span class="sep"></span> shipped 2026 <span class="sep"></span> harnessed across three iPhones</span>
           <p>Tokens, primitives, and composed patterns. Everything authors need to assemble a screen without writing a raw hex or a raw pixel.</p>
+          <div style="margin-top: var(--s-4); display: inline-flex; gap: var(--s-1); align-items: center; flex-wrap: wrap;">
+            <span class="cat-footer__tag" style="border-color: rgba(227,168,87,0.3); color: var(--c-amber); background: rgba(227,168,87,0.06);">v0.1 &middot; Live</span>
+            <span class="cat-footer__tag">24 pages &middot; Harness pass</span>
+          </div>
         </div>
         <div class="cat-hero__demo" aria-label="Live kit preview">
           <div class="k-ring" style="--ring-size: 96px; --ring-color: var(--c-green); --ring-pct: 71;">
@@ -266,8 +276,46 @@
             <span class="k-pill">Default</span>
           </div>
         </div>
+        <div class="cat-stats" aria-label="Kit at a glance">
+          <div class="cat-stat">
+            <span class="cat-stat__num">24<span class="unit">pp</span></span>
+            <span class="cat-stat__lbl">Pages</span>
+          </div>
+          <div class="cat-stat">
+            <span class="cat-stat__num" data-count="components">13</span>
+            <span class="cat-stat__lbl">Components</span>
+          </div>
+          <div class="cat-stat">
+            <span class="cat-stat__num" data-count="icons">40</span>
+            <span class="cat-stat__lbl">Icons</span>
+          </div>
+          <div class="cat-stat">
+            <span class="cat-stat__num">100<span class="unit">%</span></span>
+            <span class="cat-stat__lbl">Harness pass</span>
+          </div>
+        </div>
       </div>
     </header>
+
+    <!-- ===================== ABOUT THIS KIT ===================== -->
+    <section class="cat-about" aria-label="What's in the kit">
+      <div class="cat-about__col">
+        <span class="cat-about__lbl">Tokens</span>
+        <span class="cat-about__val" data-count="tokens">55</span>
+      </div>
+      <div class="cat-about__col">
+        <span class="cat-about__lbl">Components</span>
+        <span class="cat-about__val" data-count="components">13</span>
+      </div>
+      <div class="cat-about__col">
+        <span class="cat-about__lbl">Patterns</span>
+        <span class="cat-about__val" data-count="patterns">8</span>
+      </div>
+      <div class="cat-about__col">
+        <span class="cat-about__lbl">Icons</span>
+        <span class="cat-about__val" data-count="icons">40</span>
+      </div>
+    </section>
 
     <!-- ===================== HOW TO USE ===================== -->
     <section class="doc-section">
@@ -278,12 +326,12 @@
       <div class="how-grid">
         <div>
           <span class="k-eyebrow" style="display: block; margin-bottom: var(--s-2);">CSS</span>
-<pre class="code" data-copy>&lt;link rel="stylesheet" href="/kit/tokens.css" /&gt;
+<pre class="code" data-copy data-lang="HTML">&lt;link rel="stylesheet" href="/kit/tokens.css" /&gt;
 &lt;link rel="stylesheet" href="/kit/kit.css" /&gt;<span class="code__copy">Copy</span></pre>
         </div>
         <div>
           <span class="k-eyebrow" style="display: block; margin-bottom: var(--s-2);">Icons</span>
-<pre class="code" data-copy>import { icons } from '/kit/icons.js';
+<pre class="code" data-copy data-lang="JS">import { icons } from '/kit/icons.js';
 // &lt;i class="ph ${icons.recovery}"&gt;&lt;/i&gt;<span class="code__copy">Copy</span></pre>
         </div>
       </div>
@@ -465,7 +513,7 @@
             <div class="pv-row" style="padding: var(--s-1) var(--s-2); border-radius: var(--r-pill); border: 1px solid var(--c-hair); background: var(--c-surface);">
               <span style="font-size: 18px; color: var(--c-amber);"><i class="ph ph-house"></i></span>
               <span style="font-size: 18px; color: var(--c-faint);"><i class="ph ph-calendar-blank"></i></span>
-              <span style="font-size: 18px; color: var(--c-faint);"><i class="ph ph-squares-four"></i></span>
+              <span style="font-size: 18px; color: var(--c-faint);"><i class="ph ph-check-square"></i></span>
               <span style="font-size: 18px; color: var(--c-faint);"><i class="ph ph-gear-six"></i></span>
             </div>
           </div>
@@ -572,7 +620,7 @@
             <div class="pv-row" style="padding: var(--s-1) var(--s-2); border-radius: var(--r-pill); border: 1px solid var(--c-hair); background: var(--c-surface);">
               <span style="font-size: 16px; color: var(--c-faint);"><i class="ph ph-house"></i></span>
               <span style="font-size: 16px; color: var(--c-amber);"><i class="ph ph-calendar-blank"></i></span>
-              <span style="font-size: 16px; color: var(--c-faint);"><i class="ph ph-squares-four"></i></span>
+              <span style="font-size: 16px; color: var(--c-faint);"><i class="ph ph-check-square"></i></span>
               <span style="font-size: 16px; color: var(--c-faint);"><i class="ph ph-gear-six"></i></span>
             </div>
           </div>
@@ -619,7 +667,18 @@
         <span class="cat-footer__tag">Verify</span>
         <code>node tooling/mock-check.mjs kit/catalog/**/*.html</code>
       </div>
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Theme</span>
+        <span class="cat-theme" role="group" aria-label="Theme">
+          <button type="button" data-theme="dark" class="is-on">Dark</button>
+          <button type="button" data-theme="night">Night</button>
+        </span>
+      </div>
       <div class="cat-footer__tag">FORGE &middot; v0.1</div>
+      <div class="cat-sigil">
+        <span class="cat-sigil__mark">F</span>
+        <span>Forge Design System <span class="dot"></span> 2026 <span class="dot"></span> built with tokens, harnessed across three iPhones</span>
+      </div>
     </footer>
 
   </main>
@@ -641,5 +700,6 @@
       });
     });
   </script>
+  <script src="./_catalog.js"></script>
 </body>
 </html>

@@ -132,7 +132,7 @@ Variants: `--amber`, `--green`, `--blue`. Sizes: `--sm` (28), default (36), `--l
 <nav class="k-nav" aria-label="Primary">
   <button class="k-nav__btn" aria-current="page"><i class="ph ph-house"></i></button>
   <button class="k-nav__btn"><i class="ph ph-calendar-blank"></i></button>
-  <button class="k-nav__btn"><i class="ph ph-squares-four"></i></button>
+  <button class="k-nav__btn"><i class="ph ph-check-square"></i></button>
   <button class="k-nav__btn"><i class="ph ph-gear-six"></i></button>
 </nav>
 ```

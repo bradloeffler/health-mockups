@@ -37,7 +37,7 @@ export const icons = Object.freeze({
   // --- nav / chrome ---
   home:        'ph-house',
   plan:        'ph-calendar-blank',
-  habits:      'ph-squares-four',
+  habits:      'ph-check-square',
   settings:    'ph-gear-six',
   account:     'ph-user-circle',
 
