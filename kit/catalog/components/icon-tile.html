@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE Kit · Icon Tile</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="./_chrome.css" />
+</head>
+<body>
+  <main class="cat">
+
+    <header class="cat-bar">
+      <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
+      <a class="cat-bar__back" href="../index.html"><i class="ph ph-caret-left"></i> Components</a>
+    </header>
+
+    <section class="cat-head">
+      <h1 class="cat-head__title">Icon Tile</h1>
+      <p class="cat-head__desc">A rounded brand-tinted square holding exactly one icon. Acts as a row leader, a button face, or a domain marker. Three sizes, four color variants.</p>
+    </section>
+
+    <!-- ANATOMY -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Anatomy</h2>
+      <p class="cat-section__sub">A square with a hairline border, a faint colored fill, and a single Phosphor glyph centered. The fill and stroke both come from the same color token, with the fill at ~10% alpha for the tinted look.</p>
+      <div class="cat-demo">
+        <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-sun"></i></span>
+        <ul class="cat-anatomy__notes">
+          <li><b>--tile-size</b> <span>square side (default 36px). Drives width, height, and icon size.</span></li>
+          <li><b>--tile-bg</b> <span>fill — semantic color at 10% alpha.</span></li>
+          <li><b>--tile-fg</b> <span>icon color — the same semantic color at full strength.</span></li>
+          <li><b>Border</b> <span>1px in matching color at 18% alpha (default: <code>--c-hair</code>).</span></li>
+          <li><b>Radius</b> <span><code>--r-md</code> by default · <code>--r-sm</code> at sm · <code>--r-lg</code> at lg.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- COLORS -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Colors</h2>
+      <p class="cat-section__sub">Four variants — default (neutral), amber, green, blue. The neutral tile uses ink on raised, no semantic accent.</p>
+      <div class="cat-demo cat-demo--row" style="justify-content: space-around;">
+        <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">default</span><span class="k-icon-tile"><i class="ph ph-gear-six"></i></span></div>
+        <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">--amber</span><span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-sun"></i></span></div>
+        <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">--green</span><span class="k-icon-tile k-icon-tile--green"><i class="ph ph-drop"></i></span></div>
+        <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">--blue</span><span class="k-icon-tile k-icon-tile--blue"><i class="ph ph-person-simple-tai-chi"></i></span></div>
+      </div>
+    </section>
+
+    <!-- SIZES -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Sizes</h2>
+      <p class="cat-section__sub">Three sizes — sm (28px) for inline labels, default (36px) for row leaders, lg (44px) for buttons and tap targets.</p>
+      <div class="cat-demo cat-demo--row" style="justify-content: space-around; align-items: flex-end;">
+        <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">--sm · 28</span><span class="k-icon-tile k-icon-tile--sm k-icon-tile--amber"><i class="ph ph-sun"></i></span></div>
+        <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">default · 36</span><span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-sun"></i></span></div>
+        <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">--lg · 44</span><span class="k-icon-tile k-icon-tile--lg k-icon-tile--amber"><i class="ph ph-sun"></i></span></div>
+      </div>
+    </section>
+
+    <!-- FULL MATRIX -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Size × color matrix</h2>
+      <p class="cat-section__sub">All twelve combinations side-by-side. Sanity check for icon centering, border weight, and color contrast.</p>
+      <div class="cat-demo">
+        <div style="display: grid; grid-template-columns: auto 1fr 1fr 1fr; gap: var(--s-3) var(--s-4); align-items: center;">
+          <span class="k-eyebrow"></span>
+          <span class="k-eyebrow" style="text-align: center;">sm</span>
+          <span class="k-eyebrow" style="text-align: center;">md</span>
+          <span class="k-eyebrow" style="text-align: center;">lg</span>
+
+          <span class="k-eyebrow">default</span>
+          <div style="text-align: center;"><span class="k-icon-tile k-icon-tile--sm"><i class="ph ph-gear-six"></i></span></div>
+          <div style="text-align: center;"><span class="k-icon-tile"><i class="ph ph-gear-six"></i></span></div>
+          <div style="text-align: center;"><span class="k-icon-tile k-icon-tile--lg"><i class="ph ph-gear-six"></i></span></div>
+
+          <span class="k-eyebrow">amber</span>
+          <div style="text-align: center;"><span class="k-icon-tile k-icon-tile--sm k-icon-tile--amber"><i class="ph ph-fire"></i></span></div>
+          <div style="text-align: center;"><span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-fire"></i></span></div>
+          <div style="text-align: center;"><span class="k-icon-tile k-icon-tile--lg k-icon-tile--amber"><i class="ph ph-fire"></i></span></div>
+
+          <span class="k-eyebrow">green</span>
+          <div style="text-align: center;"><span class="k-icon-tile k-icon-tile--sm k-icon-tile--green"><i class="ph ph-drop"></i></span></div>
+          <div style="text-align: center;"><span class="k-icon-tile k-icon-tile--green"><i class="ph ph-drop"></i></span></div>
+          <div style="text-align: center;"><span class="k-icon-tile k-icon-tile--lg k-icon-tile--green"><i class="ph ph-drop"></i></span></div>
+
+          <span class="k-eyebrow">blue</span>
+          <div style="text-align: center;"><span class="k-icon-tile k-icon-tile--sm k-icon-tile--blue"><i class="ph ph-wave-sine"></i></span></div>
+          <div style="text-align: center;"><span class="k-icon-tile k-icon-tile--blue"><i class="ph ph-wave-sine"></i></span></div>
+          <div style="text-align: center;"><span class="k-icon-tile k-icon-tile--lg k-icon-tile--blue"><i class="ph ph-wave-sine"></i></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAIRINGS -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Pairings</h2>
+      <p class="cat-section__sub">Canonical uses — icon tile + name row, button face, and habit row leader.</p>
+      <div class="cat-demo" style="display: grid; grid-template-columns: 1fr; gap: var(--s-4);">
+        <div class="cat-cell">
+          <span class="cat-cell__cap">tile + name row</span>
+          <div class="k-row" style="width: 100%;">
+            <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-sun"></i></span>
+            <span class="k-text-body">Vitamins AM</span>
+          </div>
+        </div>
+        <div class="cat-cell">
+          <span class="cat-cell__cap">tile button</span>
+          <button class="k-icon-tile k-icon-tile--lg" aria-label="Account"><i class="ph ph-user-circle"></i></button>
+        </div>
+        <div class="cat-cell">
+          <span class="cat-cell__cap">tile + name + trailing pill</span>
+          <div class="k-row k-row--between" style="width: 100%;">
+            <div class="k-row">
+              <span class="k-icon-tile k-icon-tile--green"><i class="ph ph-drop"></i></span>
+              <span class="k-text-body">Hydration</span>
+            </div>
+            <span class="k-pill k-pill--ghost">3 / 4</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPEC -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Spec</h2>
+      <div class="cat-spec-wrap">
+        <table class="cat-spec">
+          <thead><tr><th>Class / token</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td>.k-icon-tile</td><td>Square inline-flex container. Default 36px, <code>--c-raised</code> bg, <code>--c-ink</code> icon.</td></tr>
+            <tr><td>.k-icon-tile--sm</td><td>28px · radius <code>--r-sm</code> · 14px icon.</td></tr>
+            <tr><td>.k-icon-tile--lg</td><td>44px · radius <code>--r-lg</code> · 22px icon.</td></tr>
+            <tr><td>.k-icon-tile--amber</td><td>Amber tint @10% + amber icon + amber border @18%.</td></tr>
+            <tr><td>.k-icon-tile--green</td><td>Green tint variant — water, growth, completed.</td></tr>
+            <tr><td>.k-icon-tile--blue</td><td>Blue tint variant — strain, mobility, calm.</td></tr>
+            <tr><td>--tile-size</td><td>Side length override.</td></tr>
+            <tr><td>--tile-bg / --tile-fg</td><td>Direct overrides if you need a one-off color outside the four variants.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="height: var(--s-3);"></div>
+      <pre class="cat-code" data-copy='<span class="k-icon-tile k-icon-tile--amber">\n  <i class="ph ph-sun"></i>\n</span>'><span class="cat-code__copy">tap to copy</span>&lt;span class="k-icon-tile k-icon-tile--amber"&gt;
+  &lt;i class="ph ph-sun"&gt;&lt;/i&gt;
+&lt;/span&gt;</pre>
+    </section>
+
+  </main>
+
+  <script>
+    document.querySelectorAll('.cat-code').forEach(el => {
+      el.addEventListener('click', () => {
+        const text = el.dataset.copy || el.innerText.replace(/^tap to copy\s*/i, '');
+        navigator.clipboard?.writeText(text.replace(/\\n/g, '\n'));
+        el.classList.add('is-copied');
+        el.querySelector('.cat-code__copy').textContent = 'copied';
+        setTimeout(() => {
+          el.classList.remove('is-copied');
+          el.querySelector('.cat-code__copy').textContent = 'tap to copy';
+        }, 1400);
+      });
+    });
+  </script>
+</body>
+</html>

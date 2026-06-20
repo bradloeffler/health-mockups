@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE UI Kit</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="../kit.css" />
+  <style>
+    /* ---------- catalog chrome (kit/ exempt — but still tokens-only) ---------- */
+    body {
+      display: block;
+      background: var(--c-deep);
+    }
+    .doc {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: var(--s-6) var(--s-4) var(--s-8);
+    }
+    .doc-header {
+      border-bottom: 1px solid var(--c-hair);
+      padding-bottom: var(--s-5);
+      margin-bottom: var(--s-6);
+    }
+    .doc-header__brand {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-2);
+      margin-bottom: var(--s-2);
+    }
+    .doc-header__logo {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--r-sm);
+      background: var(--c-amber);
+      color: var(--c-on-amber);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--f-mono);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+    }
+    .doc-header h1 {
+      margin: 0;
+      font-family: var(--f-ui);
+      font-size: 36px;
+      font-weight: 500;
+      letter-spacing: -0.6px;
+      color: var(--c-ink);
+    }
+    .doc-header p {
+      margin: var(--s-2) 0 0;
+      color: var(--c-sub);
+      font-weight: 400;
+      font-size: 16px;
+      max-width: 60ch;
+    }
+    .doc-section {
+      margin-top: var(--s-7);
+    }
+    .doc-section__head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--s-3);
+      margin-bottom: var(--s-4);
+      padding-bottom: var(--s-2);
+      border-bottom: 1px solid var(--c-hair);
+    }
+    .doc-section__title {
+      font-family: var(--f-ui);
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: -0.3px;
+      margin: 0;
+      color: var(--c-ink);
+    }
+    .doc-section__lede {
+      color: var(--c-sub);
+      font-weight: 400;
+      font-size: 14px;
+      margin: 0;
+      max-width: 50ch;
+      text-align: right;
+    }
+    .how-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--s-3);
+    }
+    @media (min-width: 720px) {
+      .how-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .code {
+      position: relative;
+      background: var(--c-bg);
+      border: 1px solid var(--c-hair);
+      border-radius: var(--r-md);
+      padding: var(--s-3);
+      font-family: var(--f-mono);
+      font-size: 12px;
+      line-height: 1.55;
+      color: var(--c-ink);
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      cursor: copy;
+    }
+    .code:hover { border-color: var(--c-hair-strong); }
+    .code__copy {
+      position: absolute;
+      top: var(--s-1);
+      right: var(--s-1);
+      font-family: var(--f-mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--c-faint);
+      padding: var(--s-0) var(--s-1);
+      border-radius: var(--r-sm);
+      background: var(--c-surface);
+      pointer-events: none;
+    }
+    .code.is-copied .code__copy { color: var(--c-green); }
+    .tile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: var(--s-3);
+    }
+    .tile {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-2);
+      padding: var(--s-3);
+      background: var(--c-surface);
+      border: 1px solid var(--c-hair);
+      border-radius: var(--r-lg);
+      color: inherit;
+      text-decoration: none;
+      transition: border-color var(--m-fast), transform var(--m-fast);
+    }
+    .tile:hover {
+      border-color: var(--c-hair-strong);
+      transform: translateY(-1px);
+    }
+    .tile__preview {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 88px;
+      padding: var(--s-3);
+      border-radius: var(--r-md);
+      background: var(--c-bg);
+      border: 1px solid var(--c-hair);
+    }
+    .tile__name {
+      font-family: var(--f-ui);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--c-ink);
+    }
+    .tile__desc {
+      font-family: var(--f-ui);
+      font-size: 12px;
+      color: var(--c-sub);
+      font-weight: 400;
+      line-height: 1.45;
+    }
+    .tile__name .ph {
+      font-size: 12px;
+      color: var(--c-faint);
+      margin-left: var(--s-0);
+    }
+    .doc-footer {
+      margin-top: var(--s-8);
+      padding-top: var(--s-5);
+      border-top: 1px solid var(--c-hair);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--s-3);
+      flex-wrap: wrap;
+      color: var(--c-faint);
+      font-size: 13px;
+    }
+    .doc-footer a {
+      color: var(--c-amber);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .doc-footer a:hover { text-decoration: underline; }
+    .doc-footer__tag {
+      font-family: var(--f-mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--c-faint);
+    }
+
+    /* preview helpers (compact renders inside tiles) */
+    .pv-row { display: inline-flex; align-items: center; gap: var(--s-2); }
+    .pv-stack { display: inline-flex; flex-direction: column; align-items: center; gap: var(--s-1); }
+  </style>
+</head>
+<body>
+  <main class="doc">
+
+    <header class="doc-header">
+      <div class="doc-header__brand">
+        <span class="doc-header__logo">F</span>
+        <span class="k-eyebrow">FORGE &middot; UI KIT</span>
+      </div>
+      <h1>FORGE UI Kit</h1>
+      <p>The component library FORGE is built from. Tokens, primitives, and composed patterns &mdash; everything authors need to assemble a screen without ever writing a raw hex or a raw pixel.</p>
+    </header>
+
+    <!-- ===================== HOW TO USE ===================== -->
+    <section class="doc-section">
+      <div class="doc-section__head">
+        <h2 class="doc-section__title">How to use</h2>
+        <p class="doc-section__lede">Two stylesheets, one icon registry. Compose primitives &mdash; never author raw values.</p>
+      </div>
+      <div class="how-grid">
+        <div>
+          <span class="k-eyebrow" style="display: block; margin-bottom: var(--s-2);">CSS</span>
+<pre class="code" data-copy>&lt;link rel="stylesheet" href="/kit/tokens.css" /&gt;
+&lt;link rel="stylesheet" href="/kit/kit.css" /&gt;<span class="code__copy">Copy</span></pre>
+        </div>
+        <div>
+          <span class="k-eyebrow" style="display: block; margin-bottom: var(--s-2);">Icons</span>
+<pre class="code" data-copy>import { icons } from '/kit/icons.js';
+// &lt;i class="ph ${icons.recovery}"&gt;&lt;/i&gt;<span class="code__copy">Copy</span></pre>
+        </div>
+      </div>
+      <p class="k-text-sub" style="margin-top: var(--s-3); max-width: 70ch;">
+        Authoring rule: only token variables (<code style="font-family: var(--f-mono); color: var(--c-amber);">--c-*</code>,
+        <code style="font-family: var(--f-mono); color: var(--c-amber);">--s-*</code>,
+        <code style="font-family: var(--f-mono); color: var(--c-amber);">--r-*</code>,
+        <code style="font-family: var(--f-mono); color: var(--c-amber);">--t-*</code>) appear in your markup. The harness lints any raw hex or raw pixel outside the kit and will fail the build.
+      </p>
+    </section>
+
+    <!-- ===================== FOUNDATIONS ===================== -->
+    <section class="doc-section">
+      <div class="doc-section__head">
+        <h2 class="doc-section__title">Foundations</h2>
+        <p class="doc-section__lede">The raw material &mdash; color, space, type, motion, and the icon registry.</p>
+      </div>
+      <div class="tile-grid">
+        <a class="tile" href="./foundations.html">
+          <div class="tile__preview">
+            <div class="pv-row">
+              <span style="width: 18px; height: 18px; border-radius: var(--r-pill); background: var(--c-amber);"></span>
+              <span style="width: 18px; height: 18px; border-radius: var(--r-pill); background: var(--c-green);"></span>
+              <span style="width: 18px; height: 18px; border-radius: var(--r-pill); background: var(--c-blue);"></span>
+              <span style="width: 18px; height: 18px; border-radius: var(--r-pill); background: var(--c-red);"></span>
+              <span style="width: 18px; height: 18px; border-radius: var(--r-pill); background: var(--c-yellow);"></span>
+            </div>
+          </div>
+          <span class="tile__name">Foundations <i class="ph ph-arrow-up-right"></i></span>
+          <span class="tile__desc">Color &middot; space &middot; radius &middot; typography &middot; elevation &middot; motion.</span>
+        </a>
+        <a class="tile" href="./icons.html">
+          <div class="tile__preview">
+            <div class="pv-row" style="font-size: 22px; color: var(--c-ink);">
+              <i class="ph ph-heartbeat"></i>
+              <i class="ph ph-moon"></i>
+              <i class="ph ph-fire" style="color: var(--c-amber);"></i>
+              <i class="ph ph-drop" style="color: var(--c-blue);"></i>
+              <i class="ph ph-barbell"></i>
+            </div>
+          </div>
+          <span class="tile__name">Icons <i class="ph ph-arrow-up-right"></i></span>
+          <span class="tile__desc">Typed semantic registry &mdash; authors reference <code style="font-family: var(--f-mono); color: var(--c-amber);">icons.recovery</code>, not glyph names.</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===================== COMPONENTS ===================== -->
+    <section class="doc-section">
+      <div class="doc-section__head">
+        <h2 class="doc-section__title">Components</h2>
+        <p class="doc-section__lede">Each primitive in isolation &mdash; props, states, and the markup that drives them.</p>
+      </div>
+      <div class="tile-grid">
+
+        <a class="tile" href="./components/card.html">
+          <div class="tile__preview">
+            <div class="k-card" style="width: 140px; padding: var(--s-2);">
+              <span class="k-eyebrow">Card</span>
+              <div class="k-numeric" style="margin-top: var(--s-1);"><span class="k-numeric__val">128</span></div>
+            </div>
+          </div>
+          <span class="tile__name">k-card</span>
+          <span class="tile__desc">Surface container &mdash; quiet, default, accent variants.</span>
+        </a>
+
+        <a class="tile" href="./components/eyebrow.html">
+          <div class="tile__preview">
+            <span class="k-eyebrow">EYEBROW &middot; LABEL</span>
+          </div>
+          <span class="tile__name">k-eyebrow</span>
+          <span class="tile__desc">Tiny mono uppercase label, used above values and as section heads.</span>
+        </a>
+
+        <a class="tile" href="./components/metric.html">
+          <div class="tile__preview">
+            <div class="k-metric-list">
+              <div class="k-metric"><span class="k-metric__lbl">HRV</span><span class="k-metric__val">62</span><span class="k-metric__unit">ms</span></div>
+              <div class="k-metric"><span class="k-metric__lbl">RHR</span><span class="k-metric__val">54</span><span class="k-metric__unit">bpm</span></div>
+            </div>
+          </div>
+          <span class="tile__name">k-metric / k-metric-list</span>
+          <span class="tile__desc">3-column label / value / unit grid with tabular numerals.</span>
+        </a>
+
+        <a class="tile" href="./components/numeric.html">
+          <div class="tile__preview">
+            <span class="k-numeric k-numeric--xl"><span class="k-numeric__val">7,420</span></span>
+          </div>
+          <span class="tile__name">k-numeric</span>
+          <span class="tile__desc">Standalone big number with optional unit. sm / md / lg / xl.</span>
+        </a>
+
+        <a class="tile" href="./components/ring.html">
+          <div class="tile__preview">
+            <div class="k-ring" style="--ring-size: 76px; --ring-color: var(--c-green); --ring-pct: 71;">
+              <svg class="k-ring__svg" viewBox="0 0 100 100" aria-hidden="true">
+                <circle class="k-ring__track"/>
+                <circle class="k-ring__bar"/>
+              </svg>
+              <div class="k-ring__num">71</div>
+              <div class="k-ring__label">Recovery</div>
+            </div>
+          </div>
+          <span class="tile__name">k-ring</span>
+          <span class="tile__desc">Circular progress with inner number and outer label. Any color, any size.</span>
+        </a>
+
+        <a class="tile" href="./components/icon-tile.html">
+          <div class="tile__preview">
+            <div class="pv-row">
+              <span class="k-icon-tile"><i class="ph ph-heartbeat"></i></span>
+              <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-fire"></i></span>
+              <span class="k-icon-tile k-icon-tile--green"><i class="ph ph-drop"></i></span>
+              <span class="k-icon-tile k-icon-tile--blue"><i class="ph ph-moon"></i></span>
+            </div>
+          </div>
+          <span class="tile__name">k-icon-tile</span>
+          <span class="tile__desc">Rounded brand-colored square holding one icon. sm / md / lg.</span>
+        </a>
+
+        <a class="tile" href="./components/pill.html">
+          <div class="tile__preview">
+            <div class="pv-row">
+              <span class="k-pill">Default</span>
+              <span class="k-pill k-pill--amber">Start</span>
+              <span class="k-pill k-pill--green">Done</span>
+              <span class="k-pill k-pill--ghost">Edit</span>
+            </div>
+          </div>
+          <span class="tile__name">k-pill</span>
+          <span class="tile__desc">Small chip for status, counts, and inline actions.</span>
+        </a>
+
+        <a class="tile" href="./components/progress.html">
+          <div class="tile__preview" style="width: 100%;">
+            <div class="k-progress" style="--p-pct: 68; --p-color: var(--c-amber); width: 140px;"></div>
+          </div>
+          <span class="tile__name">k-progress</span>
+          <span class="tile__desc">Slim bar &mdash; any color, percent-driven.</span>
+        </a>
+
+        <a class="tile" href="./components/step-btn.html">
+          <div class="tile__preview">
+            <div class="pv-row">
+              <button class="k-step-btn"><i class="ph ph-minus"></i></button>
+              <button class="k-step-btn"><i class="ph ph-plus"></i></button>
+            </div>
+          </div>
+          <span class="tile__name">k-step-btn</span>
+          <span class="tile__desc">44px round tap target for +/&minus; controls.</span>
+        </a>
+
+        <a class="tile" href="./components/checkbox.html">
+          <div class="tile__preview">
+            <div class="pv-row">
+              <span class="k-checkbox is-checked"><i class="ph ph-check"></i></span>
+              <span class="k-checkbox"></span>
+            </div>
+          </div>
+          <span class="tile__name">k-checkbox</span>
+          <span class="tile__desc">Square check toggle &mdash; checked &amp; unchecked states.</span>
+        </a>
+
+        <a class="tile" href="./components/habit-row.html">
+          <div class="tile__preview" style="width: 100%;">
+            <div class="k-habit-row" style="width: 100%; border-bottom: 0;">
+              <span class="k-icon-tile k-icon-tile--green"><i class="ph ph-drop"></i></span>
+              <span class="k-habit-row__name">Hydration</span>
+              <span class="k-habit-row__trail">3 / 4</span>
+            </div>
+          </div>
+          <span class="tile__name">k-habit-row</span>
+          <span class="tile__desc">Hairline-separated row: icon &middot; name &middot; trailing action.</span>
+        </a>
+
+        <a class="tile" href="./components/nav.html">
+          <div class="tile__preview">
+            <div class="pv-row" style="padding: var(--s-1) var(--s-2); border-radius: var(--r-pill); border: 1px solid var(--c-hair); background: var(--c-surface);">
+              <span style="font-size: 18px; color: var(--c-amber);"><i class="ph ph-house"></i></span>
+              <span style="font-size: 18px; color: var(--c-faint);"><i class="ph ph-calendar-blank"></i></span>
+              <span style="font-size: 18px; color: var(--c-faint);"><i class="ph ph-squares-four"></i></span>
+              <span style="font-size: 18px; color: var(--c-faint);"><i class="ph ph-gear-six"></i></span>
+            </div>
+          </div>
+          <span class="tile__name">k-nav</span>
+          <span class="tile__desc">Floating frosted-glass bottom tab bar.</span>
+        </a>
+
+        <a class="tile" href="./components/screen.html">
+          <div class="tile__preview">
+            <div style="width: 56px; height: 88px; border-radius: var(--r-md); border: 1px solid var(--c-hair); background:
+              radial-gradient(120% 70% at 50% -10%, rgba(227,168,87,0.10), transparent 60%),
+              linear-gradient(180deg, var(--c-surface) 0%, var(--c-bg) 60%, var(--c-deep) 100%);"></div>
+          </div>
+          <span class="tile__name">k-screen</span>
+          <span class="tile__desc">Phone shell &mdash; max-width 430, safe-area aware, gradient backdrop.</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ===================== PATTERNS ===================== -->
+    <section class="doc-section">
+      <div class="doc-section__head">
+        <h2 class="doc-section__title">Patterns</h2>
+        <p class="doc-section__lede">Common compositions &mdash; how primitives combine into recurring building blocks.</p>
+      </div>
+      <div class="tile-grid">
+
+        <a class="tile" href="./patterns/metric-card.html">
+          <div class="tile__preview">
+            <div class="k-card" style="width: 100%;">
+              <span class="k-eyebrow" style="display: block; margin-bottom: var(--s-1);">WHOOP</span>
+              <div class="k-metric-list" style="justify-content: start;">
+                <div class="k-metric"><span class="k-metric__lbl">HRV</span><span class="k-metric__val">62</span><span class="k-metric__unit">ms</span></div>
+              </div>
+            </div>
+          </div>
+          <span class="tile__name">Metric card</span>
+          <span class="tile__desc">Card + eyebrow + metric list, with optional rings.</span>
+        </a>
+
+        <a class="tile" href="./patterns/ring-pair.html">
+          <div class="tile__preview">
+            <div class="pv-row" style="gap: var(--s-2);">
+              <div class="k-ring" style="--ring-size: 56px; --ring-color: var(--c-green); --ring-pct: 71;">
+                <svg class="k-ring__svg" viewBox="0 0 100 100" aria-hidden="true"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg>
+                <div class="k-ring__num" style="font-size: 14px;">71</div>
+              </div>
+              <div class="k-ring" style="--ring-size: 56px; --ring-color: var(--c-blue); --ring-pct: 42;">
+                <svg class="k-ring__svg" viewBox="0 0 100 100" aria-hidden="true"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg>
+                <div class="k-ring__num" style="font-size: 14px;">8.4</div>
+              </div>
+            </div>
+          </div>
+          <span class="tile__name">Ring pair</span>
+          <span class="tile__desc">Two rings side-by-side &mdash; recovery + strain layout.</span>
+        </a>
+
+        <a class="tile" href="./patterns/progress-stat.html">
+          <div class="tile__preview" style="width: 100%;">
+            <div style="display: flex; align-items: center; gap: var(--s-2); width: 100%;">
+              <span class="k-metric__lbl" style="width: 24px;">P</span>
+              <div class="k-progress" style="--p-pct: 78; --p-color: var(--c-green); flex: 1;"></div>
+              <span class="k-numeric k-numeric--sm"><span class="k-numeric__val">132</span><span class="k-numeric__unit">g</span></span>
+            </div>
+          </div>
+          <span class="tile__name">Progress stat</span>
+          <span class="tile__desc">Label &middot; bar &middot; value row &mdash; macros, water, steps.</span>
+        </a>
+
+        <a class="tile" href="./patterns/stepper-control.html">
+          <div class="tile__preview">
+            <div class="pv-row">
+              <button class="k-step-btn"><i class="ph ph-minus"></i></button>
+              <span class="k-numeric k-numeric--lg"><span class="k-numeric__val">5</span><span class="k-numeric__unit">/ 8</span></span>
+              <button class="k-step-btn"><i class="ph ph-plus"></i></button>
+            </div>
+          </div>
+          <span class="tile__name">Stepper control</span>
+          <span class="tile__desc">+/&minus; with current value. Interactive demo.</span>
+        </a>
+
+        <a class="tile" href="./patterns/habit-checklist.html">
+          <div class="tile__preview" style="width: 100%;">
+            <div class="k-stack" style="width: 100%; --gap: 0;">
+              <div class="k-habit-row k-habit-row--done">
+                <span class="k-icon-tile k-icon-tile--sm k-icon-tile--amber"><i class="ph ph-sun"></i></span>
+                <span class="k-habit-row__name" style="font-size: 13px;">Vitamins</span>
+                <span class="k-checkbox is-checked"><i class="ph ph-check"></i></span>
+              </div>
+              <div class="k-habit-row">
+                <span class="k-icon-tile k-icon-tile--sm k-icon-tile--green"><i class="ph ph-drop"></i></span>
+                <span class="k-habit-row__name" style="font-size: 13px;">Hydration</span>
+                <span class="k-habit-row__trail">3 / 4</span>
+              </div>
+            </div>
+          </div>
+          <span class="tile__name">Habit checklist</span>
+          <span class="tile__desc">Hairline rows with mixed trailing types &mdash; check, count, counter.</span>
+        </a>
+
+        <a class="tile" href="./patterns/bottom-nav-shell.html">
+          <div class="tile__preview">
+            <div class="pv-row" style="padding: var(--s-1) var(--s-2); border-radius: var(--r-pill); border: 1px solid var(--c-hair); background: var(--c-surface);">
+              <span style="font-size: 16px; color: var(--c-faint);"><i class="ph ph-house"></i></span>
+              <span style="font-size: 16px; color: var(--c-amber);"><i class="ph ph-calendar-blank"></i></span>
+              <span style="font-size: 16px; color: var(--c-faint);"><i class="ph ph-squares-four"></i></span>
+              <span style="font-size: 16px; color: var(--c-faint);"><i class="ph ph-gear-six"></i></span>
+            </div>
+          </div>
+          <span class="tile__name">Bottom nav shell</span>
+          <span class="tile__desc">Four-tab floating glass nav &mdash; each state shown.</span>
+        </a>
+
+        <a class="tile" href="./patterns/card-grid.html">
+          <div class="tile__preview" style="width: 100%;">
+            <div class="k-grid-2" style="width: 100%;">
+              <div class="k-card" style="padding: var(--s-2);"><span class="k-eyebrow">Steps</span></div>
+              <div class="k-card" style="padding: var(--s-2);"><span class="k-eyebrow">Water</span></div>
+            </div>
+          </div>
+          <span class="tile__name">Card grid</span>
+          <span class="tile__desc">Two-column small card layout &mdash; steps + water style.</span>
+        </a>
+
+        <a class="tile" href="./patterns/eyebrow-pill-row.html">
+          <div class="tile__preview" style="width: 100%;">
+            <div class="k-row k-row--between" style="width: 100%;">
+              <span class="k-eyebrow">FUEL &middot; 1,840 KCAL</span>
+              <span class="k-pill k-pill--ghost"><i class="ph ph-plus"></i> Log</span>
+            </div>
+          </div>
+          <span class="tile__name">Eyebrow + pill row</span>
+          <span class="tile__desc">Card header pattern &mdash; eyebrow left, pill right.</span>
+        </a>
+
+      </div>
+    </section>
+
+    <footer class="doc-footer">
+      <div>
+        <span class="doc-footer__tag">EXAMPLE</span>
+        See the kit assembled into a real screen &rarr;
+        <a href="../../home/home-final.html">Home (example app screen)</a>
+      </div>
+      <div class="doc-footer__tag">FORGE &middot; v0.1</div>
+    </footer>
+
+  </main>
+
+  <script>
+    // click-to-copy on every .code block
+    document.querySelectorAll('.code[data-copy]').forEach(el => {
+      el.addEventListener('click', () => {
+        const text = el.innerText.replace(/\s*Copy\s*$/, '').trimEnd();
+        navigator.clipboard.writeText(text).then(() => {
+          el.classList.add('is-copied');
+          const tag = el.querySelector('.code__copy');
+          if (tag) tag.textContent = 'Copied';
+          setTimeout(() => {
+            el.classList.remove('is-copied');
+            if (tag) tag.textContent = 'Copy';
+          }, 1200);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

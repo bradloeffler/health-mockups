@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE Pattern &middot; Stepper control</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="../../kit.css" />
+  <style>
+    body { display: block; background: var(--c-deep); }
+    .doc { max-width: 880px; margin: 0 auto; padding: var(--s-5) var(--s-4) var(--s-8); }
+    .doc-bar { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3); padding-bottom: var(--s-3); border-bottom: 1px solid var(--c-hair); margin-bottom: var(--s-5); }
+    .doc-bar__back { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-faint); text-decoration: none; }
+    .doc-bar__back:hover { color: var(--c-amber); }
+    .doc-title { font-family: var(--f-ui); font-size: 24px; font-weight: 500; letter-spacing: -0.4px; margin: 0; color: var(--c-ink); }
+    .doc-title__crumb { font-family: var(--f-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-amber); display: block; margin-bottom: var(--s-1); }
+    .doc-lede { color: var(--c-sub); font-weight: 400; font-size: 14px; margin: var(--s-2) 0 0; max-width: 60ch; }
+    .ex { margin-top: var(--s-5); border: 1px solid var(--c-hair); border-radius: var(--r-lg); overflow: hidden; background: var(--c-surface); }
+    .ex__head { display: flex; align-items: center; justify-content: space-between; padding: var(--s-2) var(--s-3); border-bottom: 1px solid var(--c-hair); background: var(--c-bg); }
+    .ex__name { font-family: var(--f-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-sub); }
+    .ex__tag { font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-faint); }
+    .ex__stage { padding: var(--s-5) var(--s-4); background: radial-gradient(120% 70% at 50% -10%, rgba(227,168,87,0.04), transparent 60%), var(--c-bg); display: flex; justify-content: center; }
+    .ex__stage > * { width: 100%; max-width: 360px; }
+    .code { position: relative; background: var(--c-deep); border-top: 1px solid var(--c-hair); padding: var(--s-3); font-family: var(--f-mono); font-size: 12px; line-height: 1.55; color: var(--c-ink); overflow-x: auto; white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere; cursor: copy; margin: 0; }
+    .code__copy { position: absolute; top: var(--s-1); right: var(--s-1); font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-faint); padding: var(--s-0) var(--s-1); border-radius: var(--r-sm); background: var(--c-surface); pointer-events: none; }
+    .code.is-copied .code__copy { color: var(--c-green); }
+    .note { font-size: 13px; color: var(--c-sub); padding: var(--s-2) var(--s-3); border-top: 1px solid var(--c-hair); background: var(--c-bg); }
+    .note b { color: var(--c-amber); font-weight: 600; }
+  </style>
+</head>
+<body>
+  <main class="doc">
+
+    <header class="doc-bar">
+      <div>
+        <span class="doc-title__crumb">Pattern &middot; Stepper control</span>
+        <h1 class="doc-title">Stepper control</h1>
+        <p class="doc-lede">Two round 44px step buttons flanking the current value. The canonical pattern for hydration cups, serving counts, and any small-range increment. Clamps to <code style="font-family: var(--f-mono); color: var(--c-amber);">[min, max]</code>; buttons disable at the boundaries.</p>
+      </div>
+      <a class="doc-bar__back" href="../index.html">&larr; Catalog</a>
+    </header>
+
+    <!-- Example 1: interactive water -->
+    <section class="ex">
+      <div class="ex__head"><span class="ex__name">A &middot; Hydration cups (interactive)</span><span class="ex__tag">k-step-btn &times; 2 &middot; k-numeric--lg</span></div>
+      <div class="ex__stage">
+        <section class="k-card" id="water-card">
+          <div class="k-row k-row--between" style="margin-bottom: var(--s-3);">
+            <span class="k-eyebrow"><i class="ph ph-drop"></i> Water</span>
+            <span class="k-pill k-pill--ghost">16 oz</span>
+          </div>
+          <div class="k-row k-row--between">
+            <button class="k-step-btn" id="water-minus" aria-label="Remove a cup"><i class="ph ph-minus"></i></button>
+            <span class="k-numeric k-numeric--lg"><span class="k-numeric__val" id="water-val">5</span><span class="k-numeric__unit">/ 8</span></span>
+            <button class="k-step-btn" id="water-plus" aria-label="Add a cup"><i class="ph ph-plus"></i></button>
+          </div>
+          <div class="k-progress" id="water-bar" style="--p-pct: 62.5; --p-color: var(--c-blue); margin-top: var(--s-3);"></div>
+        </section>
+      </div>
+      <div class="note">Try the buttons &mdash; the value clamps between <b>0</b> and <b>10</b>, +/&minus;1 per tap. Buttons disable at the boundary.</div>
+<pre class="code" data-copy>&lt;div class="k-row k-row--between"&gt;
+  &lt;button class="k-step-btn" id="minus" aria-label="Less"&gt;&lt;i class="ph ph-minus"&gt;&lt;/i&gt;&lt;/button&gt;
+  &lt;span class="k-numeric k-numeric--lg"&gt;
+    &lt;span class="k-numeric__val" id="val"&gt;5&lt;/span&gt;
+    &lt;span class="k-numeric__unit"&gt;/ 8&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;button class="k-step-btn" id="plus" aria-label="More"&gt;&lt;i class="ph ph-plus"&gt;&lt;/i&gt;&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  const MIN = 0, MAX = 10;
+  let n = 5;
+  const val = document.querySelector('#val');
+  const minus = document.querySelector('#minus');
+  const plus  = document.querySelector('#plus');
+  function render() {
+    val.textContent = n;
+    minus.disabled = n &lt;= MIN;
+    plus.disabled  = n &gt;= MAX;
+  }
+  minus.addEventListener('click', () =&gt; { n = Math.max(MIN, n - 1); render(); });
+  plus .addEventListener('click', () =&gt; { n = Math.min(MAX, n + 1); render(); });
+  render();
+&lt;/script&gt;<span class="code__copy">Copy</span></pre>
+    </section>
+
+    <!-- Example 2: tighter layout (inline) -->
+    <section class="ex">
+      <div class="ex__head"><span class="ex__name">B &middot; Inline tight stepper</span><span class="ex__tag">flex gap layout</span></div>
+      <div class="ex__stage">
+        <section class="k-card">
+          <div class="k-row" style="gap: var(--s-3);">
+            <span class="k-icon-tile k-icon-tile--green"><i class="ph ph-bowl-food"></i></span>
+            <div class="k-stack k-stack--tight" style="flex: 1; min-width: 0;">
+              <span class="k-text-body" style="font-weight: 500;">Servings</span>
+              <span class="k-text-faint">Whole grains</span>
+            </div>
+            <div class="k-row" style="gap: var(--s-1);">
+              <button class="k-step-btn"><i class="ph ph-minus"></i></button>
+              <span class="k-numeric k-numeric--md" style="min-width: 28px; text-align: center; justify-content: center;"><span class="k-numeric__val">2</span></span>
+              <button class="k-step-btn"><i class="ph ph-plus"></i></button>
+            </div>
+          </div>
+        </section>
+      </div>
+<pre class="code" data-copy>&lt;div class="k-row" style="gap: var(--s-1);"&gt;
+  &lt;button class="k-step-btn"&gt;&lt;i class="ph ph-minus"&gt;&lt;/i&gt;&lt;/button&gt;
+  &lt;span class="k-numeric k-numeric--md" style="min-width: 28px; justify-content: center;"&gt;
+    &lt;span class="k-numeric__val"&gt;2&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;button class="k-step-btn"&gt;&lt;i class="ph ph-plus"&gt;&lt;/i&gt;&lt;/button&gt;
+&lt;/div&gt;<span class="code__copy">Copy</span></pre>
+    </section>
+
+  </main>
+  <script>
+    // copy
+    document.querySelectorAll('.code[data-copy]').forEach(el => {
+      el.addEventListener('click', () => {
+        const text = el.innerText.replace(/\s*Copy\s*$/, '').trimEnd();
+        navigator.clipboard.writeText(text).then(() => {
+          el.classList.add('is-copied');
+          const tag = el.querySelector('.code__copy');
+          if (tag) tag.textContent = 'Copied';
+          setTimeout(() => { el.classList.remove('is-copied'); if (tag) tag.textContent = 'Copy'; }, 1200);
+        });
+      });
+    });
+
+    // interactive stepper
+    (function () {
+      const MIN = 0, MAX = 10;
+      let n = 5;
+      const val = document.getElementById('water-val');
+      const minus = document.getElementById('water-minus');
+      const plus  = document.getElementById('water-plus');
+      const bar   = document.getElementById('water-bar');
+      function render() {
+        val.textContent = n;
+        minus.disabled = n <= MIN;
+        plus.disabled  = n >= MAX;
+        bar.style.setProperty('--p-pct', (n / MAX * 100).toFixed(1));
+      }
+      minus.addEventListener('click', () => { n = Math.max(MIN, n - 1); render(); });
+      plus .addEventListener('click', () => { n = Math.min(MAX, n + 1); render(); });
+      render();
+    })();
+  </script>
+</body>
+</html>

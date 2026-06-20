@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE Kit · Screen</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="./_chrome.css" />
+  <style>
+    /* Wrap k-screen in a frame so the catalog can show its boundary + safe areas. */
+    .cat-frame {
+      position: relative;
+      width: 100%;
+      max-width: 390px;
+      margin: 0 auto;
+      border: 1px solid var(--c-hair-strong);
+      border-radius: var(--r-xl);
+      overflow: hidden;
+    }
+    .cat-frame .k-screen { width: 100%; max-width: none; min-height: 520px; }
+    .cat-frame .k-screen__scroll { min-height: 520px; padding-bottom: var(--s-7); }
+
+    /* Safe area overlay — outline the inset zone */
+    .cat-safe {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .cat-safe::before {
+      content: '';
+      position: absolute;
+      top: var(--s-3);
+      left: var(--s-3);
+      right: var(--s-3);
+      bottom: 96px;
+      border: 1px dashed rgba(227, 168, 87, 0.5);
+      border-radius: var(--r-md);
+    }
+    .cat-safe__tag {
+      position: absolute;
+      top: var(--s-3);
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--c-deep);
+      padding: 0 var(--s-1);
+    }
+    .cat-safe__tag-b {
+      position: absolute;
+      bottom: 96px;
+      left: 50%;
+      transform: translate(-50%, 50%);
+      background: var(--c-deep);
+      padding: 0 var(--s-1);
+    }
+  </style>
+</head>
+<body>
+  <main class="cat">
+
+    <header class="cat-bar">
+      <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
+      <a class="cat-bar__back" href="../index.html"><i class="ph ph-caret-left"></i> Components</a>
+    </header>
+
+    <section class="cat-head">
+      <h1 class="cat-head__title">Screen</h1>
+      <p class="cat-head__desc">The phone-shell primitive. Caps width at 430px, fills the viewport, applies the brand gradient background, and clips anything that would overflow horizontally — the discipline that makes a 430px mock impossible to clip on a 390px device.</p>
+    </section>
+
+    <!-- ANATOMY -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Anatomy</h2>
+      <p class="cat-section__sub">Two elements. The outer <code>.k-screen</code> is the shell — fixed-max-width, full-viewport, hidden-overflow, background gradient. The inner <code>.k-screen__scroll</code> is the padded vertical stack that holds the page's content, with built-in safe-area insets.</p>
+      <div class="cat-demo">
+        <div class="cat-frame">
+          <div class="cat-safe">
+            <span class="k-eyebrow cat-safe__tag">Safe top</span>
+            <span class="k-eyebrow cat-safe__tag-b">Safe bottom (96px for nav)</span>
+          </div>
+          <main class="k-screen">
+            <div class="k-screen__scroll">
+              <header class="k-row k-row--between">
+                <span class="k-eyebrow">FORGE</span>
+                <button class="k-icon-tile k-icon-tile--sm" aria-label="Account"><i class="ph ph-user-circle"></i></button>
+              </header>
+              <section class="k-card k-card--accent">
+                <span class="k-eyebrow">Today</span>
+                <div style="height: var(--s-2);"></div>
+                <span class="k-numeric k-numeric--xl"><span class="k-numeric__val">71</span><span class="k-numeric__unit">%</span></span>
+              </section>
+              <section class="k-card">
+                <span class="k-eyebrow">Steps</span>
+                <div style="height: var(--s-2);"></div>
+                <span class="k-numeric k-numeric--lg"><span class="k-numeric__val">7,420</span></span>
+              </section>
+            </div>
+          </main>
+        </div>
+        <ul class="cat-anatomy__notes">
+          <li><b>Max width</b> <span>430px — caps even on landscape iPad / desktop.</span></li>
+          <li><b>Min height</b> <span><code>100dvh</code> — fills the dynamic viewport on iOS Safari.</span></li>
+          <li><b>Background</b> <span>Radial amber wash from top, layered over a vertical gradient from <code>--c-bg</code> to <code>--c-deep</code>.</span></li>
+          <li><b>Overflow</b> <span><code>hidden</code> — content wider than 430px is clipped, never scrollable horizontally.</span></li>
+          <li><b>Isolation</b> <span>Its own stacking context so floating nav and modals don't bleed elsewhere.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- INNER SCROLL -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">.k-screen__scroll · the inner column</h2>
+      <p class="cat-section__sub">The padded content stack inside the shell. Vertical flex with gap <code>--s-3</code> between sections. Pads the safe-area inset top and reserves 96px at the bottom for the floating nav.</p>
+      <div class="cat-demo">
+        <div class="cat-frame">
+          <main class="k-screen">
+            <div class="k-screen__scroll">
+              <div class="k-card"><span class="k-eyebrow">Card 1</span></div>
+              <div class="k-card"><span class="k-eyebrow">Card 2</span></div>
+              <div class="k-card"><span class="k-eyebrow">Card 3</span></div>
+              <div class="k-card"><span class="k-eyebrow">Card 4</span></div>
+            </div>
+          </main>
+        </div>
+        <ul class="cat-anatomy__notes">
+          <li><b>Direction</b> <span>flex column, gap <code>--s-3</code>.</span></li>
+          <li><b>Top padding</b> <span><code>env(safe-area-inset-top) + --s-3</code>.</span></li>
+          <li><b>Bottom padding</b> <span><code>env(safe-area-inset-bottom) + 96px</code> — clears the floating nav.</span></li>
+          <li><b>Side padding</b> <span><code>--s-3</code> left and right.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SPEC -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Spec</h2>
+      <div class="cat-spec-wrap">
+        <table class="cat-spec">
+          <thead><tr><th>Class / token</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td>.k-screen</td><td>Phone shell. <code>max-width: 430px</code>, <code>min-height: 100dvh</code>, <code>overflow: hidden</code>, brand background.</td></tr>
+            <tr><td>.k-screen__scroll</td><td>Inner column. Flex column, gap <code>--s-3</code>, safe-area padded, 96px bottom reserve.</td></tr>
+            <tr><td>isolation</td><td>Creates its own stacking context — nav and modals can't leak.</td></tr>
+            <tr><td>Background</td><td>Two-layer gradient — radial amber + vertical bg → deep.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="height: var(--s-3);"></div>
+      <pre class="cat-code" data-copy='<main class="k-screen">\n  <div class="k-screen__scroll">\n    <!-- cards, headers, lists -->\n  </div>\n  <nav class="k-nav" aria-label="Primary">…</nav>\n</main>'><span class="cat-code__copy">tap to copy</span>&lt;main class="k-screen"&gt;
+  &lt;div class="k-screen__scroll"&gt;
+    &lt;!-- cards, headers, lists --&gt;
+  &lt;/div&gt;
+  &lt;nav class="k-nav" aria-label="Primary"&gt;…&lt;/nav&gt;
+&lt;/main&gt;</pre>
+    </section>
+
+  </main>
+
+  <script>
+    document.querySelectorAll('.cat-code').forEach(el => {
+      el.addEventListener('click', () => {
+        const text = el.dataset.copy || el.innerText.replace(/^tap to copy\s*/i, '');
+        navigator.clipboard?.writeText(text.replace(/\\n/g, '\n'));
+        el.classList.add('is-copied');
+        el.querySelector('.cat-code__copy').textContent = 'copied';
+        setTimeout(() => {
+          el.classList.remove('is-copied');
+          el.querySelector('.cat-code__copy').textContent = 'tap to copy';
+        }, 1400);
+      });
+    });
+  </script>
+</body>
+</html>

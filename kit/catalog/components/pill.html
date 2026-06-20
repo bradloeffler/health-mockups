@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE Kit · Pill</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="./_chrome.css" />
+</head>
+<body>
+  <main class="cat">
+
+    <header class="cat-bar">
+      <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
+      <a class="cat-bar__back" href="../index.html"><i class="ph ph-caret-left"></i> Components</a>
+    </header>
+
+    <section class="cat-head">
+      <h1 class="cat-head__title">Pill</h1>
+      <p class="cat-head__desc">A small 24px capsule for trailing actions, status chips, and counts. Three semantic variants — amber (primary), green (success), ghost (neutral).</p>
+    </section>
+
+    <!-- ANATOMY -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Anatomy</h2>
+      <p class="cat-section__sub">A 24px-tall horizontal capsule with eyebrow-spec text and optional leading glyph or dot. The shape is the same across variants; color and weight communicate state.</p>
+      <div class="cat-demo">
+        <button class="k-pill k-pill--amber"><i class="ph ph-play"></i> Start</button>
+        <ul class="cat-anatomy__notes">
+          <li><b>Height</b> <span>24px · radius <code>--r-pill</code> · padding 0 <code>--s-2</code>.</span></li>
+          <li><b>Type</b> <span>eyebrow spec — mono uppercase, 10px, 700 weight, 0.16em tracking.</span></li>
+          <li><b>Gap</b> <span><code>--s-0</code> (4px) between glyph and label.</span></li>
+          <li><b>Icon size</b> <span>12px when an icon is present.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- VARIANTS -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Variants</h2>
+      <p class="cat-section__sub">Three semantic weights. Amber for the primary action on a card. Green for confirmed / success state. Ghost for low-emphasis labels and counts.</p>
+      <div class="cat-demo cat-demo--row">
+        <div class="cat-cell"><span class="cat-cell__cap">--amber · primary</span><button class="k-pill k-pill--amber">Start</button></div>
+        <div class="cat-cell"><span class="cat-cell__cap">--green · success</span><button class="k-pill k-pill--green">Done</button></div>
+        <div class="cat-cell"><span class="cat-cell__cap">--ghost · neutral</span><button class="k-pill k-pill--ghost">Edit</button></div>
+        <div class="cat-cell"><span class="cat-cell__cap">base (no variant)</span><button class="k-pill">Label</button></div>
+      </div>
+    </section>
+
+    <!-- CONTENT MODES -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Content modes</h2>
+      <p class="cat-section__sub">Plain label, leading icon, or leading dot for status indication.</p>
+      <div class="cat-demo cat-demo--row">
+        <div class="cat-cell"><span class="cat-cell__cap">plain</span><button class="k-pill k-pill--amber">Start</button></div>
+        <div class="cat-cell"><span class="cat-cell__cap">with icon</span><button class="k-pill k-pill--amber"><i class="ph ph-play"></i> Start</button></div>
+        <div class="cat-cell"><span class="cat-cell__cap">leading dot</span><button class="k-pill k-pill--green"><span style="width: 6px; height: 6px; border-radius: 50%; background: var(--c-green); display: inline-block; margin-right: var(--s-0);"></span> Live</button></div>
+        <div class="cat-cell"><span class="cat-cell__cap">ghost + icon</span><button class="k-pill k-pill--ghost"><i class="ph ph-pencil-simple"></i> Edit</button></div>
+      </div>
+    </section>
+
+    <!-- STATES -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">States</h2>
+      <p class="cat-section__sub">Default and pressed. Pressed dims via a subtle filter — the shape and color don't change.</p>
+      <div class="cat-demo cat-demo--row">
+        <div class="cat-cell"><span class="cat-cell__cap">default</span><button class="k-pill k-pill--amber"><i class="ph ph-play"></i> Start</button></div>
+        <div class="cat-cell"><span class="cat-cell__cap">pressed</span><button class="k-pill k-pill--amber" style="filter: brightness(0.88); transform: scale(0.97);"><i class="ph ph-play"></i> Start</button></div>
+        <div class="cat-cell"><span class="cat-cell__cap">disabled</span><button class="k-pill k-pill--amber" style="opacity: 0.4;" disabled><i class="ph ph-play"></i> Start</button></div>
+      </div>
+    </section>
+
+    <!-- IN CONTEXT -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">In context</h2>
+      <p class="cat-section__sub">Pills almost always sit as a trailing element in a card header row.</p>
+      <div class="cat-demo">
+        <div class="k-card k-card--accent" style="width: 100%;">
+          <div class="k-row k-row--between">
+            <span class="k-eyebrow">WHOOP</span>
+            <button class="k-pill k-pill--amber"><i class="ph ph-play"></i> Start</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPEC -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Spec</h2>
+      <div class="cat-spec-wrap">
+        <table class="cat-spec">
+          <thead><tr><th>Class / token</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td>.k-pill</td><td>Base capsule. Inline-flex, 24px tall, eyebrow type, transparent bg, hairline border.</td></tr>
+            <tr><td>.k-pill--amber</td><td>Primary. <code>--c-amber</code> fill, <code>--c-on-amber</code> text, no border.</td></tr>
+            <tr><td>.k-pill--green</td><td>Success. Green tint @12%, green text, green border @25%.</td></tr>
+            <tr><td>.k-pill--ghost</td><td>Neutral. Transparent, <code>--c-sub</code> text, stronger hairline border.</td></tr>
+            <tr><td>.k-pill &gt; i</td><td>Leading icon. Forced to 12px to read correctly inside the capsule.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="height: var(--s-3);"></div>
+      <pre class="cat-code" data-copy='<button class="k-pill k-pill--amber">\n  <i class="ph ph-play"></i> Start\n</button>'><span class="cat-code__copy">tap to copy</span>&lt;button class="k-pill k-pill--amber"&gt;
+  &lt;i class="ph ph-play"&gt;&lt;/i&gt; Start
+&lt;/button&gt;</pre>
+    </section>
+
+  </main>
+
+  <script>
+    document.querySelectorAll('.cat-code').forEach(el => {
+      el.addEventListener('click', () => {
+        const text = el.dataset.copy || el.innerText.replace(/^tap to copy\s*/i, '');
+        navigator.clipboard?.writeText(text.replace(/\\n/g, '\n'));
+        el.classList.add('is-copied');
+        el.querySelector('.cat-code__copy').textContent = 'copied';
+        setTimeout(() => {
+          el.classList.remove('is-copied');
+          el.querySelector('.cat-code__copy').textContent = 'tap to copy';
+        }, 1400);
+      });
+    });
+  </script>
+</body>
+</html>

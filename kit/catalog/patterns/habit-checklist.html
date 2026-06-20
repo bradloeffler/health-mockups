@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE Pattern &middot; Habit checklist</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="../../kit.css" />
+  <style>
+    body { display: block; background: var(--c-deep); }
+    .doc { max-width: 880px; margin: 0 auto; padding: var(--s-5) var(--s-4) var(--s-8); }
+    .doc-bar { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3); padding-bottom: var(--s-3); border-bottom: 1px solid var(--c-hair); margin-bottom: var(--s-5); }
+    .doc-bar__back { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-faint); text-decoration: none; }
+    .doc-bar__back:hover { color: var(--c-amber); }
+    .doc-title { font-family: var(--f-ui); font-size: 24px; font-weight: 500; letter-spacing: -0.4px; margin: 0; color: var(--c-ink); }
+    .doc-title__crumb { font-family: var(--f-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-amber); display: block; margin-bottom: var(--s-1); }
+    .doc-lede { color: var(--c-sub); font-weight: 400; font-size: 14px; margin: var(--s-2) 0 0; max-width: 60ch; }
+    .ex { margin-top: var(--s-5); border: 1px solid var(--c-hair); border-radius: var(--r-lg); overflow: hidden; background: var(--c-surface); }
+    .ex__head { display: flex; align-items: center; justify-content: space-between; padding: var(--s-2) var(--s-3); border-bottom: 1px solid var(--c-hair); background: var(--c-bg); }
+    .ex__name { font-family: var(--f-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-sub); }
+    .ex__tag { font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-faint); }
+    .ex__stage { padding: var(--s-5) var(--s-4); background: radial-gradient(120% 70% at 50% -10%, rgba(227,168,87,0.04), transparent 60%), var(--c-bg); display: flex; justify-content: center; }
+    .ex__stage > * { width: 100%; max-width: 360px; }
+    .code { position: relative; background: var(--c-deep); border-top: 1px solid var(--c-hair); padding: var(--s-3); font-family: var(--f-mono); font-size: 12px; line-height: 1.55; color: var(--c-ink); overflow-x: auto; white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere; cursor: copy; margin: 0; }
+    .code__copy { position: absolute; top: var(--s-1); right: var(--s-1); font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-faint); padding: var(--s-0) var(--s-1); border-radius: var(--r-sm); background: var(--c-surface); pointer-events: none; }
+    .code.is-copied .code__copy { color: var(--c-green); }
+  </style>
+</head>
+<body>
+  <main class="doc">
+
+    <header class="doc-bar">
+      <div>
+        <span class="doc-title__crumb">Pattern &middot; Habit checklist</span>
+        <h1 class="doc-title">Habit checklist</h1>
+        <p class="doc-lede">A hairline-separated list of <code style="font-family: var(--f-mono); color: var(--c-amber);">k-habit-row</code>s. Each row is icon &middot; name &middot; trailing element. The trailing element varies by habit type &mdash; a checkbox for done/not-done, a counter for target habits, a pill for counts.</p>
+      </div>
+      <a class="doc-bar__back" href="../index.html">&larr; Catalog</a>
+    </header>
+
+    <!-- Example: mixed habit list -->
+    <section class="ex">
+      <div class="ex__head"><span class="ex__name">A &middot; Mixed habits (checks &middot; counter &middot; pill)</span><span class="ex__tag">k-habit-row &times; 5</span></div>
+      <div class="ex__stage">
+        <section class="k-card">
+          <div class="k-row k-row--between" style="margin-bottom: var(--s-2);">
+            <span class="k-eyebrow">Habits &middot; 2 / 5</span>
+            <span class="k-pill k-pill--ghost"><i class="ph ph-pencil-simple"></i> Edit</span>
+          </div>
+
+          <div class="k-stack" style="--gap: 0;">
+            <div class="k-habit-row k-habit-row--done">
+              <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-sun"></i></span>
+              <span class="k-habit-row__name">Vitamins AM</span>
+              <span class="k-checkbox is-checked" aria-label="Done"><i class="ph ph-check"></i></span>
+            </div>
+            <div class="k-habit-row k-habit-row--done">
+              <span class="k-icon-tile k-icon-tile--blue"><i class="ph ph-person-simple-tai-chi"></i></span>
+              <span class="k-habit-row__name">Stretch 10 min</span>
+              <span class="k-checkbox is-checked" aria-label="Done"><i class="ph ph-check"></i></span>
+            </div>
+            <div class="k-habit-row">
+              <span class="k-icon-tile k-icon-tile--green"><i class="ph ph-drop"></i></span>
+              <span class="k-habit-row__name">Hydration</span>
+              <span class="k-habit-row__trail">3 / 4</span>
+            </div>
+            <div class="k-habit-row">
+              <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-barbell"></i></span>
+              <span class="k-habit-row__name">Workout</span>
+              <span class="k-pill k-pill--ghost">Skipped</span>
+            </div>
+            <div class="k-habit-row">
+              <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-moon-stars"></i></span>
+              <span class="k-habit-row__name">Vitamins PM</span>
+              <span class="k-checkbox" aria-label="Toggle"></span>
+            </div>
+          </div>
+        </section>
+      </div>
+<pre class="code" data-copy>&lt;div class="k-stack" style="--gap: 0;"&gt;
+  &lt;!-- done checkbox row --&gt;
+  &lt;div class="k-habit-row k-habit-row--done"&gt;
+    &lt;span class="k-icon-tile k-icon-tile--amber"&gt;&lt;i class="ph ph-sun"&gt;&lt;/i&gt;&lt;/span&gt;
+    &lt;span class="k-habit-row__name"&gt;Vitamins AM&lt;/span&gt;
+    &lt;span class="k-checkbox is-checked"&gt;&lt;i class="ph ph-check"&gt;&lt;/i&gt;&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;!-- counter row --&gt;
+  &lt;div class="k-habit-row"&gt;
+    &lt;span class="k-icon-tile k-icon-tile--green"&gt;&lt;i class="ph ph-drop"&gt;&lt;/i&gt;&lt;/span&gt;
+    &lt;span class="k-habit-row__name"&gt;Hydration&lt;/span&gt;
+    &lt;span class="k-habit-row__trail"&gt;3 / 4&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;!-- pill row --&gt;
+  &lt;div class="k-habit-row"&gt;
+    &lt;span class="k-icon-tile k-icon-tile--amber"&gt;&lt;i class="ph ph-barbell"&gt;&lt;/i&gt;&lt;/span&gt;
+    &lt;span class="k-habit-row__name"&gt;Workout&lt;/span&gt;
+    &lt;span class="k-pill k-pill--ghost"&gt;Skipped&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;!-- unchecked row --&gt;
+  &lt;div class="k-habit-row"&gt;
+    &lt;span class="k-icon-tile k-icon-tile--amber"&gt;&lt;i class="ph ph-moon-stars"&gt;&lt;/i&gt;&lt;/span&gt;
+    &lt;span class="k-habit-row__name"&gt;Vitamins PM&lt;/span&gt;
+    &lt;span class="k-checkbox"&gt;&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;<span class="code__copy">Copy</span></pre>
+    </section>
+
+  </main>
+  <script>
+    document.querySelectorAll('.code[data-copy]').forEach(el => {
+      el.addEventListener('click', () => {
+        const text = el.innerText.replace(/\s*Copy\s*$/, '').trimEnd();
+        navigator.clipboard.writeText(text).then(() => {
+          el.classList.add('is-copied');
+          const tag = el.querySelector('.code__copy');
+          if (tag) tag.textContent = 'Copied';
+          setTimeout(() => { el.classList.remove('is-copied'); if (tag) tag.textContent = 'Copy'; }, 1200);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

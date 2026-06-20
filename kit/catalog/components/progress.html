@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE Kit · Progress</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="./_chrome.css" />
+</head>
+<body>
+  <main class="cat">
+
+    <header class="cat-bar">
+      <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
+      <a class="cat-bar__back" href="../index.html"><i class="ph ph-caret-left"></i> Components</a>
+    </header>
+
+    <section class="cat-head">
+      <h1 class="cat-head__title">Progress</h1>
+      <p class="cat-head__desc">Slim horizontal progress bar — 4px tall, pill-rounded, color and fill driven by custom properties. Used in macro rows, daily-goal cards, and anywhere a linear fill reads better than a ring.</p>
+    </section>
+
+    <!-- ANATOMY -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Anatomy</h2>
+      <p class="cat-section__sub">A full-width hairline track with a single fill drawn by an <code>::after</code> pseudo. The fill width animates between values via a <code>--m-slow</code> transition.</p>
+      <div class="cat-demo">
+        <div class="k-progress" style="--p-pct: 64; --p-color: var(--c-amber);"></div>
+        <ul class="cat-anatomy__notes">
+          <li><b>--p-pct</b> <span>0–100. Drives fill width (or >100 for overflow demo).</span></li>
+          <li><b>--p-color</b> <span>Fill color — pass a semantic token.</span></li>
+          <li><b>--p-height</b> <span>Track height (default 4px). Bump for emphasis.</span></li>
+          <li><b>Track</b> <span><code>--c-hair</code> background, <code>--r-pill</code> radius.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- COLORS -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Colors</h2>
+      <p class="cat-section__sub">Same three semantic colors as elsewhere. Amber = primary / goal. Green = protein / wins. Blue = strain / fat.</p>
+      <div class="cat-demo" style="display: grid; gap: var(--s-4);">
+        <div><span class="k-eyebrow">amber</span><div style="height: var(--s-2);"></div><div class="k-progress" style="--p-pct: 64; --p-color: var(--c-amber);"></div></div>
+        <div><span class="k-eyebrow">green</span><div style="height: var(--s-2);"></div><div class="k-progress" style="--p-pct: 78; --p-color: var(--c-green);"></div></div>
+        <div><span class="k-eyebrow">blue</span><div style="height: var(--s-2);"></div><div class="k-progress" style="--p-pct: 52; --p-color: var(--c-blue);"></div></div>
+      </div>
+    </section>
+
+    <!-- FILL STATES -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Fill states</h2>
+      <p class="cat-section__sub">Six states. 0% draws no fill. 100% fills the whole track. Overflow (>100%) clips at the right radius — useful when you've exceeded a target and want to communicate "done plus extra".</p>
+      <div class="cat-demo" style="display: grid; gap: var(--s-4);">
+        <div><span class="k-eyebrow">0%</span><div style="height: var(--s-2);"></div><div class="k-progress" style="--p-pct: 0; --p-color: var(--c-amber);"></div></div>
+        <div><span class="k-eyebrow">25%</span><div style="height: var(--s-2);"></div><div class="k-progress" style="--p-pct: 25; --p-color: var(--c-amber);"></div></div>
+        <div><span class="k-eyebrow">50%</span><div style="height: var(--s-2);"></div><div class="k-progress" style="--p-pct: 50; --p-color: var(--c-amber);"></div></div>
+        <div><span class="k-eyebrow">75%</span><div style="height: var(--s-2);"></div><div class="k-progress" style="--p-pct: 75; --p-color: var(--c-amber);"></div></div>
+        <div><span class="k-eyebrow">100%</span><div style="height: var(--s-2);"></div><div class="k-progress" style="--p-pct: 100; --p-color: var(--c-green);"></div></div>
+        <div><span class="k-eyebrow">128% input · clamped visually to 100%</span><div style="height: var(--s-2);"></div><div class="k-progress" style="--p-pct: 100; --p-color: var(--c-green);"></div><div style="height: var(--s-1);"></div><span class="k-text-faint">Author should cap <code>--p-pct</code> at 100 in template logic; the track is <code>overflow: hidden</code> so anything past 100 still clips to the right radius.</span></div>
+      </div>
+    </section>
+
+    <!-- WITH TRAILING LABEL -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">With &amp; without trailing label</h2>
+      <p class="cat-section__sub">When the progress sits inside a row, a leading label and trailing numeric give it context. The bar takes the leftover space.</p>
+      <div class="cat-demo" style="display: grid; gap: var(--s-4);">
+        <div>
+          <span class="cat-cell__cap">bar only</span>
+          <div style="height: var(--s-2);"></div>
+          <div class="k-progress" style="--p-pct: 64; --p-color: var(--c-amber);"></div>
+        </div>
+        <div>
+          <span class="cat-cell__cap">label + bar + value</span>
+          <div style="height: var(--s-2);"></div>
+          <div class="k-row" style="gap: var(--s-3);">
+            <span class="k-metric__lbl" style="width: 28px;">P</span>
+            <div class="k-progress" style="--p-pct: 78; --p-color: var(--c-green);"></div>
+            <span class="k-numeric k-numeric--sm"><span class="k-numeric__val">132</span><span class="k-numeric__unit">g</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- IN CONTEXT -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">In context</h2>
+      <p class="cat-section__sub">Three macro rows in a fuel card. Same row pattern with different colors.</p>
+      <div class="cat-demo">
+        <div class="k-card" style="width: 100%;">
+          <div class="k-row k-row--between" style="margin-bottom: var(--s-3);">
+            <span class="k-eyebrow">Fuel · 1,840 / 2,520 kcal</span>
+            <button class="k-pill k-pill--ghost"><i class="ph ph-plus"></i> Log</button>
+          </div>
+          <div class="k-stack" style="--gap: var(--s-2);">
+            <div class="k-row" style="gap: var(--s-3);">
+              <span class="k-metric__lbl" style="width: 28px;">P</span>
+              <div class="k-progress" style="--p-pct: 78; --p-color: var(--c-green);"></div>
+              <span class="k-numeric k-numeric--sm"><span class="k-numeric__val">132</span><span class="k-numeric__unit">g</span></span>
+            </div>
+            <div class="k-row" style="gap: var(--s-3);">
+              <span class="k-metric__lbl" style="width: 28px;">C</span>
+              <div class="k-progress" style="--p-pct: 64; --p-color: var(--c-amber);"></div>
+              <span class="k-numeric k-numeric--sm"><span class="k-numeric__val">186</span><span class="k-numeric__unit">g</span></span>
+            </div>
+            <div class="k-row" style="gap: var(--s-3);">
+              <span class="k-metric__lbl" style="width: 28px;">F</span>
+              <div class="k-progress" style="--p-pct: 52; --p-color: var(--c-blue);"></div>
+              <span class="k-numeric k-numeric--sm"><span class="k-numeric__val">58</span><span class="k-numeric__unit">g</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPEC -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Spec</h2>
+      <div class="cat-spec-wrap">
+        <table class="cat-spec">
+          <thead><tr><th>Class / token</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td>.k-progress</td><td>Full-width track. <code>--c-hair</code> bg, 4px tall, pill-rounded, overflow hidden.</td></tr>
+            <tr><td>--p-pct</td><td>0–100 fill percent. Animates with <code>--m-slow</code>.</td></tr>
+            <tr><td>--p-color</td><td>Fill color. Pass a semantic token.</td></tr>
+            <tr><td>--p-height</td><td>Track height. Override for thicker bars.</td></tr>
+            <tr><td>::after</td><td>The fill itself — drawn as a pseudo so no extra DOM node.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="height: var(--s-3);"></div>
+      <pre class="cat-code" data-copy='<div class="k-progress" style="--p-pct: 64; --p-color: var(--c-amber);"></div>'><span class="cat-code__copy">tap to copy</span>&lt;div class="k-progress" style="--p-pct: 64; --p-color: var(--c-amber);"&gt;&lt;/div&gt;</pre>
+    </section>
+
+  </main>
+
+  <script>
+    document.querySelectorAll('.cat-code').forEach(el => {
+      el.addEventListener('click', () => {
+        const text = el.dataset.copy || el.innerText.replace(/^tap to copy\s*/i, '');
+        navigator.clipboard?.writeText(text.replace(/\\n/g, '\n'));
+        el.classList.add('is-copied');
+        el.querySelector('.cat-code__copy').textContent = 'copied';
+        setTimeout(() => {
+          el.classList.remove('is-copied');
+          el.querySelector('.cat-code__copy').textContent = 'tap to copy';
+        }, 1400);
+      });
+    });
+  </script>
+</body>
+</html>

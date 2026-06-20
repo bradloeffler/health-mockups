@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE Kit · Checkbox</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="./_chrome.css" />
+</head>
+<body>
+  <main class="cat">
+
+    <header class="cat-bar">
+      <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
+      <a class="cat-bar__back" href="../index.html"><i class="ph ph-caret-left"></i> Components</a>
+    </header>
+
+    <section class="cat-head">
+      <h1 class="cat-head__title">Checkbox</h1>
+      <p class="cat-head__desc">A 22px square toggle. Unchecked is a hairline outline; checked flips to amber with a centered check glyph. Used in habit rows and any boolean toggle.</p>
+    </section>
+
+    <!-- ANATOMY -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Anatomy</h2>
+      <p class="cat-section__sub">A square inline-flex with a 1.5px border, 6px radius, and a check glyph that's transparent in the unchecked state. All three properties — border, bg, glyph color — transition together with <code>--m-fast</code>.</p>
+      <div class="cat-demo cat-demo--row" style="justify-content: space-around;">
+        <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">unchecked</span><span class="k-checkbox" aria-label="Toggle"><i class="ph ph-check"></i></span></div>
+        <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">checked</span><span class="k-checkbox is-checked"><i class="ph ph-check"></i></span></div>
+      </div>
+    </section>
+
+    <!-- VARIANTS -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">States</h2>
+      <p class="cat-section__sub">Two states, two press treatments. Pressed dims briefly to give haptic feedback.</p>
+      <div class="cat-demo cat-demo--row" style="justify-content: space-around;">
+        <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">unchecked · default</span><span class="k-checkbox"><i class="ph ph-check"></i></span></div>
+        <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">unchecked · pressed</span><span class="k-checkbox" style="border-color: var(--c-amber); transform: scale(0.94);"><i class="ph ph-check"></i></span></div>
+        <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">checked · default</span><span class="k-checkbox is-checked"><i class="ph ph-check"></i></span></div>
+        <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">checked · pressed</span><span class="k-checkbox is-checked" style="filter: brightness(0.88); transform: scale(0.94);"><i class="ph ph-check"></i></span></div>
+      </div>
+    </section>
+
+    <!-- IN CONTEXT -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">In context</h2>
+      <p class="cat-section__sub">Checkboxes are most commonly the trailing element on a habit row.</p>
+      <div class="cat-demo">
+        <div class="k-card" style="width: 100%;">
+          <div class="k-stack" style="--gap: 0;">
+            <div class="k-habit-row">
+              <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-sun"></i></span>
+              <span class="k-habit-row__name">Vitamins AM</span>
+              <span class="k-checkbox" aria-label="Toggle"><i class="ph ph-check"></i></span>
+            </div>
+            <div class="k-habit-row k-habit-row--done">
+              <span class="k-icon-tile k-icon-tile--blue"><i class="ph ph-person-simple-tai-chi"></i></span>
+              <span class="k-habit-row__name">Stretch 10 min</span>
+              <span class="k-checkbox is-checked"><i class="ph ph-check"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPEC -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Spec</h2>
+      <div class="cat-spec-wrap">
+        <table class="cat-spec">
+          <thead><tr><th>Class / token</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td>.k-checkbox</td><td>22px square, 6px radius, 1.5px <code>--c-hair-strong</code> border, transparent bg, transparent glyph.</td></tr>
+            <tr><td>.k-checkbox.is-checked</td><td>Filled. Bg + border to <code>--c-amber</code>, glyph to <code>--c-on-amber</code>.</td></tr>
+            <tr><td>Transition</td><td>bg, border-color, color all animate with <code>--m-fast</code>.</td></tr>
+            <tr><td>Glyph</td><td><code>ph-check</code> at 14px. Always present in DOM; visibility comes from color.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="height: var(--s-3);"></div>
+      <pre class="cat-code" data-copy='<span class="k-checkbox is-checked">\n  <i class="ph ph-check"></i>\n</span>'><span class="cat-code__copy">tap to copy</span>&lt;span class="k-checkbox is-checked"&gt;
+  &lt;i class="ph ph-check"&gt;&lt;/i&gt;
+&lt;/span&gt;</pre>
+    </section>
+
+  </main>
+
+  <script>
+    document.querySelectorAll('.cat-code').forEach(el => {
+      el.addEventListener('click', () => {
+        const text = el.dataset.copy || el.innerText.replace(/^tap to copy\s*/i, '');
+        navigator.clipboard?.writeText(text.replace(/\\n/g, '\n'));
+        el.classList.add('is-copied');
+        el.querySelector('.cat-code__copy').textContent = 'copied';
+        setTimeout(() => {
+          el.classList.remove('is-copied');
+          el.querySelector('.cat-code__copy').textContent = 'tap to copy';
+        }, 1400);
+      });
+    });
+  </script>
+</body>
+</html>

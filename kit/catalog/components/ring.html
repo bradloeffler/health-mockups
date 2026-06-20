@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE Kit · Ring</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="./_chrome.css" />
+</head>
+<body>
+  <main class="cat">
+
+    <header class="cat-bar">
+      <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
+      <a class="cat-bar__back" href="../index.html"><i class="ph ph-caret-left"></i> Components</a>
+    </header>
+
+    <section class="cat-head">
+      <h1 class="cat-head__title">Ring</h1>
+      <p class="cat-head__desc">Circular progress with an inner number and an outer label. Sized, colored, and filled by CSS custom properties — one component, many semantic uses.</p>
+    </section>
+
+    <!-- ANATOMY -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Anatomy</h2>
+      <p class="cat-section__sub">An SVG with two stacked circles — track and bar — overlaid by an absolutely-positioned number, with a label flowing beneath as a separate text element. All sizing comes from <code>--ring-size</code>.</p>
+      <div class="cat-demo cat-demo--center">
+        <div class="k-ring" style="--ring-color: var(--c-green); --ring-pct: 71; --ring-size: 120px;">
+          <svg class="k-ring__svg" viewBox="0 0 100 100" aria-hidden="true">
+            <circle class="k-ring__track"/>
+            <circle class="k-ring__bar"/>
+          </svg>
+          <div class="k-ring__num">71</div>
+          <div class="k-ring__label">Recovery</div>
+        </div>
+        <ul class="cat-anatomy__notes" style="width: 100%;">
+          <li><b>--ring-size</b> <span>diameter of the ring. Drives both SVG and number positioning.</span></li>
+          <li><b>--ring-stroke</b> <span>line weight (default 6px). Auto-rescales to the viewBox.</span></li>
+          <li><b>--ring-color</b> <span>bar stroke. Pass a semantic token (<code>--c-amber</code>, <code>--c-green</code>, ...).</span></li>
+          <li><b>--ring-track</b> <span>track stroke (default <code>--c-hair</code>).</span></li>
+          <li><b>--ring-pct</b> <span>0–100 fill percent. Drives <code>stroke-dashoffset</code> with a <code>--m-slow</code> transition.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- COLOR VARIANTS -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Semantic colors</h2>
+      <p class="cat-section__sub">Color is meaning, not decoration. Green = recovery / good. Amber = workout / strain target. Blue = strain / load. Red = warning / low.</p>
+      <div class="cat-demo cat-demo--row" style="justify-content: space-around;">
+        <div class="cat-cell cat-cell--center">
+          <span class="cat-cell__cap">green · recovery</span>
+          <div class="k-ring" style="--ring-color: var(--c-green); --ring-pct: 71;">
+            <svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg>
+            <div class="k-ring__num">71</div>
+            <div class="k-ring__label">Recovery</div>
+          </div>
+        </div>
+        <div class="cat-cell cat-cell--center">
+          <span class="cat-cell__cap">amber · workout</span>
+          <div class="k-ring" style="--ring-color: var(--c-amber); --ring-pct: 54;">
+            <svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg>
+            <div class="k-ring__num">54</div>
+            <div class="k-ring__label">Workout</div>
+          </div>
+        </div>
+        <div class="cat-cell cat-cell--center">
+          <span class="cat-cell__cap">blue · strain</span>
+          <div class="k-ring" style="--ring-color: var(--c-blue); --ring-pct: 42;">
+            <svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg>
+            <div class="k-ring__num">8.4</div>
+            <div class="k-ring__label">Strain</div>
+          </div>
+        </div>
+        <div class="cat-cell cat-cell--center">
+          <span class="cat-cell__cap">red · low</span>
+          <div class="k-ring" style="--ring-color: var(--c-red); --ring-pct: 18;">
+            <svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg>
+            <div class="k-ring__num">18</div>
+            <div class="k-ring__label">Battery</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIZES -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Sizes</h2>
+      <p class="cat-section__sub">Set <code>--ring-size</code> directly. The number stays centered, the label sits below.</p>
+      <div class="cat-demo cat-demo--row" style="justify-content: space-around; align-items: flex-end;">
+        <div class="cat-cell cat-cell--center">
+          <span class="cat-cell__cap">small · 64</span>
+          <div class="k-ring" style="--ring-color: var(--c-green); --ring-pct: 71; --ring-size: 64px;">
+            <svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg>
+            <div class="k-ring__num" style="font-size: var(--t-num-md);">71</div>
+            <div class="k-ring__label">Recovery</div>
+          </div>
+        </div>
+        <div class="cat-cell cat-cell--center">
+          <span class="cat-cell__cap">medium · 96 (default)</span>
+          <div class="k-ring" style="--ring-color: var(--c-green); --ring-pct: 71;">
+            <svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg>
+            <div class="k-ring__num">71</div>
+            <div class="k-ring__label">Recovery</div>
+          </div>
+        </div>
+        <div class="cat-cell cat-cell--center">
+          <span class="cat-cell__cap">large · 140</span>
+          <div class="k-ring" style="--ring-color: var(--c-green); --ring-pct: 71; --ring-size: 140px;">
+            <svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg>
+            <div class="k-ring__num" style="font-size: var(--t-num-xl);">71</div>
+            <div class="k-ring__label">Recovery</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WITH/WITHOUT NUMBER & LABEL -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">With or without number / label</h2>
+      <p class="cat-section__sub">Both inner number and outer label are optional. Drop the matching elements.</p>
+      <div class="cat-demo cat-demo--row" style="justify-content: space-around; align-items: flex-end;">
+        <div class="cat-cell cat-cell--center">
+          <span class="cat-cell__cap">full</span>
+          <div class="k-ring" style="--ring-color: var(--c-amber); --ring-pct: 60;">
+            <svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg>
+            <div class="k-ring__num">60</div>
+            <div class="k-ring__label">Workout</div>
+          </div>
+        </div>
+        <div class="cat-cell cat-cell--center">
+          <span class="cat-cell__cap">number only</span>
+          <div class="k-ring" style="--ring-color: var(--c-amber); --ring-pct: 60;">
+            <svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg>
+            <div class="k-ring__num">60</div>
+          </div>
+        </div>
+        <div class="cat-cell cat-cell--center">
+          <span class="cat-cell__cap">label only</span>
+          <div class="k-ring" style="--ring-color: var(--c-amber); --ring-pct: 60;">
+            <svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg>
+            <div class="k-ring__label">Workout</div>
+          </div>
+        </div>
+        <div class="cat-cell cat-cell--center">
+          <span class="cat-cell__cap">bar only</span>
+          <div class="k-ring" style="--ring-color: var(--c-amber); --ring-pct: 60;">
+            <svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ALL COLORS × 3 PCTS -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Fill states · all colors</h2>
+      <p class="cat-section__sub">Each color at 25 / 50 / 75 percent — sanity-check the dash math, the cap rounding, and the contrast.</p>
+      <div class="cat-demo" style="display: grid; grid-template-columns: 1fr; gap: var(--s-5);">
+        <div class="cat-cell">
+          <span class="cat-cell__cap">green</span>
+          <div class="k-row" style="gap: var(--s-5); flex-wrap: wrap;">
+            <div class="k-ring" style="--ring-color: var(--c-green); --ring-pct: 25; --ring-size: 80px;"><svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg><div class="k-ring__num" style="font-size: var(--t-num-md);">25</div></div>
+            <div class="k-ring" style="--ring-color: var(--c-green); --ring-pct: 50; --ring-size: 80px;"><svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg><div class="k-ring__num" style="font-size: var(--t-num-md);">50</div></div>
+            <div class="k-ring" style="--ring-color: var(--c-green); --ring-pct: 75; --ring-size: 80px;"><svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg><div class="k-ring__num" style="font-size: var(--t-num-md);">75</div></div>
+          </div>
+        </div>
+        <div class="cat-cell">
+          <span class="cat-cell__cap">amber</span>
+          <div class="k-row" style="gap: var(--s-5); flex-wrap: wrap;">
+            <div class="k-ring" style="--ring-color: var(--c-amber); --ring-pct: 25; --ring-size: 80px;"><svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg><div class="k-ring__num" style="font-size: var(--t-num-md);">25</div></div>
+            <div class="k-ring" style="--ring-color: var(--c-amber); --ring-pct: 50; --ring-size: 80px;"><svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg><div class="k-ring__num" style="font-size: var(--t-num-md);">50</div></div>
+            <div class="k-ring" style="--ring-color: var(--c-amber); --ring-pct: 75; --ring-size: 80px;"><svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg><div class="k-ring__num" style="font-size: var(--t-num-md);">75</div></div>
+          </div>
+        </div>
+        <div class="cat-cell">
+          <span class="cat-cell__cap">blue</span>
+          <div class="k-row" style="gap: var(--s-5); flex-wrap: wrap;">
+            <div class="k-ring" style="--ring-color: var(--c-blue); --ring-pct: 25; --ring-size: 80px;"><svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg><div class="k-ring__num" style="font-size: var(--t-num-md);">25</div></div>
+            <div class="k-ring" style="--ring-color: var(--c-blue); --ring-pct: 50; --ring-size: 80px;"><svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg><div class="k-ring__num" style="font-size: var(--t-num-md);">50</div></div>
+            <div class="k-ring" style="--ring-color: var(--c-blue); --ring-pct: 75; --ring-size: 80px;"><svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg><div class="k-ring__num" style="font-size: var(--t-num-md);">75</div></div>
+          </div>
+        </div>
+        <div class="cat-cell">
+          <span class="cat-cell__cap">red</span>
+          <div class="k-row" style="gap: var(--s-5); flex-wrap: wrap;">
+            <div class="k-ring" style="--ring-color: var(--c-red); --ring-pct: 25; --ring-size: 80px;"><svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg><div class="k-ring__num" style="font-size: var(--t-num-md);">25</div></div>
+            <div class="k-ring" style="--ring-color: var(--c-red); --ring-pct: 50; --ring-size: 80px;"><svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg><div class="k-ring__num" style="font-size: var(--t-num-md);">50</div></div>
+            <div class="k-ring" style="--ring-color: var(--c-red); --ring-pct: 75; --ring-size: 80px;"><svg class="k-ring__svg" viewBox="0 0 100 100"><circle class="k-ring__track"/><circle class="k-ring__bar"/></svg><div class="k-ring__num" style="font-size: var(--t-num-md);">75</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPEC -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Spec</h2>
+      <div class="cat-spec-wrap">
+        <table class="cat-spec">
+          <thead><tr><th>Custom property / class</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td>.k-ring</td><td>Container. Inline-flex column, holds SVG, number, label.</td></tr>
+            <tr><td>--ring-size</td><td>Diameter (default 96px). Drives SVG box and number overlay.</td></tr>
+            <tr><td>--ring-stroke</td><td>Stroke width (default 6px). Auto-scaled into viewBox units.</td></tr>
+            <tr><td>--ring-color</td><td>Bar stroke. Pass <code>var(--c-green | --c-amber | --c-blue | --c-red)</code>.</td></tr>
+            <tr><td>--ring-track</td><td>Track stroke (default <code>--c-hair</code>).</td></tr>
+            <tr><td>--ring-pct</td><td>0–100. Drives stroke-dashoffset with a <code>--m-slow</code> transition.</td></tr>
+            <tr><td>.k-ring__num</td><td>Absolutely-positioned center number. Sized via <code>--t-num-lg</code> by default.</td></tr>
+            <tr><td>.k-ring__label</td><td>Bottom label, eyebrow spec.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="height: var(--s-3);"></div>
+      <pre class="cat-code" data-copy='<div class="k-ring" style="--ring-color: var(--c-green); --ring-pct: 71;">\n  <svg class="k-ring__svg" viewBox="0 0 100 100">\n    <circle class="k-ring__track"/>\n    <circle class="k-ring__bar"/>\n  </svg>\n  <div class="k-ring__num">71</div>\n  <div class="k-ring__label">Recovery</div>\n</div>'><span class="cat-code__copy">tap to copy</span>&lt;div class="k-ring" style="--ring-color: var(--c-green); --ring-pct: 71;"&gt;
+  &lt;svg class="k-ring__svg" viewBox="0 0 100 100"&gt;
+    &lt;circle class="k-ring__track"/&gt;
+    &lt;circle class="k-ring__bar"/&gt;
+  &lt;/svg&gt;
+  &lt;div class="k-ring__num"&gt;71&lt;/div&gt;
+  &lt;div class="k-ring__label"&gt;Recovery&lt;/div&gt;
+&lt;/div&gt;</pre>
+    </section>
+
+  </main>
+
+  <script>
+    document.querySelectorAll('.cat-code').forEach(el => {
+      el.addEventListener('click', () => {
+        const text = el.dataset.copy || el.innerText.replace(/^tap to copy\s*/i, '');
+        navigator.clipboard?.writeText(text.replace(/\\n/g, '\n'));
+        el.classList.add('is-copied');
+        el.querySelector('.cat-code__copy').textContent = 'copied';
+        setTimeout(() => {
+          el.classList.remove('is-copied');
+          el.querySelector('.cat-code__copy').textContent = 'tap to copy';
+        }, 1400);
+      });
+    });
+  </script>
+</body>
+</html>

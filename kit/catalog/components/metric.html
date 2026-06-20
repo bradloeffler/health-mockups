@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE Kit · Metric List</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="./_chrome.css" />
+</head>
+<body>
+  <main class="cat">
+
+    <header class="cat-bar">
+      <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
+      <a class="cat-bar__back" href="../index.html"><i class="ph ph-caret-left"></i> Components</a>
+    </header>
+
+    <section class="cat-head">
+      <h1 class="cat-head__title">Metric &amp; Metric&nbsp;List</h1>
+      <p class="cat-head__desc">A three-column grid (label · value · unit) that keeps numeric digits aligned across rows regardless of their width. Use it any time you stack two or more labeled numbers.</p>
+    </section>
+
+    <!-- ANATOMY -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Anatomy</h2>
+      <p class="cat-section__sub">Each <code>.k-metric</code> uses <code>display: contents</code> to flatten its three children into the parent grid — so all rows share one set of column tracks. Digits are tabular and right-aligned in the middle column; that's what keeps the 1s, 10s, 100s columns lined up.</p>
+      <div class="cat-demo">
+        <div class="k-metric-list">
+          <div class="k-metric">
+            <span class="k-metric__lbl">HRV</span>
+            <span class="k-metric__val">62</span>
+            <span class="k-metric__unit">ms</span>
+          </div>
+          <div class="k-metric">
+            <span class="k-metric__lbl">Rest</span>
+            <span class="k-metric__val">7.4</span>
+            <span class="k-metric__unit">hr</span>
+          </div>
+        </div>
+        <ul class="cat-anatomy__notes">
+          <li><b>Columns</b> <span><code>auto auto auto</code>, justified to <code>end</code> so the list hugs the right edge of available space.</span></li>
+          <li><b>Row gap</b> <span><code>--s-2</code> · column gap <code>--s-2</code> · baseline aligned.</span></li>
+          <li><b>Value</b> <span>tabular-nums mono so 7.4 and 62 share digit-column widths.</span></li>
+          <li><b>Label &amp; unit</b> <span>both use the eyebrow spec — mono, uppercase, faint, 10px.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- VARIANTS -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Lengths</h2>
+      <p class="cat-section__sub">The list scales identically from 1 to N rows. Same column tracks, same alignment.</p>
+      <div class="cat-demo" style="display: grid; grid-template-columns: 1fr; gap: var(--s-5);">
+
+        <div class="cat-cell">
+          <span class="cat-cell__cap">1 metric</span>
+          <div class="k-card" style="width: 100%;">
+            <div class="k-metric-list">
+              <div class="k-metric"><span class="k-metric__lbl">HRV</span><span class="k-metric__val">62</span><span class="k-metric__unit">ms</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cat-cell">
+          <span class="cat-cell__cap">2 metrics</span>
+          <div class="k-card" style="width: 100%;">
+            <div class="k-metric-list">
+              <div class="k-metric"><span class="k-metric__lbl">HRV</span><span class="k-metric__val">62</span><span class="k-metric__unit">ms</span></div>
+              <div class="k-metric"><span class="k-metric__lbl">RHR</span><span class="k-metric__val">54</span><span class="k-metric__unit">bpm</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cat-cell">
+          <span class="cat-cell__cap">4 metrics · mixed widths (7 / 62 / 7.4 / 92)</span>
+          <div class="k-card" style="width: 100%;">
+            <div class="k-metric-list">
+              <div class="k-metric"><span class="k-metric__lbl">Strain</span><span class="k-metric__val">7</span><span class="k-metric__unit">/21</span></div>
+              <div class="k-metric"><span class="k-metric__lbl">HRV</span><span class="k-metric__val">62</span><span class="k-metric__unit">ms</span></div>
+              <div class="k-metric"><span class="k-metric__lbl">Rest</span><span class="k-metric__val">7.4</span><span class="k-metric__unit">hr</span></div>
+              <div class="k-metric"><span class="k-metric__lbl">Sleep</span><span class="k-metric__val">92</span><span class="k-metric__unit">%</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cat-cell">
+          <span class="cat-cell__cap">6 metrics</span>
+          <div class="k-card" style="width: 100%;">
+            <div class="k-metric-list">
+              <div class="k-metric"><span class="k-metric__lbl">Strain</span><span class="k-metric__val">7</span><span class="k-metric__unit">/21</span></div>
+              <div class="k-metric"><span class="k-metric__lbl">HRV</span><span class="k-metric__val">62</span><span class="k-metric__unit">ms</span></div>
+              <div class="k-metric"><span class="k-metric__lbl">RHR</span><span class="k-metric__val">54</span><span class="k-metric__unit">bpm</span></div>
+              <div class="k-metric"><span class="k-metric__lbl">Rest</span><span class="k-metric__val">7.4</span><span class="k-metric__unit">hr</span></div>
+              <div class="k-metric"><span class="k-metric__lbl">Sleep</span><span class="k-metric__val">92</span><span class="k-metric__unit">%</span></div>
+              <div class="k-metric"><span class="k-metric__lbl">Steps</span><span class="k-metric__val">7,420</span><span class="k-metric__unit"></span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- WITH / WITHOUT UNITS -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">With &amp; without units</h2>
+      <p class="cat-section__sub">The unit column is optional per row — leave the third cell empty and the value still right-aligns to the same column.</p>
+      <div class="cat-demo">
+        <div class="k-card" style="width: 100%;">
+          <div class="k-metric-list">
+            <div class="k-metric"><span class="k-metric__lbl">Workouts</span><span class="k-metric__val">3</span><span class="k-metric__unit"></span></div>
+            <div class="k-metric"><span class="k-metric__lbl">PRs</span><span class="k-metric__val">2</span><span class="k-metric__unit"></span></div>
+            <div class="k-metric"><span class="k-metric__lbl">Calories</span><span class="k-metric__val">1,840</span><span class="k-metric__unit">kcal</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPEC -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Spec</h2>
+      <div class="cat-spec-wrap">
+        <table class="cat-spec">
+          <thead><tr><th>Class / token</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td>.k-metric-list</td><td>Grid container. <code>grid-template-columns: auto auto auto</code>, justified end, baseline-aligned, row-gap and column-gap <code>--s-2</code>.</td></tr>
+            <tr><td>.k-metric</td><td>Logical row. Uses <code>display: contents</code> so its three children participate in the parent grid directly.</td></tr>
+            <tr><td>.k-metric__lbl</td><td>Eyebrow-style label. <code>--c-faint</code>.</td></tr>
+            <tr><td>.k-metric__val</td><td>Tabular mono digits, <code>--t-num-md</code>, right-justified. <code>--c-ink</code>.</td></tr>
+            <tr><td>.k-metric__unit</td><td>Eyebrow-style unit suffix. <code>--c-faint</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="height: var(--s-3);"></div>
+      <pre class="cat-code" data-copy='<div class="k-metric-list">\n  <div class="k-metric">\n    <span class="k-metric__lbl">HRV</span>\n    <span class="k-metric__val">62</span>\n    <span class="k-metric__unit">ms</span>\n  </div>\n</div>'><span class="cat-code__copy">tap to copy</span>&lt;div class="k-metric-list"&gt;
+  &lt;div class="k-metric"&gt;
+    &lt;span class="k-metric__lbl"&gt;HRV&lt;/span&gt;
+    &lt;span class="k-metric__val"&gt;62&lt;/span&gt;
+    &lt;span class="k-metric__unit"&gt;ms&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+    </section>
+
+  </main>
+
+  <script>
+    document.querySelectorAll('.cat-code').forEach(el => {
+      el.addEventListener('click', () => {
+        const text = el.dataset.copy || el.innerText.replace(/^tap to copy\s*/i, '');
+        navigator.clipboard?.writeText(text.replace(/\\n/g, '\n'));
+        el.classList.add('is-copied');
+        el.querySelector('.cat-code__copy').textContent = 'copied';
+        setTimeout(() => {
+          el.classList.remove('is-copied');
+          el.querySelector('.cat-code__copy').textContent = 'tap to copy';
+        }, 1400);
+      });
+    });
+  </script>
+</body>
+</html>

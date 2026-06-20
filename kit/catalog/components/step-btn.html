@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE Kit · Step Button</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="./_chrome.css" />
+</head>
+<body>
+  <main class="cat">
+
+    <header class="cat-bar">
+      <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
+      <a class="cat-bar__back" href="../index.html"><i class="ph ph-caret-left"></i> Components</a>
+    </header>
+
+    <section class="cat-head">
+      <h1 class="cat-head__title">Step Button</h1>
+      <p class="cat-head__desc">A 44px round tap target for incrementing or decrementing a value. Paired with a numeric to form a + / − group for water, scoops, reps, etc.</p>
+    </section>
+
+    <!-- ANATOMY -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Anatomy</h2>
+      <p class="cat-section__sub">A 44×44 raised pill button with an 18px Phosphor glyph centered. Border is hairline; background shifts down on press.</p>
+      <div class="cat-demo">
+        <button class="k-step-btn" aria-label="Add"><i class="ph ph-plus"></i></button>
+        <ul class="cat-anatomy__notes">
+          <li><b>Size</b> <span>44 × 44 — meets the 44pt minimum tap target.</span></li>
+          <li><b>Surface</b> <span><code>--c-raised</code> bg, <code>--c-hair</code> border, <code>--c-ink</code> icon.</span></li>
+          <li><b>Press</b> <span>bg shifts to <code>--c-hair</code> via <code>:active</code>, <code>--m-fast</code>.</span></li>
+          <li><b>Disabled</b> <span><code>--c-faint</code> icon, opacity 0.6.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- VARIANTS -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Variants</h2>
+      <p class="cat-section__sub">Minus and plus. The glyph is the only difference; the class is identical.</p>
+      <div class="cat-demo cat-demo--row" style="justify-content: space-around;">
+        <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">minus</span><button class="k-step-btn" aria-label="Less"><i class="ph ph-minus"></i></button></div>
+        <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">plus</span><button class="k-step-btn" aria-label="More"><i class="ph ph-plus"></i></button></div>
+      </div>
+    </section>
+
+    <!-- STATES -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">States</h2>
+      <p class="cat-section__sub">Default, pressed (active), and disabled.</p>
+      <div class="cat-demo cat-demo--row" style="justify-content: space-around;">
+        <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">default</span><button class="k-step-btn"><i class="ph ph-plus"></i></button></div>
+        <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">pressed</span><button class="k-step-btn" style="background: var(--c-hair); transform: scale(0.96);"><i class="ph ph-plus"></i></button></div>
+        <div class="cat-cell cat-cell--center"><span class="cat-cell__cap">disabled</span><button class="k-step-btn" disabled><i class="ph ph-plus"></i></button></div>
+      </div>
+    </section>
+
+    <!-- STEPPER GROUP -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Stepper group</h2>
+      <p class="cat-section__sub">Paired with a numeric to form the canonical −/value/+ control. Use <code>.k-row--between</code> to space them across a card.</p>
+      <div class="cat-demo" style="display: grid; gap: var(--s-4);">
+        <div class="cat-cell">
+          <span class="cat-cell__cap">water · 5 of 8 glasses</span>
+          <div class="k-card" style="width: 100%;">
+            <div class="k-row k-row--between" style="margin-bottom: var(--s-3);">
+              <span class="k-eyebrow">Water</span>
+              <span class="k-pill k-pill--ghost">16 oz</span>
+            </div>
+            <div class="k-row k-row--between">
+              <button class="k-step-btn" aria-label="Less water"><i class="ph ph-minus"></i></button>
+              <span class="k-numeric k-numeric--lg"><span class="k-numeric__val">5</span><span class="k-numeric__unit">/ 8</span></span>
+              <button class="k-step-btn" aria-label="More water"><i class="ph ph-plus"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="cat-cell">
+          <span class="cat-cell__cap">scoops · at lower bound (minus disabled)</span>
+          <div class="k-card" style="width: 100%;">
+            <div class="k-row k-row--between">
+              <button class="k-step-btn" aria-label="Less" disabled><i class="ph ph-minus"></i></button>
+              <span class="k-numeric k-numeric--lg"><span class="k-numeric__val">0</span><span class="k-numeric__unit">scoops</span></span>
+              <button class="k-step-btn" aria-label="More"><i class="ph ph-plus"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPEC -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Spec</h2>
+      <div class="cat-spec-wrap">
+        <table class="cat-spec">
+          <thead><tr><th>Class / token</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td>.k-step-btn</td><td>44px round button. <code>--c-raised</code> bg, hairline border, ink icon.</td></tr>
+            <tr><td>:active</td><td>Background to <code>--c-hair</code>, transitions with <code>--m-fast</code>.</td></tr>
+            <tr><td>[disabled]</td><td>Icon to <code>--c-faint</code>, opacity 0.6.</td></tr>
+            <tr><td>aria-label</td><td>Required — the glyph alone isn't enough for AT.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="height: var(--s-3);"></div>
+      <pre class="cat-code" data-copy='<button class="k-step-btn" aria-label="More water">\n  <i class="ph ph-plus"></i>\n</button>'><span class="cat-code__copy">tap to copy</span>&lt;button class="k-step-btn" aria-label="More water"&gt;
+  &lt;i class="ph ph-plus"&gt;&lt;/i&gt;
+&lt;/button&gt;</pre>
+    </section>
+
+  </main>
+
+  <script>
+    document.querySelectorAll('.cat-code').forEach(el => {
+      el.addEventListener('click', () => {
+        const text = el.dataset.copy || el.innerText.replace(/^tap to copy\s*/i, '');
+        navigator.clipboard?.writeText(text.replace(/\\n/g, '\n'));
+        el.classList.add('is-copied');
+        el.querySelector('.cat-code__copy').textContent = 'copied';
+        setTimeout(() => {
+          el.classList.remove('is-copied');
+          el.querySelector('.cat-code__copy').textContent = 'tap to copy';
+        }, 1400);
+      });
+    });
+  </script>
+</body>
+</html>

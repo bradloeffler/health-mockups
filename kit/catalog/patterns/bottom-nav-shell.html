@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE Pattern &middot; Bottom nav shell</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="../../kit.css" />
+  <style>
+    body { display: block; background: var(--c-deep); }
+    .doc { max-width: 880px; margin: 0 auto; padding: var(--s-5) var(--s-4) var(--s-8); }
+    .doc-bar { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3); padding-bottom: var(--s-3); border-bottom: 1px solid var(--c-hair); margin-bottom: var(--s-5); }
+    .doc-bar__back { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-faint); text-decoration: none; }
+    .doc-bar__back:hover { color: var(--c-amber); }
+    .doc-title { font-family: var(--f-ui); font-size: 24px; font-weight: 500; letter-spacing: -0.4px; margin: 0; color: var(--c-ink); }
+    .doc-title__crumb { font-family: var(--f-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-amber); display: block; margin-bottom: var(--s-1); }
+    .doc-lede { color: var(--c-sub); font-weight: 400; font-size: 14px; margin: var(--s-2) 0 0; max-width: 60ch; }
+    .ex { margin-top: var(--s-5); border: 1px solid var(--c-hair); border-radius: var(--r-lg); overflow: hidden; background: var(--c-surface); }
+    .ex__head { display: flex; align-items: center; justify-content: space-between; padding: var(--s-2) var(--s-3); border-bottom: 1px solid var(--c-hair); background: var(--c-bg); }
+    .ex__name { font-family: var(--f-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-sub); }
+    .ex__tag { font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-faint); }
+    .ex__stage { padding: var(--s-5) var(--s-4); background: radial-gradient(120% 70% at 50% -10%, rgba(227,168,87,0.04), transparent 60%), var(--c-bg); display: flex; justify-content: center; flex-wrap: wrap; gap: var(--s-4); }
+    .code { position: relative; background: var(--c-deep); border-top: 1px solid var(--c-hair); padding: var(--s-3); font-family: var(--f-mono); font-size: 12px; line-height: 1.55; color: var(--c-ink); overflow-x: auto; white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere; cursor: copy; margin: 0; }
+    .code__copy { position: absolute; top: var(--s-1); right: var(--s-1); font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-faint); padding: var(--s-0) var(--s-1); border-radius: var(--r-sm); background: var(--c-surface); pointer-events: none; }
+    .code.is-copied .code__copy { color: var(--c-green); }
+    /* In the catalog we render the nav inline as a non-fixed copy so all four states show without overlapping */
+    .nav-demo {
+      position: relative;
+      display: flex; align-items: center; justify-content: space-around;
+      padding: var(--s-1) var(--s-2);
+      background: rgba(20, 18, 14, 0.72);
+      -webkit-backdrop-filter: blur(20px) saturate(140%);
+      backdrop-filter: blur(20px) saturate(140%);
+      border: 1px solid var(--c-hair);
+      border-radius: var(--r-pill);
+      box-shadow: var(--sh-nav);
+      width: 100%; max-width: 320px;
+    }
+    .nav-demo__btn {
+      width: 44px; height: 44px; border-radius: var(--r-pill);
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--c-faint); font-size: 20px;
+      transition: color var(--m-fast);
+      background: none; border: 0; cursor: pointer;
+    }
+    .nav-demo__btn[aria-current="page"] { color: var(--c-amber); }
+    .nav-col { display: flex; flex-direction: column; align-items: center; gap: var(--s-2); }
+    .nav-col__cap { font-family: var(--f-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-faint); }
+  </style>
+</head>
+<body>
+  <main class="doc">
+
+    <header class="doc-bar">
+      <div>
+        <span class="doc-title__crumb">Pattern &middot; Bottom nav shell</span>
+        <h1 class="doc-title">Bottom nav shell</h1>
+        <p class="doc-lede">The floating frosted-glass tab bar pinned to the bottom of <code style="font-family: var(--f-mono); color: var(--c-amber);">k-screen</code>. Four primary destinations &mdash; Home, Plan, Habits, Settings. The active tab is signaled with <code style="font-family: var(--f-mono); color: var(--c-amber);">aria-current="page"</code> which switches the icon color to amber.</p>
+      </div>
+      <a class="doc-bar__back" href="../index.html">&larr; Catalog</a>
+    </header>
+
+    <!-- Example 1: all four active states -->
+    <section class="ex">
+      <div class="ex__head"><span class="ex__name">A &middot; All four active states</span><span class="ex__tag">k-nav &middot; aria-current="page"</span></div>
+      <div class="ex__stage">
+
+        <div class="nav-col">
+          <nav class="nav-demo" aria-label="Home active">
+            <button class="nav-demo__btn" aria-current="page" aria-label="Home"><i class="ph ph-house"></i></button>
+            <button class="nav-demo__btn" aria-label="Plan"><i class="ph ph-calendar-blank"></i></button>
+            <button class="nav-demo__btn" aria-label="Habits"><i class="ph ph-squares-four"></i></button>
+            <button class="nav-demo__btn" aria-label="Settings"><i class="ph ph-gear-six"></i></button>
+          </nav>
+          <span class="nav-col__cap">Home</span>
+        </div>
+
+        <div class="nav-col">
+          <nav class="nav-demo" aria-label="Plan active">
+            <button class="nav-demo__btn" aria-label="Home"><i class="ph ph-house"></i></button>
+            <button class="nav-demo__btn" aria-current="page" aria-label="Plan"><i class="ph ph-calendar-blank"></i></button>
+            <button class="nav-demo__btn" aria-label="Habits"><i class="ph ph-squares-four"></i></button>
+            <button class="nav-demo__btn" aria-label="Settings"><i class="ph ph-gear-six"></i></button>
+          </nav>
+          <span class="nav-col__cap">Plan</span>
+        </div>
+
+        <div class="nav-col">
+          <nav class="nav-demo" aria-label="Habits active">
+            <button class="nav-demo__btn" aria-label="Home"><i class="ph ph-house"></i></button>
+            <button class="nav-demo__btn" aria-label="Plan"><i class="ph ph-calendar-blank"></i></button>
+            <button class="nav-demo__btn" aria-current="page" aria-label="Habits"><i class="ph ph-squares-four"></i></button>
+            <button class="nav-demo__btn" aria-label="Settings"><i class="ph ph-gear-six"></i></button>
+          </nav>
+          <span class="nav-col__cap">Habits</span>
+        </div>
+
+        <div class="nav-col">
+          <nav class="nav-demo" aria-label="Settings active">
+            <button class="nav-demo__btn" aria-label="Home"><i class="ph ph-house"></i></button>
+            <button class="nav-demo__btn" aria-label="Plan"><i class="ph ph-calendar-blank"></i></button>
+            <button class="nav-demo__btn" aria-label="Habits"><i class="ph ph-squares-four"></i></button>
+            <button class="nav-demo__btn" aria-current="page" aria-label="Settings"><i class="ph ph-gear-six"></i></button>
+          </nav>
+          <span class="nav-col__cap">Settings</span>
+        </div>
+
+      </div>
+<pre class="code" data-copy>&lt;nav class="k-nav" aria-label="Primary"&gt;
+  &lt;button class="k-nav__btn" aria-current="page" aria-label="Home"&gt;
+    &lt;i class="ph ph-house"&gt;&lt;/i&gt;
+  &lt;/button&gt;
+  &lt;button class="k-nav__btn" aria-label="Plan"&gt;
+    &lt;i class="ph ph-calendar-blank"&gt;&lt;/i&gt;
+  &lt;/button&gt;
+  &lt;button class="k-nav__btn" aria-label="Habits"&gt;
+    &lt;i class="ph ph-squares-four"&gt;&lt;/i&gt;
+  &lt;/button&gt;
+  &lt;button class="k-nav__btn" aria-label="Settings"&gt;
+    &lt;i class="ph ph-gear-six"&gt;&lt;/i&gt;
+  &lt;/button&gt;
+&lt;/nav&gt;<span class="code__copy">Copy</span></pre>
+    </section>
+
+  </main>
+  <script>
+    document.querySelectorAll('.code[data-copy]').forEach(el => {
+      el.addEventListener('click', () => {
+        const text = el.innerText.replace(/\s*Copy\s*$/, '').trimEnd();
+        navigator.clipboard.writeText(text).then(() => {
+          el.classList.add('is-copied');
+          const tag = el.querySelector('.code__copy');
+          if (tag) tag.textContent = 'Copied';
+          setTimeout(() => { el.classList.remove('is-copied'); if (tag) tag.textContent = 'Copy'; }, 1200);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

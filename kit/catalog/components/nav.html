@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE Kit · Nav</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="./_chrome.css" />
+  <style>
+    /* Nav is normally position:fixed. Override so the catalog can show it docked
+       inside a faux-phone container. */
+    .cat-phone {
+      position: relative;
+      width: 100%;
+      max-width: 374px;
+      height: 220px;
+      margin: 0 auto;
+      background:
+        radial-gradient(120% 70% at 50% -10%, rgba(227,168,87,0.06), transparent 60%),
+        linear-gradient(180deg, #1b1813 0%, var(--c-bg) 28%, var(--c-deep) 100%);
+      border: 1px solid var(--c-hair);
+      border-radius: var(--r-xl);
+      overflow: hidden;
+    }
+    .cat-phone .k-nav {
+      position: absolute;
+      bottom: var(--s-3);
+      width: calc(100% - var(--s-4));
+      max-width: none;
+    }
+    .cat-phone__caption {
+      position: absolute;
+      top: var(--s-3);
+      left: 0;
+      right: 0;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <main class="cat">
+
+    <header class="cat-bar">
+      <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
+      <a class="cat-bar__back" href="../index.html"><i class="ph ph-caret-left"></i> Components</a>
+    </header>
+
+    <section class="cat-head">
+      <h1 class="cat-head__title">Nav</h1>
+      <p class="cat-head__desc">The floating frosted bottom nav. Four tabs, capsule-shaped, fixed to the safe area. The active tab is amber; inactive tabs are faint.</p>
+    </section>
+
+    <!-- ANATOMY -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Anatomy</h2>
+      <p class="cat-section__sub">A pill-shaped bar that floats above content. Backdrop-filter blur lets the screen show through. Each tab is a 44 × 44 round button — meets minimum tap target.</p>
+      <div class="cat-demo">
+        <div class="cat-phone">
+          <span class="k-eyebrow cat-phone__caption">Anatomy</span>
+          <nav class="k-nav" aria-label="Primary">
+            <button class="k-nav__btn" aria-current="page" aria-label="Home"><i class="ph ph-house"></i></button>
+            <button class="k-nav__btn" aria-label="Plan"><i class="ph ph-calendar-blank"></i></button>
+            <button class="k-nav__btn" aria-label="Habits"><i class="ph ph-squares-four"></i></button>
+            <button class="k-nav__btn" aria-label="Settings"><i class="ph ph-gear-six"></i></button>
+          </nav>
+        </div>
+        <ul class="cat-anatomy__notes">
+          <li><b>Surface</b> <span>72% black, 20px blur backdrop-filter, hairline border.</span></li>
+          <li><b>Shape</b> <span><code>--r-pill</code> radius · <code>--sh-nav</code> shadow.</span></li>
+          <li><b>Position</b> <span>fixed, bottom-anchored, max-width 374px, centered, respects safe-area-inset-bottom.</span></li>
+          <li><b>Buttons</b> <span>44 × 44 each, evenly spaced, 20px icon.</span></li>
+          <li><b>Active</b> <span><code>aria-current="page"</code> OR <code>.is-active</code> — flips icon to <code>--c-amber</code>.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ACTIVE TABS -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Active tab states</h2>
+      <p class="cat-section__sub">Each tab shown as the active one in turn. Active is the only state with color — inactive tabs stay <code>--c-faint</code>.</p>
+      <div class="cat-demo" style="display: grid; gap: var(--s-4);">
+
+        <div class="cat-phone">
+          <span class="k-eyebrow cat-phone__caption">Home active</span>
+          <nav class="k-nav" aria-label="Primary">
+            <button class="k-nav__btn" aria-current="page" aria-label="Home"><i class="ph ph-house"></i></button>
+            <button class="k-nav__btn" aria-label="Plan"><i class="ph ph-calendar-blank"></i></button>
+            <button class="k-nav__btn" aria-label="Habits"><i class="ph ph-squares-four"></i></button>
+            <button class="k-nav__btn" aria-label="Settings"><i class="ph ph-gear-six"></i></button>
+          </nav>
+        </div>
+
+        <div class="cat-phone">
+          <span class="k-eyebrow cat-phone__caption">Plan active</span>
+          <nav class="k-nav" aria-label="Primary">
+            <button class="k-nav__btn" aria-label="Home"><i class="ph ph-house"></i></button>
+            <button class="k-nav__btn" aria-current="page" aria-label="Plan"><i class="ph ph-calendar-blank"></i></button>
+            <button class="k-nav__btn" aria-label="Habits"><i class="ph ph-squares-four"></i></button>
+            <button class="k-nav__btn" aria-label="Settings"><i class="ph ph-gear-six"></i></button>
+          </nav>
+        </div>
+
+        <div class="cat-phone">
+          <span class="k-eyebrow cat-phone__caption">Habits active</span>
+          <nav class="k-nav" aria-label="Primary">
+            <button class="k-nav__btn" aria-label="Home"><i class="ph ph-house"></i></button>
+            <button class="k-nav__btn" aria-label="Plan"><i class="ph ph-calendar-blank"></i></button>
+            <button class="k-nav__btn" aria-current="page" aria-label="Habits"><i class="ph ph-squares-four"></i></button>
+            <button class="k-nav__btn" aria-label="Settings"><i class="ph ph-gear-six"></i></button>
+          </nav>
+        </div>
+
+        <div class="cat-phone">
+          <span class="k-eyebrow cat-phone__caption">Settings active</span>
+          <nav class="k-nav" aria-label="Primary">
+            <button class="k-nav__btn" aria-label="Home"><i class="ph ph-house"></i></button>
+            <button class="k-nav__btn" aria-label="Plan"><i class="ph ph-calendar-blank"></i></button>
+            <button class="k-nav__btn" aria-label="Habits"><i class="ph ph-squares-four"></i></button>
+            <button class="k-nav__btn" aria-current="page" aria-label="Settings"><i class="ph ph-gear-six"></i></button>
+          </nav>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SPEC -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Spec</h2>
+      <div class="cat-spec-wrap">
+        <table class="cat-spec">
+          <thead><tr><th>Class / token</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td>.k-nav</td><td>Floating pill bar. Position fixed, bottom-anchored, frosted backdrop.</td></tr>
+            <tr><td>.k-nav__btn</td><td>44 × 44 round tab button. Default <code>--c-faint</code> icon.</td></tr>
+            <tr><td>aria-current="page"</td><td>Active marker. Flips icon to <code>--c-amber</code>.</td></tr>
+            <tr><td>.is-active</td><td>JS-toggleable active class — same effect as <code>aria-current</code>.</td></tr>
+            <tr><td>aria-label="Primary"</td><td>Required on the <code>nav</code> element so AT users distinguish from secondary navs.</td></tr>
+            <tr><td>--sh-nav</td><td>Custom shadow + 1px inset top highlight for tactile floating feel.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="height: var(--s-3);"></div>
+      <pre class="cat-code" data-copy='<nav class="k-nav" aria-label="Primary">\n  <button class="k-nav__btn" aria-current="page" aria-label="Home"><i class="ph ph-house"></i></button>\n  <button class="k-nav__btn" aria-label="Plan"><i class="ph ph-calendar-blank"></i></button>\n  <button class="k-nav__btn" aria-label="Habits"><i class="ph ph-squares-four"></i></button>\n  <button class="k-nav__btn" aria-label="Settings"><i class="ph ph-gear-six"></i></button>\n</nav>'><span class="cat-code__copy">tap to copy</span>&lt;nav class="k-nav" aria-label="Primary"&gt;
+  &lt;button class="k-nav__btn" aria-current="page" aria-label="Home"&gt;
+    &lt;i class="ph ph-house"&gt;&lt;/i&gt;
+  &lt;/button&gt;
+  &lt;button class="k-nav__btn" aria-label="Plan"&gt;
+    &lt;i class="ph ph-calendar-blank"&gt;&lt;/i&gt;
+  &lt;/button&gt;
+  &lt;button class="k-nav__btn" aria-label="Habits"&gt;
+    &lt;i class="ph ph-squares-four"&gt;&lt;/i&gt;
+  &lt;/button&gt;
+  &lt;button class="k-nav__btn" aria-label="Settings"&gt;
+    &lt;i class="ph ph-gear-six"&gt;&lt;/i&gt;
+  &lt;/button&gt;
+&lt;/nav&gt;</pre>
+    </section>
+
+  </main>
+
+  <script>
+    document.querySelectorAll('.cat-code').forEach(el => {
+      el.addEventListener('click', () => {
+        const text = el.dataset.copy || el.innerText.replace(/^tap to copy\s*/i, '');
+        navigator.clipboard?.writeText(text.replace(/\\n/g, '\n'));
+        el.classList.add('is-copied');
+        el.querySelector('.cat-code__copy').textContent = 'copied';
+        setTimeout(() => {
+          el.classList.remove('is-copied');
+          el.querySelector('.cat-code__copy').textContent = 'tap to copy';
+        }, 1400);
+      });
+    });
+  </script>
+</body>
+</html>

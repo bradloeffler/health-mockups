@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE Kit · Habit Row</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="./_chrome.css" />
+</head>
+<body>
+  <main class="cat">
+
+    <header class="cat-bar">
+      <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
+      <a class="cat-bar__back" href="../index.html"><i class="ph ph-caret-left"></i> Components</a>
+    </header>
+
+    <section class="cat-head">
+      <h1 class="cat-head__title">Habit Row</h1>
+      <p class="cat-head__desc">A three-column row — leading icon · name · trailing element — separated by a hairline divider. Stacks inside a card to form a habit list, settings list, or any vertical menu.</p>
+    </section>
+
+    <!-- ANATOMY -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Anatomy</h2>
+      <p class="cat-section__sub">A CSS grid with three tracks (<code>auto 1fr auto</code>). The middle track holds the name and absorbs whatever space the icon and trailing element leave behind. The bottom hairline disappears on the last row of a stack.</p>
+      <div class="cat-demo">
+        <div style="width: 100%;">
+          <div class="k-habit-row">
+            <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-sun"></i></span>
+            <span class="k-habit-row__name">Vitamins AM</span>
+            <span class="k-checkbox" aria-label="Toggle"><i class="ph ph-check"></i></span>
+          </div>
+        </div>
+        <ul class="cat-anatomy__notes">
+          <li><b>Grid</b> <span><code>auto 1fr auto</code> · gap <code>--s-3</code> · center-aligned.</span></li>
+          <li><b>Padding</b> <span><code>--s-2</code> vertical, 0 horizontal — relies on the parent for side padding.</span></li>
+          <li><b>Divider</b> <span>1px <code>--c-hair</code> bottom; suppressed on <code>:last-child</code>.</span></li>
+          <li><b>Done state</b> <span><code>--done</code> modifier strikes the name and dims the icon to 50%.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- STATES -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">States</h2>
+      <p class="cat-section__sub">Two states, one modifier. Done struck-through plus icon dim communicates "complete" without removing the row.</p>
+      <div class="cat-demo" style="display: grid; gap: var(--s-4);">
+        <div class="cat-cell">
+          <span class="cat-cell__cap">undone</span>
+          <div class="k-card" style="width: 100%;">
+            <div class="k-habit-row">
+              <span class="k-icon-tile k-icon-tile--green"><i class="ph ph-drop"></i></span>
+              <span class="k-habit-row__name">Hydration</span>
+              <span class="k-checkbox" aria-label="Toggle"><i class="ph ph-check"></i></span>
+            </div>
+          </div>
+        </div>
+        <div class="cat-cell">
+          <span class="cat-cell__cap">done · .k-habit-row--done</span>
+          <div class="k-card" style="width: 100%;">
+            <div class="k-habit-row k-habit-row--done">
+              <span class="k-icon-tile k-icon-tile--green"><i class="ph ph-drop"></i></span>
+              <span class="k-habit-row__name">Hydration</span>
+              <span class="k-checkbox is-checked"><i class="ph ph-check"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRAILING VARIANTS -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Trailing elements</h2>
+      <p class="cat-section__sub">The third column is open — any kit primitive can sit there. Most common: count chip, checkbox, pill, or step button group.</p>
+      <div class="cat-demo">
+        <div class="k-card" style="width: 100%;">
+          <div class="k-stack" style="--gap: 0;">
+            <div class="k-habit-row">
+              <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-sun"></i></span>
+              <span class="k-habit-row__name">Vitamins AM</span>
+              <span class="k-checkbox" aria-label="Toggle"><i class="ph ph-check"></i></span>
+            </div>
+            <div class="k-habit-row">
+              <span class="k-icon-tile k-icon-tile--green"><i class="ph ph-drop"></i></span>
+              <span class="k-habit-row__name">Hydration</span>
+              <span class="k-habit-row__trail">3 / 4</span>
+            </div>
+            <div class="k-habit-row">
+              <span class="k-icon-tile k-icon-tile--blue"><i class="ph ph-person-simple-tai-chi"></i></span>
+              <span class="k-habit-row__name">Stretch</span>
+              <span class="k-pill k-pill--ghost">10 min</span>
+            </div>
+            <div class="k-habit-row">
+              <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-moon-stars"></i></span>
+              <span class="k-habit-row__name">Vitamins PM</span>
+              <span class="k-pill k-pill--green">Done</span>
+            </div>
+            <div class="k-habit-row k-habit-row--done">
+              <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-fire"></i></span>
+              <span class="k-habit-row__name">Cardio</span>
+              <span class="k-checkbox is-checked"><i class="ph ph-check"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEADING VARIANTS -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Leading variants</h2>
+      <p class="cat-section__sub">The leader can be any tile color or even just an eyebrow if the row is purely textual.</p>
+      <div class="cat-demo">
+        <div class="k-card" style="width: 100%;">
+          <div class="k-stack" style="--gap: 0;">
+            <div class="k-habit-row">
+              <span class="k-icon-tile"><i class="ph ph-gear-six"></i></span>
+              <span class="k-habit-row__name">Default tile</span>
+              <span class="k-habit-row__trail"></span>
+            </div>
+            <div class="k-habit-row">
+              <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-sun"></i></span>
+              <span class="k-habit-row__name">Amber tile</span>
+              <span class="k-habit-row__trail"></span>
+            </div>
+            <div class="k-habit-row">
+              <span class="k-icon-tile k-icon-tile--green"><i class="ph ph-drop"></i></span>
+              <span class="k-habit-row__name">Green tile</span>
+              <span class="k-habit-row__trail"></span>
+            </div>
+            <div class="k-habit-row">
+              <span class="k-icon-tile k-icon-tile--blue"><i class="ph ph-wave-sine"></i></span>
+              <span class="k-habit-row__name">Blue tile</span>
+              <span class="k-habit-row__trail"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPEC -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Spec</h2>
+      <div class="cat-spec-wrap">
+        <table class="cat-spec">
+          <thead><tr><th>Class / token</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td>.k-habit-row</td><td>Grid container, three tracks, center-aligned, gap <code>--s-3</code>, padding <code>--s-2</code> 0.</td></tr>
+            <tr><td>.k-habit-row--done</td><td>Done modifier — strikes the name, dims the leading tile to 50% opacity.</td></tr>
+            <tr><td>.k-habit-row__name</td><td>Middle cell. Body type, ink color, transitions on color change.</td></tr>
+            <tr><td>.k-habit-row__trail</td><td>Standard textual trail (e.g. "3 / 4"). Mono, <code>--c-sub</code>.</td></tr>
+            <tr><td>:last-child</td><td>Bottom border suppressed for a clean stack.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="height: var(--s-3);"></div>
+      <pre class="cat-code" data-copy='<div class="k-habit-row">\n  <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-sun"></i></span>\n  <span class="k-habit-row__name">Vitamins AM</span>\n  <span class="k-checkbox is-checked"><i class="ph ph-check"></i></span>\n</div>'><span class="cat-code__copy">tap to copy</span>&lt;div class="k-habit-row"&gt;
+  &lt;span class="k-icon-tile k-icon-tile--amber"&gt;
+    &lt;i class="ph ph-sun"&gt;&lt;/i&gt;
+  &lt;/span&gt;
+  &lt;span class="k-habit-row__name"&gt;Vitamins AM&lt;/span&gt;
+  &lt;span class="k-checkbox is-checked"&gt;
+    &lt;i class="ph ph-check"&gt;&lt;/i&gt;
+  &lt;/span&gt;
+&lt;/div&gt;</pre>
+    </section>
+
+  </main>
+
+  <script>
+    document.querySelectorAll('.cat-code').forEach(el => {
+      el.addEventListener('click', () => {
+        const text = el.dataset.copy || el.innerText.replace(/^tap to copy\s*/i, '');
+        navigator.clipboard?.writeText(text.replace(/\\n/g, '\n'));
+        el.classList.add('is-copied');
+        el.querySelector('.cat-code__copy').textContent = 'copied';
+        setTimeout(() => {
+          el.classList.remove('is-copied');
+          el.querySelector('.cat-code__copy').textContent = 'tap to copy';
+        }, 1400);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE Kit · Icons</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="../kit.css" />
+  <style>
+    body { display: block; background: var(--c-deep); }
+
+    .cat-page {
+      width: 100%;
+      max-width: 880px;
+      margin: 0 auto;
+      padding:
+        calc(env(safe-area-inset-top, 0px) + var(--s-5))
+        var(--s-4)
+        calc(env(safe-area-inset-bottom, 0px) + var(--s-7))
+        var(--s-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-6);
+    }
+
+    .cat-header { display: flex; flex-direction: column; gap: var(--s-1); }
+    .cat-header__crumb { color: var(--c-faint); }
+    .cat-header__title {
+      font-family: var(--f-ui);
+      font-size: var(--t-title-size);
+      font-weight: var(--t-title-weight);
+      letter-spacing: var(--t-title-track);
+      color: var(--c-ink);
+      margin: 0;
+    }
+    .cat-header__desc { color: var(--c-sub); font-size: var(--t-label-size); font-weight: 400; max-width: 56ch; }
+
+    /* usage card */
+    .cat-usage {
+      background: var(--c-surface);
+      border: 1px solid var(--c-hair);
+      border-radius: var(--r-lg);
+      padding: var(--s-3);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-1);
+    }
+    .cat-usage__lbl {
+      font-family: var(--f-mono);
+      font-size: var(--t-eyebrow-size);
+      font-weight: var(--t-eyebrow-weight);
+      letter-spacing: var(--t-eyebrow-track);
+      text-transform: uppercase;
+      color: var(--c-faint);
+    }
+    .cat-usage__code {
+      font-family: var(--f-mono);
+      font-size: var(--t-label-size);
+      color: var(--c-ink);
+      background: var(--c-deep);
+      border: 1px solid var(--c-hair);
+      border-radius: var(--r-sm);
+      padding: var(--s-2);
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .cat-usage__note { color: var(--c-sub); font-size: var(--t-label-size); font-weight: 400; }
+    .cat-usage__note code {
+      font-family: var(--f-mono);
+      font-size: 0.9em;
+      color: var(--c-amber);
+      background: rgba(227,168,87,0.08);
+      padding: 0 var(--s-0);
+      border-radius: var(--r-sm);
+    }
+
+    /* group section */
+    .cat-section { display: flex; flex-direction: column; gap: var(--s-3); }
+    .cat-section__head { display: flex; flex-direction: column; gap: var(--s-0); }
+    .cat-section__title {
+      font-family: var(--f-ui);
+      font-size: var(--t-num-md);
+      font-weight: 500;
+      color: var(--c-ink);
+      margin: 0;
+    }
+    .cat-section__desc { color: var(--c-sub); font-size: var(--t-label-size); font-weight: 400; }
+
+    /* icon grid */
+    .cat-icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: var(--s-3);
+    }
+
+    .cat-icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--s-1);
+      padding: var(--s-3) var(--s-2);
+      background: var(--c-surface);
+      border: 1px solid var(--c-hair);
+      border-radius: var(--r-md);
+      cursor: pointer;
+      text-align: center;
+      transition: transform var(--m-fast), border-color var(--m-fast), background var(--m-fast);
+      min-width: 0;
+    }
+    .cat-icon-cell:hover { border-color: var(--c-hair-strong); background: var(--c-raised); }
+    .cat-icon-cell:active { transform: scale(0.97); }
+
+    .cat-icon-cell .k-icon-tile {
+      --tile-size: 56px;
+      font-size: 28px;
+      border-radius: var(--r-lg);
+    }
+
+    .cat-icon-cell__semantic {
+      font-family: var(--f-mono);
+      font-size: var(--t-label-size);
+      color: var(--c-ink);
+      font-weight: 600;
+      max-width: 100%;
+      line-height: 1.2;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      text-align: center;
+    }
+    .cat-icon-cell__semantic .dot { color: var(--c-faint); font-weight: 400; }
+
+    .cat-icon-cell__ph {
+      font-family: var(--f-mono);
+      font-size: var(--t-eyebrow-size);
+      letter-spacing: 0.04em;
+      color: var(--c-faint);
+      max-width: 100%;
+      line-height: 1.2;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      text-align: center;
+    }
+
+    /* toast */
+    .cat-toast {
+      position: fixed;
+      left: 50%;
+      bottom: var(--s-5);
+      transform: translateX(-50%) translateY(20px);
+      background: var(--c-raised);
+      color: var(--c-ink);
+      border: 1px solid var(--c-hair-strong);
+      border-radius: var(--r-pill);
+      padding: var(--s-1) var(--s-3);
+      font-family: var(--f-mono);
+      font-size: var(--t-eyebrow-size);
+      letter-spacing: var(--t-eyebrow-track);
+      text-transform: uppercase;
+      box-shadow: var(--sh-raised);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--m-base), transform var(--m-base);
+      z-index: 100;
+    }
+    .cat-toast.is-show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 480px) {
+      .cat-page { padding-left: var(--s-3); padding-right: var(--s-3); gap: var(--s-5); }
+      .cat-icon-grid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: var(--s-2); }
+      .cat-icon-cell { padding: var(--s-2) var(--s-1); }
+      .cat-icon-cell .k-icon-tile { --tile-size: 48px; font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="cat-page">
+
+    <header class="cat-header">
+      <span class="k-eyebrow cat-header__crumb">FORGE Kit · Icons</span>
+      <h1 class="cat-header__title">Icons</h1>
+      <p class="cat-header__desc">Typed semantic registry mapping domain nouns to Phosphor glyphs. Authors import by meaning, not by glyph name.</p>
+    </header>
+
+    <section class="cat-usage">
+      <span class="cat-usage__lbl">Usage</span>
+      <div class="cat-usage__code">&lt;i class="ph ${icons.fuel}"&gt;&lt;/i&gt;</div>
+      <p class="cat-usage__note">Always import through <code>icons.&lt;name&gt;</code> — never reference raw <code>ph-...</code> strings. Tap any tile to copy its semantic import string.</p>
+    </section>
+
+    <div id="catalog"></div>
+
+  </main>
+
+  <div class="cat-toast" id="toast">Copied</div>
+
+  <script>
+    // -------------------------------------------------------------
+    // Mirror of kit/icons.js. Source of truth lives in that file.
+    // -------------------------------------------------------------
+    const icons = {
+      recovery:    'ph-heartbeat',
+      strain:      'ph-pulse',
+      sleep:       'ph-moon',
+      hrv:         'ph-wave-sine',
+      rhr:         'ph-heartbeat',
+
+      steps:       'ph-footprints',
+      water:       'ph-drop',
+      weight:      'ph-scales',
+
+      fuel:        'ph-fire',
+      calories:    'ph-fire',
+      protein:     'ph-egg',
+      carbs:       'ph-bowl-food',
+      fat:         'ph-drop-half',
+
+      workout:     'ph-barbell',
+      run:         'ph-person-simple-run',
+      mobility:    'ph-person-simple-walk',
+      stretch:     'ph-person-simple-tai-chi',
+
+      vitaminsAM:  'ph-sun',
+      vitaminsPM:  'ph-moon-stars',
+
+      home:        'ph-house',
+      plan:        'ph-calendar-blank',
+      habits:      'ph-squares-four',
+      settings:    'ph-gear-six',
+      account:     'ph-user-circle',
+
+      refresh:     'ph-arrow-clockwise',
+      edit:        'ph-pencil-simple',
+      plus:        'ph-plus',
+      minus:       'ph-minus',
+      check:       'ph-check',
+      caretLeft:   'ph-caret-left',
+      caretRight:  'ph-caret-right',
+      x:           'ph-x',
+      play:        'ph-play',
+      pause:       'ph-pause',
+      record:      'ph-record-fill',
+    };
+
+    // group → { description, keys, tone }
+    const GROUPS = [
+      {
+        title: 'Biometrics',
+        desc: 'Body signals — recovery, strain, sleep architecture.',
+        tone: 'amber',
+        keys: ['recovery', 'strain', 'sleep', 'hrv', 'rhr', 'weight'],
+      },
+      {
+        title: 'Activity',
+        desc: 'Movement, training and mobility.',
+        tone: 'green',
+        keys: ['steps', 'water', 'workout', 'run', 'mobility', 'stretch'],
+      },
+      {
+        title: 'Nutrition',
+        desc: 'Fuel input and macro breakdown.',
+        tone: 'amber',
+        keys: ['fuel', 'calories', 'protein', 'carbs', 'fat'],
+      },
+      {
+        title: 'Habits & lifestyle',
+        desc: 'Supplement protocols and other daily anchors.',
+        tone: 'blue',
+        keys: ['vitaminsAM', 'vitaminsPM'],
+      },
+      {
+        title: 'Nav & system',
+        desc: 'App-shell destinations and account chrome.',
+        tone: '',
+        keys: ['home', 'plan', 'habits', 'settings', 'account'],
+      },
+      {
+        title: 'Controls',
+        desc: 'Affordances inside cards and rows.',
+        tone: '',
+        keys: ['refresh', 'edit', 'plus', 'minus', 'check', 'caretLeft', 'caretRight', 'x', 'play', 'pause', 'record'],
+      },
+    ];
+
+    // ----- toast -----
+    const toastEl = document.getElementById('toast');
+    let toastTimer;
+    function showToast(msg) {
+      toastEl.textContent = msg;
+      toastEl.classList.add('is-show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove('is-show'), 1400);
+    }
+    function copy(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(
+          () => showToast('Copied  ' + text),
+          () => showToast('Copy failed')
+        );
+      } else {
+        showToast('Clipboard unavailable');
+      }
+    }
+
+    // ----- render -----
+    const catalog = document.getElementById('catalog');
+    catalog.style.display = 'flex';
+    catalog.style.flexDirection = 'column';
+    catalog.style.gap = 'var(--s-6)';
+
+    for (const group of GROUPS) {
+      const section = document.createElement('section');
+      section.className = 'cat-section';
+
+      const head = document.createElement('div');
+      head.className = 'cat-section__head';
+      head.innerHTML = `
+        <h2 class="cat-section__title">${group.title}</h2>
+        <p class="cat-section__desc">${group.desc}</p>
+      `;
+      section.appendChild(head);
+
+      const grid = document.createElement('div');
+      grid.className = 'cat-icon-grid';
+
+      for (const key of group.keys) {
+        const ph = icons[key];
+        if (!ph) continue;
+        const importStr = `icons.${key}`;
+        const tileToneCls = group.tone ? ` k-icon-tile--${group.tone}` : '';
+
+        const cell = document.createElement('button');
+        cell.type = 'button';
+        cell.className = 'cat-icon-cell';
+        cell.title = `Click to copy ${importStr}`;
+        cell.innerHTML = `
+          <div class="k-icon-tile${tileToneCls}"><i class="ph ${ph}"></i></div>
+          <span class="cat-icon-cell__semantic"><span class="dot">icons.</span>${key}</span>
+          <span class="cat-icon-cell__ph">${ph}</span>
+        `;
+        cell.addEventListener('click', () => copy(importStr));
+        grid.appendChild(cell);
+      }
+
+      section.appendChild(grid);
+      catalog.appendChild(section);
+    }
+  </script>
+</body>
+</html>
