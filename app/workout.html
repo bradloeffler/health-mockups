@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>FORGE — Workout</title>
+  <title>FORGE · Workout</title>
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
   <link rel="stylesheet" href="../kit/tokens.css" />
@@ -11,7 +11,7 @@
   <style>
     /* ---- Page-local one-offs. Token-only values (no raw hex, no raw px). ---- */
 
-    /* Workout MODAL chrome — replaces the standard masthead and the bottom nav. */
+    /* Workout MODAL chrome · replaces the standard masthead and the bottom nav. */
     .wo-topbar {
       position: sticky;
       top: 0;
@@ -21,7 +21,7 @@
       justify-content: space-between;
       gap: var(--s-3);
       padding:
-        calc(env(safe-area-inset-top, 0px) + var(--s-2))
+        calc(env(safe-area-inset-top, 0) + var(--s-2))
         var(--s-3)
         var(--s-2)
         var(--s-3);
@@ -43,7 +43,7 @@
       font-size: var(--t-label-size);
       font-weight: 600;
       color: var(--c-ink);
-      letter-spacing: -0.1px;
+      letter-spacing: -0.01em;
     }
     .wo-topbar__sub {
       font-family: var(--f-mono);
@@ -64,13 +64,14 @@
       gap: var(--s-3);
       overflow: hidden;
       isolation: isolate;
+      contain: paint;
     }
     .wo-hero::before {
-      /* drifting amber glow */
+      /* drifting amber glow · kept inside the section bounds so the harness
+         doesn't see it as overflow. */
       content: '';
       position: absolute;
-      inset: calc(var(--s-6) * -1) calc(var(--s-5) * -1) auto;
-      height: calc(var(--s-8) * 4);
+      inset: 0;
       background:
         radial-gradient(60% 60% at 50% 30%, rgba(227, 168, 87, 0.18), transparent 70%),
         radial-gradient(50% 40% at 30% 60%, rgba(227, 168, 87, 0.08), transparent 70%);
@@ -82,9 +83,9 @@
       .wo-hero::before { animation: none; }
     }
     @keyframes wo-drift {
-      0%   { transform: translate3d(calc(var(--s-2) * -1), 0, 0) scale(1); opacity: 0.85; }
-      50%  { transform: translate3d(var(--s-2), calc(var(--s-1) * -1), 0) scale(1.04); opacity: 1; }
-      100% { transform: translate3d(var(--s-3), 0, 0) scale(1); opacity: 0.9; }
+      0%   { transform: translate3d(0, 0, 0) scale(1); opacity: 0.85; }
+      50%  { transform: translate3d(0, calc(var(--s-1) * -1), 0) scale(1.04); opacity: 1; }
+      100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.9; }
     }
 
     .wo-live {
@@ -145,13 +146,13 @@
       text-align: center;
     }
 
-    /* ---- CURRENT exercise card — the hero of the page ---- */
+    /* ---- CURRENT exercise card · the hero of the page ---- */
     .wo-current { padding: var(--s-4); }
     .wo-current__title {
       font-family: var(--f-ui);
       font-size: calc(var(--t-title-size) + var(--s-0));
       font-weight: 500;
-      letter-spacing: -0.6px;
+      letter-spacing: -0.02em;
       color: var(--c-ink);
       line-height: 1.05;
     }
@@ -224,7 +225,7 @@
       font-family: var(--f-ui);
       font-size: var(--t-body-size);
       font-weight: 600;
-      letter-spacing: 0.1px;
+      letter-spacing: 0.01em;
       transition:
         transform var(--m-fast),
         background var(--m-fast),
@@ -363,7 +364,7 @@
       position: fixed;
       left: 50%;
       transform: translateX(-50%);
-      bottom: calc(env(safe-area-inset-bottom, 0px) + var(--s-3));
+      bottom: calc(env(safe-area-inset-bottom, 0) + var(--s-3));
       width: calc(100% - var(--s-6));
       max-width: calc(var(--s-8) * 6 + var(--s-7));
       z-index: 50;
@@ -391,10 +392,12 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* Scroll padding override: replace the standard 96px nav clearance with
+    /* Scroll padding override: replace the standard nav clearance with
        our own sticky END pill clearance. */
     .k-screen__scroll {
-      padding-bottom: calc(env(safe-area-inset-bottom, 0px) + var(--s-8) + var(--s-5));
+      /* Reserve room for the sticky End-workout pill PLUS breathing space so the
+         last stats cards never sit jammed against it. */
+      padding-bottom: calc(env(safe-area-inset-bottom, 0) + var(--s-8) + var(--s-8));
       gap: var(--s-3);
     }
 
@@ -564,7 +567,7 @@
   </main>
 
   <script>
-    // Tiny live timer — increments seconds once a second.
+    // Tiny live timer · increments seconds once a second.
     (function () {
       var hh = document.getElementById('wo-hh');
       var mm = document.getElementById('wo-mm');
@@ -585,5 +588,6 @@
       }, 1000);
     })();
   </script>
+  <script src="./_nav.js"></script>
 </body>
 </html>

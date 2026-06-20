@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE · Habits</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="../kit/tokens.css" />
+  <link rel="stylesheet" href="../kit/kit.css" />
+  <style>
+    /* ---- Page-local one-offs. Token-only values (no raw hex, no raw px). ---- */
+
+    /* Sticky frosted masthead (matches catalog premium chrome). */
+    .hb-masthead {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--s-3);
+      padding:
+        calc(env(safe-area-inset-top, 0) + var(--s-2))
+        var(--s-3)
+        var(--s-2)
+        var(--s-3);
+      background: rgba(13, 12, 10, 0.72);
+      -webkit-backdrop-filter: saturate(140%) blur(var(--s-3));
+      backdrop-filter: saturate(140%) blur(var(--s-3));
+      border-bottom: thin solid var(--c-hair);
+    }
+    .hb-datebar {
+      display: flex;
+      align-items: center;
+      gap: var(--s-2);
+      min-width: 0;
+    }
+    .hb-date {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1.1;
+      min-width: calc(var(--s-7) + var(--s-3));
+    }
+    .hb-date__main {
+      font-size: var(--t-body-size);
+      font-weight: 600;
+      color: var(--c-ink);
+    }
+    .hb-date__sub {
+      font-family: var(--f-mono);
+      font-size: var(--t-eyebrow-size);
+      font-weight: var(--t-eyebrow-weight);
+      letter-spacing: var(--t-eyebrow-track);
+      text-transform: uppercase;
+      color: var(--c-faint);
+      margin-top: var(--s-0);
+    }
+
+    /* ---- Page header ---- */
+    .hb-header {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-1);
+      padding: var(--s-3) 0 var(--s-1);
+    }
+    .hb-header__h1 {
+      font-family: var(--f-ui);
+      font-size: calc(var(--t-title-size) + var(--s-1));
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--c-ink);
+      margin: 0;
+      line-height: 1.02;
+    }
+    .hb-header__h1 .accent {
+      color: var(--c-amber);
+      font-weight: 300;
+      font-style: italic;
+    }
+    .hb-header__lede {
+      color: var(--c-sub);
+      font-size: var(--t-label-size);
+      font-weight: 400;
+    }
+
+    /* ---- Today's progress hero card ---- */
+    .hb-hero { padding: var(--s-4); }
+    .hb-hero__body {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: var(--s-3);
+      min-width: 0;
+    }
+    .hb-hero-ring {
+      --ring-size: calc(var(--s-3) * 6 + var(--s-2));
+      --ring-stroke: var(--s-1);
+      --ring-color: var(--c-green);
+      flex: 0 0 auto;
+    }
+    .hb-hero-ring .k-ring__num {
+      font-size: calc(var(--t-num-xl));
+      font-weight: 400;
+    }
+    .hb-hero__stats {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-2);
+      min-width: 0;
+    }
+    .hb-mini {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      min-width: 0;
+    }
+    .hb-mini__lbl {
+      font-family: var(--f-mono);
+      font-size: var(--t-eyebrow-size);
+      font-weight: var(--t-eyebrow-weight);
+      letter-spacing: var(--t-eyebrow-track);
+      text-transform: uppercase;
+      color: var(--c-faint);
+    }
+    .hb-mini__val {
+      font-family: var(--f-mono);
+      font-feature-settings: "tnum" 1;
+      font-variant-numeric: tabular-nums;
+      font-size: var(--t-num-md);
+      font-weight: var(--t-num-weight);
+      color: var(--c-ink);
+      line-height: 1.05;
+    }
+    .hb-mini__val .unit {
+      font-family: var(--f-mono);
+      font-size: var(--t-eyebrow-size);
+      letter-spacing: var(--t-eyebrow-track);
+      text-transform: uppercase;
+      color: var(--c-faint);
+      font-weight: var(--t-eyebrow-weight);
+      margin-left: var(--s-0);
+    }
+    .hb-hero__divider {
+      width: 100%;
+      height: thin;
+      background: var(--c-hair);
+      margin: var(--s-3) 0 0;
+    }
+    .hb-hero__rowstats {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--s-1);
+      margin-top: var(--s-3);
+    }
+    .hb-hero__rowstats .hb-mini { align-items: flex-start; }
+
+    /* ---- Section heading row outside cards (matches catalog feel) ---- */
+    .hb-section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--s-2);
+      padding: 0 var(--s-1);
+    }
+
+    /* ---- Habit row trailing variants ---- */
+    .hb-list { padding: 0 var(--s-1); }
+    .hb-habit {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: var(--s-3);
+      padding: var(--s-2) 0;
+      border-bottom: thin solid var(--c-hair);
+      color: var(--c-ink);
+    }
+    .hb-habit:last-child { border-bottom: 0; }
+    .hb-habit__name {
+      font-size: var(--t-body-size);
+      font-weight: 600;
+      color: var(--c-ink);
+    }
+    .hb-habit__sub {
+      font-family: var(--f-mono);
+      font-size: var(--t-eyebrow-size);
+      font-weight: var(--t-eyebrow-weight);
+      letter-spacing: var(--t-eyebrow-track);
+      text-transform: uppercase;
+      color: var(--c-faint);
+      display: block;
+      margin-top: var(--s-0);
+    }
+    .hb-habit__body {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-0);
+      min-width: 0;
+    }
+    .hb-habit__body--progress {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      column-gap: var(--s-2);
+      row-gap: var(--s-0);
+    }
+    .hb-habit__body--progress .hb-habit__name { grid-column: 1 / span 2; }
+    .hb-habit__body--progress .k-progress { grid-column: 1; --p-height: calc(var(--s-1) - var(--s-0) * 0.5); }
+    .hb-habit__body--progress .hb-habit__val {
+      grid-column: 2;
+      font-family: var(--f-mono);
+      font-feature-settings: "tnum" 1;
+      font-variant-numeric: tabular-nums;
+      font-size: var(--t-num-sm);
+      color: var(--c-sub);
+      justify-self: end;
+    }
+    .hb-habit--done .hb-habit__name {
+      color: var(--c-faint);
+      text-decoration: line-through;
+      text-decoration-color: var(--c-hair-strong);
+    }
+    .hb-habit--done .k-icon-tile { opacity: 0.55; }
+
+    .hb-habit__count {
+      font-family: var(--f-mono);
+      font-feature-settings: "tnum" 1;
+      font-variant-numeric: tabular-nums;
+      font-size: var(--t-num-sm);
+      color: var(--c-sub);
+    }
+
+    /* ---- Last 7 days dot calendar ---- */
+    .hb-cal {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: var(--s-1);
+      margin-top: var(--s-2);
+    }
+    .hb-cal__col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--s-1);
+      padding: var(--s-1) 0;
+      border-radius: var(--r-sm);
+      transition: background var(--m-fast);
+    }
+    .hb-cal__col.is-today {
+      background: rgba(227, 168, 87, 0.06);
+      box-shadow: 0 0 0 thin rgba(227, 168, 87, 0.25) inset;
+    }
+    .hb-cal__day {
+      font-family: var(--f-mono);
+      font-size: var(--t-eyebrow-size);
+      font-weight: var(--t-eyebrow-weight);
+      letter-spacing: var(--t-eyebrow-track);
+      text-transform: uppercase;
+      color: var(--c-faint);
+    }
+    .hb-cal__col.is-today .hb-cal__day { color: var(--c-amber); }
+    .hb-cal__dots {
+      display: grid;
+      grid-template-columns: repeat(2, auto);
+      gap: var(--s-0);
+      justify-content: center;
+    }
+    .hb-cal__dot {
+      width: var(--s-1);
+      height: var(--s-1);
+      border-radius: var(--r-pill);
+      background: var(--c-hair-strong);
+      transition: background var(--m-fast), box-shadow var(--m-fast);
+    }
+    .hb-cal__dot.is-on {
+      background: var(--c-green);
+      box-shadow: 0 0 var(--s-0) rgba(79, 209, 126, 0.5);
+    }
+    .hb-cal__pct {
+      font-family: var(--f-mono);
+      font-feature-settings: "tnum" 1;
+      font-variant-numeric: tabular-nums;
+      font-size: var(--t-eyebrow-size);
+      font-weight: var(--t-eyebrow-weight);
+      color: var(--c-sub);
+    }
+
+    /* ---- Per-habit insights rows ---- */
+    .hb-insight {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: var(--s-3);
+      padding: var(--s-2) 0;
+      border-bottom: thin solid var(--c-hair);
+    }
+    .hb-insight:last-child { border-bottom: 0; }
+    .hb-insight__name {
+      font-size: var(--t-label-size);
+      color: var(--c-ink);
+      font-weight: 600;
+    }
+    .hb-insight__val {
+      font-family: var(--f-mono);
+      font-feature-settings: "tnum" 1;
+      font-variant-numeric: tabular-nums;
+      font-size: var(--t-num-sm);
+      color: var(--c-amber);
+    }
+
+    /* ---- Sticky Add-habit pill above the bottom nav ---- */
+    .hb-add {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: calc(env(safe-area-inset-bottom, 0) + var(--s-7) + var(--s-5));
+      width: calc(100% - var(--s-6));
+      max-width: calc(var(--s-8) * 6 + var(--s-7));
+      z-index: 40;
+      height: calc(var(--s-6) + var(--s-2));
+      border-radius: var(--r-pill);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--s-1);
+      font-family: var(--f-ui);
+      font-size: var(--t-label-size);
+      font-weight: 600;
+      color: var(--c-amber);
+      background: rgba(20, 18, 14, 0.78);
+      border: thin dashed rgba(227, 168, 87, 0.4);
+      -webkit-backdrop-filter: blur(var(--s-3)) saturate(140%);
+      backdrop-filter: blur(var(--s-3)) saturate(140%);
+      box-shadow: var(--sh-card);
+      transition: border-color var(--m-fast), background var(--m-fast), transform var(--m-fast);
+    }
+    .hb-add:hover {
+      border-color: var(--c-amber);
+      background: rgba(227, 168, 87, 0.08);
+    }
+    .hb-add:active { transform: translateX(-50%) scale(0.985); }
+
+    /* Scroll padding: nav clearance + add pill clearance. */
+    .k-screen__scroll {
+      padding-bottom: calc(env(safe-area-inset-bottom, 0) + var(--s-8) + var(--s-7) + var(--s-3));
+      gap: var(--s-4);
+    }
+
+    /* Ambient amber wash behind the hero card. */
+    .hb-hero-wrap {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--r-lg);
+      contain: paint;
+    }
+    .hb-hero-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(60% 80% at 50% 20%, rgba(227, 168, 87, 0.10), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(var(--s-2));
+      animation: hb-drift calc(var(--m-slow) * 50) ease-in-out infinite alternate;
+    }
+    .hb-hero-wrap > .k-card { position: relative; z-index: 1; }
+    @media (prefers-reduced-motion: reduce) {
+      .hb-hero-wrap::before { animation: none; }
+    }
+    @keyframes hb-drift {
+      0%   { transform: translate3d(0, 0, 0) scale(1); opacity: 0.8; }
+      100% { transform: translate3d(0, calc(var(--s-1) * -1), 0) scale(1.04); opacity: 1; }
+    }
+
+    /* Section entrance stagger, gated on reduced-motion. */
+    @media (prefers-reduced-motion: no-preference) {
+      .k-screen__scroll > * {
+        animation: hb-rise var(--m-slow) cubic-bezier(0.2, 0.0, 0.2, 1) both;
+      }
+      .k-screen__scroll > *:nth-child(1) { animation-delay: 0ms; }
+      .k-screen__scroll > *:nth-child(2) { animation-delay: 40ms; }
+      .k-screen__scroll > *:nth-child(3) { animation-delay: 80ms; }
+      .k-screen__scroll > *:nth-child(4) { animation-delay: 120ms; }
+      .k-screen__scroll > *:nth-child(5) { animation-delay: 160ms; }
+      .k-screen__scroll > *:nth-child(6) { animation-delay: 200ms; }
+    }
+    @keyframes hb-rise {
+      from { opacity: 0; transform: translateY(var(--s-1)); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Ring fill animate-in on load. */
+    @media (prefers-reduced-motion: no-preference) {
+      .hb-hero-ring .k-ring__bar {
+        animation: hb-ring-fill calc(var(--m-slow) * 3) cubic-bezier(0.2, 0.0, 0.2, 1) both;
+        animation-delay: 220ms;
+      }
+    }
+    @keyframes hb-ring-fill {
+      from { stroke-dashoffset: 100; }
+      to   { stroke-dashoffset: 33; }
+    }
+  </style>
+</head>
+<body>
+  <main class="k-screen">
+
+    <!-- Sticky frosted masthead -->
+    <header class="hb-masthead">
+      <div class="hb-datebar">
+        <button class="k-icon-tile k-icon-tile--sm" aria-label="Previous day"><i class="ph ph-caret-left"></i></button>
+        <div class="hb-date">
+          <span class="hb-date__main">Today</span>
+          <span class="hb-date__sub">Sat Jun 20</span>
+        </div>
+        <button class="k-icon-tile k-icon-tile--sm" aria-label="Next day"><i class="ph ph-caret-right"></i></button>
+      </div>
+      <button class="k-icon-tile" aria-label="Account"><i class="ph ph-user-circle"></i></button>
+    </header>
+
+    <div class="k-screen__scroll">
+
+      <!-- Page header -->
+      <header class="hb-header">
+        <span class="k-eyebrow">Habits</span>
+        <h1 class="hb-header__h1"><span class="accent">Today&rsquo;s</span> compliance</h1>
+        <span class="hb-header__lede">6 habits tracked &middot; built on consistency, not heroics.</span>
+      </header>
+
+      <!-- Today's progress hero -->
+      <div class="hb-hero-wrap">
+        <section class="k-card k-card--accent hb-hero">
+          <div class="k-row k-row--between" style="margin-bottom: var(--s-3);">
+            <span class="k-eyebrow">Today &middot; 4 / 6 done</span>
+            <span class="k-pill k-pill--green">On pace</span>
+          </div>
+
+          <div class="hb-hero__body">
+            <div class="k-ring hb-hero-ring" style="--ring-pct: 67;">
+              <svg class="k-ring__svg" viewBox="0 0 100 100" aria-hidden="true">
+                <circle class="k-ring__track" cx="50" cy="50" r="46" fill="none" stroke-width="7"/>
+                <circle class="k-ring__bar"   cx="50" cy="50" r="46" fill="none" stroke-width="7" pathLength="100"/>
+              </svg>
+              <div class="k-ring__num">4/6</div>
+              <div class="k-ring__label">Today</div>
+            </div>
+
+            <div class="hb-hero__stats">
+              <div class="hb-mini">
+                <span class="hb-mini__lbl">Compliance</span>
+                <span class="hb-mini__val">67<span class="unit">%</span></span>
+              </div>
+              <div class="hb-mini">
+                <span class="hb-mini__lbl">2 to go</span>
+                <span class="hb-mini__val" style="color: var(--c-amber);">Mobility &middot; Protein</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hb-hero__rowstats">
+            <div class="hb-mini">
+              <span class="hb-mini__lbl">Streak</span>
+              <span class="hb-mini__val">12<span class="unit">d</span></span>
+            </div>
+            <div class="hb-mini">
+              <span class="hb-mini__lbl">Last 7</span>
+              <span class="hb-mini__val">86<span class="unit">%</span></span>
+            </div>
+            <div class="hb-mini">
+              <span class="hb-mini__lbl">Best</span>
+              <span class="hb-mini__val">21<span class="unit">d</span></span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Today's habits (hairline list, no card) -->
+      <section class="k-stack" style="--gap: var(--s-2);">
+        <div class="hb-section-head">
+          <span class="k-eyebrow">Today&rsquo;s habits</span>
+          <span class="k-eyebrow" style="color: var(--c-sub);">6 tracked</span>
+        </div>
+        <div class="hb-list">
+
+          <div class="hb-habit hb-habit--done">
+            <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-sun"></i></span>
+            <div class="hb-habit__body">
+              <span class="hb-habit__name">AM vitamins</span>
+              <span class="hb-habit__sub">D3 &middot; Omega &middot; Magnesium</span>
+            </div>
+            <span class="k-checkbox is-checked" aria-label="Done"><i class="ph ph-check"></i></span>
+          </div>
+
+          <div class="hb-habit hb-habit--done">
+            <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-moon-stars"></i></span>
+            <div class="hb-habit__body">
+              <span class="hb-habit__name">PM vitamins</span>
+              <span class="hb-habit__sub">Zinc &middot; Glycinate</span>
+            </div>
+            <span class="k-checkbox is-checked" aria-label="Done"><i class="ph ph-check"></i></span>
+          </div>
+
+          <div class="hb-habit">
+            <span class="k-icon-tile k-icon-tile--blue"><i class="ph ph-drop"></i></span>
+            <div class="hb-habit__body hb-habit__body--progress">
+              <span class="hb-habit__name">Water</span>
+              <div class="k-progress" style="--p-pct: 40; --p-color: var(--c-blue);"></div>
+              <span class="hb-habit__val">2.4 / 6 L</span>
+            </div>
+            <button class="k-step-btn" aria-label="Add water"><i class="ph ph-plus"></i></button>
+          </div>
+
+          <div class="hb-habit">
+            <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-footprints"></i></span>
+            <div class="hb-habit__body hb-habit__body--progress">
+              <span class="hb-habit__name">Steps</span>
+              <div class="k-progress" style="--p-pct: 82; --p-color: var(--c-amber);"></div>
+              <span class="hb-habit__val">8,240 / 10k</span>
+            </div>
+            <span class="k-pill k-pill--ghost">82%</span>
+          </div>
+
+          <div class="hb-habit">
+            <span class="k-icon-tile k-icon-tile--green"><i class="ph ph-person-simple-walk"></i></span>
+            <div class="hb-habit__body">
+              <span class="hb-habit__name">Mobility</span>
+              <span class="hb-habit__sub">10 min flow</span>
+            </div>
+            <span class="k-checkbox" aria-label="Mark done"></span>
+          </div>
+
+          <div class="hb-habit">
+            <span class="k-icon-tile k-icon-tile--green"><i class="ph ph-egg"></i></span>
+            <div class="hb-habit__body">
+              <span class="hb-habit__name">Protein</span>
+              <span class="hb-habit__sub">40 g per serving</span>
+            </div>
+            <span class="hb-habit__count">3 / 4</span>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Last 7 days dot calendar -->
+      <section class="k-card">
+        <div class="k-row k-row--between" style="margin-bottom: var(--s-2);">
+          <span class="k-eyebrow">Last 7 days</span>
+          <span class="k-eyebrow" style="color: var(--c-sub);">86% avg</span>
+        </div>
+        <div class="hb-cal" aria-label="Compliance over the last seven days">
+          <div class="hb-cal__col">
+            <span class="hb-cal__day">Sun</span>
+            <div class="hb-cal__dots">
+              <span class="hb-cal__dot is-on"></span><span class="hb-cal__dot is-on"></span>
+              <span class="hb-cal__dot is-on"></span><span class="hb-cal__dot is-on"></span>
+              <span class="hb-cal__dot is-on"></span><span class="hb-cal__dot"></span>
+            </div>
+            <span class="hb-cal__pct">83</span>
+          </div>
+          <div class="hb-cal__col">
+            <span class="hb-cal__day">Mon</span>
+            <div class="hb-cal__dots">
+              <span class="hb-cal__dot is-on"></span><span class="hb-cal__dot is-on"></span>
+              <span class="hb-cal__dot is-on"></span><span class="hb-cal__dot is-on"></span>
+              <span class="hb-cal__dot is-on"></span><span class="hb-cal__dot is-on"></span>
+            </div>
+            <span class="hb-cal__pct">100</span>
+          </div>
+          <div class="hb-cal__col">
+            <span class="hb-cal__day">Tue</span>
+            <div class="hb-cal__dots">
+              <span class="hb-cal__dot is-on"></span><span class="hb-cal__dot is-on"></span>
+              <span class="hb-cal__dot is-on"></span><span class="hb-cal__dot is-on"></span>
+              <span class="hb-cal__dot"></span><span class="hb-cal__dot"></span>
+            </div>
+            <span class="hb-cal__pct">67</span>
+          </div>
+          <div class="hb-cal__col">
+            <span class="hb-cal__day">Wed</span>
+            <div class="hb-cal__dots">
+              <span class="hb-cal__dot is-on"></span><span class="hb-cal__dot is-on"></span>
+              <span class="hb-cal__dot is-on"></span><span class="hb-cal__dot is-on"></span>
+              <span class="hb-cal__dot is-on"></span><span class="hb-cal__dot is-on"></span>
+            </div>
+            <span class="hb-cal__pct">100</span>
+          </div>
+          <div class="hb-cal__col">
+            <span class="hb-cal__day">Thu</span>
+            <div class="hb-cal__dots">
+              <span class="hb-cal__dot is-on"></span><span class="hb-cal__dot is-on"></span>
+              <span class="hb-cal__dot is-on"></span><span class="hb-cal__dot is-on"></span>
+              <span class="hb-cal__dot is-on"></span><span class="hb-cal__dot"></span>
+            </div>
+            <span class="hb-cal__pct">83</span>
+          </div>
+          <div class="hb-cal__col">
+            <span class="hb-cal__day">Fri</span>
+            <div class="hb-cal__dots">
+              <span class="hb-cal__dot is-on"></span><span class="hb-cal__dot is-on"></span>
+              <span class="hb-cal__dot is-on"></span><span class="hb-cal__dot is-on"></span>
+              <span class="hb-cal__dot is-on"></span><span class="hb-cal__dot is-on"></span>
+            </div>
+            <span class="hb-cal__pct">100</span>
+          </div>
+          <div class="hb-cal__col is-today">
+            <span class="hb-cal__day">Sat</span>
+            <div class="hb-cal__dots">
+              <span class="hb-cal__dot is-on"></span><span class="hb-cal__dot is-on"></span>
+              <span class="hb-cal__dot is-on"></span><span class="hb-cal__dot is-on"></span>
+              <span class="hb-cal__dot"></span><span class="hb-cal__dot"></span>
+            </div>
+            <span class="hb-cal__pct">67</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Per-habit insights -->
+      <section class="k-card k-card--quiet" style="padding: var(--s-2) var(--s-3);">
+        <div class="k-row k-row--between" style="margin-bottom: var(--s-1);">
+          <span class="k-eyebrow">Insights</span>
+          <span class="k-pill k-pill--ghost"><i class="ph ph-pencil-simple"></i> Edit</span>
+        </div>
+        <div class="hb-insight">
+          <span class="k-icon-tile k-icon-tile--sm k-icon-tile--amber"><i class="ph ph-sun"></i></span>
+          <div>
+            <span class="hb-insight__name">AM vitamins</span>
+            <span class="hb-habit__sub">21-day streak &middot; never missed in June</span>
+          </div>
+          <span class="hb-insight__val">21d</span>
+        </div>
+        <div class="hb-insight">
+          <span class="k-icon-tile k-icon-tile--sm k-icon-tile--green"><i class="ph ph-person-simple-walk"></i></span>
+          <div>
+            <span class="hb-insight__name">Mobility</span>
+            <span class="hb-habit__sub">4 of 7 this week &middot; nudge target +1</span>
+          </div>
+          <span class="hb-insight__val" style="color: var(--c-amber);">4/7</span>
+        </div>
+        <div class="hb-insight">
+          <span class="k-icon-tile k-icon-tile--sm k-icon-tile--green"><i class="ph ph-egg"></i></span>
+          <div>
+            <span class="hb-insight__name">Protein</span>
+            <span class="hb-habit__sub">95% compliance across 30 days</span>
+          </div>
+          <span class="hb-insight__val" style="color: var(--c-green);">95%</span>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Sticky add-habit pill -->
+    <button class="hb-add" type="button">
+      <i class="ph ph-plus"></i> Add habit
+    </button>
+
+    <!-- Floating glass bottom nav -->
+    <nav class="k-nav" aria-label="Primary">
+      <button class="k-nav__btn" aria-label="Home"><i class="ph ph-house"></i></button>
+      <button class="k-nav__btn" aria-label="Plan"><i class="ph ph-calendar-blank"></i></button>
+      <button class="k-nav__btn" aria-current="page" aria-label="Habits"><i class="ph ph-check-square"></i></button>
+      <button class="k-nav__btn" aria-label="Settings"><i class="ph ph-gear-six"></i></button>
+    </nav>
+  </main>
+  <script src="./_nav.js"></script>
+</body>
+</html>

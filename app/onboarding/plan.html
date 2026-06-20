@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE · Choose your plan</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="../../kit/kit.css" />
+  <link rel="stylesheet" href="./_onboarding.css" />
+</head>
+<body>
+  <main class="k-screen ob-screen">
+    <div class="ob-scroll">
+
+      <header class="ob-top">
+        <span class="ob-word">
+          <span class="ob-word__mark">F</span>
+          <span>FORGE</span>
+        </span>
+        <span class="k-pill k-pill--ghost">Step 4 of 4</span>
+      </header>
+
+      <section class="ob-intro">
+        <span class="ob-eyebrow">Step 4 of 4</span>
+        <h1 class="ob-h1 ob-h1--display">Choose your <strong>plan</strong></h1>
+        <p class="ob-lede">Pick a pre-built plan or upload your own later.</p>
+      </section>
+
+      <section class="ob-plan" id="plan">
+
+        <button type="button" class="ob-choice" data-plan="track">
+          <span class="ob-choice__radio" aria-hidden="true"></span>
+          <span class="ob-choice__meta">
+            <span class="ob-choice__title-row">
+              <span class="ob-choice__title">Just track</span>
+            </span>
+            <span class="ob-choice__desc">No prescribed workouts. Recovery, habits, water, steps only.</span>
+          </span>
+        </button>
+
+        <button type="button" class="ob-choice" data-plan="atomic">
+          <span class="ob-choice__radio" aria-hidden="true"></span>
+          <span class="ob-choice__meta">
+            <span class="ob-choice__title-row">
+              <span class="ob-choice__title">Atomic Athlete</span>
+              <span class="k-pill">Strength</span>
+            </span>
+            <span class="ob-choice__desc">The Atomic Athlete strength program. Each day shows the day's lifts and accessory work.</span>
+          </span>
+        </button>
+
+        <button type="button" class="ob-choice is-selected" data-plan="running">
+          <span class="ob-choice__radio" aria-hidden="true"></span>
+          <span class="ob-choice__meta">
+            <span class="ob-choice__title-row">
+              <span class="ob-choice__title">Running plan</span>
+              <span class="k-pill k-pill--amber">Popular</span>
+            </span>
+            <span class="ob-choice__desc">Marathon or half marathon build. Each day shows your prescribed run and target mileage.</span>
+          </span>
+        </button>
+
+        <button type="button" class="ob-choice" data-plan="hybrid">
+          <span class="ob-choice__radio" aria-hidden="true"></span>
+          <span class="ob-choice__meta">
+            <span class="ob-choice__title-row">
+              <span class="ob-choice__title">Hybrid</span>
+              <span class="k-pill">Strength + Run</span>
+            </span>
+            <span class="ob-choice__desc">Atomic Athlete strength plus a running plan combined. Run days pair a session with a lift.</span>
+          </span>
+        </button>
+
+        <button type="button" class="ob-choice" data-plan="upload">
+          <span class="ob-choice__radio" aria-hidden="true"></span>
+          <span class="ob-choice__meta">
+            <span class="ob-choice__title-row">
+              <span class="ob-choice__title">Upload my own</span>
+              <span class="k-pill k-pill--ghost">Custom</span>
+            </span>
+            <span class="ob-choice__desc">Take photos of any program; Forge reads it into a weekly plan.</span>
+          </span>
+        </button>
+
+      </section>
+
+      <div class="ob-continue">
+        <a class="ob-btn ob-btn--primary" href="./first-sync.html"><i class="ph ph-play"></i> Continue</a>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    const choices = document.querySelectorAll('.ob-choice');
+    choices.forEach(c => {
+      c.addEventListener('click', () => {
+        choices.forEach(o => o.classList.remove('is-selected'));
+        c.classList.add('is-selected');
+      });
+    });
+    (function () {
+      const top = document.querySelector('.ob-top');
+      window.addEventListener('scroll', () => {
+        if (top) top.classList.toggle('is-faded', window.scrollY > 24);
+      }, { passive: true });
+    })();
+  </script>
+  <script src="../_nav.js"></script>
+</body>
+</html>

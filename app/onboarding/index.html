@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE · Onboarding flow</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="../../kit/kit.css" />
+  <link rel="stylesheet" href="./_onboarding.css" />
+  <style>
+    /* docs index · desktop-friendly landing, scrolls the page (no phone clip) */
+    body { display: block; }
+    .ob-screen-docs {
+      width: 100%;
+      max-width: none;
+      min-height: 100vh;
+      min-height: 100dvh;
+      position: relative;
+      overflow: visible;
+      isolation: isolate;
+    }
+    .ob-masthead {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--s-2);
+      padding: var(--s-3) var(--s-4);
+      background: rgba(20, 18, 14, 0.72);
+      -webkit-backdrop-filter: blur(var(--s-4)) saturate(140%);
+      backdrop-filter: blur(var(--s-4)) saturate(140%);
+      border-bottom: thin solid var(--c-hair);
+    }
+    .ob-masthead__back {
+      font-family: var(--f-mono);
+      font-size: var(--t-eyebrow-size);
+      letter-spacing: var(--t-eyebrow-track);
+      text-transform: uppercase;
+      color: var(--c-sub);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-1);
+      transition: color var(--m-fast);
+    }
+    .ob-masthead__back:hover { color: var(--c-amber); }
+    @media (min-width: 60em) {
+      .ob-docs__grid { grid-template-columns: 1fr 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="k-screen ob-screen ob-screen-docs">
+
+    <header class="ob-masthead">
+      <span class="ob-word">
+        <span class="ob-word__mark">F</span>
+        <span>FORGE Onboarding</span>
+      </span>
+      <a class="ob-masthead__back" href="../home.html"><i class="ph ph-caret-left"></i> App</a>
+    </header>
+
+    <div class="ob-docs">
+
+      <section class="ob-docs__hero">
+        <span class="ob-eyebrow">Onboarding</span>
+        <h1 class="ob-docs__h1">Onboarding <strong>flow.</strong></h1>
+        <p class="ob-docs__lede">7 steps, walking through the full first-run experience.</p>
+
+        <div class="ob-docs__cta">
+          <a class="ob-btn ob-btn--primary" href="./welcome.html"><i class="ph ph-play"></i> Start the flow from the beginning</a>
+        </div>
+      </section>
+
+      <section class="ob-docs__grid">
+
+        <a class="ob-docs__tile" href="./welcome.html">
+          <span class="ob-docs__num">0</span>
+          <span class="ob-docs__meta">
+            <span class="ob-docs__name">Welcome</span>
+            <span class="ob-docs__desc">Splash and sign-in.</span>
+          </span>
+          <span class="ob-docs__arrow"><i class="ph ph-caret-right"></i></span>
+        </a>
+
+        <a class="ob-docs__tile" href="./signup.html">
+          <span class="ob-docs__num">1</span>
+          <span class="ob-docs__meta">
+            <span class="ob-docs__name">Sign up</span>
+            <span class="ob-docs__desc">Email account creation.</span>
+          </span>
+          <span class="ob-docs__arrow"><i class="ph ph-caret-right"></i></span>
+        </a>
+
+        <a class="ob-docs__tile" href="./connect.html">
+          <span class="ob-docs__num">2</span>
+          <span class="ob-docs__meta">
+            <span class="ob-docs__name">Connect</span>
+            <span class="ob-docs__desc">Data sources from Apple Health, WHOOP, Oura, and more.</span>
+          </span>
+          <span class="ob-docs__arrow"><i class="ph ph-caret-right"></i></span>
+        </a>
+
+        <a class="ob-docs__tile" href="./habits.html">
+          <span class="ob-docs__num">3</span>
+          <span class="ob-docs__meta">
+            <span class="ob-docs__name">Habits</span>
+            <span class="ob-docs__desc">Pick what to track day to day.</span>
+          </span>
+          <span class="ob-docs__arrow"><i class="ph ph-caret-right"></i></span>
+        </a>
+
+        <a class="ob-docs__tile" href="./plan.html">
+          <span class="ob-docs__num">4</span>
+          <span class="ob-docs__meta">
+            <span class="ob-docs__name">Plan</span>
+            <span class="ob-docs__desc">Choose a training plan or upload your own.</span>
+          </span>
+          <span class="ob-docs__arrow"><i class="ph ph-caret-right"></i></span>
+        </a>
+
+        <a class="ob-docs__tile" href="./first-sync.html">
+          <span class="ob-docs__num">5</span>
+          <span class="ob-docs__meta">
+            <span class="ob-docs__name">First sync</span>
+            <span class="ob-docs__desc">Forging your baseline from 90 days of history.</span>
+          </span>
+          <span class="ob-docs__arrow"><i class="ph ph-caret-right"></i></span>
+        </a>
+
+        <a class="ob-docs__tile" href="../home.html">
+          <span class="ob-docs__num">6</span>
+          <span class="ob-docs__meta">
+            <span class="ob-docs__name">Enter Forge</span>
+            <span class="ob-docs__desc">Destination: the home screen.</span>
+          </span>
+          <span class="ob-docs__arrow"><i class="ph ph-caret-right"></i></span>
+        </a>
+
+      </section>
+
+    </div>
+
+  </main>
+  <script src="../_nav.js"></script>
+</body>
+</html>

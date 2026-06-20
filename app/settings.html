@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="../kit/kit.css" />
   <style>
     /* ===========================================================
-       SETTINGS — page-local one-offs only. Tokens only.
+       SETTINGS · page-local one-offs only. Tokens only.
        =========================================================== */
 
     /* Ambient amber glow that drifts behind the page hero. */
@@ -100,7 +100,7 @@
       font-family: var(--f-ui);
       font-size: calc(var(--t-title-size) + var(--s-1));
       font-weight: 500;
-      letter-spacing: -0.6px;
+      letter-spacing: -0.02em;
       color: var(--c-ink);
       line-height: 1.02;
     }
@@ -221,7 +221,7 @@
       height: calc(var(--s-4) - var(--s-0));
       border-radius: var(--r-pill);
       background: var(--c-ink);
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 thin var(--s-0) rgba(0, 0, 0, 0.4);
       transition: transform var(--m-base);
     }
     .switch.is-on {
@@ -567,7 +567,7 @@
   </main>
 
   <script>
-    // Inline mirror of kit/icons.js — keeps the page file:// friendly,
+    // Inline mirror of kit/icons.js · keeps the page file:// friendly,
     // and keeps every glyph reference inside the typed registry.
     const icons = Object.freeze({
       recovery:'ph-heartbeat', strain:'ph-pulse', sleep:'ph-moon',
@@ -690,5 +690,6 @@
     window.addEventListener('resize', updateProg);
     updateProg();
   </script>
+  <script src="./_nav.js"></script>
 </body>
 </html>

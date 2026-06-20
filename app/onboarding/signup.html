@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE · Sign up</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="../../kit/kit.css" />
+  <link rel="stylesheet" href="./_onboarding.css" />
+</head>
+<body>
+  <main class="k-screen ob-screen">
+    <div class="ob-scroll">
+
+      <header class="ob-top">
+        <span class="ob-word">
+          <span class="ob-word__mark">F</span>
+          <span>FORGE</span>
+        </span>
+        <span class="k-pill k-pill--ghost">Step 1 of 4</span>
+      </header>
+
+      <section class="ob-intro">
+        <span class="ob-eyebrow">Account</span>
+        <h1 class="ob-h1 ob-h1--display">Tell us <strong>who you are</strong></h1>
+        <p class="ob-lede">Just a few details so we can build your daily record.</p>
+      </section>
+
+      <form class="ob-form" onsubmit="event.preventDefault(); window.location.href='./connect.html';">
+
+        <div class="ob-field__row">
+          <div class="ob-field">
+            <label class="ob-field__label" for="first">First name</label>
+            <div class="ob-input-wrap">
+              <input id="first" class="ob-input" type="text" autocomplete="given-name" placeholder="Brad" />
+            </div>
+          </div>
+          <div class="ob-field">
+            <label class="ob-field__label" for="last">Last name</label>
+            <div class="ob-input-wrap">
+              <input id="last" class="ob-input" type="text" autocomplete="family-name" placeholder="Bashan" />
+            </div>
+          </div>
+        </div>
+
+        <div class="ob-field">
+          <label class="ob-field__label" for="email">Email</label>
+          <div class="ob-input-wrap">
+            <input id="email" class="ob-input" type="email" autocomplete="email" placeholder="you@example.com" />
+          </div>
+        </div>
+
+        <div class="ob-field">
+          <label class="ob-field__label" for="password">Password</label>
+          <div class="ob-input-wrap">
+            <input id="password" class="ob-input ob-input--pad-r" type="password" autocomplete="new-password" placeholder="At least 8 characters" />
+            <span class="ob-input__action">
+              <button type="button" class="k-pill k-pill--ghost" id="pwToggle" aria-pressed="false">
+                <i class="ph ph-eye" id="pwIcon"></i> <span id="pwLabel">Show</span>
+              </button>
+            </span>
+          </div>
+        </div>
+
+        <div class="ob-continue">
+          <button type="submit" class="ob-btn ob-btn--primary">
+            <i class="ph ph-play"></i> Continue
+          </button>
+          <p class="ob-legal">By continuing you agree to our <a href="#">Terms</a> and <a href="#">Privacy</a>.</p>
+        </div>
+
+      </form>
+
+    </div>
+  </main>
+
+  <script>
+    // password show/hide toggle
+    (function () {
+      var input = document.getElementById('password');
+      var btn   = document.getElementById('pwToggle');
+      var icon  = document.getElementById('pwIcon');
+      var lbl   = document.getElementById('pwLabel');
+      btn.addEventListener('click', function () {
+        var showing = input.type === 'text';
+        input.type = showing ? 'password' : 'text';
+        btn.setAttribute('aria-pressed', String(!showing));
+        icon.className = showing ? 'ph ph-eye' : 'ph ph-eye-slash';
+        lbl.textContent = showing ? 'Show' : 'Hide';
+      });
+    })();
+
+    // top bar fades on scroll
+    (function () {
+      var top = document.querySelector('.ob-top');
+      var scroller = document.querySelector('.ob-scroll');
+      if (!top || !scroller) return;
+      window.addEventListener('scroll', function () {
+        top.classList.toggle('is-faded', window.scrollY > 24);
+      }, { passive: true });
+    })();
+  </script>
+  <script src="../_nav.js"></script>
+</body>
+</html>

@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>FORGE — Home</title>
+  <title>FORGE · Home</title>
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
   <link rel="stylesheet" href="../kit/tokens.css">
   <link rel="stylesheet" href="../kit/kit.css">
   <style>
-    /* ---- Home page — token-only authoring ---- */
+    /* ---- Home page · token-only authoring ---- */
 
-    /* Ring sized between kit defaults — uses token math (5 * s-3 = 80). */
+    /* Ring sized between kit defaults · uses token math (5 * s-3 = 80). */
     .home-ring { --ring-size: calc(var(--s-3) * 5); --ring-stroke: calc(var(--s-0) * 1.5); }
 
-    /* Subtle drifting amber ambient glow — gated on motion preference. */
+    /* Subtle drifting amber ambient glow · gated on motion preference. */
     .ambient-glow {
       position: absolute;
       top: calc(var(--s-8) * -1);
@@ -35,7 +35,7 @@
       100% { transform: translateX(-42%) translateY(var(--s-2)); opacity: 1; }
     }
 
-    /* Sticky frosted masthead — sits above scroll, blurs content below. */
+    /* Sticky frosted masthead · sits above scroll, blurs content below. */
     .masthead {
       position: sticky;
       top: 0;
@@ -47,7 +47,7 @@
       margin: calc(var(--s-3) * -1) calc(var(--s-3) * -1) 0;
       padding-left: var(--s-3);
       padding-right: var(--s-3);
-      padding-top: calc(env(safe-area-inset-top, 0px) + var(--s-2));
+      padding-top: calc(env(safe-area-inset-top, 0) + var(--s-2));
       background: rgba(20, 18, 14, 0.72);
       -webkit-backdrop-filter: blur(var(--s-4)) saturate(140%);
       backdrop-filter: blur(var(--s-4)) saturate(140%);
@@ -80,7 +80,7 @@
       font-size: var(--t-body-size);
       font-weight: 600;
       color: var(--c-ink);
-      letter-spacing: -0.2px;
+      letter-spacing: -0.01em;
     }
     .date-label__sub { margin-top: var(--s-0); }
 
@@ -106,7 +106,7 @@
     }
     .hero-metrics { flex: 1; min-width: 0; }
 
-    /* Ring fill on load — animate --ring-pct from 0 to target. */
+    /* Ring fill on load · animate --ring-pct from 0 to target. */
     .k-ring__bar {
       stroke-dashoffset: 100;
       transition: stroke-dashoffset var(--m-slow);
@@ -140,6 +140,74 @@
     /* Steps + Water tiles */
     .tile-numeric .k-numeric__val { font-size: var(--t-num-lg); font-weight: 400; }
 
+    /* Steps · 7-day mini bar chart so the card earns its space next to Water. */
+    .steps-chart {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: var(--s-0);
+      height: calc(var(--s-6) + var(--s-1));
+      margin-top: var(--s-1);
+    }
+    .steps-chart__bar {
+      flex: 1;
+      min-width: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      gap: var(--s-0);
+    }
+    .steps-chart__col {
+      width: 100%;
+      max-width: var(--s-2);
+      border-radius: var(--r-sm);
+      background: var(--c-hair);
+      transition: background var(--m-base);
+    }
+    .steps-chart__bar.is-today .steps-chart__col {
+      background: var(--c-amber);
+      box-shadow: 0 0 var(--s-1) rgba(227, 168, 87, 0.35);
+    }
+    .steps-chart__day {
+      font-family: var(--f-mono);
+      font-size: var(--t-eyebrow-size);
+      font-weight: var(--t-eyebrow-weight);
+      letter-spacing: var(--t-eyebrow-track);
+      text-transform: uppercase;
+      color: var(--c-faint);
+      line-height: 1;
+    }
+    .steps-chart__bar.is-today .steps-chart__day { color: var(--c-amber); }
+    .steps-foot {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--s-2);
+      margin-top: var(--s-2);
+    }
+    .steps-foot__lbl {
+      font-family: var(--f-mono);
+      font-size: var(--t-eyebrow-size);
+      font-weight: var(--t-eyebrow-weight);
+      letter-spacing: var(--t-eyebrow-track);
+      text-transform: uppercase;
+      color: var(--c-faint);
+    }
+    .steps-foot__val {
+      font-family: var(--f-mono);
+      font-feature-settings: "tnum" 1;
+      font-variant-numeric: tabular-nums;
+      font-size: var(--t-num-sm);
+      color: var(--c-sub);
+    }
+    .is-fresh .steps-chart__col,
+    .is-fresh .steps-chart__bar.is-today .steps-chart__col { background: var(--c-hair); box-shadow: none; }
+    .is-fresh .steps-chart__bar.is-today .steps-chart__day { color: var(--c-faint); }
+    .is-fresh .steps-foot { display: none; }
+    .is-fresh .steps-chart { opacity: 0.4; }
+
     .water-controls {
       display: flex;
       align-items: center;
@@ -163,7 +231,7 @@
     .k-step-btn:active { transform: scale(0.92); }
     .k-step-btn { transition: transform var(--m-fast), background var(--m-fast); }
 
-    /* Habits — no card, hairline list */
+    /* Habits · no card, hairline list */
     .habits-list { display: flex; flex-direction: column; }
     .habit-clickable { cursor: pointer; transition: background var(--m-fast); border-radius: var(--r-sm); }
     .habit-clickable:active { background: rgba(255,255,255,0.02); }
@@ -219,8 +287,8 @@
       backdrop-filter: blur(var(--s-4));
       -webkit-backdrop-filter: blur(var(--s-4));
     }
-    .dev-toggle--top    { bottom: calc(env(safe-area-inset-bottom, 0px) + var(--s-7) + var(--s-6)); }
-    .dev-toggle--bottom { bottom: calc(env(safe-area-inset-bottom, 0px) + var(--s-2)); }
+    .dev-toggle--top    { bottom: calc(env(safe-area-inset-bottom, 0) + var(--s-7) + var(--s-6)); }
+    .dev-toggle--bottom { bottom: calc(env(safe-area-inset-bottom, 0) + var(--s-2)); }
     .dev-toggle__btn {
       padding: var(--s-1) var(--s-2);
       border-radius: var(--r-sm);
@@ -276,7 +344,10 @@
     }
     @media (prefers-reduced-motion: no-preference) {
       .enter {
-        animation: enter var(--m-base) cubic-bezier(0.2, 0.0, 0.2, 1) forwards;
+        animation-name: enter;
+        animation-duration: 200ms;
+        animation-timing-function: cubic-bezier(0.2, 0.0, 0.2, 1);
+        animation-fill-mode: forwards;
         animation-delay: calc(var(--i, 0) * 60ms);
       }
     }
@@ -287,7 +358,7 @@
       to { opacity: 1; transform: none; }
     }
 
-    /* z-index — keep content above the ambient glow */
+    /* z-index · keep content above the ambient glow */
     .k-screen__scroll { position: relative; z-index: 1; }
   </style>
 </head>
@@ -428,6 +499,19 @@
               <span class="k-numeric__unit">/ 10K</span>
             </span>
             <div class="k-progress" style="--p-pct: 82; --p-color: var(--c-amber);"></div>
+            <div class="steps-chart" id="stepsChart" aria-label="7-day step history">
+              <div class="steps-chart__bar"><span class="steps-chart__col" style="height: 64%;"></span><span class="steps-chart__day">M</span></div>
+              <div class="steps-chart__bar"><span class="steps-chart__col" style="height: 88%;"></span><span class="steps-chart__day">T</span></div>
+              <div class="steps-chart__bar"><span class="steps-chart__col" style="height: 52%;"></span><span class="steps-chart__day">W</span></div>
+              <div class="steps-chart__bar"><span class="steps-chart__col" style="height: 78%;"></span><span class="steps-chart__day">T</span></div>
+              <div class="steps-chart__bar"><span class="steps-chart__col" style="height: 96%;"></span><span class="steps-chart__day">F</span></div>
+              <div class="steps-chart__bar is-today"><span class="steps-chart__col" style="height: 82%;"></span><span class="steps-chart__day">S</span></div>
+              <div class="steps-chart__bar"><span class="steps-chart__col" style="height: 18%;"></span><span class="steps-chart__day">S</span></div>
+            </div>
+            <div class="steps-foot">
+              <span class="steps-foot__lbl">7-DAY AVG</span>
+              <span class="steps-foot__val">7,950</span>
+            </div>
           </div>
           <button class="connect-cta" data-connect="steps">Connect Health</button>
         </div>
@@ -759,5 +843,6 @@
     renderWorkoutPill();
     updateHabitsMeta();
   </script>
+  <script src="./_nav.js"></script>
 </body>
 </html>
