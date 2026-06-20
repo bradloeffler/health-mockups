@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE — Home</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="./kit.css" />
+</head>
+<body>
+  <main class="k-screen">
+    <div class="k-screen__scroll">
+
+      <!-- top row: date nav + account -->
+      <header class="k-row k-row--between">
+        <div class="k-row" style="gap: var(--s-2);">
+          <button class="k-icon-tile k-icon-tile--sm" aria-label="Previous day"><i class="ph ph-caret-left"></i></button>
+          <div class="k-stack k-stack--tight" style="align-items: center;">
+            <span class="k-text-body" style="font-weight: 500;">Today</span>
+            <span class="k-eyebrow">Sat Jun 20</span>
+          </div>
+          <button class="k-icon-tile k-icon-tile--sm" aria-label="Next day"><i class="ph ph-caret-right"></i></button>
+        </div>
+        <button class="k-icon-tile" aria-label="Account"><i class="ph ph-user-circle"></i></button>
+      </header>
+
+      <!-- BIOMETRIC CARD -->
+      <section class="k-card k-card--accent">
+        <div class="k-row k-row--between" style="margin-bottom: var(--s-3);">
+          <span class="k-eyebrow">WHOOP</span>
+          <button class="k-pill k-pill--amber"><i class="ph ph-play"></i> Start</button>
+        </div>
+
+        <div class="k-row k-row--start" style="gap: var(--s-4);">
+          <div class="k-row" style="gap: var(--s-3);">
+            <div class="k-ring" style="--ring-color: var(--c-green); --ring-pct: 71; --ring-size: 76px;">
+              <svg class="k-ring__svg" viewBox="0 0 100 100" aria-hidden="true">
+                <circle class="k-ring__track"/>
+                <circle class="k-ring__bar"/>
+              </svg>
+              <div class="k-ring__num">71</div>
+              <div class="k-ring__label">Recovery</div>
+            </div>
+            <div class="k-ring" style="--ring-color: var(--c-blue); --ring-pct: 42; --ring-size: 76px;">
+              <svg class="k-ring__svg" viewBox="0 0 100 100" aria-hidden="true">
+                <circle class="k-ring__track"/>
+                <circle class="k-ring__bar"/>
+              </svg>
+              <div class="k-ring__num">8.4</div>
+              <div class="k-ring__label">Strain</div>
+            </div>
+          </div>
+
+          <div class="k-metric-list" style="flex: 1; min-width: 0;">
+            <div class="k-metric">
+              <span class="k-metric__lbl">HRV</span>
+              <span class="k-metric__val">62</span>
+              <span class="k-metric__unit">ms</span>
+            </div>
+            <div class="k-metric">
+              <span class="k-metric__lbl">RHR</span>
+              <span class="k-metric__val">54</span>
+              <span class="k-metric__unit">bpm</span>
+            </div>
+            <div class="k-metric">
+              <span class="k-metric__lbl">Rest</span>
+              <span class="k-metric__val">7.4</span>
+              <span class="k-metric__unit">hr</span>
+            </div>
+            <div class="k-metric">
+              <span class="k-metric__lbl">Sleep</span>
+              <span class="k-metric__val">92</span>
+              <span class="k-metric__unit">%</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FUEL CARD -->
+      <section class="k-card">
+        <div class="k-row k-row--between" style="margin-bottom: var(--s-3);">
+          <span class="k-eyebrow">FUEL &middot; 1,840 / 2,520 KCAL</span>
+          <button class="k-pill k-pill--ghost"><i class="ph ph-plus"></i> Log</button>
+        </div>
+        <div class="k-stack" style="--gap: var(--s-2);">
+          <div class="k-row" style="gap: var(--s-3);">
+            <span class="k-metric__lbl" style="width: 28px;">P</span>
+            <div class="k-progress" style="--p-pct: 78; --p-color: var(--c-green);"></div>
+            <span class="k-numeric k-numeric--sm"><span class="k-numeric__val">132</span><span class="k-numeric__unit">g</span></span>
+          </div>
+          <div class="k-row" style="gap: var(--s-3);">
+            <span class="k-metric__lbl" style="width: 28px;">C</span>
+            <div class="k-progress" style="--p-pct: 64; --p-color: var(--c-amber);"></div>
+            <span class="k-numeric k-numeric--sm"><span class="k-numeric__val">186</span><span class="k-numeric__unit">g</span></span>
+          </div>
+          <div class="k-row" style="gap: var(--s-3);">
+            <span class="k-metric__lbl" style="width: 28px;">F</span>
+            <div class="k-progress" style="--p-pct: 52; --p-color: var(--c-blue);"></div>
+            <span class="k-numeric k-numeric--sm"><span class="k-numeric__val">58</span><span class="k-numeric__unit">g</span></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEPS + WATER -->
+      <section class="k-grid-2">
+
+        <div class="k-card">
+          <div class="k-row k-row--between" style="margin-bottom: var(--s-3);">
+            <span class="k-eyebrow">Steps</span>
+            <i class="ph ph-footprints" style="color: var(--c-faint); font-size: 14px;"></i>
+          </div>
+          <div class="k-stack" style="--gap: var(--s-2);">
+            <span class="k-numeric k-numeric--xl"><span class="k-numeric__val">7,420</span></span>
+            <div class="k-progress" style="--p-pct: 74; --p-color: var(--c-amber);"></div>
+            <span class="k-text-faint">of 10,000</span>
+          </div>
+        </div>
+
+        <div class="k-card">
+          <div class="k-row k-row--between" style="margin-bottom: var(--s-3);">
+            <span class="k-eyebrow">Water</span>
+            <span class="k-pill k-pill--ghost">16 oz</span>
+          </div>
+          <div class="k-row k-row--between">
+            <button class="k-step-btn" aria-label="Less water"><i class="ph ph-minus"></i></button>
+            <span class="k-numeric k-numeric--lg"><span class="k-numeric__val">5</span><span class="k-numeric__unit">/ 8</span></span>
+            <button class="k-step-btn" aria-label="More water"><i class="ph ph-plus"></i></button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- HABITS -->
+      <section class="k-card">
+        <div class="k-row k-row--between" style="margin-bottom: var(--s-2);">
+          <span class="k-eyebrow">Habits &middot; 2 / 4</span>
+          <button class="k-pill k-pill--ghost"><i class="ph ph-pencil-simple"></i> Edit</button>
+        </div>
+
+        <div class="k-stack" style="--gap: 0;">
+          <div class="k-habit-row k-habit-row--done">
+            <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-sun"></i></span>
+            <span class="k-habit-row__name">Vitamins AM</span>
+            <span class="k-checkbox is-checked"><i class="ph ph-check"></i></span>
+          </div>
+          <div class="k-habit-row k-habit-row--done">
+            <span class="k-icon-tile k-icon-tile--blue"><i class="ph ph-person-simple-tai-chi"></i></span>
+            <span class="k-habit-row__name">Stretch 10 min</span>
+            <span class="k-checkbox is-checked"><i class="ph ph-check"></i></span>
+          </div>
+          <div class="k-habit-row">
+            <span class="k-icon-tile k-icon-tile--green"><i class="ph ph-drop"></i></span>
+            <span class="k-habit-row__name">Hydration</span>
+            <span class="k-habit-row__trail">3 / 4</span>
+          </div>
+          <div class="k-habit-row">
+            <span class="k-icon-tile k-icon-tile--amber"><i class="ph ph-moon-stars"></i></span>
+            <span class="k-habit-row__name">Vitamins PM</span>
+            <span class="k-checkbox" aria-label="Toggle"></span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- floating nav -->
+    <nav class="k-nav" aria-label="Primary">
+      <button class="k-nav__btn" aria-current="page" aria-label="Home"><i class="ph ph-house"></i></button>
+      <button class="k-nav__btn" aria-label="Plan"><i class="ph ph-calendar-blank"></i></button>
+      <button class="k-nav__btn" aria-label="Habits"><i class="ph ph-squares-four"></i></button>
+      <button class="k-nav__btn" aria-label="Settings"><i class="ph ph-gear-six"></i></button>
+    </nav>
+  </main>
+</body>
+</html>
