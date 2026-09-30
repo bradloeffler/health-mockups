@@ -37,6 +37,8 @@ export const icons = Object.freeze({
   // --- nav / chrome ---
   home:        'ph-house',
   plan:        'ph-calendar-blank',
+  // Pick-a-day button; see .k-date-icon for the version showing the day.
+  calendar:    'ph-calendar-blank',
   habits:      'ph-check-square',
   settings:    'ph-gear-six',
   account:     'ph-user-circle',

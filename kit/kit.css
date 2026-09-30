@@ -307,6 +307,39 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .k-icon-tile--lg    { --tile-size: 44px; font-size: 22px; border-radius: var(--r-lg); }
 .k-icon-tile--sm    { --tile-size: 28px; font-size: 14px; border-radius: var(--r-sm); }
 
+/* ---------------------------------------------------------------------
+   9b. .k-date-icon — the `calendar` glyph with the day of the month in its
+   body, for "pick a day" buttons that also show which day is on screen.
+   Digits: mono 600 at 0.36 of the glyph, centred on the body (y 152/256 of
+   the Phosphor grid). Not scaled by the user's text size.
+   <span class="k-date-icon"><i class="ph ph-calendar-blank"></i><b>30</b></span>
+   --------------------------------------------------------------------- */
+
+.k-date-icon {
+  --date-size: 24px;
+  position: relative;
+  display: inline-block;
+  width: var(--date-size);
+  height: var(--date-size);
+  color: var(--c-sub);
+  font-size: var(--date-size);
+  line-height: 1;
+}
+.k-date-icon > i { display: block; }
+.k-date-icon > b {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--date-size) * 0.594);
+  transform: translateY(-50%);
+  text-align: center;
+  font-family: var(--f-mono);
+  font-weight: 600;
+  font-size: calc(var(--date-size) * 0.36);
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+
 /* =====================================================================
    10. .k-pill — small chip
    ===================================================================== */
