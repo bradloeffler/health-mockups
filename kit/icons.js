@@ -39,7 +39,7 @@ export const icons = Object.freeze({
   plan:        'ph-calendar-blank',
   // Pick-a-day button; see .k-date-icon for the version showing the day.
   calendar:    'ph-calendar-blank',
-  habits:      'ph-check-square',
+  habits:      'ph-chart-line', // the Data tab (was Habits)
   settings:    'ph-gear-six',
   account:     'ph-user-circle',
 
