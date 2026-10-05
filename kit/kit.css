@@ -483,6 +483,13 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   border-color: var(--c-amber);
   color: var(--c-on-amber);
 }
+/* --outline: a quieter "done" for checklists — green ring and tick, no fill.
+   Home's Meals / Habits lists. */
+.k-checkbox--outline.is-checked {
+  background: transparent;
+  border-color: var(--c-green);
+  color: var(--c-green);
+}
 
 /* =====================================================================
    15. .k-habit-row — hairline row (icon · name · trailing)

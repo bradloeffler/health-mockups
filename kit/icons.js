@@ -11,7 +11,7 @@ export const icons = Object.freeze({
   rhr:         'ph-heartbeat',
 
   // --- daily ---
-  steps:       'ph-footprints',
+  steps:       'ph-sneaker-move',
   water:       'ph-drop',
   weight:      'ph-scales',
 
