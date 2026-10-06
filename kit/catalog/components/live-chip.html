@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE Kit · Live chip</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="../_catalog.css" />
+  <link rel="stylesheet" href="./_chrome.css" />
+</head>
+<body>
+
+  <header class="cat-masthead">
+    <div class="cat-masthead__left">
+      <span class="cat-masthead__mark">F</span>
+      <span class="cat-masthead__word">FORGE <span class="dim">Kit</span></span>
+    </div>
+    <div class="cat-masthead__right">
+      <button class="cat-kbd" type="button" aria-label="Open command palette"><kbd>&#8984;K</kbd></button>
+      <a class="cat-masthead__back" href="../index.html"><i class="ph ph-caret-left"></i> <span class="label">Catalog</span></a>
+      <span class="cat-masthead__pill"><span class="dot"></span>Components</span>
+    </div>
+  </header>
+
+<main class="cat">
+
+    <header class="cat-bar">
+      <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
+      <a class="cat-bar__back" href="../index.html"><i class="ph ph-caret-left"></i> Components</a>
+    </header>
+
+    <section class="cat-head">
+      <h1 class="cat-head__title">Live chip</h1>
+      <p class="cat-head__desc">A header chip for something running, like a workout: label &middot; amber timer &middot; caret. Accent-card skin at chip size. Sits in the page header beside the calendar and avatar; tap to go back to it.</p>
+    </section>
+
+    <section class="cat-section">
+      <h2 class="cat-section__h">In the header</h2>
+      <p class="cat-section__sub">Keep the label to one short word so the header icons stay put, even with an hour-long timer.</p>
+      <div class="cat-demo" style="flex-direction: column; gap: var(--s-4);">
+        <div class="k-row" style="justify-content: space-between; width: 100%;">
+          <span class="k-text-title">Today</span>
+          <span class="k-live-chip">Workout <span class="k-live-chip__value">18:42</span><i class="ph ph-caret-right"></i></span>
+        </div>
+        <div class="k-row" style="justify-content: space-between; width: 100%;">
+          <span class="k-text-title">Today</span>
+          <span class="k-live-chip">Workout <span class="k-live-chip__value">1:05:12</span><i class="ph ph-caret-right"></i></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="cat-section">
+      <h2 class="cat-section__h">Spec</h2>
+      <div class="cat-spec-wrap">
+        <table class="cat-spec">
+          <thead><tr><th>Class / token</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td>.k-live-chip</td><td>36px tall, <code>--r-lg</code>, <code>--s-3</code> side padding, <code>--s-2</code> gap. <code>--c-raised</code> bg, amber 25% border, <code>--sh-glow-amber</code>. Label in body type.</td></tr>
+            <tr><td>.k-live-chip__value</td><td>Mono <code>--t-num-sm</code>, <code>--c-amber</code>.</td></tr>
+            <tr><td>Caret</td><td><code>ph-caret-right</code>, 14px, amber.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  
+    <footer class="cat-footer">
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Edit</span>
+        <code>kit/catalog/components/live-chip.html</code>
+      </div>
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Verify</span>
+        <code>node tooling/mock-check.mjs kit/catalog/components/live-chip.html</code>
+      </div>
+      <div class="cat-footer__tag">FORGE &middot; v0.1</div>
+    </footer>
+  </main>
+
+  <script>
+    document.querySelectorAll('.cat-code').forEach(el => {
+      el.addEventListener('click', () => {
+        const text = el.dataset.copy || el.innerText.replace(/^tap to copy\s*/i, '');
+        navigator.clipboard?.writeText(text.replace(/\\n/g, '\n'));
+        el.classList.add('is-copied');
+        el.querySelector('.cat-code__copy').textContent = 'copied';
+        setTimeout(() => {
+          el.classList.remove('is-copied');
+          el.querySelector('.cat-code__copy').textContent = 'tap to copy';
+        }, 1400);
+      });
+    });
+  </script>
+  <script src="../_catalog.js"></script>
+</body>
+</html>

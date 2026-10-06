@@ -161,7 +161,7 @@ Variants: `--amber`, `--green`, `--blue`. Sizes: `--sm` (28), default (36), `--l
 <div class="k-habit-row k-habit-row--done">...</div>
 ```
 
-### `.k-check-row` (+ `--roomy`, `--compact`)
+### `.k-check-row` (+ `--roomy`, `--snug`, `--compact`)
 
 ```html
 <div class="k-check-row k-check-row--compact">
@@ -175,8 +175,20 @@ Variants: `--amber`, `--green`, `--blue`. Sizes: `--sm` (28), default (36), `--l
 </div>
 ```
 
-`--compact` (30px rows) is for full-width checklists that must fit one screen
-(Home's Meals / Habits cards).
+`--snug` + `.k-checkbox--sm` (34px rows, no hairlines) is Home's Meals /
+Habits cards. `--compact` (30px rows) is the tightest size.
+
+### `.k-checkbox--sm`
+
+18px box, 12px tick, for dense checklists.
+
+### `.k-live-chip`
+
+```html
+<span class="k-live-chip">Workout <span class="k-live-chip__value">18:42</span><i class="ph ph-caret-right"></i></span>
+```
+
+Header chip for a running workout. Keep the label to one short word.
 
 ## Icons
 

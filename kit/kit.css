@@ -490,6 +490,12 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   border-color: var(--c-green);
   color: var(--c-green);
 }
+/* --sm: 18px box for dense full-width checklists (Home's Meals / Habits). */
+.k-checkbox--sm {
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+}
 
 /* =====================================================================
    15. .k-habit-row — hairline row (icon · name · trailing)
@@ -543,6 +549,9 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 /* --compact: 4px above and below, so a row is the 22px checkbox + 8px (30px).
    Stack it with .k-hairline between rows; the checkbox keeps its full size. */
 .k-check-row--compact { padding: var(--s-0) 0; }
+/* --snug: 8px above and below. With .k-checkbox--sm a row is 34px; stack
+   rows without hairlines in a card with 4px top / bottom padding (Home). */
+.k-check-row--snug    { padding: var(--s-1) 0; }
 .k-check-row__label {
   font-size: var(--t-body-size);
   font-weight: var(--t-body-weight);
@@ -559,6 +568,34 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   color: var(--c-faint);
 }
 .k-check-row.is-done .k-check-row__label { color: var(--c-faint); }
+
+/* =====================================================================
+   17. .k-live-chip — header chip for something running (a workout)
+   Accent-card skin (raised, amber glow) at chip size: label · amber mono
+   value · caret. Sits in the page header beside its icons.
+   ===================================================================== */
+
+.k-live-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  height: 36px;
+  padding: 0 var(--s-3);
+  border-radius: var(--r-lg);
+  background: var(--c-raised);
+  border: 1px solid rgba(227, 168, 87, 0.25);
+  box-shadow: var(--sh-glow-amber);
+  color: var(--c-ink);
+  font-size: var(--t-body-size);
+  font-weight: var(--t-body-weight);
+}
+.k-live-chip__value {
+  font-family: var(--f-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--t-num-sm);
+  color: var(--c-amber);
+}
+.k-live-chip .ph { color: var(--c-amber); font-size: 14px; }
 
 /* =====================================================================
    Misc text helpers (locked tokens)

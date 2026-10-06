@@ -38,8 +38,31 @@
 
     <section class="cat-section">
       <h2 class="cat-section__h">Sizes</h2>
-      <p class="cat-section__sub">Only the vertical padding changes; the checkbox, label size and gap stay the same. <b>Roomy</b> (16px) for full-width lists with room to spare, <b>default</b> (12px), and <b>compact</b> (4px, 30px rows) for full-width lists that must fit one screen, like Home's Meals and Habits.</p>
+      <p class="cat-section__sub">Only the vertical padding changes; the checkbox, label size and gap stay the same. <b>Roomy</b> (16px) for full-width lists with room to spare, <b>default</b> (12px), <b>snug</b> (8px; 34px rows with the small checkbox, used by Home's Meals and Habits), and <b>compact</b> (4px, 30px rows) for the tightest lists.</p>
       <div class="cat-demo" style="flex-direction: column; gap: var(--s-4);">
+        <span class="cat-cell__cap">snug &middot; small checkbox &middot; no hairlines (Home)</span>
+        <div class="k-card" style="width: 100%; padding: var(--s-0) var(--s-3);">
+          <div class="k-check-row k-check-row--snug">
+            <span class="k-checkbox k-checkbox--sm k-checkbox--outline"><i class="ph ph-check"></i></span>
+            <span class="k-check-row__label">Chicken &amp; Sweet Potato</span>
+          </div>
+          <div class="k-check-row k-check-row--snug">
+            <span class="k-checkbox k-checkbox--sm k-checkbox--outline"><i class="ph ph-check"></i></span>
+            <span class="k-check-row__label">Beef &amp; Rice</span>
+          </div>
+          <div class="k-check-row k-check-row--snug">
+            <span class="k-checkbox k-checkbox--sm k-checkbox--outline"><i class="ph ph-check"></i></span>
+            <span class="k-check-row__label">Filet &amp; Veg</span>
+          </div>
+          <div class="k-check-row k-check-row--snug is-done">
+            <span class="k-checkbox k-checkbox--sm k-checkbox--outline is-checked"><i class="ph ph-check"></i></span>
+            <span class="k-check-row__label">Oats &amp; Egg Whites</span>
+          </div>
+          <div class="k-check-row k-check-row--snug is-done">
+            <span class="k-checkbox k-checkbox--sm k-checkbox--outline is-checked"><i class="ph ph-check"></i></span>
+            <span class="k-check-row__label">Protein Shake</span>
+          </div>
+        </div>
         <span class="cat-cell__cap">compact</span>
         <div class="k-card" style="width: 100%; padding: 0 var(--s-3);">
             <div class="k-check-row k-check-row--compact">
@@ -133,6 +156,7 @@
           <tbody>
             <tr><td>.k-check-row</td><td>Grid <code>auto 1fr auto</code>, <code>--s-3</code> gap, <code>--s-2</code> vertical padding.</td></tr>
             <tr><td>.k-check-row--roomy</td><td><code>--s-3</code> vertical padding.</td></tr>
+            <tr><td>.k-check-row--snug</td><td><code>--s-1</code> vertical padding. With <code>.k-checkbox--sm</code>: a 34px row.</td></tr>
             <tr><td>.k-check-row--compact</td><td><code>--s-0</code> vertical padding: a 30px row. Checkbox keeps its 22px size.</td></tr>
             <tr><td>.k-check-row__label</td><td>Body size and weight, one line, ellipsis.</td></tr>
             <tr><td>.k-check-row__trail</td><td>Mono <code>--t-num-sm</code>, <code>--c-faint</code>.</td></tr>
