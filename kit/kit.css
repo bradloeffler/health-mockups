@@ -526,6 +526,41 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .k-habit-row--done .k-icon-tile { opacity: 0.5; }
 
 /* =====================================================================
+   16. .k-check-row — checklist row (checkbox · label · optional trail)
+   Done rows dim. Sizes: default (--s-2 above and below), --roomy for full-width lists with room to spare (Nutrition),
+   --compact for full-width lists that must fit one screen (Home).
+   ===================================================================== */
+
+.k-check-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-2) 0;
+  color: var(--c-ink);
+}
+.k-check-row--roomy   { padding: var(--s-3) 0; }
+/* --compact: 4px above and below, so a row is the 22px checkbox + 8px (30px).
+   Stack it with .k-hairline between rows; the checkbox keeps its full size. */
+.k-check-row--compact { padding: var(--s-0) 0; }
+.k-check-row__label {
+  font-size: var(--t-body-size);
+  font-weight: var(--t-body-weight);
+  color: var(--c-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color var(--m-fast);
+}
+.k-check-row__trail {
+  font-family: var(--f-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--t-num-sm);
+  color: var(--c-faint);
+}
+.k-check-row.is-done .k-check-row__label { color: var(--c-faint); }
+
+/* =====================================================================
    Misc text helpers (locked tokens)
    ===================================================================== */
 

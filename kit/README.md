@@ -161,6 +161,23 @@ Variants: `--amber`, `--green`, `--blue`. Sizes: `--sm` (28), default (36), `--l
 <div class="k-habit-row k-habit-row--done">...</div>
 ```
 
+### `.k-check-row` (+ `--roomy`, `--compact`)
+
+```html
+<div class="k-check-row k-check-row--compact">
+  <span class="k-checkbox k-checkbox--outline"><i class="ph ph-check"></i></span>
+  <span class="k-check-row__label">Beef &amp; Rice</span>
+</div>
+<div class="k-hairline"></div>
+<div class="k-check-row k-check-row--compact is-done">
+  <span class="k-checkbox k-checkbox--outline is-checked"><i class="ph ph-check"></i></span>
+  <span class="k-check-row__label">Protein Shake</span>
+</div>
+```
+
+`--compact` (30px rows) is for full-width checklists that must fit one screen
+(Home's Meals / Habits cards).
+
 ## Icons
 
 ```js

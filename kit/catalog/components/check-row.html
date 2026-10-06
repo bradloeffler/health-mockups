@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>FORGE Kit · Check row</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+  <link rel="stylesheet" href="../../kit.css" />
+  <link rel="stylesheet" href="../_catalog.css" />
+  <link rel="stylesheet" href="./_chrome.css" />
+</head>
+<body>
+
+  <header class="cat-masthead">
+    <div class="cat-masthead__left">
+      <span class="cat-masthead__mark">F</span>
+      <span class="cat-masthead__word">FORGE <span class="dim">Kit</span></span>
+    </div>
+    <div class="cat-masthead__right">
+      <button class="cat-kbd" type="button" aria-label="Open command palette"><kbd>&#8984;K</kbd></button>
+      <a class="cat-masthead__back" href="../index.html"><i class="ph ph-caret-left"></i> <span class="label">Catalog</span></a>
+      <span class="cat-masthead__pill"><span class="dot"></span>Components</span>
+    </div>
+  </header>
+
+<main class="cat">
+
+    <header class="cat-bar">
+      <span class="cat-bar__brand"><b>FORGE</b> · Kit</span>
+      <a class="cat-bar__back" href="../index.html"><i class="ph ph-caret-left"></i> Components</a>
+    </header>
+
+    <section class="cat-head">
+      <h1 class="cat-head__title">Check row</h1>
+      <p class="cat-head__desc">A checklist row: checkbox &middot; label &middot; optional trailing number. Done rows dim to <code>--c-faint</code>. Stack rows inside a flush card with <code>.k-hairline</code> between them.</p>
+    </section>
+
+    <section class="cat-section">
+      <h2 class="cat-section__h">Sizes</h2>
+      <p class="cat-section__sub">Only the vertical padding changes; the checkbox, label size and gap stay the same. <b>Roomy</b> (16px) for full-width lists with room to spare, <b>default</b> (12px), and <b>compact</b> (4px, 30px rows) for full-width lists that must fit one screen, like Home's Meals and Habits.</p>
+      <div class="cat-demo" style="flex-direction: column; gap: var(--s-4);">
+        <span class="cat-cell__cap">compact</span>
+        <div class="k-card" style="width: 100%; padding: 0 var(--s-3);">
+            <div class="k-check-row k-check-row--compact">
+              <span class="k-checkbox k-checkbox--outline"><i class="ph ph-check"></i></span>
+              <span class="k-check-row__label">Chicken &amp; Sweet Potato</span>
+            </div>
+            <div class="k-hairline"></div>
+            <div class="k-check-row k-check-row--compact">
+              <span class="k-checkbox k-checkbox--outline"><i class="ph ph-check"></i></span>
+              <span class="k-check-row__label">Beef &amp; Rice</span>
+            </div>
+            <div class="k-hairline"></div>
+            <div class="k-check-row k-check-row--compact">
+              <span class="k-checkbox k-checkbox--outline"><i class="ph ph-check"></i></span>
+              <span class="k-check-row__label">Filet &amp; Veg</span>
+            </div>
+            <div class="k-hairline"></div>
+            <div class="k-check-row k-check-row--compact">
+              <span class="k-checkbox k-checkbox--outline"><i class="ph ph-check"></i></span>
+              <span class="k-check-row__label">Shake &amp; Rice Cakes</span>
+            </div>
+            <div class="k-hairline"></div>
+            <div class="k-check-row k-check-row--compact is-done">
+              <span class="k-checkbox k-checkbox--outline is-checked"><i class="ph ph-check"></i></span>
+              <span class="k-check-row__label">Oats &amp; Egg Whites</span>
+            </div>
+            <div class="k-hairline"></div>
+            <div class="k-check-row k-check-row--compact is-done">
+              <span class="k-checkbox k-checkbox--outline is-checked"><i class="ph ph-check"></i></span>
+              <span class="k-check-row__label">Protein Shake</span>
+            </div>
+        </div>
+        <span class="cat-cell__cap">compact &middot; with trail</span>
+        <div class="k-card" style="width: 100%; padding: 0 var(--s-3);">
+            <div class="k-check-row k-check-row--compact">
+              <span class="k-checkbox k-checkbox--outline"><i class="ph ph-check"></i></span>
+              <span class="k-check-row__label">Chicken &amp; Sweet Potato</span><span class="k-check-row__trail">474</span>
+            </div>
+            <div class="k-hairline"></div>
+            <div class="k-check-row k-check-row--compact">
+              <span class="k-checkbox k-checkbox--outline"><i class="ph ph-check"></i></span>
+              <span class="k-check-row__label">Beef &amp; Rice</span><span class="k-check-row__trail">392</span>
+            </div>
+            <div class="k-hairline"></div>
+            <div class="k-check-row k-check-row--compact">
+              <span class="k-checkbox k-checkbox--outline"><i class="ph ph-check"></i></span>
+              <span class="k-check-row__label">Filet &amp; Veg</span><span class="k-check-row__trail">473</span>
+            </div>
+            <div class="k-hairline"></div>
+            <div class="k-check-row k-check-row--compact">
+              <span class="k-checkbox k-checkbox--outline"><i class="ph ph-check"></i></span>
+              <span class="k-check-row__label">Shake &amp; Rice Cakes</span><span class="k-check-row__trail">250</span>
+            </div>
+            <div class="k-hairline"></div>
+            <div class="k-check-row k-check-row--compact is-done">
+              <span class="k-checkbox k-checkbox--outline is-checked"><i class="ph ph-check"></i></span>
+              <span class="k-check-row__label">Oats &amp; Egg Whites</span><span class="k-check-row__trail">498</span>
+            </div>
+            <div class="k-hairline"></div>
+            <div class="k-check-row k-check-row--compact is-done">
+              <span class="k-checkbox k-checkbox--outline is-checked"><i class="ph ph-check"></i></span>
+              <span class="k-check-row__label">Protein Shake</span><span class="k-check-row__trail">150</span>
+            </div>
+        </div>
+        <span class="cat-cell__cap">roomy</span>
+        <div class="k-card" style="width: 100%; padding: 0 var(--s-3);">
+            <div class="k-check-row k-check-row--roomy">
+              <span class="k-checkbox k-checkbox--outline"><i class="ph ph-check"></i></span>
+              <span class="k-check-row__label">Chicken &amp; Sweet Potato</span>
+            </div>
+            <div class="k-hairline"></div>
+            <div class="k-check-row k-check-row--roomy">
+              <span class="k-checkbox k-checkbox--outline"><i class="ph ph-check"></i></span>
+              <span class="k-check-row__label">Beef &amp; Rice</span>
+            </div>
+            <div class="k-hairline"></div>
+            <div class="k-check-row k-check-row--roomy">
+              <span class="k-checkbox k-checkbox--outline"><i class="ph ph-check"></i></span>
+              <span class="k-check-row__label">Filet &amp; Veg</span>
+            </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPEC -->
+    <section class="cat-section">
+      <h2 class="cat-section__h">Spec</h2>
+      <div class="cat-spec-wrap">
+        <table class="cat-spec">
+          <thead><tr><th>Class / token</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td>.k-check-row</td><td>Grid <code>auto 1fr auto</code>, <code>--s-3</code> gap, <code>--s-2</code> vertical padding.</td></tr>
+            <tr><td>.k-check-row--roomy</td><td><code>--s-3</code> vertical padding.</td></tr>
+            <tr><td>.k-check-row--compact</td><td><code>--s-0</code> vertical padding: a 30px row. Checkbox keeps its 22px size.</td></tr>
+            <tr><td>.k-check-row__label</td><td>Body size and weight, one line, ellipsis.</td></tr>
+            <tr><td>.k-check-row__trail</td><td>Mono <code>--t-num-sm</code>, <code>--c-faint</code>.</td></tr>
+            <tr><td>.k-check-row.is-done</td><td>Label to <code>--c-faint</code>. Pair with <code>.k-checkbox--outline.is-checked</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  
+    <footer class="cat-footer">
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Edit</span>
+        <code>kit/catalog/components/check-row.html</code>
+      </div>
+      <div class="cat-footer__row">
+        <span class="cat-footer__tag">Verify</span>
+        <code>node tooling/mock-check.mjs kit/catalog/components/check-row.html</code>
+      </div>
+      <div class="cat-footer__tag">FORGE &middot; v0.1</div>
+    </footer>
+  </main>
+
+  <script>
+    document.querySelectorAll('.cat-code').forEach(el => {
+      el.addEventListener('click', () => {
+        const text = el.dataset.copy || el.innerText.replace(/^tap to copy\s*/i, '');
+        navigator.clipboard?.writeText(text.replace(/\\n/g, '\n'));
+        el.classList.add('is-copied');
+        el.querySelector('.cat-code__copy').textContent = 'copied';
+        setTimeout(() => {
+          el.classList.remove('is-copied');
+          el.querySelector('.cat-code__copy').textContent = 'tap to copy';
+        }, 1400);
+      });
+    });
+  </script>
+  <script src="../_catalog.js"></script>
+</body>
+</html>
